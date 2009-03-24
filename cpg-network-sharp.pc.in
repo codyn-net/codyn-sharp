@@ -1,0 +1,7 @@
+prefix=@prefix@
+libdir=${prefix}/lib
+
+Name: CpgNetwork#
+Description: CpgNetwork# - Cpg Network .NET Binding
+Version: @VERSION@
+Libs: -r:${libdir}/mono/cpg-network-sharp/cpg-network-sharp.dll

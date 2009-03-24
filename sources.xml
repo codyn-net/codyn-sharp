@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<gapi-parser-input>
+  <api filename="cpg-network/cpg-network-api.raw">
+    <library name="cpg-network-0.1">
+      <namespace name="Cpg">
+        <file>../libcpg-network/cpg-network/cpg-object.c</file>
+        <file>../libcpg-network/cpg-network/cpg-object.h</file>
+        <file>../libcpg-network/cpg-network/cpg-state.c</file>
+        <file>../libcpg-network/cpg-network/cpg-state.h</file>
+        <file>../libcpg-network/cpg-network/cpg-relay.c</file>
+        <file>../libcpg-network/cpg-network/cpg-relay.h</file>
+        <file>../libcpg-network/cpg-network/cpg-link.c</file>
+        <file>../libcpg-network/cpg-network/cpg-link.h</file>
+        <file>../libcpg-network/cpg-network/cpg-expression.c</file>
+        <file>../libcpg-network/cpg-network/cpg-expression.h</file>
+        <file>../libcpg-network/cpg-network/cpg-monitor.c</file>
+        <file>../libcpg-network/cpg-network/cpg-monitor.h</file>
+        <file>../libcpg-network/cpg-network/cpg-network.c</file>
+        <file>../libcpg-network/cpg-network/cpg-network.h</file>
+        <file>../libcpg-network/cpg-network/cpg-property.c</file>
+        <file>../libcpg-network/cpg-network/cpg-property.h</file>
+      </namespace>
+    </library>
+  </api>
+</gapi-parser-input>
+<!-- vi:ts=2:et -->

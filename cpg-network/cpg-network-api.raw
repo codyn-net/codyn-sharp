@@ -1,0 +1,367 @@
+<?xml version="1.0"?>
+<api>
+  <!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
+  <namespace name="Cpg" library="cpg-network-0.1">
+    <enum name="ExpressionFlag" cname="CpgExpressionFlag" type="flags">
+      <member cname="CPG_EXPRESSION_FLAG_NONE" name="None" />
+      <member cname="CPG_EXPRESSION_FLAG_CACHED" name="Cached" value="1 &lt;&lt; 0" />
+      <member cname="CPG_EXPRESSION_FLAG_INSTANT" name="Instant" value="1 &lt;&lt; 1" />
+    </enum>
+    <object name="Link" cname="CpgLink" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgLinkPrivate*" />
+      <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" />
+      <property name="To" cname="to" type="CpgObject" readable="true" writeable="true" />
+      <method name="AddAction" cname="cpg_link_add_action">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgProperty*" name="target" />
+          <parameter type="const-gchar*" name="expression" />
+        </parameters>
+      </method>
+      <method name="GetActions" cname="cpg_link_get_actions">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetFrom" cname="cpg_link_get_from">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetTo" cname="cpg_link_get_to">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetType" cname="cpg_link_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_link_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="CpgObject*" name="from" />
+          <parameter type="CpgObject*" name="to" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="Network" cname="CpgNetwork" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgNetworkPrivate*" />
+      <signal name="Reset" cname="reset" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+        </parameters>
+      </signal>
+      <signal name="Update" cname="update" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </signal>
+      <method name="AddMonitor" cname="cpg_network_add_monitor">
+        <return-type type="CpgMonitor*" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="const-gchar*" name="propname" />
+        </parameters>
+      </method>
+      <method name="AddObject" cname="cpg_network_add_object">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </method>
+      <method name="Clear" cname="cpg_network_clear">
+        <return-type type="void" />
+      </method>
+      <method name="Compile" cname="cpg_network_compile">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetLinks" cname="cpg_network_get_links">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetObject" cname="cpg_network_get_object">
+        <return-type type="CpgObject*" />
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </method>
+      <method name="GetStates" cname="cpg_network_get_states">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetType" cname="cpg_network_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_network_new" />
+      <constructor cname="cpg_network_new_from_file">
+        <parameters>
+          <parameter type="const-gchar*" name="filename" />
+        </parameters>
+      </constructor>
+      <method name="Reset" cname="cpg_network_reset">
+        <return-type type="void" />
+      </method>
+      <method name="Run" cname="cpg_network_run">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="from" />
+          <parameter type="gdouble" name="timestep" />
+          <parameter type="gdouble" name="to" />
+        </parameters>
+      </method>
+      <method name="SetExpression" cname="cpg_network_set_expression">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="const-gchar*" name="expression" />
+        </parameters>
+      </method>
+      <method name="Step" cname="cpg_network_step">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
+      <method name="Taint" cname="cpg_network_taint">
+        <return-type type="void" />
+      </method>
+    </object>
+    <object name="Object" cname="CpgObject" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
+      <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" />
+      <property name="LocalId" cname="local-id" type="gchar*" readable="true" />
+      <virtual_method name="Compile" cname="compile">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Reset" cname="reset">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Update" cname="update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Evaluate" cname="evaluate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </virtual_method>
+      <method name="AddProperty" cname="cpg_object_add_property">
+        <return-type type="CpgProperty*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="expression" />
+          <parameter type="gboolean" name="integrated" />
+        </parameters>
+      </method>
+      <method name="Evaluate" cname="cpg_object_evaluate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
+      <method name="GetId" cname="cpg_object_get_id">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetLocalId" cname="cpg_object_get_local_id">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetProperties" cname="cpg_object_get_properties">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetProperty" cname="cpg_object_get_property">
+        <return-type type="CpgProperty*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_object_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_object_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </constructor>
+      <method name="Reset" cname="cpg_object_reset">
+        <return-type type="void" />
+      </method>
+      <method name="ResetCache" cname="cpg_object_reset_cache">
+        <return-type type="void" />
+      </method>
+      <method name="Update" cname="cpg_object_update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Relay" cname="CpgRelay" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgRelayPrivate*" />
+      <method name="GetType" cname="cpg_relay_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_relay_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="State" cname="CpgState" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgStatePrivate*" />
+      <method name="GetType" cname="cpg_state_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_state_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </constructor>
+    </object>
+    <boxed name="Expression" cname="CpgExpression" opaque="true">
+      <method name="Compile" cname="cpg_expression_compile">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GSList*" name="context" />
+          <parameter type="gchar**" name="error" />
+        </parameters>
+      </method>
+      <method name="Evaluate" cname="cpg_expression_evaluate">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetAsString" cname="cpg_expression_get_as_string">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetDependencies" cname="cpg_expression_get_dependencies">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetInstructions" cname="cpg_expression_get_instructions">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetType" cname="cpg_expression_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_expression_new">
+        <parameters>
+          <parameter type="const-gchar*" name="expression" />
+        </parameters>
+      </constructor>
+      <method name="Reset" cname="cpg_expression_reset">
+        <return-type type="void" />
+      </method>
+      <method name="ResetCache" cname="cpg_expression_reset_cache">
+        <return-type type="void" />
+      </method>
+      <method name="SetFromString" cname="cpg_expression_set_from_string">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetValue" cname="cpg_expression_set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+    </boxed>
+    <boxed name="LinkAction" cname="CpgLinkAction" opaque="true">
+      <method name="GetExpression" cname="cpg_link_action_get_expression">
+        <return-type type="CpgExpression*" />
+      </method>
+      <method name="GetTarget" cname="cpg_link_action_get_target">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_link_action_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Monitor" cname="CpgMonitor" opaque="true">
+      <method name="GetData" cname="cpg_monitor_get_data">
+        <return-type type="const-gdouble*" />
+        <parameters>
+          <parameter type="guint*" name="size" />
+        </parameters>
+      </method>
+      <method name="GetDataResampled" cname="cpg_monitor_get_data_resampled">
+        <return-type type="gdouble*" />
+        <parameters>
+          <parameter type="const-gdouble*" name="sites" />
+          <parameter type="guint" name="size" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_monitor_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_monitor_new">
+        <parameters>
+          <parameter type="_CpgNetwork*" name="network" />
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="const-gchar*" name="property_name" />
+        </parameters>
+      </constructor>
+    </boxed>
+    <boxed name="Property" cname="CpgProperty" opaque="true">
+      <method name="Compile" cname="cpg_property_compile">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GSList*" name="context" />
+          <parameter type="gchar**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetIntegrated" cname="cpg_property_get_integrated">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetName" cname="cpg_property_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="cpg_property_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetValue" cname="cpg_property_get_value">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetValueExpression" cname="cpg_property_get_value_expression">
+        <return-type type="CpgExpression*" />
+      </method>
+      <constructor cname="cpg_property_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="expression" />
+          <parameter type="gboolean" name="integrated" />
+          <parameter type="_CpgObject*" name="object" />
+        </parameters>
+      </constructor>
+      <method name="Reset" cname="cpg_property_reset">
+        <return-type type="void" />
+      </method>
+      <method name="ResetCache" cname="cpg_property_reset_cache">
+        <return-type type="void" />
+      </method>
+      <method name="SetValue" cname="cpg_property_set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="SetValueExpression" cname="cpg_property_set_value_expression">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="expression" />
+          <parameter type="GSList*" name="context" />
+          <parameter type="gchar**" name="error" />
+        </parameters>
+      </method>
+    </boxed>
+  </namespace>
+</api>

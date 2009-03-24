@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<metadata>
+  <!-- CpgLink -->
+  <attr path="/api/namespace/object[@cname='CpgLink']/method[@cname='cpg_link_get_from']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgLink']/method[@cname='cpg_link_get_to']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgLink']/method[@cname='cpg_link_get_actions']/return-type" name="element_type">CpgLinkAction*</attr>
+  
+  <!-- CpgNetwork -->
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_links']/return-type" name="element_type">CpgLink*</attr>
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_states']/return-type" name="element_type">CpgState*</attr>
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/field[@cname='priv']" name="hidden">true</attr>
+  
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/signal[@name='Reset']" name="name">Resetted</attr>
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/signal[@name='Update']" name="name">Updated</attr>
+  
+  <!-- CpgObject -->
+  <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_properties']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/field[@cname='priv']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_property']" name="name">Property</attr>
+  
+  <!-- CpgRelay -->
+  <attr path="/api/namespace/object[@cname='CpgRelay']/field[@cname='priv']" name="hidden">true</attr>
+
+  <!-- CpgState -->
+  <attr path="/api/namespace/object[@cname='CpgState']/field[@cname='priv']" name="hidden">true</attr>
+  
+  <!-- CpgProperty -->  
+  <attr path="/api/namespace/boxed[@cname='CpgProperty']/constructor[@cname='cpg_property_new']/parameters/parameter[@name='object']" name="type">CpgObject*</attr>
+
+  <!-- CpgMonitor -->
+  <attr path="/api/namespace/boxed[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='network']" name="type">CpgNetwork*</attr>
+  
+  <!-- CpgExpression -->
+  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
+
+</metadata>
+<!-- vi:ts=2:et -->
