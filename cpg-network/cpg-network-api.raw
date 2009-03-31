@@ -98,6 +98,12 @@
           <parameter type="const-gchar*" name="filename" />
         </parameters>
       </constructor>
+      <method name="RemoveObject" cname="cpg_network_remove_object">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </method>
       <method name="Reset" cname="cpg_network_reset">
         <return-type type="void" />
       </method>
@@ -130,6 +136,12 @@
       <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
       <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" />
       <property name="LocalId" cname="local-id" type="gchar*" readable="true" />
+      <signal name="Tainted" cname="tainted" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="void" />
         <parameters>
@@ -188,15 +200,30 @@
       <method name="GetType" cname="cpg_object_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="HasProperty" cname="cpg_object_has_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
       <constructor cname="cpg_object_new">
         <parameters>
           <parameter type="const-gchar*" name="id" />
         </parameters>
       </constructor>
+      <method name="RemoveProperty" cname="cpg_object_remove_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
       <method name="Reset" cname="cpg_object_reset">
         <return-type type="void" />
       </method>
       <method name="ResetCache" cname="cpg_object_reset_cache">
+        <return-type type="void" />
+      </method>
+      <method name="Taint" cname="cpg_object_taint">
         <return-type type="void" />
       </method>
       <method name="Update" cname="cpg_object_update">
@@ -355,11 +382,9 @@
         </parameters>
       </method>
       <method name="SetValueExpression" cname="cpg_property_set_value_expression">
-        <return-type type="gboolean" />
+        <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="expression" />
-          <parameter type="GSList*" name="context" />
-          <parameter type="gchar**" name="error" />
         </parameters>
       </method>
     </boxed>

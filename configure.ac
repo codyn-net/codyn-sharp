@@ -14,7 +14,7 @@ fi
 
 # If you change these, update the error text below.
 PKG_CHECK_MODULES(CPG_NETWORK, \
-	cpg-network-0.1
+	cpg-network-1.0
 )
 
 AC_SUBST(CPG_NETWORK_LIBS)
