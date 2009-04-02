@@ -2,7 +2,7 @@
 
 <gapi-parser-input>
   <api filename="cpg-network/cpg-network-api.raw">
-    <library name="cpg-network-0.1">
+    <library name="cpg-network-1.0">
       <namespace name="Cpg">
         <file>../libcpg-network/cpg-network/cpg-object.c</file>
         <file>../libcpg-network/cpg-network/cpg-object.h</file>

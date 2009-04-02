@@ -6,7 +6,7 @@
         Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
 
 -->
-  <namespace name="Cpg" library="cpg-network-0.1">
+  <namespace name="Cpg" library="cpg-network-1.0">
     <enum name="ExpressionFlag" cname="CpgExpressionFlag" type="flags">
       <member cname="CPG_EXPRESSION_FLAG_NONE" name="None" />
       <member cname="CPG_EXPRESSION_FLAG_CACHED" name="Cached" value="1 &lt;&lt; 0" />
