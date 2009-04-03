@@ -375,6 +375,12 @@
       <method name="ResetCache" cname="cpg_property_reset_cache">
         <return-type type="void" />
       </method>
+      <method name="SetIntegrated" cname="cpg_property_set_integrated">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="integrated" />
+        </parameters>
+      </method>
       <method name="SetValue" cname="cpg_property_set_value">
         <return-type type="void" />
         <parameters>
