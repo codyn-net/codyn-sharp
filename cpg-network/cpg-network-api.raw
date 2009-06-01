@@ -14,10 +14,10 @@
     </enum>
     <object name="Link" cname="CpgLink" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgLinkPrivate*" />
-      <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" />
-      <property name="To" cname="to" type="CpgObject" readable="true" writeable="true" />
+      <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" construct="true" />
+      <property name="To" cname="to" type="CpgObject" readable="true" writeable="true" construct="true" />
       <method name="AddAction" cname="cpg_link_add_action">
-        <return-type type="void" />
+        <return-type type="CpgLinkAction*" />
         <parameters>
           <parameter type="CpgProperty*" name="target" />
           <parameter type="const-gchar*" name="expression" />
@@ -42,16 +42,22 @@
           <parameter type="CpgObject*" name="to" />
         </parameters>
       </constructor>
+      <method name="RemoveAction" cname="cpg_link_remove_action">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgProperty*" name="target" />
+        </parameters>
+      </method>
     </object>
     <object name="Network" cname="CpgNetwork" parent="GObject">
       <field name="Priv" cname="priv" type="CpgNetworkPrivate*" />
-      <signal name="Reset" cname="reset" when="LAST">
+      <signal name="Reset" cname="reset" when="LAST" field_name="reset">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
         </parameters>
       </signal>
-      <signal name="Update" cname="update" when="LAST">
+      <signal name="Update" cname="update" when="LAST" field_name="update">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
@@ -88,6 +94,12 @@
       </method>
       <method name="GetStates" cname="cpg_network_get_states">
         <return-type type="GSList*" />
+      </method>
+      <method name="GetTime" cname="cpg_network_get_time">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetTimestep" cname="cpg_network_get_timestep">
+        <return-type type="gdouble" />
       </method>
       <method name="GetType" cname="cpg_network_get_type" shared="true">
         <return-type type="GType" />
@@ -134,14 +146,8 @@
     </object>
     <object name="Object" cname="CpgObject" parent="GObject">
       <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
-      <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" />
+      <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="LocalId" cname="local-id" type="gchar*" readable="true" />
-      <signal name="Tainted" cname="tainted" when="LAST">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-        </parameters>
-      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="void" />
         <parameters>
@@ -168,6 +174,12 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </virtual_method>
+      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="CpgProperty*" />
         <parameters>
