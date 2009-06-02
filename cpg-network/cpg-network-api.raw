@@ -104,10 +104,21 @@
       <method name="GetType" cname="cpg_network_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="Merge" cname="cpg_network_merge">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgNetwork*" name="other" />
+        </parameters>
+      </method>
       <constructor cname="cpg_network_new" />
       <constructor cname="cpg_network_new_from_file">
         <parameters>
           <parameter type="const-gchar*" name="filename" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_network_new_from_xml">
+        <parameters>
+          <parameter type="const-gchar*" name="xml" />
         </parameters>
       </constructor>
       <method name="RemoveObject" cname="cpg_network_remove_object">
@@ -234,6 +245,12 @@
       </method>
       <method name="ResetCache" cname="cpg_object_reset_cache">
         <return-type type="void" />
+      </method>
+      <method name="SetId" cname="cpg_object_set_id">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
       </method>
       <method name="Taint" cname="cpg_object_taint">
         <return-type type="void" />
