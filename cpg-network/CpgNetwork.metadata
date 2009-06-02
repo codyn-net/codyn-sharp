@@ -31,8 +31,8 @@
   <attr path="/api/namespace/boxed[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='network']" name="type">CpgNetwork*</attr>
   
   <!-- CpgExpression -->
-  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/boxed[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>
+  <attr path="/api/namespace/boxed[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
 
 </metadata>
 <!-- vi:ts=2:et -->

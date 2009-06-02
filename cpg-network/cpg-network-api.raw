@@ -7,10 +7,13 @@
 
 -->
   <namespace name="Cpg" library="cpg-network-1.0">
-    <enum name="ExpressionFlag" cname="CpgExpressionFlag" type="flags">
-      <member cname="CPG_EXPRESSION_FLAG_NONE" name="None" />
-      <member cname="CPG_EXPRESSION_FLAG_CACHED" name="Cached" value="1 &lt;&lt; 0" />
-      <member cname="CPG_EXPRESSION_FLAG_INSTANT" name="Instant" value="1 &lt;&lt; 1" />
+    <enum name="CompileErrorType" cname="CpgCompileErrorType" type="enum">
+      <member cname="CPG_COMPILE_ERROR_PROPERTY_NOT_FOUND" name="PropertyNotFound" />
+      <member cname="CPG_COMPILE_ERROR_FUNCTION_NOT_FOUND" name="FunctionNotFound" />
+      <member cname="CPG_COMPILE_ERROR_INVALID_TOKEN" name="InvalidToken" />
+      <member cname="CPG_COMPILE_ERROR_MAXARG" name="Maxarg" />
+      <member cname="CPG_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
+      <member cname="CPG_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
     <object name="Link" cname="CpgLink" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgLinkPrivate*" />
@@ -51,26 +54,29 @@
     </object>
     <object name="Network" cname="CpgNetwork" parent="GObject">
       <field name="Priv" cname="priv" type="CpgNetworkPrivate*" />
-      <signal name="Reset" cname="reset" when="LAST" field_name="reset">
+      <property name="Time" cname="time" type="gdouble" readable="true" writeable="true" construct="true" />
+      <property name="Timestep" cname="timestep" type="gdouble" readable="true" writeable="true" construct="true" />
+      <property name="Compiled" cname="compiled" type="gboolean" readable="true" writeable="true" construct="true" />
+      <signal name="Reset" cname="reset" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
         </parameters>
       </signal>
-      <signal name="Update" cname="update" when="LAST" field_name="update">
+      <signal name="Update" cname="update" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </signal>
-      <method name="AddMonitor" cname="cpg_network_add_monitor">
-        <return-type type="CpgMonitor*" />
+      <signal name="CompileError" cname="compile-error" when="LAST">
+        <return-type type="void" />
         <parameters>
-          <parameter type="CpgObject*" name="object" />
-          <parameter type="const-gchar*" name="propname" />
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgCompileError*" name="error" />
         </parameters>
-      </method>
+      </signal>
       <method name="AddObject" cname="cpg_network_add_object">
         <return-type type="void" />
         <parameters>
@@ -82,6 +88,9 @@
       </method>
       <method name="Compile" cname="cpg_network_compile">
         <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgCompileError*" name="error" />
+        </parameters>
       </method>
       <method name="GetLinks" cname="cpg_network_get_links">
         <return-type type="GSList*" />
@@ -94,12 +103,6 @@
       </method>
       <method name="GetStates" cname="cpg_network_get_states">
         <return-type type="GSList*" />
-      </method>
-      <method name="GetTime" cname="cpg_network_get_time">
-        <return-type type="gdouble" />
-      </method>
-      <method name="GetTimestep" cname="cpg_network_get_timestep">
-        <return-type type="gdouble" />
       </method>
       <method name="GetType" cname="cpg_network_get_type" shared="true">
         <return-type type="GType" />
@@ -159,6 +162,12 @@
       <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
       <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="LocalId" cname="local-id" type="gchar*" readable="true" />
+      <signal name="Tainted" cname="tainted" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="void" />
         <parameters>
@@ -185,12 +194,6 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </virtual_method>
-      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-        </parameters>
-      </signal>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="CpgProperty*" />
         <parameters>
@@ -284,12 +287,48 @@
         </parameters>
       </constructor>
     </object>
+    <boxed name="CompileError" cname="CpgCompileError" opaque="true">
+      <method name="CodeString" cname="cpg_compile_error_code_string" shared="true">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="gint" name="code" />
+        </parameters>
+      </method>
+      <method name="GetCode" cname="cpg_compile_error_get_code">
+        <return-type type="gint" />
+      </method>
+      <method name="GetError" cname="cpg_compile_error_get_error">
+        <return-type type="GError**" />
+      </method>
+      <method name="GetLinkAction" cname="cpg_compile_error_get_link_action">
+        <return-type type="CpgLinkAction*" />
+      </method>
+      <method name="GetMessage" cname="cpg_compile_error_get_message">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetObject" cname="cpg_compile_error_get_object">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetProperty" cname="cpg_compile_error_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_compile_error_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_compile_error_new" />
+      <method name="String" cname="cpg_compile_error_string">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="TypeQuark" cname="cpg_compile_error_type_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+    </boxed>
     <boxed name="Expression" cname="CpgExpression" opaque="true">
       <method name="Compile" cname="cpg_expression_compile">
         <return-type type="gint" />
         <parameters>
           <parameter type="GSList*" name="context" />
-          <parameter type="gchar**" name="error" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="Evaluate" cname="cpg_expression_evaluate">
