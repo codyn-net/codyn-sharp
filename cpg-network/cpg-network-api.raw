@@ -15,6 +15,12 @@
       <member cname="CPG_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
       <member cname="CPG_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
+    <enum name="ObjectError" cname="CpgObjectError" type="enum">
+      <member cname="CPG_OBJECT_ERROR_PROP_UNKNOWN" name="ErrorPropUnknown" />
+      <member cname="CPG_OBJECT_ERROR_PROP_NOT_FOUND" name="ErrorPropNotFound" />
+      <member cname="CPG_OBJECT_ERROR_PROP_IN_USE" name="ErrorPropInUse" />
+      <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
+    </enum>
     <object name="Link" cname="CpgLink" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgLinkPrivate*" />
       <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" construct="true" />
@@ -46,9 +52,9 @@
         </parameters>
       </constructor>
       <method name="RemoveAction" cname="cpg_link_remove_action">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
-          <parameter type="CpgProperty*" name="target" />
+          <parameter type="CpgLinkAction*" name="action" />
         </parameters>
       </method>
     </object>
@@ -57,20 +63,20 @@
       <property name="Time" cname="time" type="gdouble" readable="true" writeable="true" construct="true" />
       <property name="Timestep" cname="timestep" type="gdouble" readable="true" writeable="true" construct="true" />
       <property name="Compiled" cname="compiled" type="gboolean" readable="true" writeable="true" construct="true" />
-      <signal name="Reset" cname="reset" when="LAST" field_name="reset">
+      <signal name="Reset" cname="reset" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
         </parameters>
       </signal>
-      <signal name="Update" cname="update" when="LAST" field_name="update">
+      <signal name="Update" cname="update" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </signal>
-      <signal name="CompileError" cname="compile-error" when="LAST" field_name="compile_error">
+      <signal name="CompileError" cname="compile-error" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
@@ -91,6 +97,9 @@
         <parameters>
           <parameter type="CpgCompileError*" name="error" />
         </parameters>
+      </method>
+      <method name="GetGlobals" cname="cpg_network_get_globals">
+        <return-type type="CpgObject*" />
       </method>
       <method name="GetLinks" cname="cpg_network_get_links">
         <return-type type="GSList*" />
@@ -162,6 +171,12 @@
       <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
       <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="LocalId" cname="local-id" type="gchar*" readable="true" />
+      <signal name="Tainted" cname="tainted" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="void" />
         <parameters>
@@ -188,12 +203,12 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </virtual_method>
-      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
+      <virtual_method name="ResetCache" cname="reset_cache">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
         </parameters>
-      </signal>
+      </virtual_method>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="CpgProperty*" />
         <parameters>
@@ -201,6 +216,9 @@
           <parameter type="const-gchar*" name="expression" />
           <parameter type="gboolean" name="integrated" />
         </parameters>
+      </method>
+      <method name="ErrorQuark" cname="cpg_object_error_quark" shared="true">
+        <return-type type="GQuark" />
       </method>
       <method name="Evaluate" cname="cpg_object_evaluate">
         <return-type type="void" />
@@ -238,9 +256,10 @@
         </parameters>
       </constructor>
       <method name="RemoveProperty" cname="cpg_object_remove_property">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="Reset" cname="cpg_object_reset">
