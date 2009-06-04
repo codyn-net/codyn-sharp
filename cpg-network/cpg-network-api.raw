@@ -57,20 +57,20 @@
       <property name="Time" cname="time" type="gdouble" readable="true" writeable="true" construct="true" />
       <property name="Timestep" cname="timestep" type="gdouble" readable="true" writeable="true" construct="true" />
       <property name="Compiled" cname="compiled" type="gboolean" readable="true" writeable="true" construct="true" />
-      <signal name="Reset" cname="reset" when="LAST">
+      <signal name="Reset" cname="reset" when="LAST" field_name="reset">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
         </parameters>
       </signal>
-      <signal name="Update" cname="update" when="LAST">
+      <signal name="Update" cname="update" when="LAST" field_name="update">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </signal>
-      <signal name="CompileError" cname="compile-error" when="LAST">
+      <signal name="CompileError" cname="compile-error" when="LAST" field_name="compile_error">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
@@ -162,12 +162,6 @@
       <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
       <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="LocalId" cname="local-id" type="gchar*" readable="true" />
-      <signal name="Tainted" cname="tainted" when="LAST">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-        </parameters>
-      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="void" />
         <parameters>
@@ -194,6 +188,12 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </virtual_method>
+      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="CpgProperty*" />
         <parameters>
@@ -389,10 +389,11 @@
         </parameters>
       </method>
       <method name="GetDataResampled" cname="cpg_monitor_get_data_resampled">
-        <return-type type="gdouble*" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gdouble*" name="sites" />
           <parameter type="guint" name="size" />
+          <parameter type="gdouble*" name="ret" />
         </parameters>
       </method>
       <method name="GetType" cname="cpg_monitor_get_type" shared="true">

@@ -29,6 +29,9 @@
 
   <!-- CpgMonitor -->
   <attr path="/api/namespace/boxed[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='network']" name="type">CpgNetwork*</attr>
+  <attr path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data_resampled']/parameters/parameter[@name='sites']" name="array"/>
+  <remove-node path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data_resampled']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data']"/>
   
   <!-- CpgExpression -->
   <attr path="/api/namespace/boxed[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>
