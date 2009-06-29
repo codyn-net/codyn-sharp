@@ -83,9 +83,30 @@
           <parameter type="CpgCompileError*" name="error" />
         </parameters>
       </signal>
+      <method name="AddFromTemplate" cname="cpg_network_add_from_template">
+        <return-type type="CpgObject*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="AddLinkFromTemplate" cname="cpg_network_add_link_from_template">
+        <return-type type="CpgObject*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="CpgObject*" name="from" />
+          <parameter type="CpgObject*" name="to" />
+        </parameters>
+      </method>
       <method name="AddObject" cname="cpg_network_add_object">
         <return-type type="void" />
         <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </method>
+      <method name="AddTemplate" cname="cpg_network_add_template">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
           <parameter type="CpgObject*" name="object" />
         </parameters>
       </method>
@@ -113,6 +134,15 @@
       <method name="GetStates" cname="cpg_network_get_states">
         <return-type type="GSList*" />
       </method>
+      <method name="GetTemplate" cname="cpg_network_get_template">
+        <return-type type="CpgObject*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="GetTemplates" cname="cpg_network_get_templates">
+        <return-type type="GSList*" />
+      </method>
       <method name="GetType" cname="cpg_network_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -120,6 +150,18 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="other" />
+        </parameters>
+      </method>
+      <method name="MergeFromFile" cname="cpg_network_merge_from_file">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="filename" />
+        </parameters>
+      </method>
+      <method name="MergeFromXml" cname="cpg_network_merge_from_xml">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="xml" />
         </parameters>
       </method>
       <constructor cname="cpg_network_new" />
@@ -137,6 +179,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </method>
+      <method name="RemoveTemplate" cname="cpg_network_remove_template">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
       <method name="Reset" cname="cpg_network_reset">
@@ -165,6 +213,15 @@
       </method>
       <method name="Taint" cname="cpg_network_taint">
         <return-type type="void" />
+      </method>
+      <method name="WriteToFile" cname="cpg_network_write_to_file">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="filename" />
+        </parameters>
+      </method>
+      <method name="WriteToXml" cname="cpg_network_write_to_xml">
+        <return-type type="gchar*" />
       </method>
     </object>
     <object name="Object" cname="CpgObject" parent="GObject">
@@ -207,6 +264,13 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Copy" cname="copy">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="source" />
         </parameters>
       </virtual_method>
       <method name="AddProperty" cname="cpg_object_add_property">
@@ -398,6 +462,12 @@
       </method>
       <method name="GetType" cname="cpg_link_action_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="SetTarget" cname="cpg_link_action_set_target">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
       </method>
     </boxed>
     <boxed name="Monitor" cname="CpgMonitor" opaque="true">

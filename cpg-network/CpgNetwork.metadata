@@ -8,6 +8,9 @@
   <!-- CpgNetwork -->
   <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_links']/return-type" name="element_type">CpgLink*</attr>
   <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_states']/return-type" name="element_type">CpgState*</attr>
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_templates']/return-type" name="element_type">gchar*</attr>
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_templates']/return-type" name="owned">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_templates']/return-type" name="element_owned">true</attr>
   <attr path="/api/namespace/object[@cname='CpgNetwork']/field[@cname='priv']" name="hidden">true</attr>
   
   <attr path="/api/namespace/object[@cname='CpgNetwork']/signal[@name='Reset']" name="name">Resetted</attr>
@@ -29,7 +32,6 @@
 
   <!-- CpgMonitor -->
   <attr path="/api/namespace/boxed[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='network']" name="type">CpgNetwork*</attr>
-  <attr path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data_resampled']/parameters/parameter[@name='sites']" name="array"/>
   <remove-node path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data_resampled']"/>
   <remove-node path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data']"/>
   
