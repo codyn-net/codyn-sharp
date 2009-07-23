@@ -7,13 +7,19 @@
 
 -->
   <namespace name="Cpg" library="cpg-network-1.0">
-    <enum name="CompileErrorType" cname="CpgCompileErrorType" type="enum">
+    <enum name="CompileErrorCode" cname="CpgCompileErrorCode" type="enum">
       <member cname="CPG_COMPILE_ERROR_PROPERTY_NOT_FOUND" name="PropertyNotFound" />
       <member cname="CPG_COMPILE_ERROR_FUNCTION_NOT_FOUND" name="FunctionNotFound" />
       <member cname="CPG_COMPILE_ERROR_INVALID_TOKEN" name="InvalidToken" />
       <member cname="CPG_COMPILE_ERROR_MAXARG" name="Maxarg" />
       <member cname="CPG_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
       <member cname="CPG_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
+    </enum>
+    <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
+      <member cname="CPG_NETWORK_LOAD_ERROR_XML" name="Xml" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_PROPERTY" name="Property" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_OBJECT" name="Object" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_LINK" name="Link" />
     </enum>
     <enum name="ObjectError" cname="CpgObjectError" type="enum">
       <member cname="CPG_OBJECT_ERROR_PROP_UNKNOWN" name="ErrorPropUnknown" />
@@ -146,6 +152,9 @@
       <method name="GetType" cname="cpg_network_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="LoadErrorQuark" cname="cpg_network_load_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
       <method name="Merge" cname="cpg_network_merge">
         <return-type type="void" />
         <parameters>
@@ -156,23 +165,27 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="filename" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="MergeFromXml" cname="cpg_network_merge_from_xml">
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="xml" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <constructor cname="cpg_network_new" />
       <constructor cname="cpg_network_new_from_file">
         <parameters>
           <parameter type="const-gchar*" name="filename" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
       <constructor cname="cpg_network_new_from_xml">
         <parameters>
           <parameter type="const-gchar*" name="xml" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
       <method name="RemoveObject" cname="cpg_network_remove_object">
@@ -198,11 +211,11 @@
           <parameter type="gdouble" name="to" />
         </parameters>
       </method>
-      <method name="SetExpression" cname="cpg_network_set_expression">
-        <return-type type="gboolean" />
+      <method name="SetGlobalConstant" cname="cpg_network_set_global_constant">
+        <return-type type="void" />
         <parameters>
-          <parameter type="CpgProperty*" name="property" />
-          <parameter type="const-gchar*" name="expression" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gdouble" name="constant" />
         </parameters>
       </method>
       <method name="Step" cname="cpg_network_step">
@@ -228,6 +241,13 @@
       <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
       <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="LocalId" cname="local-id" type="gchar*" readable="true" />
+      <property name="Template" cname="template" type="CpgObject" readable="true" writeable="true" construct="true" />
+      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="void" />
         <parameters>
@@ -254,16 +274,17 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </virtual_method>
-      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-        </parameters>
-      </signal>
       <virtual_method name="ResetCache" cname="reset_cache">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Copy" cname="copy">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="source" />
         </parameters>
       </virtual_method>
       <virtual_method name="Copy" cname="copy">
@@ -414,6 +435,12 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
+      <method name="Equal" cname="cpg_expression_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgExpression*" name="other" />
+        </parameters>
+      </method>
       <method name="Evaluate" cname="cpg_expression_evaluate">
         <return-type type="gdouble" />
       </method>
@@ -497,11 +524,10 @@
       </constructor>
     </boxed>
     <boxed name="Property" cname="CpgProperty" opaque="true">
-      <method name="Compile" cname="cpg_property_compile">
+      <method name="Equal" cname="cpg_property_equal">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GSList*" name="context" />
-          <parameter type="gchar**" name="error" />
+          <parameter type="CpgProperty*" name="other" />
         </parameters>
       </method>
       <method name="GetIntegrated" cname="cpg_property_get_integrated">
@@ -519,6 +545,9 @@
       <method name="GetValueExpression" cname="cpg_property_get_value_expression">
         <return-type type="CpgExpression*" />
       </method>
+      <method name="GetVariant" cname="cpg_property_get_variant">
+        <return-type type="gboolean" />
+      </method>
       <constructor cname="cpg_property_new">
         <parameters>
           <parameter type="const-gchar*" name="name" />
@@ -527,9 +556,6 @@
           <parameter type="_CpgObject*" name="object" />
         </parameters>
       </constructor>
-      <method name="Reset" cname="cpg_property_reset">
-        <return-type type="void" />
-      </method>
       <method name="ResetCache" cname="cpg_property_reset_cache">
         <return-type type="void" />
       </method>
@@ -549,6 +575,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="expression" />
+        </parameters>
+      </method>
+      <method name="SetVariant" cname="cpg_property_set_variant">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="variant" />
         </parameters>
       </method>
     </boxed>

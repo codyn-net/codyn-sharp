@@ -1,15 +1,13 @@
 RAW_API = cpg-network-api.raw
 
-API=cpg-network-api.xml
+API = cpg-network-api.xml
 METADATA = CpgNetwork.metadata
 ASSEMBLY_NAME = cpg-network-sharp
 references = $(GLIB_SHARP_LIBS)
 
 TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
-gapidir = $(datadir)/gapi-2.0
 noinst_DATA = $(ASSEMBLY)
-gapi_DATA = $(API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 DISTCLEANFILES = AssemblyInfo.cs $(ASSEMBLY).mdb
 
@@ -41,16 +39,18 @@ generated-stamp: $(API) $(build_customs)
 $(ASSEMBLY): $(build_sources) generated-stamp
 	$(CSC) -debug -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) generated/*.cs
 
-all: $(ASSEMBLY) $(TEST_TARGETS)
+all: $(ASSEMBLY)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then									\
-	  echo "$(GACUTIL) /i $(ASSEMBLY) /f /package $(PACKAGE) /root $(DESTDIR)$(prefix)/lib";		\
-	  $(GACUTIL) /i $(ASSEMBLY) /f /package $(PACKAGE) /root $(DESTDIR)$(prefix)/lib || exit 1;		\
+	  echo "$(INSTALL) -c -m 644 '$(TARGET)' '$(libdir)/cpg-network-sharp/$(ASSEMBLY)'";		\
+	  $(mkinstalldirs) '$(libdir)/cpg-network-sharp/' || exit 1; 								\
+	  chmod u+w '$(libdir)/cpg-network-sharp/' || exit 1;										\
+	  $(INSTALL) -c -m 644 '$(TARGET)' '$(libdir)/cpg-network-sharp/$(ASSEMBLY)' || exit 1;		\
 	fi
 
 uninstall-local:
 	@if test -n '$(TARGET)'; then									\
-	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /package $(PACKAGE) /root $(DESTDIR)$(prefix)/lib";		\
-	  $(GACUTIL) /u $(ASSEMBLY_NAME) /package $(PACKAGE) /root $(DESTDIR)$(prefix)/lib || exit 1;	\
+	  echo "rm $(libdir)/cpg-network-sharp/$(ASSEMBLY)";		\
+	  rm $(libdir)/cpg-network-sharp/$(ASSEMBLY) || exit 1;	\
 	fi
