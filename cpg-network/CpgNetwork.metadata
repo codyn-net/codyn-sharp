@@ -7,7 +7,7 @@
   
   <!-- CpgNetwork -->
   <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_links']/return-type" name="element_type">CpgLink*</attr>
-  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_states']/return-type" name="element_type">CpgState*</attr>
+  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_states']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_templates']/return-type" name="element_type">gchar*</attr>
   <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_templates']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_templates']/return-type" name="element_owned">true</attr>
