@@ -23,3 +23,16 @@
 			
 			return data;
 		}
+		
+		[DllImport("cpg-network-1.0")]
+		static extern IntPtr cpg_monitor_get_sites(IntPtr raw, out uint n_size);
+
+		public double[] GetSites() {
+			uint n_size;
+			IntPtr ret = cpg_monitor_get_sites (Handle, out n_size);
+			
+			double[] data = new double[n_size];
+			Marshal.Copy(ret, data, 0, (int)n_size);
+			
+			return data;
+		}
