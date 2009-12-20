@@ -28,10 +28,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
-		static extern void cpg_function_polynomial_remove(IntPtr raw, double begin, double end);
+		static extern void cpg_function_polynomial_remove(IntPtr raw, IntPtr piece);
 
-		public void Remove(double begin, double end) {
-			cpg_function_polynomial_remove(Handle, begin, end);
+		public void Remove(Cpg.FunctionPolynomialPiece piece) {
+			cpg_function_polynomial_remove(Handle, piece == null ? IntPtr.Zero : piece.Handle);
 		}
 
 		[DllImport("cpg-network-1.0")]
@@ -53,6 +53,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
+		static extern void cpg_function_polynomial_add(IntPtr raw, IntPtr piece);
+
+		public void Add(Cpg.FunctionPolynomialPiece piece) {
+			cpg_function_polynomial_add(Handle, piece == null ? IntPtr.Zero : piece.Handle);
+		}
+
+		[DllImport("cpg-network-1.0")]
 		static extern IntPtr cpg_function_polynomial_get_pieces(IntPtr raw);
 
 		public Cpg.FunctionPolynomialPiece[] Pieces { 
@@ -61,18 +68,6 @@ namespace Cpg {
 				Cpg.FunctionPolynomialPiece[] ret = (Cpg.FunctionPolynomialPiece[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.FunctionPolynomialPiece));
 				return ret;
 			}
-		}
-
-#endregion
-#region Customized extensions
-#line 1 "FunctionPolynomial.custom"
-		[DllImport("cpg-network-1.0")]
-		static extern void cpg_function_polynomial_add(IntPtr raw, double begin, double end, double[] coefficients, uint num_coefficients);
-
-		public void Add(double begin, double end, double[] coefficients) {
-			uint len = coefficients != null ? (uint)coefficients.Length : 0;
-
-			cpg_function_polynomial_add(Handle, begin, end, coefficients, len);
 		}
 
 #endregion

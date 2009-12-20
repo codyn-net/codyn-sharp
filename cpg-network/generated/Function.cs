@@ -19,6 +19,9 @@ namespace Cpg {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
+		[DllImport("cpg-network-1.0")]
+		static extern void cpg_function_set_expression(IntPtr raw, IntPtr expression);
+
 		[GLib.Property ("expression")]
 		public Cpg.Expression Expression {
 			get {
@@ -27,11 +30,18 @@ namespace Cpg {
 				val.Dispose ();
 				return ret;
 			}
-			set {
-				GLib.Value val = new GLib.Value(value, "CpgExpression");
-				SetProperty("expression", val);
-				val.Dispose ();
+			set  {
+				cpg_function_set_expression(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
+		}
+
+		[DllImport("cpg-network-1.0")]
+		static extern void cpg_function_remove_argument(IntPtr raw, IntPtr name);
+
+		public void RemoveArgument(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			cpg_function_remove_argument(Handle, native_name);
+			GLib.Marshaller.Free (native_name);
 		}
 
 		[DllImport("cpg-network-1.0")]
@@ -76,6 +86,13 @@ namespace Cpg {
 			}
 		}
 
+		[DllImport("cpg-network-1.0")]
+		static extern void cpg_function_clear_arguments(IntPtr raw);
+
+		public void ClearArguments() {
+			cpg_function_clear_arguments(Handle);
+		}
+
 #endregion
 #region Customized extensions
 #line 1 "Function.custom"
@@ -90,7 +107,7 @@ namespace Cpg {
 			if (expression != null)
 			{
 				names.Add ("expression");
-				vals.Add (new GLib.Value (expression));
+				vals.Add (new GLib.Value (new Cpg.Expression(expression)));
 			}
 
 			CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
@@ -103,6 +120,8 @@ namespace Cpg {
 		}
 
 		public void SetArguments(params string[] arguments) {
+			ClearArguments();
+
 			foreach (string arg in arguments)
 			{
 				AddArgument(arg);

@@ -9,7 +9,7 @@
 			if (expression != null)
 			{
 				names.Add ("expression");
-				vals.Add (new GLib.Value (expression));
+				vals.Add (new GLib.Value (new Cpg.Expression(expression)));
 			}
 
 			CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
@@ -22,6 +22,8 @@
 		}
 
 		public void SetArguments(params string[] arguments) {
+			ClearArguments();
+
 			foreach (string arg in arguments)
 			{
 				AddArgument(arg);

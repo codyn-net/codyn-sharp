@@ -15,7 +15,7 @@ sources =
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
-customs = Monitor.custom FunctionPolynomialPiece.custom FunctionPolynomial.custom Function.custom
+customs = Monitor.custom FunctionPolynomialPiece.custom Function.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 

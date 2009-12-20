@@ -68,6 +68,9 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
+      <method name="ClearArguments" cname="cpg_function_clear_arguments">
+        <return-type type="void" />
+      </method>
       <method name="Execute" cname="cpg_function_execute">
         <return-type type="void" />
         <parameters>
@@ -90,6 +93,12 @@
           <parameter ellipsis="true" />
         </parameters>
       </constructor>
+      <method name="RemoveArgument" cname="cpg_function_remove_argument">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
       <method name="SetArguments" cname="cpg_function_set_arguments">
         <return-type type="void" />
         <parameters>
@@ -102,16 +111,19 @@
           <parameter type="va_list" name="args" />
         </parameters>
       </method>
+      <method name="SetExpression" cname="cpg_function_set_expression">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgExpression*" name="expression" />
+        </parameters>
+      </method>
     </object>
     <object name="FunctionPolynomial" cname="CpgFunctionPolynomial" parent="CpgFunction">
       <field name="Priv" cname="priv" type="CpgFunctionPolynomialPrivate*" />
       <method name="Add" cname="cpg_function_polynomial_add">
         <return-type type="void" />
         <parameters>
-          <parameter type="gdouble" name="begin" />
-          <parameter type="gdouble" name="end" />
-          <parameter type="gdouble*" name="coefficients" />
-          <parameter type="guint" name="num_coefficients" />
+          <parameter type="CpgFunctionPolynomialPiece*" name="piece" />
         </parameters>
       </method>
       <method name="Clear" cname="cpg_function_polynomial_clear">
@@ -131,8 +143,7 @@
       <method name="Remove" cname="cpg_function_polynomial_remove">
         <return-type type="void" />
         <parameters>
-          <parameter type="gdouble" name="begin" />
-          <parameter type="gdouble" name="end" />
+          <parameter type="CpgFunctionPolynomialPiece*" name="piece" />
         </parameters>
       </method>
     </object>
@@ -682,6 +693,14 @@
       <method name="GetType" cname="cpg_function_polynomial_piece_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <constructor cname="cpg_function_polynomial_piece_new">
+        <parameters>
+          <parameter type="gdouble" name="begin" />
+          <parameter type="gdouble" name="end" />
+          <parameter type="gdouble*" name="coefficients" />
+          <parameter type="guint" name="num_coefficients" />
+        </parameters>
+      </constructor>
       <method name="SetBegin" cname="cpg_function_polynomial_piece_set_begin">
         <return-type type="void" />
         <parameters>

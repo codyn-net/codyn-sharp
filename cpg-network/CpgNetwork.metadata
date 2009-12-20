@@ -50,15 +50,16 @@
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_set_argumentsv']"/>
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/constructor"/>
   <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_get_expression']/return-type" name="type">CpgExpression*</attr>
+  <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_set_expression']/parameters/parameter[@name='expression']" name="type">CpgExpression*</attr>
   <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_get_arguments']/return-type" name="element_type">CpgProperty*</attr>
 
   <!-- CpgFunctionPolynomial -->
   <attr path="/api/namespace/object[@cname='CpgFunctionPolynomial']/method[@cname='cpg_function_polynomial_get_pieces']/return-type" name="element_type">CpgFunctionPolynomialPiece*</attr>
-  <remove-node path="/api/namespace/object[@cname='CpgFunctionPolynomial']/method[@cname='cpg_function_polynomial_add']"/>
 
   <!-- CpgFunctionPolynomialPiece -->
   <remove-node path="/api/namespace/boxed[@cname='CpgFunctionPolynomialPiece']/method[@cname='cpg_function_polynomial_piece_get_coefficients']"/>
   <remove-node path="/api/namespace/boxed[@cname='CpgFunctionPolynomialPiece']/method[@cname='cpg_function_polynomial_piece_set_coefficients']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CpgFunctionPolynomialPiece']/constructor"/>
 
   <!-- CpgCompileContext -->
   <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_append_object']/parameters/parameter[@name='object']" name="type">CpgObject*</attr>
