@@ -14,6 +14,7 @@ namespace Cpg {
 		Number,
 		Operator,
 		Property,
+		CustomFunction,
 	}
 #endregion
 }

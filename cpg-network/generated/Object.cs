@@ -170,6 +170,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
+		static extern bool cpg_object_compile(IntPtr raw, IntPtr context, IntPtr error);
+
+		public bool Compile(Cpg.CompileContext context, Cpg.CompileError error) {
+			bool raw_ret = cpg_object_compile(Handle, context == null ? IntPtr.Zero : context.Handle, error == null ? IntPtr.Zero : error.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-1.0")]
 		static extern void cpg_object_taint(IntPtr raw);
 
 		public void Taint() {

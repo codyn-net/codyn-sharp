@@ -12,6 +12,14 @@ namespace Cpg {
 
 		public InstructionProperty(IntPtr raw) : base(raw) {}
 
+		[DllImport("cpg-network-1.0")]
+		static extern IntPtr cpg_instruction_property_new(IntPtr property, int binding);
+
+		public InstructionProperty (Cpg.Property property, Cpg.InstructionBinding binding) 
+		{
+			Raw = cpg_instruction_property_new(property == null ? IntPtr.Zero : property.Handle, (int) binding);
+		}
+
 #endregion
 	}
 }

@@ -67,7 +67,7 @@ namespace Cpg {
 		[DllImport("cpg-network-1.0")]
 		static extern unsafe int cpg_expression_compile(IntPtr raw, IntPtr context, out IntPtr error);
 
-		public unsafe int Compile(GLib.SList context) {
+		public unsafe int Compile(Cpg.CompileContext context) {
 			IntPtr error = IntPtr.Zero;
 			int raw_ret = cpg_expression_compile(Handle, context == null ? IntPtr.Zero : context.Handle, out error);
 			int ret = raw_ret;

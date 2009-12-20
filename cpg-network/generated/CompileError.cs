@@ -73,6 +73,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
+		static extern void cpg_compile_error_set(IntPtr raw, IntPtr gerror, IntPtr objekt, IntPtr property, IntPtr action);
+
+		public void Set(IntPtr gerror, Cpg.Object objekt, Cpg.Property property, Cpg.LinkAction action) {
+			cpg_compile_error_set(Handle, gerror, objekt == null ? IntPtr.Zero : objekt.Handle, property == null ? IntPtr.Zero : property.Handle, action == null ? IntPtr.Zero : action.Handle);
+		}
+
+		[DllImport("cpg-network-1.0")]
 		static extern IntPtr cpg_compile_error_get_object(IntPtr raw);
 
 		public Cpg.Object Object { 

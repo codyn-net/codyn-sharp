@@ -13,6 +13,7 @@ namespace Cpg {
 		Property,
 		Object,
 		Link,
+		Function,
 	}
 #endregion
 }
