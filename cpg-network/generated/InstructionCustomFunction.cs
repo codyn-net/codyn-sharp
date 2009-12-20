@@ -13,11 +13,11 @@ namespace Cpg {
 		public InstructionCustomFunction(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-1.0")]
-		static extern IntPtr cpg_instruction_custom_function_new(IntPtr function);
+		static extern IntPtr cpg_instruction_custom_function_new(IntPtr function, int arguments);
 
-		public InstructionCustomFunction (Cpg.Function function) 
+		public InstructionCustomFunction (Cpg.Function function, int arguments) 
 		{
-			Raw = cpg_instruction_custom_function_new(function == null ? IntPtr.Zero : function.Handle);
+			Raw = cpg_instruction_custom_function_new(function == null ? IntPtr.Zero : function.Handle, arguments);
 		}
 
 #endregion

@@ -65,7 +65,7 @@
       <method name="AddArgument" cname="cpg_function_add_argument">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="name" />
+          <parameter type="CpgFunctionArgument*" name="argument" />
         </parameters>
       </method>
       <method name="ClearArguments" cname="cpg_function_clear_arguments">
@@ -78,9 +78,12 @@
         </parameters>
       </method>
       <method name="GetArguments" cname="cpg_function_get_arguments">
-        <return-type type="GSList*" />
+        <return-type type="GList*" />
       </method>
       <method name="GetNArguments" cname="cpg_function_get_n_arguments">
+        <return-type type="guint" />
+      </method>
+      <method name="GetNOptional" cname="cpg_function_get_n_optional">
         <return-type type="guint" />
       </method>
       <method name="GetType" cname="cpg_function_get_type" shared="true">
@@ -90,25 +93,12 @@
         <parameters>
           <parameter type="const-gchar*" name="name" />
           <parameter type="const-gchar*" name="expression" />
-          <parameter ellipsis="true" />
         </parameters>
       </constructor>
       <method name="RemoveArgument" cname="cpg_function_remove_argument">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="SetArguments" cname="cpg_function_set_arguments">
-        <return-type type="void" />
-        <parameters>
-          <parameter ellipsis="true" />
-        </parameters>
-      </method>
-      <method name="SetArgumentsv" cname="cpg_function_set_argumentsv">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="va_list" name="args" />
+          <parameter type="CpgFunctionArgument*" name="argument" />
         </parameters>
       </method>
       <method name="SetExpression" cname="cpg_function_set_expression">
@@ -677,6 +667,27 @@
         </parameters>
       </method>
     </boxed>
+    <boxed name="FunctionArgument" cname="CpgFunctionArgument" opaque="true">
+      <method name="GetDefaultValue" cname="cpg_function_argument_get_default_value">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetName" cname="cpg_function_argument_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetOptional" cname="cpg_function_argument_get_optional">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetType" cname="cpg_function_argument_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_function_argument_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gboolean" name="optional" />
+          <parameter type="gdouble" name="def" />
+        </parameters>
+      </constructor>
+    </boxed>
     <boxed name="FunctionPolynomialPiece" cname="CpgFunctionPolynomialPiece" opaque="true">
       <method name="GetBegin" cname="cpg_function_polynomial_piece_get_begin">
         <return-type type="gdouble" />
@@ -741,9 +752,11 @@
     <struct name="InstructionCustomFunction" cname="CpgInstructionCustomFunction" opaque="true">
       <field name="Parent" cname="parent" type="CpgInstruction" access="public" writeable="true" />
       <field name="Function" cname="function" type="struct-_CpgFunction*" access="public" writeable="true" />
+      <field name="Arguments" cname="arguments" type="gint" access="public" writeable="true" />
       <constructor cname="cpg_instruction_custom_function_new">
         <parameters>
           <parameter type="_CpgFunction*" name="function" />
+          <parameter type="gint" name="arguments" />
         </parameters>
       </constructor>
     </struct>

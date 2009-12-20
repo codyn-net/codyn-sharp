@@ -46,12 +46,8 @@
 
   <!-- CpgFunction -->
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_execute']"/>
-  <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_set_arguments']"/>
-  <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_set_argumentsv']"/>
-  <remove-node path="/api/namespace/object[@cname='CpgFunction']/constructor"/>
-  <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_get_expression']/return-type" name="type">CpgExpression*</attr>
   <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_set_expression']/parameters/parameter[@name='expression']" name="type">CpgExpression*</attr>
-  <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_get_arguments']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_get_arguments']/return-type" name="element_type">CpgFunctionArgument*</attr>
 
   <!-- CpgFunctionPolynomial -->
   <attr path="/api/namespace/object[@cname='CpgFunctionPolynomial']/method[@cname='cpg_function_polynomial_get_pieces']/return-type" name="element_type">CpgFunctionPolynomialPiece*</attr>
