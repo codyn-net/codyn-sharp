@@ -105,6 +105,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
+		static extern IntPtr cpg_integrator_get_name(IntPtr raw);
+
+		public string Name { 
+			get {
+				IntPtr raw_ret = cpg_integrator_get_name(Handle);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-1.0")]
 		static extern void cpg_integrator_reset(IntPtr raw);
 
 		public new void Reset() {
