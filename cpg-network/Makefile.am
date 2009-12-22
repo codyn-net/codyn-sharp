@@ -2,7 +2,7 @@ RAW_API = cpg-network-api.raw
 
 API = cpg-network-api.xml
 METADATA = CpgNetwork.metadata
-ASSEMBLY_NAME = cpg-network-sharp
+ASSEMBLY_NAME = CpgNetwork
 references = $(GLIB_SHARP_LIBS)
 
 TARGET = $(ASSEMBLY)
