@@ -13,12 +13,12 @@ namespace Cpg {
 		public InstructionFunction(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-1.0")]
-		static extern IntPtr cpg_instruction_function_new(uint id, IntPtr name, int arguments, int vargs);
+		static extern IntPtr cpg_instruction_function_new(uint id, IntPtr name, int arguments, bool variable);
 
-		public InstructionFunction (uint id, string name, int arguments, int vargs) 
+		public InstructionFunction (uint id, string name, int arguments, bool variable) 
 		{
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			Raw = cpg_instruction_function_new(id, native_name, arguments, vargs);
+			Raw = cpg_instruction_function_new(id, native_name, arguments, variable);
 			GLib.Marshaller.Free (native_name);
 		}
 

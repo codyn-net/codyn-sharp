@@ -28,6 +28,12 @@
         <file>../libcpg-network/cpg-network/cpg-function-polynomial.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-context.c</file>
         <file>../libcpg-network/cpg-network/cpg-compile-context.h</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator.c</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator.h</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator-euler.c</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator-euler.h</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.c</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.h</file>
       </namespace>
     </library>
   </api>

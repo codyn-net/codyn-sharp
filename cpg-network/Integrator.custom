@@ -1,0 +1,28 @@
+		[DllImport("cpg-network-1.0")]
+		static extern void cpg_integrator_evaluate(IntPtr raw, IntPtr state, double t, double timestep);
+
+		public void Evaluate(Cpg.IntegratorState[] state, double t, double timestep)
+		{
+			GLib.SList slist = state == null ? null : new GLib.SList(state, typeof(Cpg.IntegratorState), true, false);
+			cpg_integrator_evaluate(Handle, slist == null ? IntPtr.Zero : slist.Handle, t, timestep);
+		}
+
+		[DllImport("cpg-network-1.0")]
+		static extern void cpg_integrator_run(IntPtr raw, IntPtr state, double from, double timestep, double to);
+
+		public void Run(Cpg.IntegratorState[] state, double from, double timestep, double to)
+		{
+			GLib.SList slist = state == null ? null : new GLib.SList(state, typeof(Cpg.IntegratorState), true, false);
+			cpg_integrator_run(Handle, slist == null ? IntPtr.Zero : slist.Handle, from, timestep, to);
+		}
+
+		[DllImport("cpg-network-1.0")]
+		static extern double cpg_integrator_step(IntPtr raw, IntPtr state, double t, double timestep);
+
+		public double Step(Cpg.IntegratorState[] state, double t, double timestep)
+		{
+			GLib.SList slist = state == null ? null : new GLib.SList(state, typeof(Cpg.IntegratorState), true, false);
+			double raw_ret = cpg_integrator_step(Handle, slist == null ? IntPtr.Zero : slist.Handle, t, timestep);
+			double ret = raw_ret;
+			return ret;
+		}

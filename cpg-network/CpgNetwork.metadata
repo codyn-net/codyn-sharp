@@ -83,5 +83,14 @@
   <!-- CpgInstructionProperty -->
   <attr path="/api/namespace/struct[@cname='CpgInstructionProperty']/field[@cname='property']" name="type">CpgProperty*</attr>
   <attr path="/api/namespace/struct[@cname='CpgInstructionProperty']/constructor[@cname='cpg_instruction_property_new']/parameters/parameter[@name='property']" name="type">CpgProperty*</attr>
+
+  <!-- CpgIntegrator -->
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/virtual_method[@cname='run']/parameters/parameter[@name='state']" name="element_type">CpgIntegratorState*</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/virtual_method[@cname='step']/parameters/parameter[@name='state']" name="element_type">CpgIntegratorState*</attr>
+  <remove-node path="/api/namespace/object[@cname='CpgIntegrator']/method[@cname='cpg_integrator_evaluate']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgIntegrator']/method[@cname='cpg_integrator_run']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgIntegrator']/method[@cname='cpg_integrator_step']"/>
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Step']" name="name">Stepped</attr>
+
 </metadata>
 <!-- vi:ts=2:et -->

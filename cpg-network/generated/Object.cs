@@ -127,10 +127,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
-		static extern void cpg_object_evaluate(IntPtr raw, double timestep);
+		static extern void cpg_object_evaluate(IntPtr raw);
 
-		public void Evaluate(double timestep) {
-			cpg_object_evaluate(Handle, timestep);
+		public void Evaluate() {
+			cpg_object_evaluate(Handle);
 		}
 
 		[DllImport("cpg-network-1.0")]
@@ -142,13 +142,6 @@ namespace Cpg {
 			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_name);
 			return ret;
-		}
-
-		[DllImport("cpg-network-1.0")]
-		static extern void cpg_object_update(IntPtr raw, double timestep);
-
-		public void Update(double timestep) {
-			cpg_object_update(Handle, timestep);
 		}
 
 		[DllImport("cpg-network-1.0")]

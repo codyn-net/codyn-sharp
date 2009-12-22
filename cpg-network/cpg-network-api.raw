@@ -137,6 +137,84 @@
         </parameters>
       </method>
     </object>
+    <object name="Integrator" cname="CpgIntegrator" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgIntegratorPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" />
+      <property name="Time" cname="time" type="gdouble" readable="true" />
+      <virtual_method name="Run" cname="run">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+          <parameter type="GSList*" name="state" />
+          <parameter type="gdouble" name="from" />
+          <parameter type="gdouble" name="timestep" />
+          <parameter type="gdouble" name="to" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Step" cname="step">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+          <parameter type="GSList*" name="state" />
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </virtual_method>
+      <signal name="Step" cname="step" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
+      <method name="Evaluate" cname="cpg_integrator_evaluate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="state" />
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
+      <method name="GetTime" cname="cpg_integrator_get_time">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetType" cname="cpg_integrator_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Reset" cname="cpg_integrator_reset">
+        <return-type type="void" />
+      </method>
+      <method name="Run" cname="cpg_integrator_run">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="state" />
+          <parameter type="gdouble" name="from" />
+          <parameter type="gdouble" name="timestep" />
+          <parameter type="gdouble" name="to" />
+        </parameters>
+      </method>
+      <method name="Step" cname="cpg_integrator_step">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="GSList*" name="state" />
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
+    </object>
+    <object name="IntegratorEuler" cname="CpgIntegratorEuler" parent="CpgIntegrator">
+      <field name="Priv" cname="priv" type="CpgIntegratorEulerPrivate*" />
+      <method name="GetType" cname="cpg_integrator_euler_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_integrator_euler_new" />
+    </object>
+    <object name="IntegratorRungeKutta" cname="CpgIntegratorRungeKutta" parent="CpgIntegrator">
+      <field name="Priv" cname="priv" type="CpgIntegratorRungeKuttaPrivate*" />
+      <method name="GetType" cname="cpg_integrator_runge_kutta_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_integrator_runge_kutta_new" />
+    </object>
     <object name="Link" cname="CpgLink" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgLinkPrivate*" />
       <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" construct="true" />
@@ -176,20 +254,11 @@
     </object>
     <object name="Network" cname="CpgNetwork" parent="GObject">
       <field name="Priv" cname="priv" type="CpgNetworkPrivate*" />
-      <property name="Time" cname="time" type="gdouble" readable="true" writeable="true" construct="true" />
-      <property name="Timestep" cname="timestep" type="gdouble" readable="true" writeable="true" construct="true" />
       <property name="Compiled" cname="compiled" type="gboolean" readable="true" writeable="true" construct="true" />
       <signal name="Reset" cname="reset" when="LAST" field_name="reset">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgNetwork*" name="network" />
-        </parameters>
-      </signal>
-      <signal name="Update" cname="update" when="LAST" field_name="update">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgNetwork*" name="network" />
-          <parameter type="gdouble" name="timestep" />
         </parameters>
       </signal>
       <signal name="CompileError" cname="compile-error" when="LAST" field_name="compile_error">
@@ -199,6 +268,7 @@
           <parameter type="CpgCompileError*" name="error" />
         </parameters>
       </signal>
+      <property name="Integrator" cname="integrator" type="CpgIntegrator" readable="true" writeable="true" />
       <method name="AddFromTemplate" cname="cpg_network_add_from_template">
         <return-type type="CpgObject*" />
         <parameters>
@@ -253,6 +323,9 @@
       <method name="GetGlobals" cname="cpg_network_get_globals">
         <return-type type="CpgObject*" />
       </method>
+      <method name="GetIntegrator" cname="cpg_network_get_integrator">
+        <return-type type="CpgIntegrator*" />
+      </method>
       <method name="GetLinks" cname="cpg_network_get_links">
         <return-type type="GSList*" />
       </method>
@@ -276,6 +349,9 @@
       </method>
       <method name="GetType" cname="cpg_network_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="IsCompiled" cname="cpg_network_is_compiled">
+        <return-type type="gboolean" />
       </method>
       <method name="LoadErrorQuark" cname="cpg_network_load_error_quark" shared="true">
         <return-type type="GQuark" />
@@ -349,6 +425,12 @@
           <parameter type="gdouble" name="constant" />
         </parameters>
       </method>
+      <method name="SetIntegrator" cname="cpg_network_set_integrator">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+        </parameters>
+      </method>
       <method name="Step" cname="cpg_network_step">
         <return-type type="void" />
         <parameters>
@@ -393,18 +475,10 @@
           <parameter type="CpgObject*" name="object" />
         </parameters>
       </virtual_method>
-      <virtual_method name="Update" cname="update">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-          <parameter type="gdouble" name="timestep" />
-        </parameters>
-      </virtual_method>
       <virtual_method name="Evaluate" cname="evaluate">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
-          <parameter type="gdouble" name="timestep" />
         </parameters>
       </virtual_method>
       <virtual_method name="ResetCache" cname="reset_cache">
@@ -440,9 +514,6 @@
       </method>
       <method name="Evaluate" cname="cpg_object_evaluate">
         <return-type type="void" />
-        <parameters>
-          <parameter type="gdouble" name="timestep" />
-        </parameters>
       </method>
       <method name="GetActors" cname="cpg_object_get_actors">
         <return-type type="GSList*" />
@@ -497,12 +568,6 @@
       </method>
       <method name="Taint" cname="cpg_object_taint">
         <return-type type="void" />
-      </method>
-      <method name="Update" cname="cpg_object_update">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gdouble" name="timestep" />
-        </parameters>
       </method>
     </object>
     <object name="Relay" cname="CpgRelay" parent="CpgObject">
@@ -771,7 +836,7 @@
           <parameter type="guint" name="id" />
           <parameter type="const-gchar*" name="name" />
           <parameter type="gint" name="arguments" />
-          <parameter type="gint" name="vargs" />
+          <parameter type="gboolean" name="variable" />
         </parameters>
       </constructor>
     </struct>
@@ -795,6 +860,22 @@
         </parameters>
       </constructor>
     </struct>
+    <boxed name="IntegratorState" cname="CpgIntegratorState" opaque="true">
+      <method name="GetProperty" cname="cpg_integrator_state_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_integrator_state_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetUpdate" cname="cpg_integrator_state_get_update">
+        <return-type type="gdouble" />
+      </method>
+      <constructor cname="cpg_integrator_state_new">
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </constructor>
+    </boxed>
     <boxed name="LinkAction" cname="CpgLinkAction" opaque="true">
       <method name="GetExpression" cname="cpg_link_action_get_expression">
         <return-type type="CpgExpression*" />

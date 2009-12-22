@@ -69,82 +69,21 @@ namespace Cpg {
 			}
 		}
 
-		[GLib.Property ("time")]
-		public double Time {
-			get {
-				GLib.Value val = GetProperty ("time");
-				double ret = (double) val;
-				val.Dispose ();
+		[DllImport("cpg-network-1.0")]
+		static extern IntPtr cpg_network_get_integrator(IntPtr raw);
+
+		[DllImport("cpg-network-1.0")]
+		static extern void cpg_network_set_integrator(IntPtr raw, IntPtr integrator);
+
+		[GLib.Property ("integrator")]
+		public Cpg.Integrator Integrator {
+			get  {
+				IntPtr raw_ret = cpg_network_get_integrator(Handle);
+				Cpg.Integrator ret = GLib.Object.GetObject(raw_ret) as Cpg.Integrator;
 				return ret;
 			}
-			set {
-				GLib.Value val = new GLib.Value(value);
-				SetProperty("time", val);
-				val.Dispose ();
-			}
-		}
-
-		[GLib.Property ("timestep")]
-		public double Timestep {
-			get {
-				GLib.Value val = GetProperty ("timestep");
-				double ret = (double) val;
-				val.Dispose ();
-				return ret;
-			}
-			set {
-				GLib.Value val = new GLib.Value(value);
-				SetProperty("timestep", val);
-				val.Dispose ();
-			}
-		}
-
-		[GLib.CDeclCallback]
-		delegate void UpdatedVMDelegate (IntPtr network, double timestep);
-
-		static UpdatedVMDelegate UpdatedVMCallback;
-
-		static void updated_cb (IntPtr network, double timestep)
-		{
-			try {
-				Network network_managed = GLib.Object.GetObject (network, false) as Network;
-				network_managed.OnUpdated (timestep);
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-
-		private static void OverrideUpdated (GLib.GType gtype)
-		{
-			if (UpdatedVMCallback == null)
-				UpdatedVMCallback = new UpdatedVMDelegate (updated_cb);
-			OverrideVirtualMethod (gtype, "update", UpdatedVMCallback);
-		}
-
-		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Network), ConnectionMethod="OverrideUpdated")]
-		protected virtual void OnUpdated (double timestep)
-		{
-			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
-			GLib.Value[] vals = new GLib.Value [2];
-			vals [0] = new GLib.Value (this);
-			inst_and_params.Append (vals [0]);
-			vals [1] = new GLib.Value (timestep);
-			inst_and_params.Append (vals [1]);
-			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
-			foreach (GLib.Value v in vals)
-				v.Dispose ();
-		}
-
-		[GLib.Signal("update")]
-		public event Cpg.UpdatedHandler Updated {
-			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "update", typeof (Cpg.UpdatedArgs));
-				sig.AddDelegate (value);
-			}
-			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "update", typeof (Cpg.UpdatedArgs));
-				sig.RemoveDelegate (value);
+			set  {
+				cpg_network_set_integrator(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
 		}
 
@@ -336,6 +275,17 @@ namespace Cpg {
 			get {
 				IntPtr raw_ret = cpg_network_get_states(Handle);
 				Cpg.Object[] ret = (Cpg.Object[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Object));
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-1.0")]
+		static extern bool cpg_network_is_compiled(IntPtr raw);
+
+		public bool IsCompiled { 
+			get {
+				bool raw_ret = cpg_network_is_compiled(Handle);
+				bool ret = raw_ret;
 				return ret;
 			}
 		}
