@@ -93,6 +93,100 @@ namespace Cpg {
 			}
 		}
 
+		[GLib.CDeclCallback]
+		delegate void EndVMDelegate (IntPtr inst);
+
+		static EndVMDelegate EndVMCallback;
+
+		static void end_cb (IntPtr inst)
+		{
+			try {
+				Integrator inst_managed = GLib.Object.GetObject (inst, false) as Integrator;
+				inst_managed.OnEnd ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideEnd (GLib.GType gtype)
+		{
+			if (EndVMCallback == null)
+				EndVMCallback = new EndVMDelegate (end_cb);
+			OverrideVirtualMethod (gtype, "end", EndVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Integrator), ConnectionMethod="OverrideEnd")]
+		protected virtual void OnEnd ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("end")]
+		public event System.EventHandler End {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "end");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "end");
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void BeginVMDelegate (IntPtr inst);
+
+		static BeginVMDelegate BeginVMCallback;
+
+		static void begin_cb (IntPtr inst)
+		{
+			try {
+				Integrator inst_managed = GLib.Object.GetObject (inst, false) as Integrator;
+				inst_managed.OnBegin ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideBegin (GLib.GType gtype)
+		{
+			if (BeginVMCallback == null)
+				BeginVMCallback = new BeginVMDelegate (begin_cb);
+			OverrideVirtualMethod (gtype, "begin", BeginVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Integrator), ConnectionMethod="OverrideBegin")]
+		protected virtual void OnBegin ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("begin")]
+		public event System.EventHandler Begin {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "begin");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "begin");
+				sig.RemoveDelegate (value);
+			}
+		}
+
 		[DllImport("cpg-network-1.0")]
 		static extern IntPtr cpg_integrator_get_type();
 

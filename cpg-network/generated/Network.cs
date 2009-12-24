@@ -54,12 +54,14 @@ namespace Cpg {
 			return result;
 		}
 
+		[DllImport("cpg-network-1.0")]
+		static extern bool cpg_network_get_compiled(IntPtr raw);
+
 		[GLib.Property ("compiled")]
 		public bool Compiled {
-			get {
-				GLib.Value val = GetProperty ("compiled");
-				bool ret = (bool) val;
-				val.Dispose ();
+			get  {
+				bool raw_ret = cpg_network_get_compiled(Handle);
+				bool ret = raw_ret;
 				return ret;
 			}
 			set {
@@ -275,17 +277,6 @@ namespace Cpg {
 			get {
 				IntPtr raw_ret = cpg_network_get_states(Handle);
 				Cpg.Object[] ret = (Cpg.Object[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Object));
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-1.0")]
-		static extern bool cpg_network_is_compiled(IntPtr raw);
-
-		public bool IsCompiled { 
-			get {
-				bool raw_ret = cpg_network_is_compiled(Handle);
-				bool ret = raw_ret;
 				return ret;
 			}
 		}

@@ -166,6 +166,18 @@
           <parameter name="inst" type="CpgIntegrator*" />
         </parameters>
       </signal>
+      <signal name="Begin" cname="begin" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
+      <signal name="End" cname="end" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
       <method name="Evaluate" cname="cpg_integrator_evaluate">
         <return-type type="void" />
         <parameters>
@@ -314,6 +326,9 @@
           <parameter type="CpgCompileError*" name="error" />
         </parameters>
       </method>
+      <method name="GetCompiled" cname="cpg_network_get_compiled">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetFunction" cname="cpg_network_get_function">
         <return-type type="CpgFunction*" />
         <parameters>
@@ -352,9 +367,6 @@
       </method>
       <method name="GetType" cname="cpg_network_get_type" shared="true">
         <return-type type="GType" />
-      </method>
-      <method name="IsCompiled" cname="cpg_network_is_compiled">
-        <return-type type="gboolean" />
       </method>
       <method name="LoadErrorQuark" cname="cpg_network_load_error_quark" shared="true">
         <return-type type="GQuark" />
