@@ -41,16 +41,5 @@ $(ASSEMBLY): $(build_sources) generated-stamp
 
 all: $(ASSEMBLY)
 
-install-data-local:
-	@if test -n '$(TARGET)'; then									\
-	  echo "$(INSTALL) -c -m 644 '$(TARGET)' '$(libdir)/cpg-network-sharp/$(ASSEMBLY)'";		\
-	  $(mkinstalldirs) '$(libdir)/cpg-network-sharp/' || exit 1; 								\
-	  chmod u+w '$(libdir)/cpg-network-sharp/' || exit 1;										\
-	  $(INSTALL) -c -m 644 '$(TARGET)' '$(libdir)/cpg-network-sharp/$(ASSEMBLY)' || exit 1;		\
-	fi
-
-uninstall-local:
-	@if test -n '$(TARGET)'; then									\
-	  echo "rm $(libdir)/cpg-network-sharp/$(ASSEMBLY)";		\
-	  rm $(libdir)/cpg-network-sharp/$(ASSEMBLY) || exit 1;	\
-	fi
+cpgnetworksharpdir=$(pkglibdir)
+cpgnetworksharp_SCRIPTS = $(ASSEMBLY_NAME).dll
