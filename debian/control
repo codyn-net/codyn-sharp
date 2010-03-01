@@ -1,0 +1,24 @@
+Source: cpg-network-sharp
+Priority: extra
+Maintainer: Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>
+Build-Depends: debhelper (>= 7),
+               autotools-dev,
+			   cdbs,
+			   pkg-config,
+			   mono-devel | mono-gmcs,
+			   mono-runtime,
+			   libmono-dev (>= 1.0),
+			   libmono2.0-cil,
+			   cpg-network-dev (>= 1.2),
+			   gtk-sharp2-gapi,
+			   libglib2.0-cil
+Standards-Version: 3.8.0
+Section: libs
+Homepage: http://birg.epfl.ch
+
+Package: cpg-network-sharp1
+Section: libs
+Architecture: any
+Depends: mono-runtime, libmono-system2.0-cil, libmono-corlib2.0-cil, libmono2.0-cil, cpg-network1 (>= 1.2)
+Description: cpg network C# bindings
+ C# bindings for the cpg network
