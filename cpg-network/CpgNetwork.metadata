@@ -92,5 +92,8 @@
   <remove-node path="/api/namespace/object[@cname='CpgIntegrator']/method[@cname='cpg_integrator_step']"/>
   <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Step']" name="name">Stepped</attr>
 
+  <!-- CpgIntegrators -->
+  <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cpg_integrators_list']/return-type" name="element_type">GType</attr>
+  <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cpg_integrators_create']/return-type" name="element_type">CpgIntegrator*</attr>
 </metadata>
 <!-- vi:ts=2:et -->

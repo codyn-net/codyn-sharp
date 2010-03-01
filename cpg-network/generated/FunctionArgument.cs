@@ -11,6 +11,17 @@ namespace Cpg {
 	public class FunctionArgument : GLib.Opaque {
 
 		[DllImport("cpg-network-1.0")]
+		static extern IntPtr cpg_function_argument_get_property(IntPtr raw);
+
+		public Cpg.Property Property { 
+			get {
+				IntPtr raw_ret = cpg_function_argument_get_property(Handle);
+				Cpg.Property ret = raw_ret == IntPtr.Zero ? null : (Cpg.Property) GLib.Opaque.GetOpaque (raw_ret, typeof (Cpg.Property), false);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-1.0")]
 		static extern IntPtr cpg_function_argument_get_type();
 
 		public static GLib.GType GType { 
