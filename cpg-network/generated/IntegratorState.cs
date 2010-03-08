@@ -13,11 +13,17 @@ namespace Cpg {
 		[DllImport("cpg-network-1.0")]
 		static extern double cpg_integrator_state_get_update(IntPtr raw);
 
+		[DllImport("cpg-network-1.0")]
+		static extern void cpg_integrator_state_set_update(IntPtr raw, double value);
+
 		public double Update { 
 			get {
 				double raw_ret = cpg_integrator_state_get_update(Handle);
 				double ret = raw_ret;
 				return ret;
+			}
+			set {
+				cpg_integrator_state_set_update(Handle, value);
 			}
 		}
 

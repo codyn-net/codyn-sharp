@@ -22,6 +22,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
+		static extern IntPtr cpg_instruction_to_string(IntPtr raw);
+
+		public override string ToString() {
+			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));
+			System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);
+			IntPtr raw_ret = cpg_instruction_to_string(this_as_native);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			ReadNative (this_as_native, ref this);
+			System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);
+			return ret;
+		}
+
+		[DllImport("cpg-network-1.0")]
 		static extern IntPtr cpg_instruction_copy(IntPtr raw);
 
 		public Cpg.Instruction Copy() {

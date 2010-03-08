@@ -1,7 +1,7 @@
 AC_INIT(README)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(cpg-network-sharp, 1.0)
+AM_INIT_AUTOMAKE(cpg-network-sharp, 1.1)
 AM_MAINTAINER_MODE
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -16,7 +16,7 @@ fi
 
 # If you change these, update the error text below.
 PKG_CHECK_MODULES(CPG_NETWORK, \
-	cpg-network-1.0
+	cpg-network-1.0 >= 1.4
 )
 
 AC_SUBST(CPG_NETWORK_LIBS)

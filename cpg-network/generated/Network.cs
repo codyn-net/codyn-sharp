@@ -397,6 +397,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
+		static extern IntPtr cpg_network_get_integration_state(IntPtr raw);
+
+		public GLib.SList IntegrationState { 
+			get {
+				IntPtr raw_ret = cpg_network_get_integration_state(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-1.0")]
 		static extern void cpg_network_clear(IntPtr raw);
 
 		public void Clear() {

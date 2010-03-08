@@ -341,6 +341,9 @@
       <method name="GetGlobals" cname="cpg_network_get_globals">
         <return-type type="CpgObject*" />
       </method>
+      <method name="GetIntegrationState" cname="cpg_network_get_integration_state">
+        <return-type type="GSList*" />
+      </method>
       <method name="GetIntegrator" cname="cpg_network_get_integrator">
         <return-type type="CpgIntegrator*" />
       </method>
@@ -757,6 +760,9 @@
       <method name="GetOptional" cname="cpg_function_argument_get_optional">
         <return-type type="gboolean" />
       </method>
+      <method name="GetProperty" cname="cpg_function_argument_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
       <method name="GetType" cname="cpg_function_argument_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -828,6 +834,9 @@
           <parameter type="gint" name="arguments" />
         </parameters>
       </method>
+      <method name="ToString" cname="cpg_instruction_to_string">
+        <return-type type="gchar*" />
+      </method>
     </struct>
     <struct name="InstructionCustomFunction" cname="CpgInstructionCustomFunction" opaque="true">
       <field name="Parent" cname="parent" type="CpgInstruction" access="public" writeable="true" />
@@ -890,6 +899,12 @@
           <parameter type="CpgProperty*" name="property" />
         </parameters>
       </constructor>
+      <method name="SetUpdate" cname="cpg_integrator_state_set_update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
     </boxed>
     <boxed name="LinkAction" cname="CpgLinkAction" opaque="true">
       <method name="GetExpression" cname="cpg_link_action_get_expression">
@@ -1022,5 +1037,31 @@
         </parameters>
       </method>
     </boxed>
+    <class name="Integrators" cname="CpgIntegrators_">
+      <method name="Find" cname="cpg_integrators_find" shared="true">
+        <return-type type="GType" />
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </method>
+      <method name="List" cname="cpg_integrators_list" shared="true">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="Register" cname="cpg_integrators_register" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GType" name="gtype" />
+        </parameters>
+      </method>
+      <method name="Unregister" cname="cpg_integrators_unregister" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GType" name="gtype" />
+        </parameters>
+      </method>
+      <method name="Create" cname="cpg_integrators_create" shared="true">
+        <return-type type="GSList*" />
+      </method>
+    </class>
   </namespace>
 </api>

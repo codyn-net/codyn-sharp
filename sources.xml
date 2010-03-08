@@ -34,6 +34,8 @@
         <file>../libcpg-network/cpg-network/cpg-integrator-euler.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.c</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.h</file>
+		<file>../libcpg-network/cpg-network/cpg-integrators.c</file>
+		<file>../libcpg-network/cpg-network/cpg-integrators.h</file>
       </namespace>
     </library>
   </api>
