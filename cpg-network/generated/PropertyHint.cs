@@ -13,6 +13,7 @@ namespace Cpg {
 		None,
 		In = 1 << 0,
 		Out = 1 << 1,
+		Once = 1 << 2,
 	}
 #endregion
 }
