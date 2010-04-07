@@ -9,7 +9,7 @@ Build-Depends: debhelper (>= 7),
 			   mono-runtime,
 			   libmono-dev (>= 1.0),
 			   libmono2.0-cil,
-			   cpg-network-dev (>= 1.2),
+			   cpg-network-dev (>= 1.4),
 			   gtk-sharp2-gapi,
 			   libglib2.0-cil
 Standards-Version: 3.8.0
@@ -19,6 +19,6 @@ Homepage: http://birg.epfl.ch
 Package: cpg-network-sharp1
 Section: libs
 Architecture: any
-Depends: mono-runtime, libmono-system2.0-cil, libmono-corlib2.0-cil, libmono2.0-cil, cpg-network1 (>= 1.2)
+Depends: mono-runtime, libmono-system2.0-cil, libmono-corlib2.0-cil, libmono2.0-cil, cpg-network1 (>= 1.4)
 Description: cpg network C# bindings
  C# bindings for the cpg network
