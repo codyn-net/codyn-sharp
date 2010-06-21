@@ -519,9 +519,6 @@
       <method name="GetFunctions" cname="cpg_network_get_functions">
         <return-type type="GSList*" />
       </method>
-      <method name="GetIntegrationState" cname="cpg_network_get_integration_state">
-        <return-type type="GSList*" />
-      </method>
       <method name="GetIntegrator" cname="cpg_network_get_integrator">
         <return-type type="CpgIntegrator*" />
       </method>
