@@ -13,11 +13,13 @@
 
   <!-- CpgObject -->
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_properties']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/virtual_method[@cname='get_properties']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/field[@cname='priv']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_property']" name="name">Property</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="type">CpgCompileError*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="name">error</attr>
-    <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_applied_templates']/return-type" name="element_type">CpgObject*</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_applied_templates']/return-type" name="element_type">CpgObject*</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_actors']/return-type" name="element_type">CpgProperty*</attr>
 
   <!-- CpgState -->
   <attr path="/api/namespace/object[@cname='CpgState']/field[@cname='priv']" name="hidden">true</attr>
@@ -29,6 +31,7 @@
   <!-- CpgGroup -->
   <attr path="/api/namespace/object[@cname='CpgGroup']/field[@cname='priv']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_foreach']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_get_children']/return-type" name="element_type">CpgObject*</attr>
 
   <!-- CpgMonitor -->
   <attr path="/api/namespace/boxed[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='(CpgNetwork)*']" name="type">CpgNetwork*</attr>
@@ -43,10 +46,6 @@
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']" name="hidden">true</attr>
 
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
-
-  <!-- CpgCompileContext -->
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']" name="hidden">true</attr>
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']" name="hidden">true</attr>
 
   <!-- CpgFunction -->
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_execute']"/>
@@ -71,6 +70,9 @@
   <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_objects']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']/return-type" name="element_type">CpgFunction*</attr>
   <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']/parameters/parameter[@name='functions']" name="element_type">CpgFunction*</attr>
+
+  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']" name="hidden">true</attr>
+  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']" name="hidden">true</attr>
 
   <add-node path="/api/namespace/boxed[@cname='CpgCompileContext']">
     <method name="LookupProperty" cname="cpg_compile_context_lookup_property">
@@ -110,5 +112,11 @@
 
   <move-node path="/api/namespace/enum[@cname='CpgInstructionBinding']">/api/namespace[@name='Cpg.Instructions']</move-node>
   <attr path="/api/namespace/enum[@cname='CpgInstructionBinding']" name="name">Binding</attr>
+
+  <!-- CpgIntegratorState -->
+  <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_direct_link_actions']/return-type" name="element_type">CpgLinkAction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_integrated_link_actions']/return-type" name="element_type">CpgLinkAction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_direct_properties']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_integrated_properties']/return-type" name="element_type">CpgProperty*</attr>
 </metadata>
 <!-- vi:ts=2:et -->

@@ -94,18 +94,18 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_state_integrated_link_actions(IntPtr raw);
 
-		public GLib.SList IntegratedLinkActions() {
+		public Cpg.LinkAction[] IntegratedLinkActions() {
 			IntPtr raw_ret = cpg_integrator_state_integrated_link_actions(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cpg.LinkAction[] ret = (Cpg.LinkAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.LinkAction));
 			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_state_direct_properties(IntPtr raw);
 
-		public GLib.SList DirectProperties() {
+		public Cpg.Property[] DirectProperties() {
 			IntPtr raw_ret = cpg_integrator_state_direct_properties(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cpg.Property[] ret = (Cpg.Property[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Property));
 			return ret;
 		}
 
@@ -123,18 +123,18 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_state_direct_link_actions(IntPtr raw);
 
-		public GLib.SList DirectLinkActions() {
+		public Cpg.LinkAction[] DirectLinkActions() {
 			IntPtr raw_ret = cpg_integrator_state_direct_link_actions(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cpg.LinkAction[] ret = (Cpg.LinkAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.LinkAction));
 			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_state_integrated_properties(IntPtr raw);
 
-		public GLib.SList IntegratedProperties() {
+		public Cpg.Property[] IntegratedProperties() {
 			IntPtr raw_ret = cpg_integrator_state_integrated_properties(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cpg.Property[] ret = (Cpg.Property[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Property));
 			return ret;
 		}
 

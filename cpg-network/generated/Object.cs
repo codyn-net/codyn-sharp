@@ -317,10 +317,10 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_actors(IntPtr raw);
 
-		public GLib.SList Actors { 
+		public Cpg.Property[] Actors { 
 			get {
 				IntPtr raw_ret = cpg_object_get_actors(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cpg.Property[] ret = (Cpg.Property[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Property));
 				return ret;
 			}
 		}

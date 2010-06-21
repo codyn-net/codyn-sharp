@@ -111,10 +111,10 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_group_get_children(IntPtr raw);
 
-		public GLib.SList Children { 
+		public Cpg.Object[] Children { 
 			get {
 				IntPtr raw_ret = cpg_group_get_children(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cpg.Object[] ret = (Cpg.Object[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Object));
 				return ret;
 			}
 		}
