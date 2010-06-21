@@ -14,7 +14,7 @@ namespace Cpg {
 		protected FunctionPolynomial(GLib.GType gtype) : base(gtype) {}
 		public FunctionPolynomial(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_polynomial_new(IntPtr name);
 
 		public FunctionPolynomial (string name) : base (IntPtr.Zero)
@@ -27,14 +27,14 @@ namespace Cpg {
 			GLib.Marshaller.Free (native_name);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_polynomial_remove(IntPtr raw, IntPtr piece);
 
 		public void Remove(Cpg.FunctionPolynomialPiece piece) {
 			cpg_function_polynomial_remove(Handle, piece == null ? IntPtr.Zero : piece.Handle);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_polynomial_get_type();
 
 		public static new GLib.GType GType { 
@@ -45,21 +45,21 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_polynomial_clear(IntPtr raw);
 
-		public void Clear() {
+		public new void Clear() {
 			cpg_function_polynomial_clear(Handle);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_polynomial_add(IntPtr raw, IntPtr piece);
 
 		public void Add(Cpg.FunctionPolynomialPiece piece) {
 			cpg_function_polynomial_add(Handle, piece == null ? IntPtr.Zero : piece.Handle);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_polynomial_get_pieces(IntPtr raw);
 
 		public Cpg.FunctionPolynomialPiece[] Pieces { 

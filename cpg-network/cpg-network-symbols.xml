@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<api>
+  <symbol type="manual" cname="CpgInstructionCustomFunction" name="Cpg.InstructionCustomFunction"/>
+  <symbol type="manual" cname="CpgInstructionFunction" name="Cpg.InstructionFunction"/>
+  <symbol type="manual" cname="CpgInstructionNumber" name="Cpg.InstructionNumber"/>
+  <symbol type="manual" cname="CpgInstructionProperty" name="Cpg.InstructionProperty"/>
+</api>
+
+<!-- vi:ex:ts=2:et -->

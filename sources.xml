@@ -2,14 +2,12 @@
 
 <gapi-parser-input>
   <api filename="cpg-network/cpg-network-api.raw">
-    <library name="cpg-network-1.0">
+    <library name="cpg-network-2.0">
       <namespace name="Cpg">
         <file>../libcpg-network/cpg-network/cpg-object.c</file>
         <file>../libcpg-network/cpg-network/cpg-object.h</file>
         <file>../libcpg-network/cpg-network/cpg-state.c</file>
         <file>../libcpg-network/cpg-network/cpg-state.h</file>
-        <file>../libcpg-network/cpg-network/cpg-relay.c</file>
-        <file>../libcpg-network/cpg-network/cpg-relay.h</file>
         <file>../libcpg-network/cpg-network/cpg-link.c</file>
         <file>../libcpg-network/cpg-network/cpg-link.h</file>
         <file>../libcpg-network/cpg-network/cpg-expression.c</file>
@@ -34,8 +32,14 @@
         <file>../libcpg-network/cpg-network/cpg-integrator-euler.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.c</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.h</file>
-		<file>../libcpg-network/cpg-network/cpg-integrators.c</file>
-		<file>../libcpg-network/cpg-network/cpg-integrators.h</file>
+        <file>../libcpg-network/cpg-network/cpg-integrators.c</file>
+        <file>../libcpg-network/cpg-network/cpg-integrators.h</file>
+        <file>../libcpg-network/cpg-network/cpg-instructions.c</file>
+        <file>../libcpg-network/cpg-network/cpg-instructions.h</file>
+        <file>../libcpg-network/cpg-network/cpg-group.c</file>
+        <file>../libcpg-network/cpg-network/cpg-group.h</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator-state.c</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator-state.h</file>
       </namespace>
     </library>
   </api>

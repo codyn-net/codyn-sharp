@@ -19,7 +19,25 @@ namespace Cpg {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_integrator_get_state(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_integrator_set_state(IntPtr raw, IntPtr state);
+
+		[GLib.Property ("state")]
+		public Cpg.IntegratorState State {
+			get  {
+				IntPtr raw_ret = cpg_integrator_get_state(Handle);
+				Cpg.IntegratorState ret = GLib.Object.GetObject(raw_ret) as Cpg.IntegratorState;
+				return ret;
+			}
+			set  {
+				cpg_integrator_set_state(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern double cpg_integrator_get_time(IntPtr raw);
 
 		[GLib.Property ("time")]
@@ -31,17 +49,19 @@ namespace Cpg {
 			}
 		}
 
-		[GLib.Property ("network")]
-		public Cpg.Network Network {
-			get {
-				GLib.Value val = GetProperty ("network");
-				Cpg.Network ret = (Cpg.Network) val;
-				val.Dispose ();
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_integrator_get_object(IntPtr raw);
+
+		[GLib.Property ("object")]
+		public Cpg.Object Object {
+			get  {
+				IntPtr raw_ret = cpg_integrator_get_object(Handle);
+				Cpg.Object ret = GLib.Object.GetObject(raw_ret) as Cpg.Object;
 				return ret;
 			}
 			set {
 				GLib.Value val = new GLib.Value(value);
-				SetProperty("network", val);
+				SetProperty("object", val);
 				val.Dispose ();
 			}
 		}
@@ -187,7 +207,14 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_integrator_reset(IntPtr raw);
+
+		public new void Reset() {
+			cpg_integrator_reset(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_get_type();
 
 		public static new GLib.GType GType { 
@@ -198,7 +225,7 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_get_name(IntPtr raw);
 
 		public string Name { 
@@ -207,13 +234,6 @@ namespace Cpg {
 				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
 			}
-		}
-
-		[DllImport("cpg-network-1.0")]
-		static extern void cpg_integrator_reset(IntPtr raw);
-
-		public new void Reset() {
-			cpg_integrator_reset(Handle);
 		}
 
 #endregion

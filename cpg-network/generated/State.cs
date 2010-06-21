@@ -14,7 +14,7 @@ namespace Cpg {
 		protected State(GLib.GType gtype) : base(gtype) {}
 		public State(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_state_new(IntPtr id);
 
 		public State (string id) : base (IntPtr.Zero)
@@ -32,7 +32,7 @@ namespace Cpg {
 			GLib.Marshaller.Free (native_id);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_state_get_type();
 
 		public static new GLib.GType GType { 

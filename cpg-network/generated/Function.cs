@@ -14,7 +14,7 @@ namespace Cpg {
 		protected Function(GLib.GType gtype) : base(gtype) {}
 		public Function(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_new(IntPtr name, IntPtr expression);
 
 		public Function (string name, string expression) : base (IntPtr.Zero)
@@ -29,7 +29,7 @@ namespace Cpg {
 			GLib.Marshaller.Free (native_expression);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_set_expression(IntPtr raw, IntPtr expression);
 
 		[GLib.Property ("expression")]
@@ -45,14 +45,14 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_remove_argument(IntPtr raw, IntPtr argument);
 
 		public void RemoveArgument(Cpg.FunctionArgument argument) {
 			cpg_function_remove_argument(Handle, argument == null ? IntPtr.Zero : argument.Handle);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern uint cpg_function_get_n_arguments(IntPtr raw);
 
 		public uint NArguments { 
@@ -63,7 +63,7 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_get_type();
 
 		public static new GLib.GType GType { 
@@ -74,7 +74,7 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern uint cpg_function_get_n_optional(IntPtr raw);
 
 		public uint NOptional { 
@@ -85,14 +85,14 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_add_argument(IntPtr raw, IntPtr argument);
 
 		public void AddArgument(Cpg.FunctionArgument argument) {
 			cpg_function_add_argument(Handle, argument == null ? IntPtr.Zero : argument.Handle);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_get_arguments(IntPtr raw);
 
 		public Cpg.FunctionArgument[] Arguments { 
@@ -103,7 +103,7 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_clear_arguments(IntPtr raw);
 
 		public void ClearArguments() {

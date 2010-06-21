@@ -11,7 +11,14 @@ noinst_DATA = $(ASSEMBLY)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 DISTCLEANFILES = AssemblyInfo.cs $(ASSEMBLY).mdb
 
-sources =
+SYMBOLS = cpg-network-symbols.xml
+build_symbols = $(addprefix --symbols=$(srcdir)/, $(SYMBOLS))
+
+sources = \
+	InstructionCustomFunction.cs \
+	InstructionFunction.cs \
+	InstructionNumber.cs \
+	InstructionProperty.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
@@ -24,12 +31,13 @@ EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(customs)		\
-	$(sources)
+	$(sources)		\
+	$(SYMBOLS)
 
-$(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
+$(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
 	cp $(srcdir)/$(RAW_API) $(API)
 	chmod u+w $(API)
-	$(GAPI_FIXUP) --api=$(API) --metadata=$(srcdir)/$(METADATA)
+	$(GAPI_FIXUP) --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols)
 
 generated-stamp: $(API) $(build_customs)
 	rm -f generated/* &&	\
@@ -41,5 +49,5 @@ $(ASSEMBLY): $(build_sources) generated-stamp
 
 all: $(ASSEMBLY)
 
-cpgnetworksharpdir=$(pkglibdir)
+cpgnetworksharpdir=$(libdir)/cpg-network-sharp-@CPG_NETWORK_SHARP_API_VERSION@
 cpgnetworksharp_SCRIPTS = $(ASSEMBLY_NAME).dll

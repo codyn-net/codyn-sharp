@@ -14,7 +14,7 @@ namespace Cpg {
 		protected Object(GLib.GType gtype) : base(gtype) {}
 		public Object(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_new(IntPtr id);
 
 		public Object (string id) : base (IntPtr.Zero)
@@ -32,37 +32,22 @@ namespace Cpg {
 			GLib.Marshaller.Free (native_id);
 		}
 
-		[DllImport("cpg-network-1.0")]
-		static extern IntPtr cpg_object_get_local_id(IntPtr raw);
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_parent(IntPtr raw);
 
-		[GLib.Property ("local-id")]
-		public string LocalId {
+		[GLib.Property ("parent")]
+		public Cpg.Object Parent {
 			get  {
-				IntPtr raw_ret = cpg_object_get_local_id(Handle);
-				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				IntPtr raw_ret = cpg_object_get_parent(Handle);
+				Cpg.Object ret = GLib.Object.GetObject(raw_ret) as Cpg.Object;
 				return ret;
 			}
 		}
 
-		[GLib.Property ("template")]
-		public Cpg.Object Template {
-			get {
-				GLib.Value val = GetProperty ("template");
-				Cpg.Object ret = (Cpg.Object) val;
-				val.Dispose ();
-				return ret;
-			}
-			set {
-				GLib.Value val = new GLib.Value(value);
-				SetProperty("template", val);
-				val.Dispose ();
-			}
-		}
-
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_id(IntPtr raw);
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_object_set_id(IntPtr raw, IntPtr id);
 
 		[GLib.Property ("id")]
@@ -76,6 +61,100 @@ namespace Cpg {
 				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
 				cpg_object_set_id(Handle, native_value);
 				GLib.Marshaller.Free (native_value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void ResettedVMDelegate (IntPtr objekt);
+
+		static ResettedVMDelegate ResettedVMCallback;
+
+		static void resetted_cb (IntPtr objekt)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnResetted ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideResetted (GLib.GType gtype)
+		{
+			if (ResettedVMCallback == null)
+				ResettedVMCallback = new ResettedVMDelegate (resetted_cb);
+			OverrideVirtualMethod (gtype, "resetted", ResettedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideResetted")]
+		protected virtual void OnResetted ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("resetted")]
+		public event System.EventHandler Resetted {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "resetted");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "resetted");
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void CompiledVMDelegate (IntPtr objekt);
+
+		static CompiledVMDelegate CompiledVMCallback;
+
+		static void compiled_cb (IntPtr objekt)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnCompiled ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideCompiled (GLib.GType gtype)
+		{
+			if (CompiledVMCallback == null)
+				CompiledVMCallback = new CompiledVMDelegate (compiled_cb);
+			OverrideVirtualMethod (gtype, "compiled", CompiledVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideCompiled")]
+		protected virtual void OnCompiled ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("compiled")]
+		public event System.EventHandler Compiled {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "compiled");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "compiled");
+				sig.RemoveDelegate (value);
 			}
 		}
 
@@ -126,14 +205,18 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
-		static extern void cpg_object_evaluate(IntPtr raw);
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_object_is_compiled(IntPtr raw);
 
-		public void Evaluate() {
-			cpg_object_evaluate(Handle);
+		public bool IsCompiled { 
+			get {
+				bool raw_ret = cpg_object_is_compiled(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_object_has_property(IntPtr raw, IntPtr name);
 
 		public bool HasProperty(string name) {
@@ -144,14 +227,34 @@ namespace Cpg {
 			return ret;
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_object_equal(IntPtr raw, IntPtr second);
+
+		public bool Equal(Cpg.Object second) {
+			bool raw_ret = cpg_object_equal(Handle, second == null ? IntPtr.Zero : second.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_object_reset(IntPtr raw);
 
 		public void Reset() {
 			cpg_object_reset(Handle);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_applied_templates(IntPtr raw);
+
+		public GLib.SList AppliedTemplates { 
+			get {
+				IntPtr raw_ret = cpg_object_get_applied_templates(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_properties(IntPtr raw);
 
 		public Cpg.Property[] Properties { 
@@ -162,7 +265,7 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_object_compile(IntPtr raw, IntPtr context, IntPtr error);
 
 		public bool Compile(Cpg.CompileContext context, Cpg.CompileError error) {
@@ -171,14 +274,14 @@ namespace Cpg {
 			return ret;
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_object_taint(IntPtr raw);
 
 		public void Taint() {
 			cpg_object_taint(Handle);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern unsafe bool cpg_object_remove_property(IntPtr raw, IntPtr name, out IntPtr error);
 
 		public unsafe bool RemoveProperty(string name) {
@@ -191,18 +294,18 @@ namespace Cpg {
 			return ret;
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_property(IntPtr raw, IntPtr name);
 
 		public Cpg.Property Property(string name) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			IntPtr raw_ret = cpg_object_get_property(Handle, native_name);
-			Cpg.Property ret = raw_ret == IntPtr.Zero ? null : (Cpg.Property) GLib.Opaque.GetOpaque (raw_ret, typeof (Cpg.Property), false);
+			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
 			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern int cpg_object_error_quark();
 
 		public static int ErrorQuark() {
@@ -211,7 +314,7 @@ namespace Cpg {
 			return ret;
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_actors(IntPtr raw);
 
 		public GLib.SList Actors { 
@@ -222,14 +325,14 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_object_reset_cache(IntPtr raw);
 
 		public void ResetCache() {
 			cpg_object_reset_cache(Handle);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_type();
 
 		public static new GLib.GType GType { 
@@ -240,14 +343,21 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_object_clear(IntPtr raw);
+
+		public void Clear() {
+			cpg_object_clear(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_add_property(IntPtr raw, IntPtr name, IntPtr expression, bool integrated);
 
 		public Cpg.Property AddProperty(string name, string expression, bool integrated) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
 			IntPtr raw_ret = cpg_object_add_property(Handle, native_name, native_expression, integrated);
-			Cpg.Property ret = raw_ret == IntPtr.Zero ? null : (Cpg.Property) GLib.Opaque.GetOpaque (raw_ret, typeof (Cpg.Property), false);
+			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
 			GLib.Marshaller.Free (native_name);
 			GLib.Marshaller.Free (native_expression);
 			return ret;
