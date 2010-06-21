@@ -1,9 +1,9 @@
-namespace Cpg
+namespace Cpg.Instructions
 {
 	using System;
 	using System.Runtime.InteropServices;
 
-	public class InstructionNumber : GLib.Opaque
+	public class Number : Instruction
 	{
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_instruction_number_new(double value);
@@ -11,11 +11,15 @@ namespace Cpg
 		[StructLayout(LayoutKind.Sequential)]
 		struct NativeStruct
 		{
-			public InstructionCode type;
+			public Cpg.Instructions.Type type;
 			public double value;
 		}
 
-		public InstructionNumber (double value) 
+		public Number(IntPtr raw) : base(raw)
+		{
+		}
+
+		public Number(double value)
 		{
 			Raw = cpg_instruction_number_new(value);
 		}
@@ -28,7 +32,7 @@ namespace Cpg
 			}
 		}
 
-		public InstructionCode Type
+		public Cpg.Instructions.Type Type
 		{
 			get
 			{
@@ -54,6 +58,11 @@ namespace Cpg
 				native.value = value;
 				Marshal.StructureToPtr(native, Raw, false);
 			}
+		}
+
+		public override string ToString()
+		{
+			return String.Format("NUM ({0})", Value);
 		}
 	}
 }

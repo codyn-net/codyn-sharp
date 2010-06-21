@@ -160,5 +160,29 @@ namespace Cpg {
 		}
 
 #endregion
+#region Customized extensions
+#line 1 "Expression.custom"
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_expression_get_instructions(IntPtr raw);
+
+		public Cpg.Instructions.Instruction[] Instructions
+		{
+			get
+			{
+				IntPtr raw_ret = cpg_expression_get_instructions(Handle);
+
+				GLib.SList slist = new GLib.SList(raw_ret);
+				Cpg.Instructions.Instruction[] ret = new Cpg.Instructions.Instruction[slist.Count];
+
+				for (int i = 0; i < slist.Count; ++i)
+				{
+					ret[i] = Cpg.Instructions.Instruction.FromIntPtr((IntPtr)slist[i]);
+				}
+
+				return ret;
+			}
+		}
+
+#endregion
 	}
 }

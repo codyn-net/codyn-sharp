@@ -20,7 +20,7 @@
       <member cname="CPG_INSTRUCTION_BINDING_FROM" name="From" />
       <member cname="CPG_INSTRUCTION_BINDING_TO" name="To" />
     </enum>
-    <enum name="InstructionCode" cname="CpgInstructionCode" type="enum">
+    <enum name="InstructionType" cname="CpgInstructionType" type="enum">
       <member cname="CPG_INSTRUCTION_TYPE_NONE" name="None" />
       <member cname="CPG_INSTRUCTION_TYPE_FUNCTION" name="Function" />
       <member cname="CPG_INSTRUCTION_TYPE_NUMBER" name="Number" />
@@ -1066,7 +1066,7 @@
       </method>
     </boxed>
     <struct name="Instruction" cname="CpgInstruction">
-      <field name="Type" cname="type" type="CpgInstructionCode" />
+      <field name="Type" cname="type" type="CpgInstructionType" />
       <method name="Copy" cname="cpg_instruction_copy">
         <return-type type="CpgInstruction*" owned="true" />
       </method>

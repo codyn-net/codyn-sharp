@@ -246,10 +246,10 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_applied_templates(IntPtr raw);
 
-		public GLib.SList AppliedTemplates { 
+		public Cpg.Object[] AppliedTemplates { 
 			get {
 				IntPtr raw_ret = cpg_object_get_applied_templates(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cpg.Object[] ret = (Cpg.Object[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Object));
 				return ret;
 			}
 		}

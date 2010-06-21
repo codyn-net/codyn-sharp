@@ -1,9 +1,9 @@
-namespace Cpg
+namespace Cpg.Instructions
 {
 	using System;
 	using System.Runtime.InteropServices;
 
-	public class InstructionCustomFunction : GLib.Opaque
+	public class CustomFunction : Instruction
 	{
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_instruction_custom_function_new(IntPtr function, int arguments);
@@ -11,12 +11,16 @@ namespace Cpg
 		[StructLayout(LayoutKind.Sequential)]
 		struct NativeStruct
 		{
-			public InstructionCode type;
+			public Cpg.Instructions.Type type;
 			public IntPtr function;
 			public int arguments;
 		}
 
-		public InstructionCustomFunction(Function function, int arguments)
+		public CustomFunction(IntPtr raw) : base(raw)
+		{
+		}
+
+		public CustomFunction(Function function, int arguments)
 		{
 			Raw = cpg_instruction_custom_function_new(function.Handle, arguments);
 		}
@@ -29,7 +33,7 @@ namespace Cpg
 			}
 		}
 
-		public InstructionCode Type
+		public Cpg.Instructions.Type Type
 		{
 			get
 			{
@@ -43,11 +47,11 @@ namespace Cpg
 			}
 		}
 
-		public Function Function
+		public Cpg.Function Function
 		{
 			get
 			{
-				return GLib.Object.GetObject(Native.function, false) as Function;
+				return GLib.Object.GetObject(Native.function, false) as Cpg.Function;
 			}
 			set
 			{
@@ -55,6 +59,11 @@ namespace Cpg
 				native.function = value == null ? IntPtr.Zero : value.Handle;
 				Marshal.StructureToPtr(native, Raw, false);
 			}
+		}
+
+		public override string ToString()
+		{
+			return String.Format("FNC ({0})", Function.Id);
 		}
 	}
 }

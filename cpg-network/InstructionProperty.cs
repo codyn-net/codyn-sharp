@@ -1,9 +1,9 @@
-namespace Cpg
+namespace Cpg.Instructions
 {
 	using System;
 	using System.Runtime.InteropServices;
 
-	public class InstructionProperty : GLib.Opaque
+	public class Property : Instruction
 	{
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_instruction_property_new(IntPtr property, int binding);
@@ -11,12 +11,16 @@ namespace Cpg
 		[StructLayout(LayoutKind.Sequential)]
 		struct NativeStruct
 		{
-			public InstructionCode type;
+			public Cpg.Instructions.Type type;
 			public IntPtr property;
 			public int binding;
 		}
 
-		public InstructionProperty (Property property, InstructionBinding binding)
+		public Property(IntPtr raw) : base(raw)
+		{
+		}
+
+		public Property(Cpg.Property property, Cpg.Instructions.Binding binding)
 		{
 			Raw = cpg_instruction_property_new(property == null ? IntPtr.Zero : property.Handle, (int)binding);
 		}
@@ -29,7 +33,7 @@ namespace Cpg
 			}
 		}
 
-		public InstructionCode Type
+		public Cpg.Instructions.Type Type
 		{
 			get
 			{
@@ -43,11 +47,11 @@ namespace Cpg
 			}
 		}
 
-		public Property Property
+		public Cpg.Property CpgProperty
 		{
 			get
 			{
-				return GLib.Object.GetObject(Native.property, false) as Property;
+				return GLib.Object.GetObject(Native.property, false) as Cpg.Property;
 			}
 			set
 			{
@@ -57,11 +61,11 @@ namespace Cpg
 			}
 		}
 
-		public InstructionBinding Binding
+		public Cpg.Instructions.Binding Binding
 		{
 			get
 			{
-				return (InstructionBinding)Native.binding;
+				return (Cpg.Instructions.Binding)Native.binding;
 			}
 			set
 			{
@@ -69,6 +73,13 @@ namespace Cpg
 				native.binding = (int)value;
 				Marshal.StructureToPtr(native, Raw, false);
 			}
+		}
+
+		public override string ToString()
+		{
+			Cpg.Property prop = CpgProperty;
+
+			return String.Format("PRP ({0}.{1})", prop.Object.Id, prop.Name);
 		}
 	}
 }

@@ -17,6 +17,7 @@
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_property']" name="name">Property</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="type">CpgCompileError*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="name">error</attr>
+    <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_applied_templates']/return-type" name="element_type">CpgObject*</attr>
 
   <!-- CpgState -->
   <attr path="/api/namespace/object[@cname='CpgState']/field[@cname='priv']" name="hidden">true</attr>
@@ -39,6 +40,8 @@
 
   <!-- CpgExpression -->
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>
+  <!--<attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']/return-type" name="element_type">CpgInstruction*</attr>-->
+
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
 
   <!-- CpgFunction -->
@@ -93,5 +96,15 @@
   <attr path="/api/namespace/struct[@cname='CpgInstructionNumber']" name="hidden">true</attr>
   <attr path="/api/namespace/struct[@cname='CpgInstructionProperty']" name="hidden">true</attr>
   <attr path="/api/namespace/struct[@cname='CpgInstruction']" name="hidden">true</attr>
+
+  <!-- CpgInstructionType -->
+  <add-node path="/api">
+    <namespace name="Cpg.Instructions"/>
+  </add-node>
+  <move-node path="/api/namespace/enum[@cname='CpgInstructionType']">/api/namespace[@name='Cpg.Instructions']</move-node>
+  <attr path="/api/namespace/enum[@cname='CpgInstructionType']" name="name">Type</attr>
+
+  <move-node path="/api/namespace/enum[@cname='CpgInstructionBinding']">/api/namespace[@name='Cpg.Instructions']</move-node>
+  <attr path="/api/namespace/enum[@cname='CpgInstructionBinding']" name="name">Binding</attr>
 </metadata>
 <!-- vi:ts=2:et -->

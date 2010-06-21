@@ -15,14 +15,20 @@ SYMBOLS = cpg-network-symbols.xml
 build_symbols = $(addprefix --symbols=$(srcdir)/, $(SYMBOLS))
 
 sources = \
+	Instruction.cs \
 	InstructionCustomFunction.cs \
 	InstructionFunction.cs \
 	InstructionNumber.cs \
-	InstructionProperty.cs
+	InstructionProperty.cs \
+	InstructionOperator.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
-customs = Monitor.custom FunctionPolynomialPiece.custom Integrator.custom
+customs = \
+	Monitor.custom \
+	FunctionPolynomialPiece.custom \
+	Integrator.custom \
+	Expression.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 
