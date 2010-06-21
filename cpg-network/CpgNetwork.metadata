@@ -40,9 +40,13 @@
 
   <!-- CpgExpression -->
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>
-  <!--<attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']/return-type" name="element_type">CpgInstruction*</attr>-->
+  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']" name="hidden">true</attr>
 
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
+
+  <!-- CpgCompileContext -->
+  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']" name="hidden">true</attr>
+  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']" name="hidden">true</attr>
 
   <!-- CpgFunction -->
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_execute']"/>

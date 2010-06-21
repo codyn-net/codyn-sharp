@@ -73,15 +73,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_expression_set_instructions(IntPtr raw, IntPtr instructions);
-
-		public bool SetInstructions(GLib.SList instructions) {
-			bool raw_ret = cpg_expression_set_instructions(Handle, instructions == null ? IntPtr.Zero : instructions.Handle);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_expression_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cpg.Expression other) {
@@ -165,6 +156,9 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_expression_get_instructions(IntPtr raw);
 
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expression_set_instructions(IntPtr raw, IntPtr instructions);
+
 		public Cpg.Instructions.Instruction[] Instructions
 		{
 			get
@@ -180,6 +174,13 @@ namespace Cpg {
 				}
 
 				return ret;
+			}
+			set
+			{
+				using (GLib.SList slist = new GLib.SList(value, typeof(Cpg.Instructions.Instruction), true, false))
+				{
+					cpg_expression_set_instructions(Handle, slist.Handle);
+				}
 			}
 		}
 
