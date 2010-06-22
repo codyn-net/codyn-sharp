@@ -60,10 +60,10 @@ namespace Cpg {
 #endregion
 #region Customized extensions
 #line 1 "FunctionPolynomialPiece.custom"
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_polynomial_piece_get_coefficients(IntPtr raw, out uint num_coefficients);
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_polynomial_piece_set_coefficients(IntPtr raw, double[] coefficients, uint num_coefficients);
 
 		public double[] Coefficients {
@@ -85,7 +85,7 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_polynomial_piece_new(double begin, double end, double[] coefficients, uint num_coefficients);
 
 		public FunctionPolynomialPiece (double begin, double end, params double[] coefficients)

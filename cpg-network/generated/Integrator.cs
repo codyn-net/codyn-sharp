@@ -239,7 +239,7 @@ namespace Cpg {
 #endregion
 #region Customized extensions
 #line 1 "Integrator.custom"
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_integrator_evaluate(IntPtr raw, IntPtr state, double t, double timestep);
 
 		public void Evaluate(Cpg.IntegratorState[] state, double t, double timestep)
@@ -248,7 +248,7 @@ namespace Cpg {
 			cpg_integrator_evaluate(Handle, slist == null ? IntPtr.Zero : slist.Handle, t, timestep);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_integrator_run(IntPtr raw, IntPtr state, double from, double timestep, double to);
 
 		public void Run(Cpg.IntegratorState[] state, double from, double timestep, double to)
@@ -257,7 +257,7 @@ namespace Cpg {
 			cpg_integrator_run(Handle, slist == null ? IntPtr.Zero : slist.Handle, from, timestep, to);
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern double cpg_integrator_step(IntPtr raw, IntPtr state, double t, double timestep);
 
 		public double Step(Cpg.IntegratorState[] state, double t, double timestep)

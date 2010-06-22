@@ -34,12 +34,12 @@
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_get_children']/return-type" name="element_type">CpgObject*</attr>
 
   <!-- CpgMonitor -->
-  <attr path="/api/namespace/boxed[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='(CpgNetwork)*']" name="type">CpgNetwork*</attr>
-  <attr path="/api/namespace/boxed[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='(CpgNetwork)*']" name="name">network</attr>
+  <attr path="/api/namespace/object[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='(CpgNetwork)*']" name="type">CpgNetwork*</attr>
+  <attr path="/api/namespace/object[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='(CpgNetwork)*']" name="name">network</attr>
 
-  <remove-node path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data_resampled']"/>
-  <remove-node path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data']"/>
-  <remove-node path="/api/namespace/boxed[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_sites']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data_resampled']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_data']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_sites']"/>
 
   <!-- CpgExpression -->
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>

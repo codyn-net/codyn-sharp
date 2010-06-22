@@ -15,7 +15,6 @@ namespace Cpg {
 		In = 1 << 1,
 		Out = 1 << 2,
 		Once = 1 << 3,
-		NoDelay = 1 << 4,
 	}
 #endregion
 }

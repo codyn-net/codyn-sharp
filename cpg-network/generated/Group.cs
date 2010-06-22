@@ -80,17 +80,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_group_get_child(IntPtr raw, IntPtr name);
-
-		public Cpg.Object GetChild(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cpg_group_get_child(Handle, native_name);
-			Cpg.Object ret = GLib.Object.GetObject(raw_ret) as Cpg.Object;
-			GLib.Marshaller.Free (native_name);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_group_add(IntPtr raw, IntPtr objekt);
 
 		public bool Add(Cpg.Object objekt) {
@@ -131,10 +120,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_group_clear(IntPtr raw);
+		static extern IntPtr cpg_group_get_child(IntPtr raw, IntPtr name);
 
-		public new void Clear() {
-			cpg_group_clear(Handle);
+		public Cpg.Object GetChild(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cpg_group_get_child(Handle, native_name);
+			Cpg.Object ret = GLib.Object.GetObject(raw_ret) as Cpg.Object;
+			GLib.Marshaller.Free (native_name);
+			return ret;
 		}
 
 #endregion

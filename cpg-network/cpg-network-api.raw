@@ -47,7 +47,6 @@
       <member cname="CPG_PROPERTY_FLAG_IN" name="In" value="1 &lt;&lt; 1" />
       <member cname="CPG_PROPERTY_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
       <member cname="CPG_PROPERTY_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
-      <member cname="CPG_PROPERTY_FLAG_NO_DELAY" name="NoDelay" value="1 &lt;&lt; 4" />
     </enum>
     <object name="Expression" cname="CpgExpression" parent="GObject">
       <field name="Priv" cname="priv" type="CpgExpressionPrivate*" />
@@ -219,20 +218,11 @@
           <parameter type="CpgObject*" name="object" />
         </parameters>
       </virtual_method>
-      <virtual_method name="Clear" cname="clear">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgGroup*" name="group" />
-        </parameters>
-      </virtual_method>
       <method name="Add" cname="cpg_group_add">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
         </parameters>
-      </method>
-      <method name="Clear" cname="cpg_group_clear">
-        <return-type type="void" />
       </method>
       <method name="FindObject" cname="cpg_group_find_object">
         <return-type type="CpgObject*" />
@@ -291,6 +281,25 @@
       <field name="Priv" cname="priv" type="CpgIntegratorPrivate*" />
       <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" />
       <property name="Time" cname="time" type="gdouble" readable="true" />
+      <signal name="Step" cname="step" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
+      <signal name="Begin" cname="begin" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
+      <signal name="End" cname="end" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
+      <property name="State" cname="state" type="CpgIntegratorState" readable="true" />
       <virtual_method name="Run" cname="run">
         <return-type type="void" />
         <parameters>
@@ -314,25 +323,6 @@
           <parameter type="CpgIntegrator*" name="integrator" />
         </parameters>
       </virtual_method>
-      <signal name="Step" cname="step" when="LAST">
-        <return-type type="void" />
-        <parameters>
-          <parameter name="inst" type="CpgIntegrator*" />
-        </parameters>
-      </signal>
-      <signal name="Begin" cname="begin" when="LAST">
-        <return-type type="void" />
-        <parameters>
-          <parameter name="inst" type="CpgIntegrator*" />
-        </parameters>
-      </signal>
-      <signal name="End" cname="end" when="LAST">
-        <return-type type="void" />
-        <parameters>
-          <parameter name="inst" type="CpgIntegrator*" />
-        </parameters>
-      </signal>
-      <property name="State" cname="state" type="CpgIntegratorState" readable="true" />
       <method name="Evaluate" cname="cpg_integrator_evaluate">
         <return-type type="void" />
         <parameters>
@@ -472,6 +462,43 @@
           <parameter type="CpgLinkAction*" name="action" />
         </parameters>
       </method>
+    </object>
+    <object name="Monitor" cname="CpgMonitor" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgMonitorPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
+      <property name="Property" cname="property" type="CpgProperty" readable="true" writeable="true" construct-only="true" />
+      <method name="GetData" cname="cpg_monitor_get_data">
+        <return-type type="const-gdouble*" />
+        <parameters>
+          <parameter type="guint*" name="size" />
+        </parameters>
+      </method>
+      <method name="GetDataResampled" cname="cpg_monitor_get_data_resampled">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gdouble*" name="sites" />
+          <parameter type="guint" name="size" />
+          <parameter type="gdouble*" name="ret" />
+        </parameters>
+      </method>
+      <method name="GetProperty" cname="cpg_monitor_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetSites" cname="cpg_monitor_get_sites">
+        <return-type type="const-gdouble*" />
+        <parameters>
+          <parameter type="guint*" name="size" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_monitor_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_monitor_new">
+        <parameters>
+          <parameter type="CPG_FORWARD_DECL" name="(CpgNetwork)*" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </constructor>
     </object>
     <object name="Network" cname="CpgNetwork" parent="CpgGroup">
       <field name="Priv" cname="priv" type="CpgNetworkPrivate*" />
@@ -616,6 +643,24 @@
       <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
       <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Parent" cname="parent" type="CpgObject" readable="true" />
+      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
+      <signal name="Compiled" cname="compiled" when="LAST" field_name="compiled">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
+      <signal name="Resetted" cname="resetted" when="LAST" field_name="resetted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="gboolean" />
         <parameters>
@@ -706,24 +751,6 @@
           <parameter type="CpgObject*" name="last" />
         </parameters>
       </virtual_method>
-      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-        </parameters>
-      </signal>
-      <signal name="Compiled" cname="compiled" when="LAST" field_name="compiled">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-        </parameters>
-      </signal>
-      <signal name="Resetted" cname="resetted" when="LAST" field_name="resetted">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-        </parameters>
-      </signal>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="CpgProperty*" />
         <parameters>
@@ -1083,7 +1110,7 @@
       </method>
     </struct>
     <struct name="InstructionCustomFunction" cname="CpgInstructionCustomFunction" opaque="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="public" writeable="true" />
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
       <field name="Function" cname="function" type="CpgFunction*" access="public" writeable="true" />
       <field name="Arguments" cname="arguments" type="gint" access="public" writeable="true" />
       <constructor cname="cpg_instruction_custom_function_new">
@@ -1094,7 +1121,7 @@
       </constructor>
     </struct>
     <struct name="InstructionFunction" cname="CpgInstructionFunction" opaque="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="public" writeable="true" />
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
       <field name="Id" cname="id" type="guint" access="public" writeable="true" />
       <field name="Name" cname="name" type="gchar*" access="public" writeable="true" />
       <field name="Arguments" cname="arguments" type="gint" access="public" writeable="true" />
@@ -1109,7 +1136,7 @@
       </constructor>
     </struct>
     <struct name="InstructionNumber" cname="CpgInstructionNumber" opaque="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="public" writeable="true" />
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
       <field name="Value" cname="value" type="gdouble" access="public" writeable="true" />
       <constructor cname="cpg_instruction_number_new">
         <parameters>
@@ -1118,7 +1145,7 @@
       </constructor>
     </struct>
     <struct name="InstructionProperty" cname="CpgInstructionProperty" opaque="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="public" writeable="true" />
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
       <field name="Property" cname="property" type="CpgProperty*" access="public" writeable="true" />
       <field name="Binding" cname="binding" type="CpgInstructionBinding" access="public" writeable="true" />
       <constructor cname="cpg_instruction_property_new">
@@ -1150,44 +1177,6 @@
           <parameter type="CpgProperty*" name="property" />
         </parameters>
       </method>
-    </boxed>
-    <boxed name="Monitor" cname="CpgMonitor" opaque="true">
-      <method name="GetData" cname="cpg_monitor_get_data">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="guint*" name="size" />
-        </parameters>
-      </method>
-      <method name="GetDataResampled" cname="cpg_monitor_get_data_resampled">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="const-gdouble*" name="sites" />
-          <parameter type="guint" name="size" />
-          <parameter type="gdouble*" name="ret" />
-        </parameters>
-      </method>
-      <method name="GetObject" cname="cpg_monitor_get_object">
-        <return-type type="CpgObject*" />
-      </method>
-      <method name="GetProperty" cname="cpg_monitor_get_property">
-        <return-type type="CpgProperty*" />
-      </method>
-      <method name="GetSites" cname="cpg_monitor_get_sites">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="guint*" name="size" />
-        </parameters>
-      </method>
-      <method name="GetType" cname="cpg_monitor_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cpg_monitor_new">
-        <parameters>
-          <parameter type="CPG_FORWARD_DECL" name="(CpgNetwork)*" />
-          <parameter type="CpgObject*" name="object" />
-          <parameter type="const-gchar*" name="property_name" />
-        </parameters>
-      </constructor>
     </boxed>
     <class name="Integrators" cname="CpgIntegrators_">
       <method name="Create" cname="cpg_integrators_create" shared="true">
