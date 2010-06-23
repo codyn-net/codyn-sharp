@@ -29,7 +29,8 @@ customs = \
 	FunctionPolynomialPiece.custom \
 	Integrator.custom \
 	Expression.custom \
-	CompileContext.custom
+	CompileContext.custom \
+	Group.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 

@@ -159,6 +159,104 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
+		delegate void PropertyRemovedVMDelegate (IntPtr objekt, IntPtr property);
+
+		static PropertyRemovedVMDelegate PropertyRemovedVMCallback;
+
+		static void propertyremoved_cb (IntPtr objekt, IntPtr property)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnPropertyRemoved (GLib.Object.GetObject(property) as Cpg.Property);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverridePropertyRemoved (GLib.GType gtype)
+		{
+			if (PropertyRemovedVMCallback == null)
+				PropertyRemovedVMCallback = new PropertyRemovedVMDelegate (propertyremoved_cb);
+			OverrideVirtualMethod (gtype, "property-removed", PropertyRemovedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverridePropertyRemoved")]
+		protected virtual void OnPropertyRemoved (Cpg.Property property)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (property);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("property-removed")]
+		public event Cpg.PropertyRemovedHandler PropertyRemoved {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "property-removed", typeof (Cpg.PropertyRemovedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "property-removed", typeof (Cpg.PropertyRemovedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void PropertyAddedVMDelegate (IntPtr objekt, IntPtr property);
+
+		static PropertyAddedVMDelegate PropertyAddedVMCallback;
+
+		static void propertyadded_cb (IntPtr objekt, IntPtr property)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnPropertyAdded (GLib.Object.GetObject(property) as Cpg.Property);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverridePropertyAdded (GLib.GType gtype)
+		{
+			if (PropertyAddedVMCallback == null)
+				PropertyAddedVMCallback = new PropertyAddedVMDelegate (propertyadded_cb);
+			OverrideVirtualMethod (gtype, "property-added", PropertyAddedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverridePropertyAdded")]
+		protected virtual void OnPropertyAdded (Cpg.Property property)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (property);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("property-added")]
+		public event Cpg.PropertyAddedHandler PropertyAdded {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "property-added", typeof (Cpg.PropertyAddedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "property-added", typeof (Cpg.PropertyAddedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
 		delegate void TaintedVMDelegate (IntPtr objekt);
 
 		static TaintedVMDelegate TaintedVMCallback;
@@ -201,6 +299,55 @@ namespace Cpg {
 			}
 			remove {
 				GLib.Signal sig = GLib.Signal.Lookup (this, "tainted");
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void PropertyChangedVMDelegate (IntPtr objekt, IntPtr property);
+
+		static PropertyChangedVMDelegate PropertyChangedVMCallback;
+
+		static void propertychanged_cb (IntPtr objekt, IntPtr property)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnPropertyChanged (GLib.Object.GetObject(property) as Cpg.Property);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverridePropertyChanged (GLib.GType gtype)
+		{
+			if (PropertyChangedVMCallback == null)
+				PropertyChangedVMCallback = new PropertyChangedVMDelegate (propertychanged_cb);
+			OverrideVirtualMethod (gtype, "property-changed", PropertyChangedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverridePropertyChanged")]
+		protected virtual void OnPropertyChanged (Cpg.Property property)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (property);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("property-changed")]
+		public event Cpg.PropertyChangedHandler PropertyChanged {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "property-changed", typeof (Cpg.PropertyChangedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "property-changed", typeof (Cpg.PropertyChangedArgs));
 				sig.RemoveDelegate (value);
 			}
 		}
@@ -351,12 +498,12 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_object_add_property(IntPtr raw, IntPtr name, IntPtr expression, bool integrated);
+		static extern IntPtr cpg_object_add_property(IntPtr raw, IntPtr name, IntPtr expression, int flags);
 
-		public Cpg.Property AddProperty(string name, string expression, bool integrated) {
+		public Cpg.Property AddProperty(string name, string expression, Cpg.PropertyFlags flags) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
-			IntPtr raw_ret = cpg_object_add_property(Handle, native_name, native_expression, integrated);
+			IntPtr raw_ret = cpg_object_add_property(Handle, native_name, native_expression, (int) flags);
 			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
 			GLib.Marshaller.Free (native_name);
 			GLib.Marshaller.Free (native_expression);

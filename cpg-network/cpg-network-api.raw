@@ -204,6 +204,20 @@
     <object name="Group" cname="CpgGroup" parent="CpgState">
       <field name="Priv" cname="priv" type="CpgGroupPrivate*" />
       <property name="Proxy" cname="proxy" type="CpgObject" readable="true" writeable="true" construct-only="true" />
+      <signal name="ChildAdded" cname="child-added" when="LAST" field_name="child_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgGroup*" name="group" />
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
+      <signal name="ChildRemoved" cname="child-removed" when="LAST" field_name="child_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgGroup*" name="group" />
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
       <virtual_method name="Add" cname="add">
         <return-type type="gboolean" />
         <parameters>
@@ -661,6 +675,27 @@
           <parameter type="CpgObject*" name="object" />
         </parameters>
       </signal>
+      <signal name="PropertyAdded" cname="property-added" when="LAST" field_name="property_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
+      <signal name="PropertyRemoved" cname="property-removed" when="LAST" field_name="property_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
+      <signal name="PropertyChanged" cname="property-changed" when="LAST" field_name="property_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="gboolean" />
         <parameters>
@@ -727,7 +762,7 @@
           <parameter type="CpgObject*" name="object" />
           <parameter type="const-gchar*" name="name" />
           <parameter type="const-gchar*" name="expression" />
-          <parameter type="gboolean" name="integrated" />
+          <parameter type="CpgPropertyFlags" name="flags" />
         </parameters>
       </virtual_method>
       <virtual_method name="RemoveProperty" cname="remove_property">
@@ -756,7 +791,7 @@
         <parameters>
           <parameter type="const-gchar*" name="name" />
           <parameter type="const-gchar*" name="expression" />
-          <parameter type="gboolean" name="integrated" />
+          <parameter type="CpgPropertyFlags" name="flags" />
         </parameters>
       </method>
       <method name="Clear" cname="cpg_object_clear">

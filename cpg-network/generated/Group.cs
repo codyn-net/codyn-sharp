@@ -48,6 +48,104 @@ namespace Cpg {
 			}
 		}
 
+		[GLib.CDeclCallback]
+		delegate void ChildAddedVMDelegate (IntPtr group, IntPtr objekt);
+
+		static ChildAddedVMDelegate ChildAddedVMCallback;
+
+		static void childadded_cb (IntPtr group, IntPtr objekt)
+		{
+			try {
+				Group group_managed = GLib.Object.GetObject (group, false) as Group;
+				group_managed.OnChildAdded (GLib.Object.GetObject(objekt) as Cpg.Object);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideChildAdded (GLib.GType gtype)
+		{
+			if (ChildAddedVMCallback == null)
+				ChildAddedVMCallback = new ChildAddedVMDelegate (childadded_cb);
+			OverrideVirtualMethod (gtype, "child-added", ChildAddedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Group), ConnectionMethod="OverrideChildAdded")]
+		protected virtual void OnChildAdded (Cpg.Object objekt)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (objekt);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("child-added")]
+		public event Cpg.ChildAddedHandler ChildAdded {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "child-added", typeof (Cpg.ChildAddedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "child-added", typeof (Cpg.ChildAddedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void ChildRemovedVMDelegate (IntPtr group, IntPtr objekt);
+
+		static ChildRemovedVMDelegate ChildRemovedVMCallback;
+
+		static void childremoved_cb (IntPtr group, IntPtr objekt)
+		{
+			try {
+				Group group_managed = GLib.Object.GetObject (group, false) as Group;
+				group_managed.OnChildRemoved (GLib.Object.GetObject(objekt) as Cpg.Object);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideChildRemoved (GLib.GType gtype)
+		{
+			if (ChildRemovedVMCallback == null)
+				ChildRemovedVMCallback = new ChildRemovedVMDelegate (childremoved_cb);
+			OverrideVirtualMethod (gtype, "child-removed", ChildRemovedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Group), ConnectionMethod="OverrideChildRemoved")]
+		protected virtual void OnChildRemoved (Cpg.Object objekt)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (objekt);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("child-removed")]
+		public event Cpg.ChildRemovedHandler ChildRemoved {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "child-removed", typeof (Cpg.ChildRemovedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "child-removed", typeof (Cpg.ChildRemovedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
 		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_group_remove(IntPtr raw, IntPtr objekt);
 
@@ -128,6 +226,13 @@ namespace Cpg {
 			Cpg.Object ret = GLib.Object.GetObject(raw_ret) as Cpg.Object;
 			GLib.Marshaller.Free (native_name);
 			return ret;
+		}
+
+#endregion
+#region Customized extensions
+#line 1 "Group.custom"
+		Group(string id) : this(id, null)
+		{
 		}
 
 #endregion
