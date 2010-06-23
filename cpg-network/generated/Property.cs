@@ -123,11 +123,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_property_equal(IntPtr raw, IntPtr other);
+		static extern int cpg_property_flags_from_string(IntPtr flags);
 
-		public bool Equal(Cpg.Property other) {
-			bool raw_ret = cpg_property_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
-			bool ret = raw_ret;
+		public static Cpg.PropertyFlags FlagsFromString(string flags) {
+			IntPtr native_flags = GLib.Marshaller.StringToPtrGStrdup (flags);
+			int raw_ret = cpg_property_flags_from_string(native_flags);
+			Cpg.PropertyFlags ret = (Cpg.PropertyFlags) raw_ret;
+			GLib.Marshaller.Free (native_flags);
 			return ret;
 		}
 
@@ -136,6 +138,15 @@ namespace Cpg {
 
 		public void RemoveFlags(Cpg.PropertyFlags flags) {
 			cpg_property_remove_flags(Handle, (int) flags);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_property_equal(IntPtr raw, IntPtr other);
+
+		public bool Equal(Cpg.Property other) {
+			bool raw_ret = cpg_property_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+			bool ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -160,6 +171,15 @@ namespace Cpg {
 
 		public void AddFlags(Cpg.PropertyFlags flags) {
 			cpg_property_add_flags(Handle, (int) flags);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_flags_to_string(int flags);
+
+		public static string FlagsToString(Cpg.PropertyFlags flags) {
+			IntPtr raw_ret = cpg_property_flags_to_string((int) flags);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]

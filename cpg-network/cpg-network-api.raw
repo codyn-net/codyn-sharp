@@ -892,6 +892,18 @@
           <parameter type="CpgProperty*" name="other" />
         </parameters>
       </method>
+      <method name="FlagsFromString" cname="cpg_property_flags_from_string" shared="true">
+        <return-type type="CpgPropertyFlags" />
+        <parameters>
+          <parameter type="const-gchar*" name="flags" />
+        </parameters>
+      </method>
+      <method name="FlagsToString" cname="cpg_property_flags_to_string" shared="true">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgPropertyFlags" name="flags" />
+        </parameters>
+      </method>
       <method name="GetExpression" cname="cpg_property_get_expression">
         <return-type type="CpgExpression*" />
       </method>
