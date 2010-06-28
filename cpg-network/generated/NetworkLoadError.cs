@@ -14,6 +14,7 @@ namespace Cpg {
 		Object,
 		Link,
 		Function,
+		Import,
 	}
 #endregion
 }

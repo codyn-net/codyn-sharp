@@ -6,30 +6,32 @@
   <attr path="/api/namespace/object[@cname='CpgLink']/method[@cname='cpg_link_get_actions']/return-type" name="element_type">CpgLinkAction*</attr>
 
   <!-- CpgNetwork -->
-  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_functions']/return-type" name="element_type">CpgFunction*</attr>
-  <attr path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_templates']/return-type" name="element_type">CpgObject*</attr>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_merge_from_file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/constructor[@cname='cpg_network_new_from_file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/property[@cname='file']"/>
 
-  <attr path="/api/namespace/object[@cname='CpgNetwork']/field[@cname='priv']" name="hidden">true</attr>
+  <!-- CpgImport -->
+  <remove-node path="/api/namespace/object[@cname='CpgImport']/constructor[@cname='cpg_import_new']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgImport']/method[@cname='cpg_import_get_file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgImport']/property[@cname='file']"/>
+  <attr path="/api/namespace/object[@cname='CpgImport']/method[@cname='cpg_import_get_search_path']/return-type" name="null_term_array"/>
+  <attr path="/api/namespace/object[@cname='CpgImport']/method[@cname='cpg_import_set_search_path']/parameters/parameter[@name='path']" name="null_term_array"/>
 
   <!-- CpgObject -->
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_properties']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/virtual_method[@cname='get_properties']/return-type" name="element_type">CpgProperty*</attr>
-  <attr path="/api/namespace/object[@cname='CpgObject']/field[@cname='priv']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_property']" name="name">Property</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="type">CpgCompileError*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="name">error</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_applied_templates']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_actors']/return-type" name="element_type">CpgProperty*</attr>
 
-  <!-- CpgState -->
-  <attr path="/api/namespace/object[@cname='CpgState']/field[@cname='priv']" name="hidden">true</attr>
-
   <!-- CpgProperty -->
   <attr path="/api/namespace/object[@cname='CpgProperty']/constructor[@cname='cpg_property_new']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgProperty']/constructor[@cname='cpg_property_new']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
 
   <!-- CpgGroup -->
-  <attr path="/api/namespace/object[@cname='CpgGroup']/field[@cname='priv']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_foreach']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_get_children']/return-type" name="element_type">CpgObject*</attr>
 
@@ -118,5 +120,13 @@
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_integrated_link_actions']/return-type" name="element_type">CpgLinkAction*</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_direct_properties']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_integrated_properties']/return-type" name="element_type">CpgProperty*</attr>
+
+  <!-- CpgNetworkSerializer -->
+  <remove-node path="/api/namespace/object[@cname='CpgNetworkSerializer']/method[@cname='cpg_network_serializer_serialize']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetworkSerializer']/method[@cname='cpg_network_serializer_serialize_file']"/>
+
+  <!-- CpgNetworkDeserializer -->
+  <remove-node path="/api/namespace/object[@cname='CpgNetworkDeserializer']/method[@cname='cpg_network_deserializer_deserialize']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetworkDeserializer']/method[@cname='cpg_network_deserializer_deserialize_file']"/>
 </metadata>
 <!-- vi:ts=2:et -->

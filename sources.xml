@@ -16,6 +16,14 @@
         <file>../libcpg-network/cpg-network/cpg-monitor.h</file>
         <file>../libcpg-network/cpg-network/cpg-network.c</file>
         <file>../libcpg-network/cpg-network/cpg-network.h</file>
+        <file>../libcpg-network/cpg-network/cpg-import.c</file>
+        <file>../libcpg-network/cpg-network/cpg-import.h</file>
+        <file>../libcpg-network/cpg-network/cpg-import-alias.c</file>
+        <file>../libcpg-network/cpg-network/cpg-import-alias.h</file>
+        <file>../libcpg-network/cpg-network/cpg-network-serializer.c</file>
+        <file>../libcpg-network/cpg-network/cpg-network-serializer.h</file>
+        <file>../libcpg-network/cpg-network/cpg-network-deserializer.c</file>
+        <file>../libcpg-network/cpg-network/cpg-network-deserializer.h</file>
         <file>../libcpg-network/cpg-network/cpg-property.c</file>
         <file>../libcpg-network/cpg-network/cpg-property.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.c</file>

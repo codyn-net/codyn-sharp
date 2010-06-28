@@ -34,6 +34,7 @@
       <member cname="CPG_NETWORK_LOAD_ERROR_OBJECT" name="Object" />
       <member cname="CPG_NETWORK_LOAD_ERROR_LINK" name="Link" />
       <member cname="CPG_NETWORK_LOAD_ERROR_FUNCTION" name="Function" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_IMPORT" name="Import" />
     </enum>
     <enum name="ObjectError" cname="CpgObjectError" type="enum">
       <member cname="CPG_OBJECT_ERROR_PROP_UNKNOWN" name="ErrorPropUnknown" />
@@ -291,6 +292,84 @@
         </parameters>
       </method>
     </object>
+    <object name="Import" cname="CpgImport" parent="CpgGroup">
+      <field name="Priv" cname="priv" type="CpgImportPrivate*" />
+      <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct-only="true" />
+      <property name="AutoImported" cname="auto-imported" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="Modified" cname="modified" type="gboolean" readable="true" />
+      <property name="Filename" cname="filename" type="gchar*" readable="true" />
+      <method name="AppendSearchPath" cname="cpg_import_append_search_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="GetAutoImported" cname="cpg_import_get_auto_imported">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetFile" cname="cpg_import_get_file">
+        <return-type type="GFile*" />
+      </method>
+      <method name="GetModified" cname="cpg_import_get_modified">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetSearchPath" cname="cpg_import_get_search_path" shared="true">
+        <return-type type="const-gchar**" />
+      </method>
+      <method name="GetType" cname="cpg_import_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Load" cname="cpg_import_load">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="parent" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_import_new">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="parent" />
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="GFile*" name="file" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_import_new_from_path">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="parent" />
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <method name="PrependSearchPath" cname="cpg_import_prepend_search_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="SetSearchPath" cname="cpg_import_set_search_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gchar**" name="path" />
+        </parameters>
+      </method>
+    </object>
+    <object name="ImportAlias" cname="CpgImportAlias" parent="CpgImport">
+      <field name="Priv" cname="priv" type="CpgImportAliasPrivate*" />
+      <property name="Source" cname="source" type="CpgImport" readable="true" writeable="true" construct-only="true" />
+      <method name="GetType" cname="cpg_import_alias_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_import_alias_new">
+        <parameters>
+          <parameter type="CpgImport*" name="source" />
+        </parameters>
+      </constructor>
+    </object>
     <object name="Integrator" cname="CpgIntegrator" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgIntegratorPrivate*" />
       <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" />
@@ -524,16 +603,12 @@
         </parameters>
       </signal>
       <property name="Integrator" cname="integrator" type="CpgIntegrator" readable="true" writeable="true" />
+      <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct-only="true" />
+      <property name="Filename" cname="filename" type="gchar*" readable="true" />
       <method name="AddFromTemplate" cname="cpg_network_add_from_template">
         <return-type type="CpgObject*" />
         <parameters>
           <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="AddFunction" cname="cpg_network_add_function">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgFunction*" name="function" />
         </parameters>
       </method>
       <method name="AddLinkFromTemplate" cname="cpg_network_add_link_from_template">
@@ -544,33 +619,17 @@
           <parameter type="CpgObject*" name="to" />
         </parameters>
       </method>
-      <method name="AddTemplate" cname="cpg_network_add_template">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="CpgObject*" name="object" />
-        </parameters>
+      <method name="GetFile" cname="cpg_network_get_file">
+        <return-type type="GFile*" />
       </method>
-      <method name="GetFunction" cname="cpg_network_get_function">
-        <return-type type="CpgFunction*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="GetFunctions" cname="cpg_network_get_functions">
-        <return-type type="GSList*" />
+      <method name="GetFunctionGroup" cname="cpg_network_get_function_group">
+        <return-type type="CpgGroup*" />
       </method>
       <method name="GetIntegrator" cname="cpg_network_get_integrator">
         <return-type type="CpgIntegrator*" />
       </method>
-      <method name="GetTemplate" cname="cpg_network_get_template">
-        <return-type type="CpgObject*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="GetTemplates" cname="cpg_network_get_templates">
-        <return-type type="const-GSList*" />
+      <method name="GetTemplateGroup" cname="cpg_network_get_template_group">
+        <return-type type="CpgGroup*" />
       </method>
       <method name="GetType" cname="cpg_network_get_type" shared="true">
         <return-type type="GType" />
@@ -587,7 +646,7 @@
       <method name="MergeFromFile" cname="cpg_network_merge_from_file">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="filename" />
+          <parameter type="GFile*" name="file" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -601,7 +660,13 @@
       <constructor cname="cpg_network_new" />
       <constructor cname="cpg_network_new_from_file">
         <parameters>
-          <parameter type="const-gchar*" name="filename" />
+          <parameter type="GFile*" name="file" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_network_new_from_path">
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
@@ -611,18 +676,6 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
-      <method name="RemoveFunction" cname="cpg_network_remove_function">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgFunction*" name="function" />
-        </parameters>
-      </method>
-      <method name="RemoveTemplate" cname="cpg_network_remove_template">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
       <method name="Run" cname="cpg_network_run">
         <return-type type="void" />
         <parameters>
@@ -651,6 +704,76 @@
       </method>
       <method name="WriteToXml" cname="cpg_network_write_to_xml">
         <return-type type="gchar*" />
+      </method>
+    </object>
+    <object name="NetworkDeserializer" cname="CpgNetworkDeserializer" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgNetworkDeserializerPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
+      <property name="Root" cname="root" type="CpgGroup" readable="true" writeable="true" construct-only="true" />
+      <method name="Deserialize" cname="cpg_network_deserializer_deserialize">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GInputStream*" name="stream" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="DeserializeFile" cname="cpg_network_deserializer_deserialize_file">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GFile*" name="file" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="DeserializePath" cname="cpg_network_deserializer_deserialize_path">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_network_deserializer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_network_deserializer_new">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="root" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="NetworkSerializer" cname="CpgNetworkSerializer" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgNetworkSerializerPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
+      <property name="Root" cname="root" type="CpgGroup" readable="true" writeable="true" construct-only="true" />
+      <method name="GetType" cname="cpg_network_serializer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_network_serializer_new">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="root" />
+        </parameters>
+      </constructor>
+      <method name="Serialize" cname="cpg_network_serializer_serialize">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GOutputStream*" name="stream" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SerializeFile" cname="cpg_network_serializer_serialize_file">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GFile*" name="file" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SerializePath" cname="cpg_network_serializer_serialize_path">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
       </method>
     </object>
     <object name="Object" cname="CpgObject" parent="GObject">
@@ -1019,7 +1142,7 @@
       <method name="SetFunctions" cname="cpg_compile_context_set_functions">
         <return-type type="void" />
         <parameters>
-          <parameter type="GSList*" name="functions" />
+          <parameter type="const-GSList*" name="functions" />
         </parameters>
       </method>
     </boxed>
