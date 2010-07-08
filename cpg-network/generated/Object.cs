@@ -33,6 +33,35 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_new_from_template(IntPtr templ);
+
+		public Object (Cpg.Object templ) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Object)) {
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+			Raw = cpg_object_new_from_template(templ == null ? IntPtr.Zero : templ.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_object_get_auto_imported(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_object_set_auto_imported(IntPtr raw, bool auto_imported);
+
+		[GLib.Property ("auto-imported")]
+		public bool AutoImported {
+			get  {
+				bool raw_ret = cpg_object_get_auto_imported(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set  {
+				cpg_object_set_auto_imported(Handle, value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_parent(IntPtr raw);
 
 		[GLib.Property ("parent")]
@@ -353,14 +382,23 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_object_is_compiled(IntPtr raw);
+		static extern IntPtr cpg_object_add_property(IntPtr raw, IntPtr name, IntPtr expression, int flags);
 
-		public bool IsCompiled { 
-			get {
-				bool raw_ret = cpg_object_is_compiled(Handle);
-				bool ret = raw_ret;
-				return ret;
-			}
+		public Cpg.Property AddProperty(string name, string expression, Cpg.PropertyFlags flags) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
+			IntPtr raw_ret = cpg_object_add_property(Handle, native_name, native_expression, (int) flags);
+			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
+			GLib.Marshaller.Free (native_name);
+			GLib.Marshaller.Free (native_expression);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_object_reset(IntPtr raw);
+
+		public void Reset() {
+			cpg_object_reset(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -384,10 +422,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_object_reset(IntPtr raw);
+		static extern bool cpg_object_is_compiled(IntPtr raw);
 
-		public void Reset() {
-			cpg_object_reset(Handle);
+		public bool IsCompiled { 
+			get {
+				bool raw_ret = cpg_object_is_compiled(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -462,6 +504,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_object_apply_template(IntPtr raw, IntPtr templ);
+
+		public void ApplyTemplate(Cpg.Object templ) {
+			cpg_object_apply_template(Handle, templ == null ? IntPtr.Zero : templ.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_actors(IntPtr raw);
 
 		public Cpg.Property[] Actors { 
@@ -498,15 +547,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_object_add_property(IntPtr raw, IntPtr name, IntPtr expression, int flags);
+		static extern IntPtr cpg_object_copy(IntPtr raw);
 
-		public Cpg.Property AddProperty(string name, string expression, Cpg.PropertyFlags flags) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
-			IntPtr raw_ret = cpg_object_add_property(Handle, native_name, native_expression, (int) flags);
-			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
-			GLib.Marshaller.Free (native_name);
-			GLib.Marshaller.Free (native_expression);
+		public Cpg.Object Copy() {
+			IntPtr raw_ret = cpg_object_copy(Handle);
+			Cpg.Object ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Object;
 			return ret;
 		}
 

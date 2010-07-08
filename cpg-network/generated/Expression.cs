@@ -111,6 +111,23 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_expression_get_once(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expression_set_once(IntPtr raw, bool instant);
+
+		public bool Once { 
+			get {
+				bool raw_ret = cpg_expression_get_once(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set {
+				cpg_expression_set_once(Handle, value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_expression_set_from_string(IntPtr raw, IntPtr value);
 
 		public string FromString { 

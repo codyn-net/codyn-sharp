@@ -31,28 +31,6 @@ namespace Cpg {
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 		}
 
-		[GLib.Property ("filename")]
-		public string Filename {
-			get {
-				GLib.Value val = GetProperty ("filename");
-				string ret = (string) val;
-				val.Dispose ();
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_import_get_auto_imported(IntPtr raw);
-
-		[GLib.Property ("auto-imported")]
-		public bool AutoImported {
-			get  {
-				bool raw_ret = cpg_import_get_auto_imported(Handle);
-				bool ret = raw_ret;
-				return ret;
-			}
-		}
-
 		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_import_get_modified(IntPtr raw);
 
@@ -61,6 +39,16 @@ namespace Cpg {
 			get  {
 				bool raw_ret = cpg_import_get_modified(Handle);
 				bool ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[GLib.Property ("filename")]
+		public string Filename {
+			get {
+				GLib.Value val = GetProperty ("filename");
+				string ret = (string) val;
+				val.Dispose ();
 				return ret;
 			}
 		}

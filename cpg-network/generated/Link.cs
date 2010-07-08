@@ -71,6 +71,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_link_attach(IntPtr raw, IntPtr from, IntPtr to);
+
+		public void Attach(Cpg.Object from, Cpg.Object to) {
+			cpg_link_attach(Handle, from == null ? IntPtr.Zero : from.Handle, to == null ? IntPtr.Zero : to.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_link_remove_action(IntPtr raw, IntPtr action);
 
 		public bool RemoveAction(Cpg.LinkAction action) {

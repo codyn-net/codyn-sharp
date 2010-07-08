@@ -194,6 +194,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_property_reset(IntPtr raw);
+
+		public void Reset() {
+			cpg_property_reset(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_property_reset_cache(IntPtr raw);
 
 		public void ResetCache() {

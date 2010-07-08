@@ -78,6 +78,9 @@
       <method name="GetInstructions" cname="cpg_expression_get_instructions">
         <return-type type="const-GSList*" />
       </method>
+      <method name="GetOnce" cname="cpg_expression_get_once">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetType" cname="cpg_expression_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -102,6 +105,12 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GSList*" name="instructions" />
+        </parameters>
+      </method>
+      <method name="SetOnce" cname="cpg_expression_set_once">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="instant" />
         </parameters>
       </method>
       <method name="SetValue" cname="cpg_expression_set_value">
@@ -185,7 +194,7 @@
         <return-type type="void" />
       </method>
       <method name="GetPieces" cname="cpg_function_polynomial_get_pieces">
-        <return-type type="GSList*" />
+        <return-type type="const-GSList*" />
       </method>
       <method name="GetType" cname="cpg_function_polynomial_get_type" shared="true">
         <return-type type="GType" />
@@ -295,7 +304,6 @@
     <object name="Import" cname="CpgImport" parent="CpgGroup">
       <field name="Priv" cname="priv" type="CpgImportPrivate*" />
       <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct-only="true" />
-      <property name="AutoImported" cname="auto-imported" type="gboolean" readable="true" writeable="true" construct-only="true" />
       <property name="Modified" cname="modified" type="gboolean" readable="true" />
       <property name="Filename" cname="filename" type="gchar*" readable="true" />
       <method name="AppendSearchPath" cname="cpg_import_append_search_path" shared="true">
@@ -303,9 +311,6 @@
         <parameters>
           <parameter type="const-gchar*" name="path" />
         </parameters>
-      </method>
-      <method name="GetAutoImported" cname="cpg_import_get_auto_imported">
-        <return-type type="gboolean" />
       </method>
       <method name="GetFile" cname="cpg_import_get_file">
         <return-type type="GFile*" />
@@ -524,6 +529,13 @@
           <parameter type="const-gchar*" name="expression" />
         </parameters>
       </method>
+      <method name="Attach" cname="cpg_link_attach">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="from" />
+          <parameter type="CpgObject*" name="to" />
+        </parameters>
+      </method>
       <method name="GetAction" cname="cpg_link_get_action">
         <return-type type="CpgLinkAction*" />
         <parameters>
@@ -605,20 +617,6 @@
       <property name="Integrator" cname="integrator" type="CpgIntegrator" readable="true" writeable="true" />
       <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct-only="true" />
       <property name="Filename" cname="filename" type="gchar*" readable="true" />
-      <method name="AddFromTemplate" cname="cpg_network_add_from_template">
-        <return-type type="CpgObject*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="AddLinkFromTemplate" cname="cpg_network_add_link_from_template">
-        <return-type type="CpgObject*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="CpgObject*" name="from" />
-          <parameter type="CpgObject*" name="to" />
-        </parameters>
-      </method>
       <method name="GetFile" cname="cpg_network_get_file">
         <return-type type="GFile*" />
       </method>
@@ -647,6 +645,13 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GFile*" name="file" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="MergeFromPath" cname="cpg_network_merge_from_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -780,6 +785,7 @@
       <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
       <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Parent" cname="parent" type="CpgObject" readable="true" />
+      <property name="AutoImported" cname="auto-imported" type="gboolean" readable="true" writeable="true" construct="true" />
       <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
         <return-type type="void" />
         <parameters>
@@ -853,6 +859,12 @@
           <parameter type="CpgObject*" name="source" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetCopyType" cname="get_copy_type">
+        <return-type type="GType" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
       <virtual_method name="Taint" cname="taint">
         <return-type type="void" />
         <parameters>
@@ -917,6 +929,12 @@
           <parameter type="CpgPropertyFlags" name="flags" />
         </parameters>
       </method>
+      <method name="ApplyTemplate" cname="cpg_object_apply_template">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </method>
       <method name="Clear" cname="cpg_object_clear">
         <return-type type="void" />
       </method>
@@ -926,6 +944,9 @@
           <parameter type="CpgCompileContext*" name="context" />
           <parameter type="CPG_FORWARD_DECL" name="(CpgCompileError)*" />
         </parameters>
+      </method>
+      <method name="Copy" cname="cpg_object_copy">
+        <return-type type="CpgObject*" owned="true" />
       </method>
       <method name="Equal" cname="cpg_object_equal">
         <return-type type="gboolean" />
@@ -941,6 +962,9 @@
       </method>
       <method name="GetAppliedTemplates" cname="cpg_object_get_applied_templates">
         <return-type type="const-GSList*" />
+      </method>
+      <method name="GetAutoImported" cname="cpg_object_get_auto_imported">
+        <return-type type="gboolean" />
       </method>
       <method name="GetId" cname="cpg_object_get_id">
         <return-type type="const-gchar*" />
@@ -974,6 +998,11 @@
           <parameter type="const-gchar*" name="id" />
         </parameters>
       </constructor>
+      <constructor cname="cpg_object_new_from_template">
+        <parameters>
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </constructor>
       <method name="RemoveProperty" cname="cpg_object_remove_property">
         <return-type type="gboolean" />
         <parameters>
@@ -986,6 +1015,12 @@
       </method>
       <method name="ResetCache" cname="cpg_object_reset_cache">
         <return-type type="void" />
+      </method>
+      <method name="SetAutoImported" cname="cpg_object_set_auto_imported">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="auto_imported" />
+        </parameters>
       </method>
       <method name="SetId" cname="cpg_object_set_id">
         <return-type type="void" />
@@ -1065,6 +1100,9 @@
           <parameter type="CpgPropertyFlags" name="flags" />
         </parameters>
       </method>
+      <method name="Reset" cname="cpg_property_reset">
+        <return-type type="void" />
+      </method>
       <method name="ResetCache" cname="cpg_property_reset_cache">
         <return-type type="void" />
       </method>
@@ -1118,10 +1156,10 @@
         </parameters>
       </method>
       <method name="GetFunctions" cname="cpg_compile_context_get_functions">
-        <return-type type="GSList*" />
+        <return-type type="const-GSList*" />
       </method>
       <method name="GetObjects" cname="cpg_compile_context_get_objects">
-        <return-type type="GSList*" />
+        <return-type type="const-GSList*" />
       </method>
       <method name="GetType" cname="cpg_compile_context_get_type" shared="true">
         <return-type type="GType" />
