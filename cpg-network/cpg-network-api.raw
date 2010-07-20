@@ -701,15 +701,6 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </method>
-      <method name="WriteToFile" cname="cpg_network_write_to_file">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="filename" />
-        </parameters>
-      </method>
-      <method name="WriteToXml" cname="cpg_network_write_to_xml">
-        <return-type type="gchar*" />
-      </method>
     </object>
     <object name="NetworkDeserializer" cname="CpgNetworkDeserializer" parent="GObject">
       <field name="Priv" cname="priv" type="CpgNetworkDeserializerPrivate*" />
@@ -770,6 +761,12 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GFile*" name="file" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SerializeMemory" cname="cpg_network_serializer_serialize_memory">
+        <return-type type="gchar*" />
+        <parameters>
           <parameter type="GError**" name="error" />
         </parameters>
       </method>

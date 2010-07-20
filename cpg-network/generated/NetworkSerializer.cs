@@ -57,6 +57,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern unsafe IntPtr cpg_network_serializer_serialize_memory(IntPtr raw, out IntPtr error);
+
+		public unsafe string SerializeMemory() {
+			IntPtr error = IntPtr.Zero;
+			IntPtr raw_ret = cpg_network_serializer_serialize_memory(Handle, out error);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern unsafe bool cpg_network_serializer_serialize_path(IntPtr raw, IntPtr path, out IntPtr error);
 
 		public unsafe bool SerializePath(string path) {

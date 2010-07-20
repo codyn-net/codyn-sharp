@@ -141,24 +141,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_network_write_to_xml(IntPtr raw);
-
-		public string WriteToXml() {
-			IntPtr raw_ret = cpg_network_write_to_xml(Handle);
-			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_network_write_to_file(IntPtr raw, IntPtr filename);
-
-		public void WriteToFile(string filename) {
-			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup (filename);
-			cpg_network_write_to_file(Handle, native_filename);
-			GLib.Marshaller.Free (native_filename);
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_network_get_template_group(IntPtr raw);
 
 		public Cpg.Group TemplateGroup { 
