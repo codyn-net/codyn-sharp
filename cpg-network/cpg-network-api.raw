@@ -912,6 +912,14 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
+      <virtual_method name="VerifyRemoveProperty" cname="verify_remove_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </virtual_method>
       <virtual_method name="Clear" cname="clear">
         <return-type type="void" />
         <parameters>
@@ -1034,6 +1042,13 @@
       </method>
       <method name="Taint" cname="cpg_object_taint">
         <return-type type="void" />
+      </method>
+      <method name="VerifyRemoveProperty" cname="cpg_object_verify_remove_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
       </method>
     </object>
     <object name="Property" cname="CpgProperty" parent="GObject">

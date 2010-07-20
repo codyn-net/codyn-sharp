@@ -482,6 +482,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern unsafe bool cpg_object_verify_remove_property(IntPtr raw, IntPtr name, out IntPtr error);
+
+		public unsafe bool VerifyRemoveProperty(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_object_verify_remove_property(Handle, native_name, out error);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_applied_templates(IntPtr raw);
 
 		public Cpg.Object[] AppliedTemplates { 
