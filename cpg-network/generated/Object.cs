@@ -188,50 +188,50 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void PropertyRemovedVMDelegate (IntPtr objekt, IntPtr property);
+		delegate void CopiedVMDelegate (IntPtr objekt, IntPtr copy);
 
-		static PropertyRemovedVMDelegate PropertyRemovedVMCallback;
+		static CopiedVMDelegate CopiedVMCallback;
 
-		static void propertyremoved_cb (IntPtr objekt, IntPtr property)
+		static void copied_cb (IntPtr objekt, IntPtr copy)
 		{
 			try {
 				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
-				objekt_managed.OnPropertyRemoved (GLib.Object.GetObject(property) as Cpg.Property);
+				objekt_managed.OnCopied (GLib.Object.GetObject(copy) as Cpg.Object);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
 		}
 
-		private static void OverridePropertyRemoved (GLib.GType gtype)
+		private static void OverrideCopied (GLib.GType gtype)
 		{
-			if (PropertyRemovedVMCallback == null)
-				PropertyRemovedVMCallback = new PropertyRemovedVMDelegate (propertyremoved_cb);
-			OverrideVirtualMethod (gtype, "property-removed", PropertyRemovedVMCallback);
+			if (CopiedVMCallback == null)
+				CopiedVMCallback = new CopiedVMDelegate (copied_cb);
+			OverrideVirtualMethod (gtype, "copied", CopiedVMCallback);
 		}
 
-		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverridePropertyRemoved")]
-		protected virtual void OnPropertyRemoved (Cpg.Property property)
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideCopied")]
+		protected virtual void OnCopied (Cpg.Object copy)
 		{
 			GLib.Value ret = GLib.Value.Empty;
 			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
 			GLib.Value[] vals = new GLib.Value [2];
 			vals [0] = new GLib.Value (this);
 			inst_and_params.Append (vals [0]);
-			vals [1] = new GLib.Value (property);
+			vals [1] = new GLib.Value (copy);
 			inst_and_params.Append (vals [1]);
 			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
 			foreach (GLib.Value v in vals)
 				v.Dispose ();
 		}
 
-		[GLib.Signal("property-removed")]
-		public event Cpg.PropertyRemovedHandler PropertyRemoved {
+		[GLib.Signal("copied")]
+		public event Cpg.CopiedHandler Copied {
 			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "property-removed", typeof (Cpg.PropertyRemovedArgs));
+				GLib.Signal sig = GLib.Signal.Lookup (this, "copied", typeof (Cpg.CopiedArgs));
 				sig.AddDelegate (value);
 			}
 			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "property-removed", typeof (Cpg.PropertyRemovedArgs));
+				GLib.Signal sig = GLib.Signal.Lookup (this, "copied", typeof (Cpg.CopiedArgs));
 				sig.RemoveDelegate (value);
 			}
 		}
@@ -281,6 +281,55 @@ namespace Cpg {
 			}
 			remove {
 				GLib.Signal sig = GLib.Signal.Lookup (this, "property-added", typeof (Cpg.PropertyAddedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void PropertyRemovedVMDelegate (IntPtr objekt, IntPtr property);
+
+		static PropertyRemovedVMDelegate PropertyRemovedVMCallback;
+
+		static void propertyremoved_cb (IntPtr objekt, IntPtr property)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnPropertyRemoved (GLib.Object.GetObject(property) as Cpg.Property);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverridePropertyRemoved (GLib.GType gtype)
+		{
+			if (PropertyRemovedVMCallback == null)
+				PropertyRemovedVMCallback = new PropertyRemovedVMDelegate (propertyremoved_cb);
+			OverrideVirtualMethod (gtype, "property-removed", PropertyRemovedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverridePropertyRemoved")]
+		protected virtual void OnPropertyRemoved (Cpg.Property property)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (property);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("property-removed")]
+		public event Cpg.PropertyRemovedHandler PropertyRemoved {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "property-removed", typeof (Cpg.PropertyRemovedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "property-removed", typeof (Cpg.PropertyRemovedArgs));
 				sig.RemoveDelegate (value);
 			}
 		}

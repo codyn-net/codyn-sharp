@@ -801,6 +801,13 @@
           <parameter type="CpgObject*" name="object" />
         </parameters>
       </signal>
+      <signal name="Copied" cname="copied" when="LAST" field_name="copied">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="copy" />
+        </parameters>
+      </signal>
       <signal name="PropertyAdded" cname="property-added" when="LAST" field_name="property_added">
         <return-type type="void" />
         <parameters>
