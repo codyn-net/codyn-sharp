@@ -10,6 +10,8 @@
         <file>../libcpg-network/cpg-network/cpg-state.h</file>
         <file>../libcpg-network/cpg-network/cpg-link.c</file>
         <file>../libcpg-network/cpg-network/cpg-link.h</file>
+        <file>../libcpg-network/cpg-network/cpg-link-action.c</file>
+        <file>../libcpg-network/cpg-network/cpg-link-action.h</file>
         <file>../libcpg-network/cpg-network/cpg-expression.c</file>
         <file>../libcpg-network/cpg-network/cpg-expression.h</file>
         <file>../libcpg-network/cpg-network/cpg-monitor.c</file>

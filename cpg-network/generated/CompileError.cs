@@ -25,7 +25,7 @@ namespace Cpg {
 		public Cpg.LinkAction LinkAction { 
 			get {
 				IntPtr raw_ret = cpg_compile_error_get_link_action(Handle);
-				Cpg.LinkAction ret = raw_ret == IntPtr.Zero ? null : (Cpg.LinkAction) GLib.Opaque.GetOpaque (raw_ret, typeof (Cpg.LinkAction), false);
+				Cpg.LinkAction ret = GLib.Object.GetObject(raw_ret) as Cpg.LinkAction;
 				return ret;
 			}
 		}

@@ -288,6 +288,12 @@
           <parameter type="CpgObject*" name="proxy" />
         </parameters>
       </constructor>
+      <method name="PropertyIsProxy" cname="cpg_group_property_is_proxy">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
       <method name="Remove" cname="cpg_group_remove">
         <return-type type="gboolean" />
         <parameters>
@@ -520,13 +526,27 @@
     </object>
     <object name="Link" cname="CpgLink" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgLinkPrivate*" />
+      <signal name="ActionAdded" cname="action-added" when="LAST" field_name="action_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLink*" name="link" />
+          <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </signal>
+      <signal name="ActionRemoved" cname="action-removed" when="LAST" field_name="action_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLink*" name="link" />
+          <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </signal>
       <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" construct="true" />
       <property name="To" cname="to" type="CpgObject" readable="true" writeable="true" construct="true" />
       <method name="AddAction" cname="cpg_link_add_action">
         <return-type type="CpgLinkAction*" />
         <parameters>
           <parameter type="CpgProperty*" name="target" />
-          <parameter type="const-gchar*" name="expression" />
+          <parameter type="CpgExpression*" name="equation" />
         </parameters>
       </method>
       <method name="Attach" cname="cpg_link_attach">
@@ -565,6 +585,44 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </method>
+    </object>
+    <object name="LinkAction" cname="CpgLinkAction" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgLinkActionPrivate*" />
+      <property name="Target" cname="target" type="CpgProperty" readable="true" writeable="true" construct="true" />
+      <property name="Equation" cname="equation" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <method name="Depends" cname="cpg_link_action_depends">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </method>
+      <method name="GetEquation" cname="cpg_link_action_get_equation">
+        <return-type type="CpgExpression*" />
+      </method>
+      <method name="GetTarget" cname="cpg_link_action_get_target">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_link_action_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_link_action_new">
+        <parameters>
+          <parameter type="CpgProperty*" name="target" />
+          <parameter type="CpgExpression*" name="equation" />
+        </parameters>
+      </constructor>
+      <method name="SetEquation" cname="cpg_link_action_set_equation">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgExpression*" name="equation" />
+        </parameters>
+      </method>
+      <method name="SetTarget" cname="cpg_link_action_set_target">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgProperty*" name="target" />
         </parameters>
       </method>
     </object>
@@ -1382,29 +1440,6 @@
         </parameters>
       </constructor>
     </struct>
-    <boxed name="LinkAction" cname="CpgLinkAction" opaque="true">
-      <method name="Depends" cname="cpg_link_action_depends">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CpgProperty*" name="property" />
-        </parameters>
-      </method>
-      <method name="GetExpression" cname="cpg_link_action_get_expression">
-        <return-type type="CpgExpression*" />
-      </method>
-      <method name="GetTarget" cname="cpg_link_action_get_target">
-        <return-type type="CpgProperty*" />
-      </method>
-      <method name="GetType" cname="cpg_link_action_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <method name="SetTarget" cname="cpg_link_action_set_target">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgProperty*" name="property" />
-        </parameters>
-      </method>
-    </boxed>
     <class name="Integrators" cname="CpgIntegrators_">
       <method name="Create" cname="cpg_integrators_create" shared="true">
         <return-type type="GSList*" />

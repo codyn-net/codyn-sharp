@@ -70,6 +70,104 @@ namespace Cpg {
 			}
 		}
 
+		[GLib.CDeclCallback]
+		delegate void ActionAddedVMDelegate (IntPtr link, IntPtr action);
+
+		static ActionAddedVMDelegate ActionAddedVMCallback;
+
+		static void actionadded_cb (IntPtr link, IntPtr action)
+		{
+			try {
+				Link link_managed = GLib.Object.GetObject (link, false) as Link;
+				link_managed.OnActionAdded (GLib.Object.GetObject(action) as Cpg.LinkAction);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideActionAdded (GLib.GType gtype)
+		{
+			if (ActionAddedVMCallback == null)
+				ActionAddedVMCallback = new ActionAddedVMDelegate (actionadded_cb);
+			OverrideVirtualMethod (gtype, "action-added", ActionAddedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Link), ConnectionMethod="OverrideActionAdded")]
+		protected virtual void OnActionAdded (Cpg.LinkAction action)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (action);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("action-added")]
+		public event Cpg.ActionAddedHandler ActionAdded {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "action-added", typeof (Cpg.ActionAddedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "action-added", typeof (Cpg.ActionAddedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void ActionRemovedVMDelegate (IntPtr link, IntPtr action);
+
+		static ActionRemovedVMDelegate ActionRemovedVMCallback;
+
+		static void actionremoved_cb (IntPtr link, IntPtr action)
+		{
+			try {
+				Link link_managed = GLib.Object.GetObject (link, false) as Link;
+				link_managed.OnActionRemoved (GLib.Object.GetObject(action) as Cpg.LinkAction);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideActionRemoved (GLib.GType gtype)
+		{
+			if (ActionRemovedVMCallback == null)
+				ActionRemovedVMCallback = new ActionRemovedVMDelegate (actionremoved_cb);
+			OverrideVirtualMethod (gtype, "action-removed", ActionRemovedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Link), ConnectionMethod="OverrideActionRemoved")]
+		protected virtual void OnActionRemoved (Cpg.LinkAction action)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (action);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("action-removed")]
+		public event Cpg.ActionRemovedHandler ActionRemoved {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "action-removed", typeof (Cpg.ActionRemovedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "action-removed", typeof (Cpg.ActionRemovedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
 		[DllImport("cpg-network-2.0")]
 		static extern void cpg_link_attach(IntPtr raw, IntPtr from, IntPtr to);
 
@@ -87,13 +185,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_link_add_action(IntPtr raw, IntPtr target, IntPtr expression);
+		static extern IntPtr cpg_link_add_action(IntPtr raw, IntPtr target, IntPtr equation);
 
-		public Cpg.LinkAction AddAction(Cpg.Property target, string expression) {
-			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
-			IntPtr raw_ret = cpg_link_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, native_expression);
-			Cpg.LinkAction ret = raw_ret == IntPtr.Zero ? null : (Cpg.LinkAction) GLib.Opaque.GetOpaque (raw_ret, typeof (Cpg.LinkAction), false);
-			GLib.Marshaller.Free (native_expression);
+		public Cpg.LinkAction AddAction(Cpg.Property target, Cpg.Expression equation) {
+			IntPtr raw_ret = cpg_link_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, equation == null ? IntPtr.Zero : equation.Handle);
+			Cpg.LinkAction ret = GLib.Object.GetObject(raw_ret) as Cpg.LinkAction;
 			return ret;
 		}
 
@@ -114,7 +210,7 @@ namespace Cpg {
 		public Cpg.LinkAction GetAction(string target) {
 			IntPtr native_target = GLib.Marshaller.StringToPtrGStrdup (target);
 			IntPtr raw_ret = cpg_link_get_action(Handle, native_target);
-			Cpg.LinkAction ret = raw_ret == IntPtr.Zero ? null : (Cpg.LinkAction) GLib.Opaque.GetOpaque (raw_ret, typeof (Cpg.LinkAction), false);
+			Cpg.LinkAction ret = GLib.Object.GetObject(raw_ret) as Cpg.LinkAction;
 			GLib.Marshaller.Free (native_target);
 			return ret;
 		}

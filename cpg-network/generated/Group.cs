@@ -156,6 +156,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_group_property_is_proxy(IntPtr raw, IntPtr name);
+
+		public bool PropertyIsProxy(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cpg_group_property_is_proxy(Handle, native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_group_find_object(IntPtr raw, IntPtr path);
 
 		public Cpg.Object FindObject(string path) {
