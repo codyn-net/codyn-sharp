@@ -673,7 +673,7 @@
         </parameters>
       </signal>
       <property name="Integrator" cname="integrator" type="CpgIntegrator" readable="true" writeable="true" />
-      <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct-only="true" />
+      <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct="true" />
       <property name="Filename" cname="filename" type="gchar*" readable="true" />
       <method name="GetFile" cname="cpg_network_get_file">
         <return-type type="GFile*" />
@@ -692,6 +692,27 @@
       </method>
       <method name="LoadErrorQuark" cname="cpg_network_load_error_quark" shared="true">
         <return-type type="GQuark" />
+      </method>
+      <method name="LoadFromFile" cname="cpg_network_load_from_file">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GFile*" name="file" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="LoadFromPath" cname="cpg_network_load_from_path">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="LoadFromXml" cname="cpg_network_load_from_xml">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="xml" />
+          <parameter type="GError**" name="error" />
+        </parameters>
       </method>
       <method name="Merge" cname="cpg_network_merge">
         <return-type type="void" />
