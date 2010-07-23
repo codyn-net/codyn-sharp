@@ -1057,6 +1057,9 @@
       <method name="GetAutoImported" cname="cpg_object_get_auto_imported">
         <return-type type="gboolean" />
       </method>
+      <method name="GetFullId" cname="cpg_object_get_full_id">
+        <return-type type="gchar*" />
+      </method>
       <method name="GetId" cname="cpg_object_get_id">
         <return-type type="const-gchar*" />
       </method>

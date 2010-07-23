@@ -533,6 +533,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_full_id(IntPtr raw);
+
+		public string FullId { 
+			get {
+				IntPtr raw_ret = cpg_object_get_full_id(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern unsafe bool cpg_object_remove_property(IntPtr raw, IntPtr name, out IntPtr error);
 
 		public unsafe bool RemoveProperty(string name) {
