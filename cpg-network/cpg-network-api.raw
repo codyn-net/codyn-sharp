@@ -1169,6 +1169,9 @@
       <method name="GetFlags" cname="cpg_property_get_flags">
         <return-type type="CpgPropertyFlags" />
       </method>
+      <method name="GetFullName" cname="cpg_property_get_full_name">
+        <return-type type="gchar*" />
+      </method>
       <method name="GetIntegrated" cname="cpg_property_get_integrated">
         <return-type type="gboolean" />
       </method>
