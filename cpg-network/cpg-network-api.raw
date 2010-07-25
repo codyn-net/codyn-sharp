@@ -15,6 +15,11 @@
       <member cname="CPG_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
       <member cname="CPG_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
+    <enum name="FunctionError" cname="CpgFunctionError" type="enum">
+      <member cname="CPG_FUNCTION_ERROR_UNKNOWN" name="ErrorUnknown" />
+      <member cname="CPG_FUNCTION_ERROR_ARGUMENT_NOT_FOUND" name="ErrorArgumentNotFound" />
+      <member cname="CPG_FUNCTION_NUM_ERRORS" name="NumErrors" />
+    </enum>
     <enum name="InstructionBinding" cname="CpgInstructionBinding" type="enum">
       <member cname="CPG_INSTRUCTION_BINDING_NONE" name="None" />
       <member cname="CPG_INSTRUCTION_BINDING_FROM" name="From" />
@@ -37,9 +42,9 @@
       <member cname="CPG_NETWORK_LOAD_ERROR_IMPORT" name="Import" />
     </enum>
     <enum name="ObjectError" cname="CpgObjectError" type="enum">
-      <member cname="CPG_OBJECT_ERROR_PROP_UNKNOWN" name="ErrorPropUnknown" />
-      <member cname="CPG_OBJECT_ERROR_PROP_NOT_FOUND" name="ErrorPropNotFound" />
-      <member cname="CPG_OBJECT_ERROR_PROP_IN_USE" name="ErrorPropInUse" />
+      <member cname="CPG_OBJECT_ERROR_PROPERTY_UNKNOWN" name="ErrorPropertyUnknown" />
+      <member cname="CPG_OBJECT_ERROR_PROPERTY_NOT_FOUND" name="ErrorPropertyNotFound" />
+      <member cname="CPG_OBJECT_ERROR_PROPERTY_IN_USE" name="ErrorPropertyInUse" />
       <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
     </enum>
     <enum name="PropertyFlags" cname="CpgPropertyFlags" type="flags">
@@ -49,7 +54,7 @@
       <member cname="CPG_PROPERTY_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
       <member cname="CPG_PROPERTY_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
     </enum>
-    <object name="Expression" cname="CpgExpression" parent="GObject">
+    <object name="Expression" cname="CpgExpression" parent="GInitiallyUnowned">
       <field name="Priv" cname="priv" type="CpgExpressionPrivate*" />
       <property name="Expression" cname="expression" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Value" cname="value" type="gdouble" readable="true" writeable="true" />
@@ -59,6 +64,9 @@
           <parameter type="CpgCompileContext*" name="context" />
           <parameter type="GError**" name="error" />
         </parameters>
+      </method>
+      <method name="Copy" cname="cpg_expression_copy">
+        <return-type type="CpgExpression*" owned="true" />
       </method>
       <method name="Equal" cname="cpg_expression_equal">
         <return-type type="gboolean" />
@@ -123,6 +131,20 @@
     <object name="Function" cname="CpgFunction" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgFunctionPrivate*" />
       <property name="Expression" cname="expression" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <signal name="ArgumentAdded" cname="argument-added" when="LAST" field_name="argument_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+          <parameter type="CpgFunctionArgument*" name="argument" />
+        </parameters>
+      </signal>
+      <signal name="ArgumentRemoved" cname="argument-removed" when="LAST" field_name="argument_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+          <parameter type="CpgFunctionArgument*" name="argument" />
+        </parameters>
+      </signal>
       <virtual_method name="Evaluate" cname="evaluate">
         <return-type type="gdouble" />
         <parameters>
@@ -143,7 +165,13 @@
         </parameters>
       </method>
       <method name="ClearArguments" cname="cpg_function_clear_arguments">
-        <return-type type="void" />
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="ErrorQuark" cname="cpg_function_error_quark" shared="true">
+        <return-type type="GQuark" />
       </method>
       <method name="Execute" cname="cpg_function_execute">
         <return-type type="void" />
@@ -152,7 +180,7 @@
         </parameters>
       </method>
       <method name="GetArguments" cname="cpg_function_get_arguments">
-        <return-type type="GList*" />
+        <return-type type="const-GList*" />
       </method>
       <method name="GetNArguments" cname="cpg_function_get_n_arguments">
         <return-type type="guint" />
@@ -170,15 +198,69 @@
         </parameters>
       </constructor>
       <method name="RemoveArgument" cname="cpg_function_remove_argument">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgFunctionArgument*" name="argument" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="SetExpression" cname="cpg_function_set_expression">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgExpression*" name="expression" />
+        </parameters>
+      </method>
+    </object>
+    <object name="FunctionArgument" cname="CpgFunctionArgument" parent="GInitiallyUnowned">
+      <field name="Priv" cname="priv" type="CpgFunctionArgumentPrivate*" />
+      <signal name="InvalidateName" cname="invalidate-name" when="LAST" field_name="invalidate_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgFunctionArgument*" name="argument" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </signal>
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Optional" cname="optional" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="Default" cname="default" type="gdouble" readable="true" writeable="true" construct="true" />
+      <method name="Copy" cname="cpg_function_argument_copy">
+        <return-type type="CpgFunctionArgument*" owned="true" />
+      </method>
+      <method name="GetDefaultValue" cname="cpg_function_argument_get_default_value">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetName" cname="cpg_function_argument_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetOptional" cname="cpg_function_argument_get_optional">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetType" cname="cpg_function_argument_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_function_argument_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gboolean" name="optional" />
+          <parameter type="gdouble" name="def" />
+        </parameters>
+      </constructor>
+      <method name="SetDefaultValue" cname="cpg_function_argument_set_default_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="def" />
+        </parameters>
+      </method>
+      <method name="SetName" cname="cpg_function_argument_set_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="SetOptional" cname="cpg_function_argument_set_optional">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="optional" />
         </parameters>
       </method>
     </object>
@@ -543,10 +625,9 @@
       <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" construct="true" />
       <property name="To" cname="to" type="CpgObject" readable="true" writeable="true" construct="true" />
       <method name="AddAction" cname="cpg_link_add_action">
-        <return-type type="CpgLinkAction*" />
+        <return-type type="gboolean" />
         <parameters>
-          <parameter type="CpgProperty*" name="target" />
-          <parameter type="CpgExpression*" name="equation" />
+          <parameter type="CpgLinkAction*" name="action" />
         </parameters>
       </method>
       <method name="Attach" cname="cpg_link_attach">
@@ -588,10 +669,13 @@
         </parameters>
       </method>
     </object>
-    <object name="LinkAction" cname="CpgLinkAction" parent="GObject">
+    <object name="LinkAction" cname="CpgLinkAction" parent="GInitiallyUnowned">
       <field name="Priv" cname="priv" type="CpgLinkActionPrivate*" />
       <property name="Target" cname="target" type="CpgProperty" readable="true" writeable="true" construct="true" />
       <property name="Equation" cname="equation" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <method name="Copy" cname="cpg_link_action_copy">
+        <return-type type="CpgLinkAction*" owned="true" />
+      </method>
       <method name="Depends" cname="cpg_link_action_depends">
         <return-type type="gboolean" />
         <parameters>
@@ -975,12 +1059,10 @@
         </parameters>
       </virtual_method>
       <virtual_method name="AddProperty" cname="add_property">
-        <return-type type="CpgProperty*" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="const-gchar*" name="expression" />
-          <parameter type="CpgPropertyFlags" name="flags" />
+          <parameter type="CpgProperty*" name="property" />
         </parameters>
       </virtual_method>
       <virtual_method name="RemoveProperty" cname="remove_property">
@@ -1013,11 +1095,9 @@
         </parameters>
       </virtual_method>
       <method name="AddProperty" cname="cpg_object_add_property">
-        <return-type type="CpgProperty*" />
+        <return-type type="gboolean" />
         <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="const-gchar*" name="expression" />
-          <parameter type="CpgPropertyFlags" name="flags" />
+          <parameter type="CpgProperty*" name="property" />
         </parameters>
       </method>
       <method name="ApplyTemplate" cname="cpg_object_apply_template">
@@ -1133,17 +1213,27 @@
         </parameters>
       </method>
     </object>
-    <object name="Property" cname="CpgProperty" parent="GObject">
+    <object name="Property" cname="CpgProperty" parent="GInitiallyUnowned">
       <field name="Priv" cname="priv" type="CpgPropertyPrivate*" />
-      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" construct="true" />
       <property name="Flags" cname="flags" type="CpgPropertyFlags" readable="true" writeable="true" construct="true" />
       <property name="Expression" cname="expression" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <signal name="InvalidateName" cname="invalidate-name" when="LAST" field_name="invalidate_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </signal>
       <method name="AddFlags" cname="cpg_property_add_flags">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgPropertyFlags" name="flags" />
         </parameters>
+      </method>
+      <method name="Copy" cname="cpg_property_copy">
+        <return-type type="CpgProperty*" owned="true" />
       </method>
       <method name="Equal" cname="cpg_property_equal">
         <return-type type="gboolean" />
@@ -1195,7 +1285,6 @@
           <parameter type="const-gchar*" name="name" />
           <parameter type="const-gchar*" name="expression" />
           <parameter type="CpgPropertyFlags" name="flags" />
-          <parameter type="CPG_FORWARD_DECL" name="(CpgObject)*" />
         </parameters>
       </constructor>
       <method name="RemoveFlags" cname="cpg_property_remove_flags">
@@ -1226,6 +1315,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="integrated" />
+        </parameters>
+      </method>
+      <method name="SetName" cname="cpg_property_set_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
       <method name="SetUpdate" cname="cpg_property_set_update">
@@ -1332,30 +1427,6 @@
       <method name="TypeQuark" cname="cpg_compile_error_type_quark" shared="true">
         <return-type type="GQuark" />
       </method>
-    </boxed>
-    <boxed name="FunctionArgument" cname="CpgFunctionArgument" opaque="true">
-      <method name="GetDefaultValue" cname="cpg_function_argument_get_default_value">
-        <return-type type="gdouble" />
-      </method>
-      <method name="GetName" cname="cpg_function_argument_get_name">
-        <return-type type="const-gchar*" />
-      </method>
-      <method name="GetOptional" cname="cpg_function_argument_get_optional">
-        <return-type type="gboolean" />
-      </method>
-      <method name="GetProperty" cname="cpg_function_argument_get_property">
-        <return-type type="CpgProperty*" />
-      </method>
-      <method name="GetType" cname="cpg_function_argument_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cpg_function_argument_new">
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="gboolean" name="optional" />
-          <parameter type="gdouble" name="def" />
-        </parameters>
-      </constructor>
     </boxed>
     <boxed name="FunctionPolynomialPiece" cname="CpgFunctionPolynomialPiece" opaque="true">
       <method name="GetBegin" cname="cpg_function_polynomial_piece_get_begin">

@@ -27,10 +27,6 @@
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_applied_templates']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_actors']/return-type" name="element_type">CpgProperty*</attr>
 
-  <!-- CpgProperty -->
-  <attr path="/api/namespace/object[@cname='CpgProperty']/constructor[@cname='cpg_property_new']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
-  <attr path="/api/namespace/object[@cname='CpgProperty']/constructor[@cname='cpg_property_new']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
-
   <!-- CpgGroup -->
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_foreach']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_get_children']/return-type" name="element_type">CpgObject*</attr>

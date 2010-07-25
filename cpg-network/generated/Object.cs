@@ -431,15 +431,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_object_add_property(IntPtr raw, IntPtr name, IntPtr expression, int flags);
+		static extern bool cpg_object_add_property(IntPtr raw, IntPtr property);
 
-		public Cpg.Property AddProperty(string name, string expression, Cpg.PropertyFlags flags) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
-			IntPtr raw_ret = cpg_object_add_property(Handle, native_name, native_expression, (int) flags);
-			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
-			GLib.Marshaller.Free (native_name);
-			GLib.Marshaller.Free (native_expression);
+		public bool AddProperty(Cpg.Property property) {
+			bool raw_ret = cpg_object_add_property(Handle, property == null ? IntPtr.Zero : property.Handle);
+			bool ret = raw_ret;
 			return ret;
 		}
 

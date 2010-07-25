@@ -185,11 +185,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_link_add_action(IntPtr raw, IntPtr target, IntPtr equation);
+		static extern bool cpg_link_add_action(IntPtr raw, IntPtr action);
 
-		public Cpg.LinkAction AddAction(Cpg.Property target, Cpg.Expression equation) {
-			IntPtr raw_ret = cpg_link_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, equation == null ? IntPtr.Zero : equation.Handle);
-			Cpg.LinkAction ret = GLib.Object.GetObject(raw_ret) as Cpg.LinkAction;
+		public bool AddAction(Cpg.LinkAction action) {
+			bool raw_ret = cpg_link_add_action(Handle, action == null ? IntPtr.Zero : action.Handle);
+			bool ret = raw_ret;
 			return ret;
 		}
 
