@@ -17,15 +17,13 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_link_action_new(IntPtr target, IntPtr equation);
 
-		public LinkAction (Cpg.Property target, Cpg.Expression equation) : base (IntPtr.Zero)
+		public LinkAction (string target, Cpg.Expression equation) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (LinkAction)) {
 				ArrayList vals = new ArrayList();
 				ArrayList names = new ArrayList();
-				if (target != null) {
-					names.Add ("target");
-					vals.Add (new GLib.Value (target));
-				}
+				names.Add ("target");
+				vals.Add (new GLib.Value (target));
 				if (equation != null) {
 					names.Add ("equation");
 					vals.Add (new GLib.Value (equation));
@@ -33,7 +31,9 @@ namespace Cpg {
 				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
 				return;
 			}
-			Raw = cpg_link_action_new(target == null ? IntPtr.Zero : target.Handle, equation == null ? IntPtr.Zero : equation.Handle);
+			IntPtr native_target = GLib.Marshaller.StringToPtrGStrdup (target);
+			Raw = cpg_link_action_new(native_target, equation == null ? IntPtr.Zero : equation.Handle);
+			GLib.Marshaller.Free (native_target);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -43,14 +43,16 @@ namespace Cpg {
 		static extern void cpg_link_action_set_target(IntPtr raw, IntPtr target);
 
 		[GLib.Property ("target")]
-		public Cpg.Property Target {
+		public string Target {
 			get  {
 				IntPtr raw_ret = cpg_link_action_get_target(Handle);
-				Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
 			}
 			set  {
-				cpg_link_action_set_target(Handle, value == null ? IntPtr.Zero : value.Handle);
+				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+				cpg_link_action_set_target(Handle, native_value);
+				GLib.Marshaller.Free (native_value);
 			}
 		}
 

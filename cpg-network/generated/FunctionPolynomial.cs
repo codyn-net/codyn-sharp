@@ -27,11 +27,111 @@ namespace Cpg {
 			GLib.Marshaller.Free (native_name);
 		}
 
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_function_polynomial_remove(IntPtr raw, IntPtr piece);
+		[GLib.CDeclCallback]
+		delegate void PieceAddedVMDelegate (IntPtr polynomial, IntPtr piece);
 
-		public void Remove(Cpg.FunctionPolynomialPiece piece) {
-			cpg_function_polynomial_remove(Handle, piece == null ? IntPtr.Zero : piece.Handle);
+		static PieceAddedVMDelegate PieceAddedVMCallback;
+
+		static void pieceadded_cb (IntPtr polynomial, IntPtr piece)
+		{
+			try {
+				FunctionPolynomial polynomial_managed = GLib.Object.GetObject (polynomial, false) as FunctionPolynomial;
+				polynomial_managed.OnPieceAdded (GLib.Object.GetObject(piece) as Cpg.FunctionPolynomialPiece);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverridePieceAdded (GLib.GType gtype)
+		{
+			if (PieceAddedVMCallback == null)
+				PieceAddedVMCallback = new PieceAddedVMDelegate (pieceadded_cb);
+			OverrideVirtualMethod (gtype, "piece-added", PieceAddedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.FunctionPolynomial), ConnectionMethod="OverridePieceAdded")]
+		protected virtual void OnPieceAdded (Cpg.FunctionPolynomialPiece piece)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (piece);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("piece-added")]
+		public event Cpg.PieceAddedHandler PieceAdded {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "piece-added", typeof (Cpg.PieceAddedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "piece-added", typeof (Cpg.PieceAddedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void PieceRemovedVMDelegate (IntPtr polynomial, IntPtr piece);
+
+		static PieceRemovedVMDelegate PieceRemovedVMCallback;
+
+		static void pieceremoved_cb (IntPtr polynomial, IntPtr piece)
+		{
+			try {
+				FunctionPolynomial polynomial_managed = GLib.Object.GetObject (polynomial, false) as FunctionPolynomial;
+				polynomial_managed.OnPieceRemoved (GLib.Object.GetObject(piece) as Cpg.FunctionPolynomialPiece);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverridePieceRemoved (GLib.GType gtype)
+		{
+			if (PieceRemovedVMCallback == null)
+				PieceRemovedVMCallback = new PieceRemovedVMDelegate (pieceremoved_cb);
+			OverrideVirtualMethod (gtype, "piece-removed", PieceRemovedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.FunctionPolynomial), ConnectionMethod="OverridePieceRemoved")]
+		protected virtual void OnPieceRemoved (Cpg.FunctionPolynomialPiece piece)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (piece);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("piece-removed")]
+		public event Cpg.PieceRemovedHandler PieceRemoved {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "piece-removed", typeof (Cpg.PieceRemovedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "piece-removed", typeof (Cpg.PieceRemovedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_function_polynomial_remove(IntPtr raw, IntPtr piece);
+
+		public bool Remove(Cpg.FunctionPolynomialPiece piece) {
+			bool raw_ret = cpg_function_polynomial_remove(Handle, piece == null ? IntPtr.Zero : piece.Handle);
+			bool ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -46,17 +146,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_function_polynomial_clear(IntPtr raw);
+		static extern bool cpg_function_polynomial_add(IntPtr raw, IntPtr piece);
 
-		public new void Clear() {
-			cpg_function_polynomial_clear(Handle);
+		public bool Add(Cpg.FunctionPolynomialPiece piece) {
+			bool raw_ret = cpg_function_polynomial_add(Handle, piece == null ? IntPtr.Zero : piece.Handle);
+			bool ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_function_polynomial_add(IntPtr raw, IntPtr piece);
+		static extern void cpg_function_polynomial_clear_pieces(IntPtr raw);
 
-		public void Add(Cpg.FunctionPolynomialPiece piece) {
-			cpg_function_polynomial_add(Handle, piece == null ? IntPtr.Zero : piece.Handle);
+		public void ClearPieces() {
+			cpg_function_polynomial_clear_pieces(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
