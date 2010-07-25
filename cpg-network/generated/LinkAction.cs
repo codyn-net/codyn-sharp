@@ -57,6 +57,18 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_link_action_get_target_property(IntPtr raw);
+
+		[GLib.Property ("target-property")]
+		public Cpg.Property TargetProperty {
+			get  {
+				IntPtr raw_ret = cpg_link_action_get_target_property(Handle);
+				Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_link_action_get_equation(IntPtr raw);
 
 		[DllImport("cpg-network-2.0")]

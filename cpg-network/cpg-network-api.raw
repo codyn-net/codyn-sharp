@@ -828,6 +828,7 @@
       <field name="Priv" cname="priv" type="CpgLinkActionPrivate*" />
       <property name="Target" cname="target" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Equation" cname="equation" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <property name="TargetProperty" cname="target-property" type="CpgProperty" readable="true" />
       <method name="Copy" cname="cpg_link_action_copy">
         <return-type type="CpgLinkAction*" owned="true" />
       </method>
@@ -842,6 +843,9 @@
       </method>
       <method name="GetTarget" cname="cpg_link_action_get_target">
         <return-type type="const-gchar*" />
+      </method>
+      <method name="GetTargetProperty" cname="cpg_link_action_get_target_property">
+        <return-type type="CpgProperty*" />
       </method>
       <method name="GetType" cname="cpg_link_action_get_type" shared="true">
         <return-type type="GType" />
