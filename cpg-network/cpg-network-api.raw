@@ -54,6 +54,89 @@
       <member cname="CPG_PROPERTY_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
       <member cname="CPG_PROPERTY_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
     </enum>
+    <object name="CompileContext" cname="CpgCompileContext" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgCompileContextPrivate*" />
+      <method name="AppendObject" cname="cpg_compile_context_append_object">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CPG_FORWARD_DECL" name="(CpgObject)*" />
+        </parameters>
+      </method>
+      <method name="GetFunctions" cname="cpg_compile_context_get_functions">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="GetObjects" cname="cpg_compile_context_get_objects">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="GetType" cname="cpg_compile_context_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_compile_context_new" />
+      <method name="PrependObject" cname="cpg_compile_context_prepend_object">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CPG_FORWARD_DECL" name="(CpgObject)*" />
+        </parameters>
+      </method>
+      <method name="Restore" cname="cpg_compile_context_restore">
+        <return-type type="void" />
+      </method>
+      <method name="Save" cname="cpg_compile_context_save">
+        <return-type type="void" />
+      </method>
+      <method name="SetFunctions" cname="cpg_compile_context_set_functions">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GSList*" name="functions" />
+        </parameters>
+      </method>
+    </object>
+    <object name="CompileError" cname="CpgCompileError" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgCompileErrorPrivate*" />
+      <method name="CodeString" cname="cpg_compile_error_code_string" shared="true">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="gint" name="code" />
+        </parameters>
+      </method>
+      <method name="GetCode" cname="cpg_compile_error_get_code">
+        <return-type type="gint" />
+      </method>
+      <method name="GetError" cname="cpg_compile_error_get_error">
+        <return-type type="GError*" />
+      </method>
+      <method name="GetLinkAction" cname="cpg_compile_error_get_link_action">
+        <return-type type="CpgLinkAction*" />
+      </method>
+      <method name="GetMessage" cname="cpg_compile_error_get_message">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetObject" cname="cpg_compile_error_get_object">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetProperty" cname="cpg_compile_error_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_compile_error_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_compile_error_new" />
+      <method name="Set" cname="cpg_compile_error_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GError*" name="gerror" />
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </method>
+      <method name="String" cname="cpg_compile_error_string">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="TypeQuark" cname="cpg_compile_error_type_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+    </object>
     <object name="Expression" cname="CpgExpression" parent="GInitiallyUnowned">
       <field name="Priv" cname="priv" type="CpgExpressionPrivate*" />
       <property name="Expression" cname="expression" type="gchar*" readable="true" writeable="true" construct="true" />
@@ -290,6 +373,64 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgFunctionPolynomialPiece*" name="piece" />
+        </parameters>
+      </method>
+    </object>
+    <object name="FunctionPolynomialPiece" cname="CpgFunctionPolynomialPiece" parent="GInitiallyUnowned">
+      <field name="Priv" cname="priv" type="CpgFunctionPolynomialPiecePrivate*" />
+      <property name="Begin" cname="begin" type="gdouble" readable="true" writeable="true" construct="true" />
+      <property name="End" cname="end" type="gdouble" readable="true" writeable="true" construct="true" />
+      <property name="Coefficients" cname="coefficients" type="value_array" readable="true" writeable="true" construct="true" />
+      <property name="Normalization" cname="normalization" type="value_array" readable="true" />
+      <method name="Copy" cname="cpg_function_polynomial_piece_copy">
+        <return-type type="CpgFunctionPolynomialPiece*" owned="true" />
+      </method>
+      <method name="GetBegin" cname="cpg_function_polynomial_piece_get_begin">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetCoefficients" cname="cpg_function_polynomial_piece_get_coefficients">
+        <return-type type="const-gdouble*" />
+        <parameters>
+          <parameter type="guint*" name="num" />
+        </parameters>
+      </method>
+      <method name="GetEnd" cname="cpg_function_polynomial_piece_get_end">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetNormalization" cname="cpg_function_polynomial_piece_get_normalization">
+        <return-type type="const-gdouble*" />
+        <parameters>
+          <parameter type="guint*" name="num" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_function_polynomial_piece_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_function_polynomial_piece_new">
+        <parameters>
+          <parameter type="gdouble" name="begin" />
+          <parameter type="gdouble" name="end" />
+          <parameter type="gdouble*" name="coefficients" />
+          <parameter type="guint" name="num_coefficients" />
+        </parameters>
+      </constructor>
+      <method name="SetBegin" cname="cpg_function_polynomial_piece_set_begin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="begin" />
+        </parameters>
+      </method>
+      <method name="SetCoefficients" cname="cpg_function_polynomial_piece_set_coefficients">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble*" name="coefficients" />
+          <parameter type="guint" name="num" />
+        </parameters>
+      </method>
+      <method name="SetEnd" cname="cpg_function_polynomial_piece_set_end">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="end" />
         </parameters>
       </method>
     </object>
@@ -1347,131 +1488,6 @@
         </parameters>
       </constructor>
     </object>
-    <boxed name="CompileContext" cname="CpgCompileContext" opaque="true">
-      <method name="AppendObject" cname="cpg_compile_context_append_object">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CPG_FORWARD_DECL" name="(CpgObject)*" />
-        </parameters>
-      </method>
-      <method name="GetFunctions" cname="cpg_compile_context_get_functions">
-        <return-type type="const-GSList*" />
-      </method>
-      <method name="GetObjects" cname="cpg_compile_context_get_objects">
-        <return-type type="const-GSList*" />
-      </method>
-      <method name="GetType" cname="cpg_compile_context_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cpg_compile_context_new" />
-      <method name="PrependObject" cname="cpg_compile_context_prepend_object">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CPG_FORWARD_DECL" name="(CpgObject)*" />
-        </parameters>
-      </method>
-      <method name="Restore" cname="cpg_compile_context_restore">
-        <return-type type="void" />
-      </method>
-      <method name="Save" cname="cpg_compile_context_save">
-        <return-type type="void" />
-      </method>
-      <method name="SetFunctions" cname="cpg_compile_context_set_functions">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-GSList*" name="functions" />
-        </parameters>
-      </method>
-    </boxed>
-    <boxed name="CompileError" cname="CpgCompileError" opaque="true">
-      <method name="CodeString" cname="cpg_compile_error_code_string" shared="true">
-        <return-type type="const-gchar*" />
-        <parameters>
-          <parameter type="gint" name="code" />
-        </parameters>
-      </method>
-      <method name="GetCode" cname="cpg_compile_error_get_code">
-        <return-type type="gint" />
-      </method>
-      <method name="GetError" cname="cpg_compile_error_get_error">
-        <return-type type="GError*" />
-      </method>
-      <method name="GetLinkAction" cname="cpg_compile_error_get_link_action">
-        <return-type type="CpgLinkAction*" />
-      </method>
-      <method name="GetMessage" cname="cpg_compile_error_get_message">
-        <return-type type="const-gchar*" />
-      </method>
-      <method name="GetObject" cname="cpg_compile_error_get_object">
-        <return-type type="CpgObject*" />
-      </method>
-      <method name="GetProperty" cname="cpg_compile_error_get_property">
-        <return-type type="CpgProperty*" />
-      </method>
-      <method name="GetType" cname="cpg_compile_error_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cpg_compile_error_new" />
-      <method name="Set" cname="cpg_compile_error_set">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GError*" name="gerror" />
-          <parameter type="CpgObject*" name="object" />
-          <parameter type="CpgProperty*" name="property" />
-          <parameter type="CpgLinkAction*" name="action" />
-        </parameters>
-      </method>
-      <method name="String" cname="cpg_compile_error_string">
-        <return-type type="const-gchar*" />
-      </method>
-      <method name="TypeQuark" cname="cpg_compile_error_type_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-    </boxed>
-    <boxed name="FunctionPolynomialPiece" cname="CpgFunctionPolynomialPiece" opaque="true">
-      <method name="GetBegin" cname="cpg_function_polynomial_piece_get_begin">
-        <return-type type="gdouble" />
-      </method>
-      <method name="GetCoefficients" cname="cpg_function_polynomial_piece_get_coefficients">
-        <return-type type="gdouble*" />
-        <parameters>
-          <parameter type="guint*" name="num" />
-        </parameters>
-      </method>
-      <method name="GetEnd" cname="cpg_function_polynomial_piece_get_end">
-        <return-type type="gdouble" />
-      </method>
-      <method name="GetType" cname="cpg_function_polynomial_piece_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cpg_function_polynomial_piece_new">
-        <parameters>
-          <parameter type="gdouble" name="begin" />
-          <parameter type="gdouble" name="end" />
-          <parameter type="gdouble*" name="coefficients" />
-          <parameter type="guint" name="num_coefficients" />
-        </parameters>
-      </constructor>
-      <method name="SetBegin" cname="cpg_function_polynomial_piece_set_begin">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gdouble" name="begin" />
-        </parameters>
-      </method>
-      <method name="SetCoefficients" cname="cpg_function_polynomial_piece_set_coefficients">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gdouble*" name="coefficients" />
-          <parameter type="guint" name="num" />
-        </parameters>
-      </method>
-      <method name="SetEnd" cname="cpg_function_polynomial_piece_set_end">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gdouble" name="end" />
-        </parameters>
-      </method>
-    </boxed>
     <struct name="Instruction" cname="CpgInstruction">
       <field name="Type" cname="type" type="CpgInstructionType" />
       <method name="Copy" cname="cpg_instruction_copy">

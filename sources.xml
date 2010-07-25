@@ -36,6 +36,8 @@
         <file>../libcpg-network/cpg-network/cpg-function-argument.h</file>
         <file>../libcpg-network/cpg-network/cpg-function-polynomial.c</file>
         <file>../libcpg-network/cpg-network/cpg-function-polynomial.h</file>
+        <file>../libcpg-network/cpg-network/cpg-function-polynomial-piece.c</file>
+        <file>../libcpg-network/cpg-network/cpg-function-polynomial-piece.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-context.c</file>
         <file>../libcpg-network/cpg-network/cpg-compile-context.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrator.c</file>

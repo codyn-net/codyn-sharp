@@ -91,7 +91,7 @@ namespace Cpg {
 		{
 			try {
 				Network network_managed = GLib.Object.GetObject (network, false) as Network;
-				network_managed.OnCompileError (error == IntPtr.Zero ? null : (Cpg.CompileError) GLib.Opaque.GetOpaque (error, typeof (Cpg.CompileError), false));
+				network_managed.OnCompileError (GLib.Object.GetObject(error) as Cpg.CompileError);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}

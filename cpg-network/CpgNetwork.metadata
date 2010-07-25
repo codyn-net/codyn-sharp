@@ -54,31 +54,35 @@
   <attr path="/api/namespace/object[@cname='CpgFunctionPolynomial']/method[@cname='cpg_function_polynomial_get_pieces']/return-type" name="element_type">CpgFunctionPolynomialPiece*</attr>
 
   <!-- CpgFunctionPolynomialPiece -->
-  <remove-node path="/api/namespace/boxed[@cname='CpgFunctionPolynomialPiece']/method[@cname='cpg_function_polynomial_piece_get_coefficients']"/>
-  <remove-node path="/api/namespace/boxed[@cname='CpgFunctionPolynomialPiece']/method[@cname='cpg_function_polynomial_piece_set_coefficients']"/>
-  <remove-node path="/api/namespace/boxed[@cname='CpgFunctionPolynomialPiece']/constructor"/>
+  <remove-node path="/api/namespace/object[@cname='CpgFunctionPolynomialPiece']/method[@cname='cpg_function_polynomial_piece_get_coefficients']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgFunctionPolynomialPiece']/method[@cname='cpg_function_polynomial_piece_set_coefficients']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgFunctionPolynomialPiece']/constructor"/>
+  <remove-node path="/api/namespace/object[@cname='CpgFunctionPolynomialPiece']/method[@cname='cpg_function_polynomial_piece_get_normalization']"/>
+
+  <remove-node path="/api/namespace/object[@cname='CpgFunctionPolynomialPiece']/property[@cname='coefficients']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgFunctionPolynomialPiece']/property[@cname='normalization']"/>
 
   <!-- CpgCompileContext -->
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_append_object']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_append_object']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_append_object']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_append_object']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
 
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_prepend_object']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_prepend_object']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_prepend_object']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_prepend_object']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
 
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_objects']/return-type" name="element_type">CpgObject*</attr>
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']/return-type" name="element_type">CpgFunction*</attr>
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']/parameters/parameter[@name='functions']" name="element_type">CpgFunction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_objects']/return-type" name="element_type">CpgObject*</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']/return-type" name="element_type">CpgFunction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']/parameters/parameter[@name='functions']" name="element_type">CpgFunction*</attr>
 
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']" name="hidden">true</attr>
-  <attr path="/api/namespace/boxed[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']" name="hidden">true</attr>
 
-  <add-node path="/api/namespace/boxed[@cname='CpgCompileContext']">
+  <add-node path="/api/namespace/object[@cname='CpgCompileContext']">
     <method name="LookupProperty" cname="cpg_compile_context_lookup_property">
       <return-type type="CpgProperty*" />
     </method>
   </add-node>
 
-  <add-node path="/api/namespace/boxed[@cname='CpgCompileContext']">
+  <add-node path="/api/namespace/object[@cname='CpgCompileContext']">
     <method name="LookupFunction" cname="cpg_compile_context_lookup_function">
       <return-type type="CpgFunction*" />
     </method>
