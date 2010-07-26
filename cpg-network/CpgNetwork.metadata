@@ -10,6 +10,7 @@
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/constructor[@cname='cpg_network_new_from_file']"/>
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_file']"/>
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/property[@cname='file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_load_from_file']"/>
 
   <!-- CpgImport -->
   <remove-node path="/api/namespace/object[@cname='CpgImport']/constructor[@cname='cpg_import_new']"/>
@@ -26,6 +27,7 @@
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="name">error</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_applied_templates']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_actors']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_foreach_expression']/parameters/parameter[@name='func']" name="scope">call</attr>
 
   <!-- CpgGroup -->
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_foreach']" name="hidden">true</attr>
@@ -104,6 +106,7 @@
   <attr path="/api/namespace/struct[@cname='CpgInstructionNumber']" name="hidden">true</attr>
   <attr path="/api/namespace/struct[@cname='CpgInstructionProperty']" name="hidden">true</attr>
   <attr path="/api/namespace/struct[@cname='CpgInstruction']" name="hidden">true</attr>
+  <attr path="/api/namespace/struct[@cname='CpgInstructionVariadicFunction']" name="hidden">true</attr>
 
   <!-- CpgInstructionType -->
   <add-node path="/api">

@@ -89,6 +89,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expression_reset_variadic(IntPtr raw);
+
+		public void ResetVariadic() {
+			cpg_expression_reset_variadic(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_expression_get_as_string(IntPtr raw);
 
 		public string AsString { 

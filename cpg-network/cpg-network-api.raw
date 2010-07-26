@@ -32,6 +32,7 @@
       <member cname="CPG_INSTRUCTION_TYPE_OPERATOR" name="Operator" />
       <member cname="CPG_INSTRUCTION_TYPE_PROPERTY" name="Property" />
       <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_FUNCTION" name="CustomFunction" />
+      <member cname="CPG_INSTRUCTION_TYPE_VARIADIC_FUNCTION" name="VariadicFunction" />
     </enum>
     <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
       <member cname="CPG_NETWORK_LOAD_ERROR_XML" name="Xml" />
@@ -54,6 +55,13 @@
       <member cname="CPG_PROPERTY_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
       <member cname="CPG_PROPERTY_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
     </enum>
+    <callback name="ForeachExpressionFunc" cname="CpgForeachExpressionFunc">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="CpgExpression*" name="expression" />
+        <parameter type="gpointer" name="userdata" />
+      </parameters>
+    </callback>
     <object name="CompileContext" cname="CpgCompileContext" parent="GObject">
       <field name="Priv" cname="priv" type="CpgCompileContextPrivate*" />
       <method name="AppendObject" cname="cpg_compile_context_append_object">
@@ -184,6 +192,9 @@
         <return-type type="void" />
       </method>
       <method name="ResetCache" cname="cpg_expression_reset_cache">
+        <return-type type="void" />
+      </method>
+      <method name="ResetVariadic" cname="cpg_expression_reset_variadic">
         <return-type type="void" />
       </method>
       <method name="SetFromString" cname="cpg_expression_set_from_string">
@@ -1165,10 +1176,12 @@
           <parameter type="CpgObject*" name="object" />
         </parameters>
       </virtual_method>
-      <virtual_method name="ResetCache" cname="reset_cache">
+      <virtual_method name="ForeachExpression" cname="foreach_expression">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgForeachExpressionFunc" name="func" />
+          <parameter type="gpointer" name="userdata" />
         </parameters>
       </virtual_method>
       <virtual_method name="ApplyTemplate" cname="apply_template">
@@ -1287,6 +1300,13 @@
       <method name="ErrorQuark" cname="cpg_object_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
+      <method name="ForeachExpression" cname="cpg_object_foreach_expression">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgForeachExpressionFunc" name="func" />
+          <parameter type="gpointer" name="userdata" />
+        </parameters>
+      </method>
       <method name="GetActors" cname="cpg_object_get_actors">
         <return-type type="const-GSList*" />
       </method>
@@ -1344,9 +1364,6 @@
         </parameters>
       </method>
       <method name="Reset" cname="cpg_object_reset">
-        <return-type type="void" />
-      </method>
-      <method name="ResetCache" cname="cpg_object_reset_cache">
         <return-type type="void" />
       </method>
       <method name="SetAutoImported" cname="cpg_object_set_auto_imported">
@@ -1453,9 +1470,6 @@
         </parameters>
       </method>
       <method name="Reset" cname="cpg_property_reset">
-        <return-type type="void" />
-      </method>
-      <method name="ResetCache" cname="cpg_property_reset_cache">
         <return-type type="void" />
       </method>
       <method name="SetExpression" cname="cpg_property_set_expression">
@@ -1569,6 +1583,19 @@
         <parameters>
           <parameter type="CpgProperty*" name="property" />
           <parameter type="CpgInstructionBinding" name="binding" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="InstructionVariadicFunction" cname="CpgInstructionVariadicFunction" opaque="true">
+      <field name="Parent" cname="parent" type="CpgInstructionFunction" access="private" />
+      <field name="Cached" cname="cached" type="gboolean" access="public" writeable="true" />
+      <field name="CachedResult" cname="cached_result" type="gdouble" access="public" writeable="true" />
+      <constructor cname="cpg_instruction_variadic_function_new">
+        <parameters>
+          <parameter type="guint" name="id" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="arguments" />
+          <parameter type="gboolean" name="variable" />
         </parameters>
       </constructor>
     </struct>

@@ -15,6 +15,7 @@ namespace Cpg.Instructions {
 		Operator,
 		Property,
 		CustomFunction,
+		VariadicFunction,
 	}
 #endregion
 }

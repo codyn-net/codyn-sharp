@@ -440,6 +440,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_object_foreach_expression(IntPtr raw, CpgSharp.ForeachExpressionFuncNative func, IntPtr userdata);
+
+		public void ForeachExpression(Cpg.ForeachExpressionFunc func) {
+			CpgSharp.ForeachExpressionFuncWrapper func_wrapper = new CpgSharp.ForeachExpressionFuncWrapper (func);
+			cpg_object_foreach_expression(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_object_reset(IntPtr raw);
 
 		public void Reset() {
@@ -588,13 +596,6 @@ namespace Cpg {
 				Cpg.Property[] ret = (Cpg.Property[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Property));
 				return ret;
 			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_object_reset_cache(IntPtr raw);
-
-		public void ResetCache() {
-			cpg_object_reset_cache(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]

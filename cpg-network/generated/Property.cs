@@ -178,17 +178,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_property_set_name(IntPtr raw, IntPtr name);
-
-		public bool SetName(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cpg_property_set_name(Handle, native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_property_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cpg.Property other) {
@@ -278,10 +267,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_property_reset_cache(IntPtr raw);
+		static extern bool cpg_property_set_name(IntPtr raw, IntPtr name);
 
-		public void ResetCache() {
-			cpg_property_reset_cache(Handle);
+		public bool SetName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cpg_property_set_name(Handle, native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
