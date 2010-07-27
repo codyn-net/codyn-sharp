@@ -10,6 +10,7 @@
     <enum name="CompileErrorCode" cname="CpgCompileErrorCode" type="enum">
       <member cname="CPG_COMPILE_ERROR_PROPERTY_NOT_FOUND" name="PropertyNotFound" />
       <member cname="CPG_COMPILE_ERROR_FUNCTION_NOT_FOUND" name="FunctionNotFound" />
+      <member cname="CPG_COMPILE_ERROR_OPERATOR_NOT_FOUND" name="OperatorNotFound" />
       <member cname="CPG_COMPILE_ERROR_INVALID_TOKEN" name="InvalidToken" />
       <member cname="CPG_COMPILE_ERROR_MAXARG" name="Maxarg" />
       <member cname="CPG_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
@@ -33,6 +34,7 @@
       <member cname="CPG_INSTRUCTION_TYPE_PROPERTY" name="Property" />
       <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_FUNCTION" name="CustomFunction" />
       <member cname="CPG_INSTRUCTION_TYPE_VARIADIC_FUNCTION" name="VariadicFunction" />
+      <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_OPERATOR" name="CustomOperator" />
     </enum>
     <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
       <member cname="CPG_NETWORK_LOAD_ERROR_XML" name="Xml" />
@@ -62,6 +64,96 @@
         <parameter type="gpointer" name="userdata" />
       </parameters>
     </callback>
+    <interface name="Operator" cname="CpgOperator">
+      <virtual_method name="Execute" cname="execute">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperatorData*" name="data" />
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetName" cname="get_name">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="CreateData" cname="create_data">
+        <return-type type="CpgOperatorData*" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="GSList*" name="expressions" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="FreeData" cname="free_data">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetNumArguments" cname="get_num_arguments">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ResetCache" cname="reset_cache">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ResetVariadic" cname="reset_variadic">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </virtual_method>
+      <method name="CreateData" cname="cpg_operator_create_data">
+        <return-type type="CpgOperatorData*" />
+        <parameters>
+          <parameter type="GSList*" name="expressions" />
+        </parameters>
+      </method>
+      <method name="Execute" cname="cpg_operator_execute">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </method>
+      <method name="FreeData" cname="cpg_operator_free_data">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </method>
+      <method name="GetName" cname="cpg_operator_get_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetNumArguments" cname="cpg_operator_get_num_arguments">
+        <return-type type="gint" />
+      </method>
+      <method name="GetType" cname="cpg_operator_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="ResetCache" cname="cpg_operator_reset_cache">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </method>
+      <method name="ResetVariadic" cname="cpg_operator_reset_variadic">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </method>
+    </interface>
     <object name="CompileContext" cname="CpgCompileContext" parent="GObject">
       <field name="Priv" cname="priv" type="CpgCompileContextPrivate*" />
       <method name="AppendObject" cname="cpg_compile_context_append_object">
@@ -76,8 +168,17 @@
       <method name="GetObjects" cname="cpg_compile_context_get_objects">
         <return-type type="const-GSList*" />
       </method>
+      <method name="GetOperators" cname="cpg_compile_context_get_operators">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="GetType" cname="cpg_compile_context_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="LookupOperator" cname="cpg_compile_context_lookup_operator">
+        <return-type type="CpgOperator*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
       </method>
       <constructor cname="cpg_compile_context_new" />
       <method name="PrependObject" cname="cpg_compile_context_prepend_object">
@@ -96,6 +197,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-GSList*" name="functions" />
+        </parameters>
+      </method>
+      <method name="SetOperators" cname="cpg_compile_context_set_operators">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GSList*" name="operators" />
         </parameters>
       </method>
     </object>
@@ -275,6 +382,9 @@
       </method>
       <method name="GetArguments" cname="cpg_function_get_arguments">
         <return-type type="const-GList*" />
+      </method>
+      <method name="GetExpression" cname="cpg_function_get_expression">
+        <return-type type="CpgExpression*" />
       </method>
       <method name="GetNArguments" cname="cpg_function_get_n_arguments">
         <return-type type="guint" />
@@ -669,6 +779,14 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </virtual_method>
+      <virtual_method name="StepPrepare" cname="step_prepare">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </virtual_method>
       <virtual_method name="Reset" cname="reset">
         <return-type type="void" />
         <parameters>
@@ -721,6 +839,13 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </method>
+      <method name="StepPrepare" cname="cpg_integrator_step_prepare">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
     </object>
     <object name="IntegratorEuler" cname="CpgIntegratorEuler" parent="CpgIntegrator">
       <field name="Priv" cname="priv" type="CpgIntegratorEulerPrivate*" />
@@ -745,6 +870,9 @@
         </parameters>
       </signal>
       <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" construct-only="true" />
+      <method name="AllProperties" cname="cpg_integrator_state_all_properties">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="DirectLinkActions" cname="cpg_integrator_state_direct_link_actions">
         <return-type type="const-GSList*" />
       </method>
@@ -1389,6 +1517,13 @@
         </parameters>
       </method>
     </object>
+    <object name="OperatorLastof" cname="CpgOperatorLastof" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgOperatorLastofPrivate*" />
+      <method name="GetType" cname="cpg_operator_lastof_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_operator_lastof_new" />
+    </object>
     <object name="Property" cname="CpgProperty" parent="GInitiallyUnowned">
       <field name="Priv" cname="priv" type="CpgPropertyPrivate*" />
       <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct="true" />
@@ -1440,6 +1575,9 @@
       </method>
       <method name="GetIntegrated" cname="cpg_property_get_integrated">
         <return-type type="gboolean" />
+      </method>
+      <method name="GetLastValue" cname="cpg_property_get_last_value">
+        <return-type type="gdouble" />
       </method>
       <method name="GetName" cname="cpg_property_get_name">
         <return-type type="const-gchar*" />
@@ -1508,6 +1646,9 @@
           <parameter type="gdouble" name="value" />
         </parameters>
       </method>
+      <method name="UpdateLastValue" cname="cpg_property_update_last_value">
+        <return-type type="void" />
+      </method>
     </object>
     <object name="State" cname="CpgState" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgStatePrivate*" />
@@ -1548,6 +1689,17 @@
         <parameters>
           <parameter type="CpgFunction*" name="function" />
           <parameter type="gint" name="arguments" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="InstructionCustomOperator" cname="CpgInstructionCustomOperator" opaque="true">
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
+      <field name="Op" cname="op" type="CpgOperator*" access="public" writeable="true" />
+      <field name="Data" cname="data" type="CpgOperatorData*" access="public" writeable="true" />
+      <constructor cname="cpg_instruction_custom_operator_new">
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="GSList*" name="expressions" />
         </parameters>
       </constructor>
     </struct>
@@ -1598,6 +1750,61 @@
           <parameter type="gboolean" name="variable" />
         </parameters>
       </constructor>
+    </struct>
+    <struct name="OperatorData" cname="CpgOperatorData" opaque="true">
+      <field name="Expressions" cname="expressions" type="GSList*" access="public" writeable="true" />
+      <method name="Destroy" cname="cpg_operator_data_destroy">
+        <return-type type="void" />
+      </method>
+      <method name="Init" cname="cpg_operator_data_init">
+        <return-type type="CpgOperatorData*" />
+        <parameters>
+          <parameter type="GSList*" name="expressions" />
+        </parameters>
+      </method>
+    </struct>
+    <struct name="Stack" cname="CpgStack" opaque="true">
+      <method name="At" cname="cpg_stack_at">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="gint" name="idx" />
+        </parameters>
+      </method>
+      <method name="Count" cname="cpg_stack_count">
+        <return-type type="guint" />
+      </method>
+      <method name="Destroy" cname="cpg_stack_destroy">
+        <return-type type="void" />
+      </method>
+      <method name="Free" cname="cpg_stack_free">
+        <return-type type="void" />
+      </method>
+      <method name="Init" cname="cpg_stack_init">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="size" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_stack_new">
+        <parameters>
+          <parameter type="guint" name="size" />
+        </parameters>
+      </constructor>
+      <method name="Pop" cname="cpg_stack_pop">
+        <return-type type="gdouble" />
+      </method>
+      <method name="Push" cname="cpg_stack_push">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="Reset" cname="cpg_stack_reset">
+        <return-type type="void" />
+      </method>
+      <method name="Size" cname="cpg_stack_size">
+        <return-type type="guint" />
+      </method>
     </struct>
     <class name="Integrators" cname="CpgIntegrators_">
       <method name="Create" cname="cpg_integrators_create" shared="true">

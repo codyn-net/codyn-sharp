@@ -215,6 +215,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_integrator_step_prepare(IntPtr raw, double t, double timestep);
+
+		public bool StepPrepare(double t, double timestep) {
+			bool raw_ret = cpg_integrator_step_prepare(Handle, t, timestep);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_get_type();
 
 		public static new GLib.GType GType { 

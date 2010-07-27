@@ -11,6 +11,7 @@ namespace Cpg {
 
 		PropertyNotFound,
 		FunctionNotFound,
+		OperatorNotFound,
 		InvalidToken,
 		Maxarg,
 		InvalidStack,

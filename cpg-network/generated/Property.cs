@@ -205,6 +205,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern double cpg_property_get_last_value(IntPtr raw);
+
+		public double LastValue { 
+			get {
+				double raw_ret = cpg_property_get_last_value(Handle);
+				double ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_property_get_integrated(IntPtr raw);
 
 		[DllImport("cpg-network-2.0")]
@@ -253,6 +264,13 @@ namespace Cpg {
 
 		public void Reset() {
 			cpg_property_reset(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_property_update_last_value(IntPtr raw);
+
+		public void UpdateLastValue() {
+			cpg_property_update_last_value(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]

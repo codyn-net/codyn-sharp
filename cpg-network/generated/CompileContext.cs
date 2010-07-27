@@ -27,30 +27,36 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_context_restore(IntPtr raw);
+		static extern void cpg_compile_context_append_object(IntPtr raw, IntPtr objekt);
 
-		public void Restore() {
-			cpg_compile_context_restore(Handle);
+		public void AppendObject(Cpg.Object objekt) {
+			cpg_compile_context_append_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_compile_context_lookup_function(IntPtr raw);
-
-		public Cpg.Function LookupFunction() {
-			IntPtr raw_ret = cpg_compile_context_lookup_function(Handle);
-			Cpg.Function ret = GLib.Object.GetObject(raw_ret) as Cpg.Function;
-			return ret;
-		}
+		static extern IntPtr cpg_compile_context_get_operators(IntPtr raw);
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_compile_context_get_type();
+		static extern void cpg_compile_context_set_operators(IntPtr raw, IntPtr operators);
 
-		public static new GLib.GType GType { 
+		public GLib.SList Operators { 
 			get {
-				IntPtr raw_ret = cpg_compile_context_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
+				IntPtr raw_ret = cpg_compile_context_get_operators(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
 				return ret;
 			}
+			set {
+				cpg_compile_context_set_operators(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_compile_context_lookup_property(IntPtr raw);
+
+		public Cpg.Property LookupProperty() {
+			IntPtr raw_ret = cpg_compile_context_lookup_property(Handle);
+			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -65,17 +71,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_context_append_object(IntPtr raw, IntPtr objekt);
-
-		public void AppendObject(Cpg.Object objekt) {
-			cpg_compile_context_append_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern void cpg_compile_context_prepend_object(IntPtr raw, IntPtr objekt);
 
 		public void PrependObject(Cpg.Object objekt) {
 			cpg_compile_context_prepend_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_compile_context_lookup_function(IntPtr raw);
+
+		public Cpg.Function LookupFunction() {
+			IntPtr raw_ret = cpg_compile_context_lookup_function(Handle);
+			Cpg.Function ret = GLib.Object.GetObject(raw_ret) as Cpg.Function;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -86,11 +94,31 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_compile_context_lookup_property(IntPtr raw);
+		static extern void cpg_compile_context_restore(IntPtr raw);
 
-		public Cpg.Property LookupProperty() {
-			IntPtr raw_ret = cpg_compile_context_lookup_property(Handle);
-			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
+		public void Restore() {
+			cpg_compile_context_restore(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_compile_context_get_type();
+
+		public static new GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cpg_compile_context_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_compile_context_lookup_operator(IntPtr raw, IntPtr name);
+
+		public Cpg.Operator LookupOperator(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cpg_compile_context_lookup_operator(Handle, native_name);
+			Cpg.Operator ret = Cpg.OperatorAdapter.GetObject (raw_ret, false);
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 

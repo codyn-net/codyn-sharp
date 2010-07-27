@@ -21,7 +21,8 @@ sources = \
 	InstructionNumber.cs \
 	InstructionProperty.cs \
 	InstructionOperator.cs \
-	InstructionVariadicFunction.cs
+	InstructionVariadicFunction.cs \
+	InstructionCustomOperator.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 

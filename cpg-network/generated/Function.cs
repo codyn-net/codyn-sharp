@@ -30,14 +30,16 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_function_get_expression(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_function_set_expression(IntPtr raw, IntPtr expression);
 
 		[GLib.Property ("expression")]
 		public Cpg.Expression Expression {
-			get {
-				GLib.Value val = GetProperty ("expression");
-				Cpg.Expression ret = (Cpg.Expression) val;
-				val.Dispose ();
+			get  {
+				IntPtr raw_ret = cpg_function_get_expression(Handle);
+				Cpg.Expression ret = GLib.Object.GetObject(raw_ret) as Cpg.Expression;
 				return ret;
 			}
 			set  {

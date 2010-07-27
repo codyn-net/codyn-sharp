@@ -30,6 +30,12 @@
         <file>../libcpg-network/cpg-network/cpg-property.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.c</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.h</file>
+        <file>../libcpg-network/cpg-network/cpg-operator.c</file>
+        <file>../libcpg-network/cpg-network/cpg-operator.h</file>
+        <file>../libcpg-network/cpg-network/cpg-operator-lastof.c</file>
+        <file>../libcpg-network/cpg-network/cpg-operator-lastof.h</file>
+        <file>../libcpg-network/cpg-network/cpg-stack.c</file>
+        <file>../libcpg-network/cpg-network/cpg-stack.h</file>
         <file>../libcpg-network/cpg-network/cpg-function.c</file>
         <file>../libcpg-network/cpg-network/cpg-function.h</file>
         <file>../libcpg-network/cpg-network/cpg-function-argument.c</file>
