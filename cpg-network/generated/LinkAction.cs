@@ -14,26 +14,9 @@ namespace Cpg {
 		protected LinkAction(GLib.GType gtype) : base(gtype) {}
 		public LinkAction(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_link_action_new(IntPtr target, IntPtr equation);
-
-		public LinkAction (string target, Cpg.Expression equation) : base (IntPtr.Zero)
+		protected LinkAction() : base(IntPtr.Zero)
 		{
-			if (GetType () != typeof (LinkAction)) {
-				ArrayList vals = new ArrayList();
-				ArrayList names = new ArrayList();
-				names.Add ("target");
-				vals.Add (new GLib.Value (target));
-				if (equation != null) {
-					names.Add ("equation");
-					vals.Add (new GLib.Value (equation));
-				}
-				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
-				return;
-			}
-			IntPtr native_target = GLib.Marshaller.StringToPtrGStrdup (target);
-			Raw = cpg_link_action_new(native_target, equation == null ? IntPtr.Zero : equation.Handle);
-			GLib.Marshaller.Free (native_target);
+			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -112,6 +95,45 @@ namespace Cpg {
 				IntPtr raw_ret = cpg_link_action_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
+			}
+		}
+
+#endregion
+#region Customized extensions
+#line 1 "LinkAction.custom"
+		[DllImport ("libgobject-2.0")]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_link_action_new(IntPtr target, IntPtr equation);
+
+		public LinkAction (string target, Cpg.Expression equation) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (LinkAction))
+			{
+				ArrayList vals = new ArrayList();
+				ArrayList names = new ArrayList();
+				names.Add ("target");
+				vals.Add (new GLib.Value (target));
+
+				if (equation != null)
+				{
+					names.Add ("equation");
+					vals.Add (new GLib.Value (equation));
+				}
+
+				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+			}
+			else
+			{
+				IntPtr native_target = GLib.Marshaller.StringToPtrGStrdup (target);
+				Raw = cpg_link_action_new(native_target, equation == null ? IntPtr.Zero : equation.Handle);
+				GLib.Marshaller.Free (native_target);
+			}
+
+			if (Raw != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
 			}
 		}
 

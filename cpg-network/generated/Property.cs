@@ -14,28 +14,9 @@ namespace Cpg {
 		protected Property(GLib.GType gtype) : base(gtype) {}
 		public Property(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_new(IntPtr name, IntPtr expression, int flags);
-
-		public Property (string name, string expression, Cpg.PropertyFlags flags) : base (IntPtr.Zero)
+		protected Property() : base(IntPtr.Zero)
 		{
-			if (GetType () != typeof (Property)) {
-				ArrayList vals = new ArrayList();
-				ArrayList names = new ArrayList();
-				names.Add ("name");
-				vals.Add (new GLib.Value (name));
-				names.Add ("expression");
-				vals.Add (new GLib.Value (expression));
-				names.Add ("flags");
-				vals.Add (new GLib.Value (flags));
-				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
-				return;
-			}
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
-			Raw = cpg_property_new(native_name, native_expression, (int) flags);
-			GLib.Marshaller.Free (native_name);
-			GLib.Marshaller.Free (native_expression);
+			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -330,6 +311,45 @@ namespace Cpg {
 			IntPtr raw_ret = cpg_property_copy(Handle);
 			Cpg.Property ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Property;
 			return ret;
+		}
+
+#endregion
+#region Customized extensions
+#line 1 "Property.custom"
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_new(IntPtr name, IntPtr expression, int flags);
+
+		[DllImport ("libgobject-2.0")]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
+		public Property (string name, string expression, Cpg.PropertyFlags flags) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Property))
+			{
+				ArrayList vals = new ArrayList();
+				ArrayList names = new ArrayList();
+				names.Add ("name");
+				vals.Add (new GLib.Value (name));
+				names.Add ("expression");
+				vals.Add (new GLib.Value (expression));
+				names.Add ("flags");
+				vals.Add (new GLib.Value (flags));
+
+				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+			}
+			else
+			{
+				IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+				IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
+				Raw = cpg_property_new(native_name, native_expression, (int) flags);
+				GLib.Marshaller.Free (native_name);
+				GLib.Marshaller.Free (native_expression);
+			}
+
+			if (Raw != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
+			}
 		}
 
 #endregion

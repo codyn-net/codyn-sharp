@@ -32,7 +32,10 @@ customs = \
 	Integrator.custom \
 	Expression.custom \
 	CompileContext.custom \
-	Group.custom
+	Group.custom \
+	LinkAction.custom \
+	Property.custom \
+	FunctionArgument.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 

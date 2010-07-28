@@ -5,6 +5,9 @@
   <attr path="/api/namespace/object[@cname='CpgLink']/method[@cname='cpg_link_get_to']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgLink']/method[@cname='cpg_link_get_actions']/return-type" name="element_type">CpgLinkAction*</attr>
 
+  <!-- CpgLinkAction -->
+  <attr path="/api/namespace/object[@cname='CpgLinkAction']/constructor" name="hidden">true</attr>
+
   <!-- CpgNetwork -->
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_merge_from_file']"/>
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/constructor[@cname='cpg_network_new_from_file']"/>
@@ -29,6 +32,9 @@
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_actors']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_foreach_expression']/parameters/parameter[@name='func']" name="scope">call</attr>
 
+  <!-- CpgProperty -->
+  <attr path="/api/namespace/object[@cname='CpgProperty']/constructor" name="hidden">true</attr>
+
   <!-- CpgGroup -->
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_foreach']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_get_children']/return-type" name="element_type">CpgObject*</attr>
@@ -48,6 +54,7 @@
   <!-- CpgExpression -->
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgExpression']/constructor" name="hidden">true</attr>
 
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
 
@@ -55,6 +62,9 @@
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_execute']"/>
   <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_set_expression']/parameters/parameter[@name='expression']" name="type">CpgExpression*</attr>
   <attr path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_get_arguments']/return-type" name="element_type">CpgFunctionArgument*</attr>
+
+  <!-- CpgFunctionArgument -->
+  <attr path="/api/namespace/object[@cname='CpgFunctionArgument']/constructor" name="hidden">true</attr>
 
   <!-- CpgFunctionPolynomial -->
   <attr path="/api/namespace/object[@cname='CpgFunctionPolynomial']/method[@cname='cpg_function_polynomial_get_pieces']/return-type" name="element_type">CpgFunctionPolynomialPiece*</attr>

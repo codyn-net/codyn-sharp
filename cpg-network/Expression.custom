@@ -1,4 +1,35 @@
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_expression_new(IntPtr expression);
+
+		[DllImport ("libgobject-2.0")]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
+		public Expression (string expression) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Expression))
+			{
+				ArrayList vals = new ArrayList();
+				ArrayList names = new ArrayList();
+
+				names.Add ("expression");
+				vals.Add (new GLib.Value (expression));
+
+				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+			}
+			else
+			{
+				IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
+				Raw = cpg_expression_new(native_expression);
+				GLib.Marshaller.Free (native_expression);
+			}
+
+			if (Raw != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_expression_get_instructions(IntPtr raw);
 
 		[DllImport("cpg-network-2.0")]

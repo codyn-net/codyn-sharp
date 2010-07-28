@@ -14,22 +14,9 @@ namespace Cpg {
 		protected Expression(GLib.GType gtype) : base(gtype) {}
 		public Expression(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_expression_new(IntPtr expression);
-
-		public Expression (string expression) : base (IntPtr.Zero)
+		protected Expression() : base(IntPtr.Zero)
 		{
-			if (GetType () != typeof (Expression)) {
-				ArrayList vals = new ArrayList();
-				ArrayList names = new ArrayList();
-				names.Add ("expression");
-				vals.Add (new GLib.Value (expression));
-				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
-				return;
-			}
-			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
-			Raw = cpg_expression_new(native_expression);
-			GLib.Marshaller.Free (native_expression);
+			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
 		[GLib.Property ("expression")]
@@ -186,6 +173,37 @@ namespace Cpg {
 #endregion
 #region Customized extensions
 #line 1 "Expression.custom"
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_expression_new(IntPtr expression);
+
+		[DllImport ("libgobject-2.0")]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
+		public Expression (string expression) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Expression))
+			{
+				ArrayList vals = new ArrayList();
+				ArrayList names = new ArrayList();
+
+				names.Add ("expression");
+				vals.Add (new GLib.Value (expression));
+
+				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+			}
+			else
+			{
+				IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
+				Raw = cpg_expression_new(native_expression);
+				GLib.Marshaller.Free (native_expression);
+			}
+
+			if (Raw != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
+			}
+		}
+
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_expression_get_instructions(IntPtr raw);
 

@@ -41,10 +41,22 @@
 			}
 		}
 
+		[DllImport ("libgobject-2.0")]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_polynomial_piece_new(double begin, double end, double[] coefficients, uint num_coefficients);
 
 		public FunctionPolynomialPiece (double begin, double end, params double[] coefficients) : base (IntPtr.Zero)
 		{
+			if (GetType () != typeof (FunctionPolynomialPiece)) {
+				throw new InvalidOperationException (String.Format("Can't override this constructor {0}.", GetType()));
+			}
+
 			Raw = cpg_function_polynomial_piece_new(begin, end, coefficients, (uint)coefficients.Length);
+
+			if (Raw != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
+			}
 		}
