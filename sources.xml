@@ -60,6 +60,8 @@
         <file>../libcpg-network/cpg-network/cpg-group.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-state.c</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-state.h</file>
+        <file>../libcpg-network/cpg-network/cpg-usable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-usable.h</file>
       </namespace>
     </library>
   </api>

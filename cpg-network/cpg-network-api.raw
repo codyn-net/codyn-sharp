@@ -155,6 +155,38 @@
         </parameters>
       </method>
     </interface>
+    <interface name="Usable" cname="CpgUsable">
+      <virtual_method name="UseCount" cname="use_count">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="CpgUsable*" name="self" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Use" cname="use">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgUsable*" name="self" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Unuse" cname="unuse">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgUsable*" name="self" />
+        </parameters>
+      </virtual_method>
+      <method name="GetType" cname="cpg_usable_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Unuse" cname="cpg_usable_unuse">
+        <return-type type="gboolean" />
+      </method>
+      <method name="Use" cname="cpg_usable_use">
+        <return-type type="void" />
+      </method>
+      <method name="UseCount" cname="cpg_usable_use_count">
+        <return-type type="guint" />
+      </method>
+    </interface>
     <object name="CompileContext" cname="CpgCompileContext" parent="GObject">
       <field name="Priv" cname="priv" type="CpgCompileContextPrivate*" />
       <method name="AppendObject" cname="cpg_compile_context_append_object">
@@ -1270,7 +1302,7 @@
           <parameter type="CpgObject*" name="copy" />
         </parameters>
       </signal>
-      <signal name="VerifyRemoveProperty" cname="verify-remove-property" when="LAST" field_name="verify_remove_property">
+      <signal name="VerifyRemoveProperty" cname="verify-remove-property" when="LAST" manual="true" field_name="verify_remove_property">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
@@ -1322,6 +1354,13 @@
         </parameters>
       </virtual_method>
       <virtual_method name="ApplyTemplate" cname="apply_template">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="UnapplyTemplate" cname="unapply_template">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
@@ -1395,6 +1434,9 @@
           <parameter type="CpgObject*" name="last" />
         </parameters>
       </virtual_method>
+      <implements>
+        <interface cname="CpgUsable" />
+      </implements>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="gboolean" />
         <parameters>
@@ -1517,6 +1559,12 @@
       <method name="Taint" cname="cpg_object_taint">
         <return-type type="void" />
       </method>
+      <method name="UnapplyTemplate" cname="cpg_object_unapply_template">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </method>
       <method name="VerifyRemoveProperty" cname="cpg_object_verify_remove_property">
         <return-type type="gboolean" />
         <parameters>
@@ -1545,6 +1593,10 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </signal>
+      <property name="Modified" cname="modified" type="gboolean" readable="true" writeable="true" />
+      <implements>
+        <interface cname="CpgUsable" />
+      </implements>
       <method name="AddFlags" cname="cpg_property_add_flags">
         <return-type type="void" />
         <parameters>
@@ -1587,6 +1639,9 @@
       <method name="GetLastValue" cname="cpg_property_get_last_value">
         <return-type type="gdouble" />
       </method>
+      <method name="GetModified" cname="cpg_property_get_modified">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetName" cname="cpg_property_get_name">
         <return-type type="const-gchar*" />
       </method>
@@ -1595,9 +1650,6 @@
       </method>
       <method name="GetUpdate" cname="cpg_property_get_update">
         <return-type type="gdouble" />
-      </method>
-      <method name="GetUsed" cname="cpg_property_get_used">
-        <return-type type="guint" />
       </method>
       <method name="GetValue" cname="cpg_property_get_value">
         <return-type type="gdouble" />
@@ -1634,6 +1686,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="integrated" />
+        </parameters>
+      </method>
+      <method name="SetModified" cname="cpg_property_set_modified">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="modified" />
         </parameters>
       </method>
       <method name="SetName" cname="cpg_property_set_name">
