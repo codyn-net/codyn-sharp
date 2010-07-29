@@ -48,6 +48,7 @@
       <member cname="CPG_OBJECT_ERROR_PROPERTY_UNKNOWN" name="ErrorPropertyUnknown" />
       <member cname="CPG_OBJECT_ERROR_PROPERTY_NOT_FOUND" name="ErrorPropertyNotFound" />
       <member cname="CPG_OBJECT_ERROR_PROPERTY_IN_USE" name="ErrorPropertyInUse" />
+      <member cname="CPG_OBJECT_ERROR_PROPERTY_FROM_TEMPLATE" name="ErrorPropertyFromTemplate" />
       <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
     </enum>
     <enum name="PropertyFlags" cname="CpgPropertyFlags" type="flags">
@@ -1269,6 +1270,14 @@
           <parameter type="CpgObject*" name="copy" />
         </parameters>
       </signal>
+      <signal name="VerifyRemoveProperty" cname="verify-remove-property" when="LAST" field_name="verify_remove_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </signal>
       <signal name="PropertyAdded" cname="property-added" when="LAST" field_name="property_added">
         <return-type type="void" />
         <parameters>
@@ -1373,14 +1382,6 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
-      <virtual_method name="VerifyRemoveProperty" cname="verify_remove_property">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </virtual_method>
       <virtual_method name="Clear" cname="clear">
         <return-type type="void" />
         <parameters>
@@ -1460,6 +1461,13 @@
         <return-type type="CpgProperty*" />
         <parameters>
           <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="GetPropertyTemplate" cname="cpg_object_get_property_template">
+        <return-type type="CpgObject*" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="gboolean" name="match_full" />
         </parameters>
       </method>
       <method name="GetType" cname="cpg_object_get_type" shared="true">

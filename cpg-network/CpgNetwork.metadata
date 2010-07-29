@@ -31,6 +31,14 @@
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_applied_templates']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_actors']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_foreach_expression']/parameters/parameter[@name='func']" name="scope">call</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/signal[@name='VerifyRemoveProperty']" name="hidden">true</attr>
+
+  <attr path="/api/namespace/object[@cname='CpgObject']/constructor[@cname='cpg_object_new_from_template']" name="hidden">true</attr>
+  <add-node path="/api/namespace/object[@cname='CpgObject']">
+    <method name="CopyAsTemplate" cname="cpg_object_new_from_template">
+      <return-type type="CpgObject*" owned="true" />
+    </method>
+  </add-node>
 
   <!-- CpgProperty -->
   <attr path="/api/namespace/object[@cname='CpgProperty']/constructor" name="hidden">true</attr>

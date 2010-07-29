@@ -33,17 +33,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_object_new_from_template(IntPtr templ);
-
-		public Object (Cpg.Object templ) : base (IntPtr.Zero)
-		{
-			if (GetType () != typeof (Object)) {
-				throw new InvalidOperationException ("Can't override this constructor.");
-			}
-			Raw = cpg_object_new_from_template(templ == null ? IntPtr.Zero : templ.Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_object_get_auto_imported(IntPtr raw);
 
 		[DllImport("cpg-network-2.0")]
@@ -530,10 +519,12 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_object_taint(IntPtr raw);
+		static extern IntPtr cpg_object_get_property_template(IntPtr raw, IntPtr property, bool match_full);
 
-		public void Taint() {
-			cpg_object_taint(Handle);
+		public Cpg.Object GetPropertyTemplate(Cpg.Property property, bool match_full) {
+			IntPtr raw_ret = cpg_object_get_property_template(Handle, property == null ? IntPtr.Zero : property.Handle, match_full);
+			Cpg.Object ret = GLib.Object.GetObject(raw_ret) as Cpg.Object;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -545,6 +536,15 @@ namespace Cpg {
 				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 				return ret;
 			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_new_from_template(IntPtr raw);
+
+		public Cpg.Object CopyAsTemplate() {
+			IntPtr raw_ret = cpg_object_new_from_template(Handle);
+			Cpg.Object ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Object;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -596,6 +596,13 @@ namespace Cpg {
 				Cpg.Property[] ret = (Cpg.Property[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Property));
 				return ret;
 			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_object_taint(IntPtr raw);
+
+		public void Taint() {
+			cpg_object_taint(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
