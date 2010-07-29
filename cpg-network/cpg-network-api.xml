@@ -1,0 +1,1719 @@
+<?xml version="1.0"?>
+<api>
+  <!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
+  <namespace name="Cpg" library="cpg-network-2.0">
+    <enum name="CompileErrorCode" cname="CpgCompileErrorCode" type="enum">
+      <member cname="CPG_COMPILE_ERROR_PROPERTY_NOT_FOUND" name="PropertyNotFound" />
+      <member cname="CPG_COMPILE_ERROR_FUNCTION_NOT_FOUND" name="FunctionNotFound" />
+      <member cname="CPG_COMPILE_ERROR_OPERATOR_NOT_FOUND" name="OperatorNotFound" />
+      <member cname="CPG_COMPILE_ERROR_INVALID_TOKEN" name="InvalidToken" />
+      <member cname="CPG_COMPILE_ERROR_MAXARG" name="Maxarg" />
+      <member cname="CPG_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
+      <member cname="CPG_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
+    </enum>
+    <enum name="FunctionError" cname="CpgFunctionError" type="enum">
+      <member cname="CPG_FUNCTION_ERROR_UNKNOWN" name="ErrorUnknown" />
+      <member cname="CPG_FUNCTION_ERROR_ARGUMENT_NOT_FOUND" name="ErrorArgumentNotFound" />
+      <member cname="CPG_FUNCTION_NUM_ERRORS" name="NumErrors" />
+    </enum>
+    <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
+      <member cname="CPG_NETWORK_LOAD_ERROR_XML" name="Xml" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_PROPERTY" name="Property" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_OBJECT" name="Object" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_LINK" name="Link" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_FUNCTION" name="Function" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_IMPORT" name="Import" />
+    </enum>
+    <enum name="ObjectError" cname="CpgObjectError" type="enum">
+      <member cname="CPG_OBJECT_ERROR_PROPERTY_UNKNOWN" name="ErrorPropertyUnknown" />
+      <member cname="CPG_OBJECT_ERROR_PROPERTY_NOT_FOUND" name="ErrorPropertyNotFound" />
+      <member cname="CPG_OBJECT_ERROR_PROPERTY_IN_USE" name="ErrorPropertyInUse" />
+      <member cname="CPG_OBJECT_ERROR_PROPERTY_FROM_TEMPLATE" name="ErrorPropertyFromTemplate" />
+      <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
+    </enum>
+    <enum name="PropertyFlags" cname="CpgPropertyFlags" type="flags">
+      <member cname="CPG_PROPERTY_FLAG_NONE" name="None" />
+      <member cname="CPG_PROPERTY_FLAG_INTEGRATED" name="Integrated" value="1 &lt;&lt; 0" />
+      <member cname="CPG_PROPERTY_FLAG_IN" name="In" value="1 &lt;&lt; 1" />
+      <member cname="CPG_PROPERTY_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
+      <member cname="CPG_PROPERTY_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
+    </enum>
+    <callback name="ForeachExpressionFunc" cname="CpgForeachExpressionFunc">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="CpgExpression*" name="expression" />
+        <parameter type="gpointer" name="userdata" />
+      </parameters>
+    </callback>
+    <interface name="Operator" cname="CpgOperator">
+      <virtual_method name="Execute" cname="execute">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperatorData*" name="data" />
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetName" cname="get_name">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="CreateData" cname="create_data">
+        <return-type type="CpgOperatorData*" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="GSList*" name="expressions" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="FreeData" cname="free_data">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetNumArguments" cname="get_num_arguments">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ResetCache" cname="reset_cache">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ResetVariadic" cname="reset_variadic">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </virtual_method>
+      <method name="CreateData" cname="cpg_operator_create_data">
+        <return-type type="CpgOperatorData*" />
+        <parameters>
+          <parameter type="GSList*" name="expressions" />
+        </parameters>
+      </method>
+      <method name="Execute" cname="cpg_operator_execute">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </method>
+      <method name="FreeData" cname="cpg_operator_free_data">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </method>
+      <method name="GetName" cname="cpg_operator_get_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetNumArguments" cname="cpg_operator_get_num_arguments">
+        <return-type type="gint" />
+      </method>
+      <method name="GetType" cname="cpg_operator_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="ResetCache" cname="cpg_operator_reset_cache">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </method>
+      <method name="ResetVariadic" cname="cpg_operator_reset_variadic">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </method>
+    </interface>
+    <object name="CompileContext" cname="CpgCompileContext" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgCompileContextPrivate*" />
+      <method name="AppendObject" cname="cpg_compile_context_append_object">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </method>
+      <method name="GetFunctions" cname="cpg_compile_context_get_functions" hidden="true">
+        <return-type type="const-GSList*" element_type="CpgFunction*" />
+      </method>
+      <method name="GetObjects" cname="cpg_compile_context_get_objects">
+        <return-type type="const-GSList*" element_type="CpgObject*" />
+      </method>
+      <method name="GetOperators" cname="cpg_compile_context_get_operators">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="GetType" cname="cpg_compile_context_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="LookupOperator" cname="cpg_compile_context_lookup_operator">
+        <return-type type="CpgOperator*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_compile_context_new" />
+      <method name="PrependObject" cname="cpg_compile_context_prepend_object">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </method>
+      <method name="Restore" cname="cpg_compile_context_restore">
+        <return-type type="void" />
+      </method>
+      <method name="Save" cname="cpg_compile_context_save">
+        <return-type type="void" />
+      </method>
+      <method name="SetFunctions" cname="cpg_compile_context_set_functions" hidden="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GSList*" name="functions" element_type="CpgFunction*" />
+        </parameters>
+      </method>
+      <method name="SetOperators" cname="cpg_compile_context_set_operators">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GSList*" name="operators" />
+        </parameters>
+      </method>
+      <method name="LookupProperty" cname="cpg_compile_context_lookup_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="LookupFunction" cname="cpg_compile_context_lookup_function">
+        <return-type type="CpgFunction*" />
+      </method>
+    </object>
+    <object name="CompileError" cname="CpgCompileError" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgCompileErrorPrivate*" />
+      <method name="CodeString" cname="cpg_compile_error_code_string" shared="true">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="gint" name="code" />
+        </parameters>
+      </method>
+      <method name="GetCode" cname="cpg_compile_error_get_code">
+        <return-type type="gint" />
+      </method>
+      <method name="GetError" cname="cpg_compile_error_get_error">
+        <return-type type="GError*" />
+      </method>
+      <method name="GetLinkAction" cname="cpg_compile_error_get_link_action">
+        <return-type type="CpgLinkAction*" />
+      </method>
+      <method name="GetMessage" cname="cpg_compile_error_get_message">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetObject" cname="cpg_compile_error_get_object">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetProperty" cname="cpg_compile_error_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_compile_error_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_compile_error_new" />
+      <method name="Set" cname="cpg_compile_error_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GError*" name="gerror" />
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </method>
+      <method name="String" cname="cpg_compile_error_string">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="TypeQuark" cname="cpg_compile_error_type_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+    </object>
+    <object name="Expression" cname="CpgExpression" parent="GInitiallyUnowned">
+      <field name="Priv" cname="priv" type="CpgExpressionPrivate*" />
+      <property name="Expression" cname="expression" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="Value" cname="value" type="gdouble" readable="true" writeable="true" />
+      <method name="Compile" cname="cpg_expression_compile">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgCompileContext*" name="context" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Copy" cname="cpg_expression_copy">
+        <return-type type="CpgExpression*" owned="true" />
+      </method>
+      <method name="Equal" cname="cpg_expression_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgExpression*" name="other" />
+        </parameters>
+      </method>
+      <method name="Evaluate" cname="cpg_expression_evaluate">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetAsString" cname="cpg_expression_get_as_string">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetDependencies" cname="cpg_expression_get_dependencies">
+        <return-type type="const-GSList*" element_type="CpgProperty*" />
+      </method>
+      <method name="GetInstructions" cname="cpg_expression_get_instructions" hidden="true">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="GetOnce" cname="cpg_expression_get_once">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetType" cname="cpg_expression_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_expression_new" hidden="true">
+        <parameters>
+          <parameter type="const-gchar*" name="expression" />
+        </parameters>
+      </constructor>
+      <method name="Reset" cname="cpg_expression_reset">
+        <return-type type="void" />
+      </method>
+      <method name="ResetCache" cname="cpg_expression_reset_cache">
+        <return-type type="void" />
+      </method>
+      <method name="ResetVariadic" cname="cpg_expression_reset_variadic">
+        <return-type type="void" />
+      </method>
+      <method name="SetFromString" cname="cpg_expression_set_from_string">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetInstructions" cname="cpg_expression_set_instructions" hidden="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GSList*" name="instructions" />
+        </parameters>
+      </method>
+      <method name="SetOnce" cname="cpg_expression_set_once">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="instant" />
+        </parameters>
+      </method>
+      <method name="SetValue" cname="cpg_expression_set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Function" cname="CpgFunction" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgFunctionPrivate*" />
+      <property name="Expression" cname="expression" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <signal name="ArgumentAdded" cname="argument-added" when="LAST" field_name="argument_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+          <parameter type="CpgFunctionArgument*" name="argument" />
+        </parameters>
+      </signal>
+      <signal name="ArgumentRemoved" cname="argument-removed" when="LAST" field_name="argument_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+          <parameter type="CpgFunctionArgument*" name="argument" />
+        </parameters>
+      </signal>
+      <virtual_method name="Evaluate" cname="evaluate">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Execute" cname="execute">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </virtual_method>
+      <method name="AddArgument" cname="cpg_function_add_argument">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunctionArgument*" name="argument" />
+        </parameters>
+      </method>
+      <method name="ClearArguments" cname="cpg_function_clear_arguments">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="ErrorQuark" cname="cpg_function_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="GetArguments" cname="cpg_function_get_arguments">
+        <return-type type="const-GList*" element_type="CpgFunctionArgument*" />
+      </method>
+      <method name="GetExpression" cname="cpg_function_get_expression">
+        <return-type type="CpgExpression*" />
+      </method>
+      <method name="GetNArguments" cname="cpg_function_get_n_arguments">
+        <return-type type="guint" />
+      </method>
+      <method name="GetNOptional" cname="cpg_function_get_n_optional">
+        <return-type type="guint" />
+      </method>
+      <method name="GetType" cname="cpg_function_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_function_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="expression" />
+        </parameters>
+      </constructor>
+      <method name="RemoveArgument" cname="cpg_function_remove_argument">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgFunctionArgument*" name="argument" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SetExpression" cname="cpg_function_set_expression">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgExpression*" name="expression" />
+        </parameters>
+      </method>
+    </object>
+    <object name="FunctionArgument" cname="CpgFunctionArgument" parent="GInitiallyUnowned">
+      <field name="Priv" cname="priv" type="CpgFunctionArgumentPrivate*" />
+      <signal name="InvalidateName" cname="invalidate-name" when="LAST" field_name="invalidate_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgFunctionArgument*" name="argument" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </signal>
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Optional" cname="optional" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="Default" cname="default" type="gdouble" readable="true" writeable="true" construct="true" />
+      <method name="Copy" cname="cpg_function_argument_copy">
+        <return-type type="CpgFunctionArgument*" owned="true" />
+      </method>
+      <method name="GetDefaultValue" cname="cpg_function_argument_get_default_value">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetName" cname="cpg_function_argument_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetOptional" cname="cpg_function_argument_get_optional">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetType" cname="cpg_function_argument_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_function_argument_new" hidden="true">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gboolean" name="optional" />
+          <parameter type="gdouble" name="def" />
+        </parameters>
+      </constructor>
+      <method name="SetDefaultValue" cname="cpg_function_argument_set_default_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="def" />
+        </parameters>
+      </method>
+      <method name="SetName" cname="cpg_function_argument_set_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="SetOptional" cname="cpg_function_argument_set_optional">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="optional" />
+        </parameters>
+      </method>
+    </object>
+    <object name="FunctionPolynomial" cname="CpgFunctionPolynomial" parent="CpgFunction">
+      <field name="Priv" cname="priv" type="CpgFunctionPolynomialPrivate*" />
+      <signal name="PieceAdded" cname="piece-added" when="LAST" field_name="piece_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunctionPolynomial*" name="polynomial" />
+          <parameter type="CpgFunctionPolynomialPiece*" name="piece" />
+        </parameters>
+      </signal>
+      <signal name="PieceRemoved" cname="piece-removed" when="LAST" field_name="piece_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunctionPolynomial*" name="polynomial" />
+          <parameter type="CpgFunctionPolynomialPiece*" name="piece" />
+        </parameters>
+      </signal>
+      <method name="Add" cname="cpg_function_polynomial_add">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgFunctionPolynomialPiece*" name="piece" />
+        </parameters>
+      </method>
+      <method name="ClearPieces" cname="cpg_function_polynomial_clear_pieces">
+        <return-type type="void" />
+      </method>
+      <method name="GetPieces" cname="cpg_function_polynomial_get_pieces">
+        <return-type type="const-GSList*" element_type="CpgFunctionPolynomialPiece*" />
+      </method>
+      <method name="GetType" cname="cpg_function_polynomial_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_function_polynomial_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </constructor>
+      <method name="Remove" cname="cpg_function_polynomial_remove">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgFunctionPolynomialPiece*" name="piece" />
+        </parameters>
+      </method>
+    </object>
+    <object name="FunctionPolynomialPiece" cname="CpgFunctionPolynomialPiece" parent="GInitiallyUnowned">
+      <field name="Priv" cname="priv" type="CpgFunctionPolynomialPiecePrivate*" />
+      <property name="Begin" cname="begin" type="gdouble" readable="true" writeable="true" construct="true" />
+      <property name="End" cname="end" type="gdouble" readable="true" writeable="true" construct="true" />
+      <method name="Copy" cname="cpg_function_polynomial_piece_copy">
+        <return-type type="CpgFunctionPolynomialPiece*" owned="true" />
+      </method>
+      <method name="GetBegin" cname="cpg_function_polynomial_piece_get_begin">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetEnd" cname="cpg_function_polynomial_piece_get_end">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetType" cname="cpg_function_polynomial_piece_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="SetBegin" cname="cpg_function_polynomial_piece_set_begin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="begin" />
+        </parameters>
+      </method>
+      <method name="SetEnd" cname="cpg_function_polynomial_piece_set_end">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="end" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Group" cname="CpgGroup" parent="CpgState">
+      <field name="Priv" cname="priv" type="CpgGroupPrivate*" />
+      <property name="Proxy" cname="proxy" type="CpgObject" readable="true" writeable="true" construct-only="true" />
+      <signal name="ChildAdded" cname="child-added" when="LAST" field_name="child_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgGroup*" name="group" />
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
+      <signal name="ChildRemoved" cname="child-removed" when="LAST" field_name="child_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgGroup*" name="group" />
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
+      <virtual_method name="Add" cname="add">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgGroup*" name="group" />
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Remove" cname="remove">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgGroup*" name="group" />
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <method name="Add" cname="cpg_group_add">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </method>
+      <method name="FindObject" cname="cpg_group_find_object">
+        <return-type type="CpgObject*" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="FindProperty" cname="cpg_group_find_property">
+        <return-type type="CpgProperty*" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="Foreach" cname="cpg_group_foreach" hidden="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GFunc" name="func" />
+          <parameter type="gpointer" name="data" />
+        </parameters>
+      </method>
+      <method name="GetChild" cname="cpg_group_get_child">
+        <return-type type="CpgObject*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="GetChildren" cname="cpg_group_get_children">
+        <return-type type="const-GSList*" element_type="CpgObject*" />
+      </method>
+      <method name="GetProxy" cname="cpg_group_get_proxy">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetType" cname="cpg_group_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_group_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="CpgObject*" name="proxy" />
+        </parameters>
+      </constructor>
+      <method name="PropertyIsProxy" cname="cpg_group_property_is_proxy">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="Remove" cname="cpg_group_remove">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </method>
+      <method name="SetProxy" cname="cpg_group_set_proxy">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="proxy" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Import" cname="CpgImport" parent="CpgGroup">
+      <field name="Priv" cname="priv" type="CpgImportPrivate*" />
+      <property name="Modified" cname="modified" type="gboolean" readable="true" />
+      <property name="Filename" cname="filename" type="gchar*" readable="true" />
+      <method name="AppendSearchPath" cname="cpg_import_append_search_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="GetModified" cname="cpg_import_get_modified">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetSearchPath" cname="cpg_import_get_search_path" shared="true">
+        <return-type type="const-gchar**" null_term_array="" />
+      </method>
+      <method name="GetType" cname="cpg_import_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Load" cname="cpg_import_load">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="parent" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_import_new_from_path">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="parent" />
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <method name="PrependSearchPath" cname="cpg_import_prepend_search_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="SetSearchPath" cname="cpg_import_set_search_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gchar**" name="path" null_term_array="" />
+        </parameters>
+      </method>
+    </object>
+    <object name="ImportAlias" cname="CpgImportAlias" parent="CpgImport">
+      <field name="Priv" cname="priv" type="CpgImportAliasPrivate*" />
+      <property name="Source" cname="source" type="CpgImport" readable="true" writeable="true" construct-only="true" />
+      <method name="GetType" cname="cpg_import_alias_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_import_alias_new">
+        <parameters>
+          <parameter type="CpgImport*" name="source" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="Integrator" cname="CpgIntegrator" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgIntegratorPrivate*" />
+      <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" />
+      <property name="Time" cname="time" type="gdouble" readable="true" />
+      <signal name="Stepped" cname="step" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
+      <signal name="Begin" cname="begin" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
+      <signal name="End" cname="end" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+        </parameters>
+      </signal>
+      <property name="State" cname="state" type="CpgIntegratorState" readable="true" />
+      <virtual_method name="Run" cname="run">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+          <parameter type="gdouble" name="from" />
+          <parameter type="gdouble" name="timestep" />
+          <parameter type="gdouble" name="to" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Step" cname="step">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="StepPrepare" cname="step_prepare">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Reset" cname="reset">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+        </parameters>
+      </virtual_method>
+      <method name="GetName" cname="cpg_integrator_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetObject" cname="cpg_integrator_get_object">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetState" cname="cpg_integrator_get_state">
+        <return-type type="CpgIntegratorState*" />
+      </method>
+      <method name="GetTime" cname="cpg_integrator_get_time">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetType" cname="cpg_integrator_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Reset" cname="cpg_integrator_reset">
+        <return-type type="void" />
+      </method>
+      <method name="SetState" cname="cpg_integrator_set_state">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgIntegratorState*" name="state" />
+        </parameters>
+      </method>
+      <method name="StepPrepare" cname="cpg_integrator_step_prepare">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
+    </object>
+    <object name="IntegratorEuler" cname="CpgIntegratorEuler" parent="CpgIntegrator">
+      <field name="Priv" cname="priv" type="CpgIntegratorEulerPrivate*" />
+      <method name="GetType" cname="cpg_integrator_euler_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_integrator_euler_new" />
+    </object>
+    <object name="IntegratorRungeKutta" cname="CpgIntegratorRungeKutta" parent="CpgIntegrator">
+      <field name="Priv" cname="priv" type="CpgIntegratorRungeKuttaPrivate*" />
+      <method name="GetType" cname="cpg_integrator_runge_kutta_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_integrator_runge_kutta_new" />
+    </object>
+    <object name="IntegratorState" cname="CpgIntegratorState" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgIntegratorStatePrivate*" />
+      <signal name="Updated" cname="updated" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegratorState*" />
+        </parameters>
+      </signal>
+      <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" construct-only="true" />
+      <method name="AllProperties" cname="cpg_integrator_state_all_properties">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="DirectLinkActions" cname="cpg_integrator_state_direct_link_actions">
+        <return-type type="const-GSList*" element_type="CpgLinkAction*" />
+      </method>
+      <method name="DirectProperties" cname="cpg_integrator_state_direct_properties">
+        <return-type type="const-GSList*" element_type="CpgProperty*" />
+      </method>
+      <method name="GetObject" cname="cpg_integrator_state_get_object">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetType" cname="cpg_integrator_state_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="IntegratedLinkActions" cname="cpg_integrator_state_integrated_link_actions">
+        <return-type type="const-GSList*" element_type="CpgLinkAction*" />
+      </method>
+      <method name="IntegratedProperties" cname="cpg_integrator_state_integrated_properties">
+        <return-type type="const-GSList*" element_type="CpgProperty*" />
+      </method>
+      <constructor cname="cpg_integrator_state_new">
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </constructor>
+      <method name="Update" cname="cpg_integrator_state_update">
+        <return-type type="void" />
+      </method>
+    </object>
+    <object name="Link" cname="CpgLink" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgLinkPrivate*" />
+      <signal name="ActionAdded" cname="action-added" when="LAST" field_name="action_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLink*" name="link" />
+          <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </signal>
+      <signal name="ActionRemoved" cname="action-removed" when="LAST" field_name="action_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLink*" name="link" />
+          <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </signal>
+      <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" construct="true" />
+      <property name="To" cname="to" type="CpgObject" readable="true" writeable="true" construct="true" />
+      <method name="AddAction" cname="cpg_link_add_action">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </method>
+      <method name="Attach" cname="cpg_link_attach">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="from" />
+          <parameter type="CpgObject*" name="to" />
+        </parameters>
+      </method>
+      <method name="GetAction" cname="cpg_link_get_action">
+        <return-type type="CpgLinkAction*" />
+        <parameters>
+          <parameter type="const-gchar*" name="target" />
+        </parameters>
+      </method>
+      <method name="GetActions" cname="cpg_link_get_actions">
+        <return-type type="const-GSList*" element_type="CpgLinkAction*" />
+      </method>
+      <method name="GetFrom" cname="cpg_link_get_from" hidden="true">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetTo" cname="cpg_link_get_to" hidden="true">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetType" cname="cpg_link_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_link_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="CpgObject*" name="from" />
+          <parameter type="CpgObject*" name="to" />
+        </parameters>
+      </constructor>
+      <method name="RemoveAction" cname="cpg_link_remove_action">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgLinkAction*" name="action" />
+        </parameters>
+      </method>
+    </object>
+    <object name="LinkAction" cname="CpgLinkAction" parent="GInitiallyUnowned">
+      <field name="Priv" cname="priv" type="CpgLinkActionPrivate*" />
+      <property name="Target" cname="target" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="Equation" cname="equation" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <property name="TargetProperty" cname="target-property" type="CpgProperty" readable="true" />
+      <method name="Copy" cname="cpg_link_action_copy">
+        <return-type type="CpgLinkAction*" owned="true" />
+      </method>
+      <method name="Depends" cname="cpg_link_action_depends">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </method>
+      <method name="GetEquation" cname="cpg_link_action_get_equation">
+        <return-type type="CpgExpression*" />
+      </method>
+      <method name="GetTarget" cname="cpg_link_action_get_target">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetTargetProperty" cname="cpg_link_action_get_target_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_link_action_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_link_action_new" hidden="true">
+        <parameters>
+          <parameter type="const-gchar*" name="target" />
+          <parameter type="CpgExpression*" name="equation" />
+        </parameters>
+      </constructor>
+      <method name="SetEquation" cname="cpg_link_action_set_equation">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgExpression*" name="equation" />
+        </parameters>
+      </method>
+      <method name="SetTarget" cname="cpg_link_action_set_target">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="target" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Monitor" cname="CpgMonitor" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgMonitorPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
+      <property name="Property" cname="property" type="CpgProperty" readable="true" writeable="true" construct-only="true" />
+      <method name="GetProperty" cname="cpg_monitor_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_monitor_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_monitor_new">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="Network" cname="CpgNetwork" parent="CpgGroup">
+      <field name="Priv" cname="priv" type="CpgNetworkPrivate*" />
+      <signal name="CompileError" cname="compile-error" when="LAST" field_name="compile_error">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgCompileError*" name="error" />
+        </parameters>
+      </signal>
+      <property name="Integrator" cname="integrator" type="CpgIntegrator" readable="true" writeable="true" />
+      <property name="Filename" cname="filename" type="gchar*" readable="true" />
+      <method name="GetFunctionGroup" cname="cpg_network_get_function_group">
+        <return-type type="CpgGroup*" />
+      </method>
+      <method name="GetIntegrator" cname="cpg_network_get_integrator">
+        <return-type type="CpgIntegrator*" />
+      </method>
+      <method name="GetTemplateGroup" cname="cpg_network_get_template_group">
+        <return-type type="CpgGroup*" />
+      </method>
+      <method name="GetType" cname="cpg_network_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="LoadErrorQuark" cname="cpg_network_load_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="LoadFromPath" cname="cpg_network_load_from_path">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="LoadFromXml" cname="cpg_network_load_from_xml">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="xml" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Merge" cname="cpg_network_merge">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgNetwork*" name="other" />
+        </parameters>
+      </method>
+      <method name="MergeFromPath" cname="cpg_network_merge_from_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="MergeFromXml" cname="cpg_network_merge_from_xml">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="xml" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_network_new" />
+      <constructor cname="cpg_network_new_from_path">
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_network_new_from_xml">
+        <parameters>
+          <parameter type="const-gchar*" name="xml" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <method name="Run" cname="cpg_network_run">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="from" />
+          <parameter type="gdouble" name="timestep" />
+          <parameter type="gdouble" name="to" />
+        </parameters>
+      </method>
+      <method name="SetIntegrator" cname="cpg_network_set_integrator">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+        </parameters>
+      </method>
+      <method name="Step" cname="cpg_network_step">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
+    </object>
+    <object name="NetworkDeserializer" cname="CpgNetworkDeserializer" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgNetworkDeserializerPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
+      <property name="Root" cname="root" type="CpgGroup" readable="true" writeable="true" construct-only="true" />
+      <method name="DeserializePath" cname="cpg_network_deserializer_deserialize_path">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_network_deserializer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_network_deserializer_new">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="root" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="NetworkSerializer" cname="CpgNetworkSerializer" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgNetworkSerializerPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
+      <property name="Root" cname="root" type="CpgGroup" readable="true" writeable="true" construct-only="true" />
+      <method name="GetType" cname="cpg_network_serializer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_network_serializer_new">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+          <parameter type="CpgGroup*" name="root" />
+        </parameters>
+      </constructor>
+      <method name="SerializeMemory" cname="cpg_network_serializer_serialize_memory">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SerializePath" cname="cpg_network_serializer_serialize_path">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Object" cname="CpgObject" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgObjectPrivate*" />
+      <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="Parent" cname="parent" type="CpgObject" readable="true" />
+      <property name="AutoImported" cname="auto-imported" type="gboolean" readable="true" writeable="true" construct="true" />
+      <signal name="Tainted" cname="tainted" when="LAST" field_name="tainted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
+      <signal name="Compiled" cname="compiled" when="LAST" field_name="compiled">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
+      <signal name="Resetted" cname="resetted" when="LAST" field_name="resetted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </signal>
+      <signal name="Copied" cname="copied" when="LAST" field_name="copied">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="copy" />
+        </parameters>
+      </signal>
+      <signal name="VerifyRemoveProperty" cname="verify-remove-property" when="LAST" field_name="verify_remove_property" hidden="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </signal>
+      <signal name="PropertyAdded" cname="property-added" when="LAST" field_name="property_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
+      <signal name="PropertyRemoved" cname="property-removed" when="LAST" field_name="property_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
+      <signal name="PropertyChanged" cname="property-changed" when="LAST" field_name="property_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
+      <virtual_method name="Compile" cname="compile">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgCompileContext*" name="context" />
+          <parameter type="CPG_FORWARD_DECL" name="(CpgCompileError)*" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Reset" cname="reset">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ForeachExpression" cname="foreach_expression">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgForeachExpressionFunc" name="func" />
+          <parameter type="gpointer" name="userdata" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ApplyTemplate" cname="apply_template">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Copy" cname="copy">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="source" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetCopyType" cname="get_copy_type">
+        <return-type type="GType" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Taint" cname="taint">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetProperties" cname="get_properties">
+        <return-type type="GSList*" element_type="CpgProperty*" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetProperty" cname="get_property">
+        <return-type type="CpgProperty*" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="HasProperty" cname="has_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddProperty" cname="add_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RemoveProperty" cname="remove_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Clear" cname="clear">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Equal" cname="equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="first" />
+          <parameter type="CpgObject*" name="last" />
+        </parameters>
+      </virtual_method>
+      <method name="AddProperty" cname="cpg_object_add_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </method>
+      <method name="ApplyTemplate" cname="cpg_object_apply_template">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </method>
+      <method name="Clear" cname="cpg_object_clear">
+        <return-type type="void" />
+      </method>
+      <method name="Compile" cname="cpg_object_compile">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgCompileContext*" name="context" />
+          <parameter type="CpgCompileError*" name="error" />
+        </parameters>
+      </method>
+      <method name="Copy" cname="cpg_object_copy">
+        <return-type type="CpgObject*" owned="true" />
+      </method>
+      <method name="Equal" cname="cpg_object_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="second" />
+        </parameters>
+      </method>
+      <method name="ErrorQuark" cname="cpg_object_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="ForeachExpression" cname="cpg_object_foreach_expression">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgForeachExpressionFunc" name="func" scope="call" />
+          <parameter type="gpointer" name="userdata" />
+        </parameters>
+      </method>
+      <method name="GetActors" cname="cpg_object_get_actors">
+        <return-type type="const-GSList*" element_type="CpgProperty*" />
+      </method>
+      <method name="GetAppliedTemplates" cname="cpg_object_get_applied_templates">
+        <return-type type="const-GSList*" element_type="CpgObject*" />
+      </method>
+      <method name="GetAutoImported" cname="cpg_object_get_auto_imported">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetFullId" cname="cpg_object_get_full_id">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetId" cname="cpg_object_get_id">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetParent" cname="cpg_object_get_parent">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetProperties" cname="cpg_object_get_properties">
+        <return-type type="GSList*" element_type="CpgProperty*" />
+      </method>
+      <method name="Property" cname="cpg_object_get_property">
+        <return-type type="CpgProperty*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="GetPropertyTemplate" cname="cpg_object_get_property_template">
+        <return-type type="CpgObject*" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="gboolean" name="match_full" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_object_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="HasProperty" cname="cpg_object_has_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="IsCompiled" cname="cpg_object_is_compiled">
+        <return-type type="gboolean" />
+      </method>
+      <constructor cname="cpg_object_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_object_new_from_template" hidden="true">
+        <parameters>
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </constructor>
+      <method name="RemoveProperty" cname="cpg_object_remove_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Reset" cname="cpg_object_reset">
+        <return-type type="void" />
+      </method>
+      <method name="SetAutoImported" cname="cpg_object_set_auto_imported">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="auto_imported" />
+        </parameters>
+      </method>
+      <method name="SetId" cname="cpg_object_set_id">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </method>
+      <method name="Taint" cname="cpg_object_taint">
+        <return-type type="void" />
+      </method>
+      <method name="VerifyRemoveProperty" cname="cpg_object_verify_remove_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="CopyAsTemplate" cname="cpg_object_new_from_template">
+        <return-type type="CpgObject*" owned="true" />
+      </method>
+    </object>
+    <object name="OperatorLastof" cname="CpgOperatorLastof" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgOperatorLastofPrivate*" />
+      <method name="GetType" cname="cpg_operator_lastof_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_operator_lastof_new" />
+    </object>
+    <object name="Property" cname="CpgProperty" parent="GInitiallyUnowned">
+      <field name="Priv" cname="priv" type="CpgPropertyPrivate*" />
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" construct="true" />
+      <property name="Flags" cname="flags" type="CpgPropertyFlags" readable="true" writeable="true" construct="true" />
+      <property name="Expression" cname="expression" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <signal name="InvalidateName" cname="invalidate-name" when="LAST" field_name="invalidate_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </signal>
+      <method name="AddFlags" cname="cpg_property_add_flags">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgPropertyFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="Copy" cname="cpg_property_copy">
+        <return-type type="CpgProperty*" owned="true" />
+      </method>
+      <method name="Equal" cname="cpg_property_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgProperty*" name="other" />
+        </parameters>
+      </method>
+      <method name="FlagsFromString" cname="cpg_property_flags_from_string" shared="true">
+        <return-type type="CpgPropertyFlags" />
+        <parameters>
+          <parameter type="const-gchar*" name="flags" />
+        </parameters>
+      </method>
+      <method name="FlagsToString" cname="cpg_property_flags_to_string" shared="true">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgPropertyFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="GetExpression" cname="cpg_property_get_expression">
+        <return-type type="CpgExpression*" />
+      </method>
+      <method name="GetFlags" cname="cpg_property_get_flags">
+        <return-type type="CpgPropertyFlags" />
+      </method>
+      <method name="GetFullName" cname="cpg_property_get_full_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetIntegrated" cname="cpg_property_get_integrated">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetLastValue" cname="cpg_property_get_last_value">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetName" cname="cpg_property_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="cpg_property_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetUpdate" cname="cpg_property_get_update">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetUsed" cname="cpg_property_get_used">
+        <return-type type="guint" />
+      </method>
+      <method name="GetValue" cname="cpg_property_get_value">
+        <return-type type="gdouble" />
+      </method>
+      <constructor cname="cpg_property_new" hidden="true">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="expression" />
+          <parameter type="CpgPropertyFlags" name="flags" />
+        </parameters>
+      </constructor>
+      <method name="RemoveFlags" cname="cpg_property_remove_flags">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgPropertyFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="Reset" cname="cpg_property_reset">
+        <return-type type="void" />
+      </method>
+      <method name="SetExpression" cname="cpg_property_set_expression">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgExpression*" name="expression" />
+        </parameters>
+      </method>
+      <method name="SetFlags" cname="cpg_property_set_flags">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgPropertyFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="SetIntegrated" cname="cpg_property_set_integrated">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="integrated" />
+        </parameters>
+      </method>
+      <method name="SetName" cname="cpg_property_set_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="SetUpdate" cname="cpg_property_set_update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="SetValue" cname="cpg_property_set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="UpdateLastValue" cname="cpg_property_update_last_value">
+        <return-type type="void" />
+      </method>
+    </object>
+    <object name="State" cname="CpgState" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgStatePrivate*" />
+      <method name="GetType" cname="cpg_state_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_state_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </constructor>
+    </object>
+    <struct name="Instruction" cname="CpgInstruction" hidden="true">
+      <field name="Type" cname="type" type="CpgInstructionType" />
+      <method name="Copy" cname="cpg_instruction_copy">
+        <return-type type="CpgInstruction*" owned="true" />
+      </method>
+      <method name="Free" cname="cpg_instruction_free">
+        <return-type type="void" />
+      </method>
+      <method name="OperatorNew" cname="cpg_instruction_operator_new" shared="true">
+        <return-type type="CpgInstruction*" />
+        <parameters>
+          <parameter type="guint" name="id" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="arguments" />
+        </parameters>
+      </method>
+      <method name="ToString" cname="cpg_instruction_to_string">
+        <return-type type="gchar*" />
+      </method>
+    </struct>
+    <struct name="InstructionCustomFunction" cname="CpgInstructionCustomFunction" opaque="true" hidden="true">
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
+      <field name="Function" cname="function" type="CpgFunction*" access="public" writeable="true" />
+      <field name="Arguments" cname="arguments" type="gint" access="public" writeable="true" />
+      <constructor cname="cpg_instruction_custom_function_new">
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+          <parameter type="gint" name="arguments" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="InstructionCustomOperator" cname="CpgInstructionCustomOperator" opaque="true" hidden="true">
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
+      <field name="Op" cname="op" type="CpgOperator*" access="public" writeable="true" />
+      <field name="Data" cname="data" type="CpgOperatorData*" access="public" writeable="true" />
+      <constructor cname="cpg_instruction_custom_operator_new">
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="GSList*" name="expressions" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="InstructionFunction" cname="CpgInstructionFunction" opaque="true" hidden="true">
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
+      <field name="Id" cname="id" type="guint" access="public" writeable="true" />
+      <field name="Name" cname="name" type="gchar*" access="public" writeable="true" />
+      <field name="Arguments" cname="arguments" type="gint" access="public" writeable="true" />
+      <field name="Variable" cname="variable" type="gboolean" access="public" writeable="true" />
+      <constructor cname="cpg_instruction_function_new">
+        <parameters>
+          <parameter type="guint" name="id" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="arguments" />
+          <parameter type="gboolean" name="variable" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="InstructionNumber" cname="CpgInstructionNumber" opaque="true" hidden="true">
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
+      <field name="Value" cname="value" type="gdouble" access="public" writeable="true" />
+      <constructor cname="cpg_instruction_number_new">
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="InstructionProperty" cname="CpgInstructionProperty" opaque="true" hidden="true">
+      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
+      <field name="Property" cname="property" type="CpgProperty*" access="public" writeable="true" />
+      <field name="Binding" cname="binding" type="CpgInstructionBinding" access="public" writeable="true" />
+      <constructor cname="cpg_instruction_property_new">
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="CpgInstructionBinding" name="binding" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="InstructionVariadicFunction" cname="CpgInstructionVariadicFunction" opaque="true" hidden="true">
+      <field name="Parent" cname="parent" type="CpgInstructionFunction" access="private" />
+      <field name="Cached" cname="cached" type="gboolean" access="public" writeable="true" />
+      <field name="CachedResult" cname="cached_result" type="gdouble" access="public" writeable="true" />
+      <constructor cname="cpg_instruction_variadic_function_new">
+        <parameters>
+          <parameter type="guint" name="id" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="arguments" />
+          <parameter type="gboolean" name="variable" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="OperatorData" cname="CpgOperatorData" opaque="true">
+      <field name="Expressions" cname="expressions" type="GSList*" access="public" writeable="true" element_type="CpgExpression*" />
+      <method name="Destroy" cname="cpg_operator_data_destroy">
+        <return-type type="void" />
+      </method>
+      <method name="Init" cname="cpg_operator_data_init">
+        <return-type type="CpgOperatorData*" />
+        <parameters>
+          <parameter type="GSList*" name="expressions" element_type="CpgExpression*" />
+        </parameters>
+      </method>
+    </struct>
+    <struct name="Stack" cname="CpgStack" opaque="true">
+      <method name="At" cname="cpg_stack_at">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="gint" name="idx" />
+        </parameters>
+      </method>
+      <method name="Count" cname="cpg_stack_count">
+        <return-type type="guint" />
+      </method>
+      <method name="Destroy" cname="cpg_stack_destroy">
+        <return-type type="void" />
+      </method>
+      <method name="Free" cname="cpg_stack_free">
+        <return-type type="void" />
+      </method>
+      <method name="Init" cname="cpg_stack_init">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="size" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_stack_new">
+        <parameters>
+          <parameter type="guint" name="size" />
+        </parameters>
+      </constructor>
+      <method name="Pop" cname="cpg_stack_pop">
+        <return-type type="gdouble" />
+      </method>
+      <method name="Push" cname="cpg_stack_push">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="Reset" cname="cpg_stack_reset">
+        <return-type type="void" />
+      </method>
+      <method name="Size" cname="cpg_stack_size">
+        <return-type type="guint" />
+      </method>
+    </struct>
+    <class name="Integrators" cname="CpgIntegrators_">
+      <method name="Create" cname="cpg_integrators_create" shared="true">
+        <return-type type="GSList*" element_type="CpgIntegrator*" />
+      </method>
+      <method name="Find" cname="cpg_integrators_find" shared="true">
+        <return-type type="GType" />
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </method>
+      <method name="List" cname="cpg_integrators_list" shared="true">
+        <return-type type="const-GSList*" element_type="GType" />
+      </method>
+      <method name="Register" cname="cpg_integrators_register" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GType" name="gtype" />
+        </parameters>
+      </method>
+      <method name="Unregister" cname="cpg_integrators_unregister" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GType" name="gtype" />
+        </parameters>
+      </method>
+    </class>
+  </namespace>
+  <namespace name="Cpg.Instructions">
+    <enum name="Type" cname="CpgInstructionType" type="enum">
+      <member cname="CPG_INSTRUCTION_TYPE_NONE" name="None" />
+      <member cname="CPG_INSTRUCTION_TYPE_FUNCTION" name="Function" />
+      <member cname="CPG_INSTRUCTION_TYPE_NUMBER" name="Number" />
+      <member cname="CPG_INSTRUCTION_TYPE_OPERATOR" name="Operator" />
+      <member cname="CPG_INSTRUCTION_TYPE_PROPERTY" name="Property" />
+      <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_FUNCTION" name="CustomFunction" />
+      <member cname="CPG_INSTRUCTION_TYPE_VARIADIC_FUNCTION" name="VariadicFunction" />
+      <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_OPERATOR" name="CustomOperator" />
+    </enum>
+    <enum name="Binding" cname="CpgInstructionBinding" type="enum">
+      <member cname="CPG_INSTRUCTION_BINDING_NONE" name="None" />
+      <member cname="CPG_INSTRUCTION_BINDING_FROM" name="From" />
+      <member cname="CPG_INSTRUCTION_BINDING_TO" name="To" />
+    </enum>
+  </namespace>
+  <symbol type="manual" cname="CpgInstruction" name="Cpg.Instructions.Instruction" />
+  <symbol type="manual" cname="CpgInstructionCustomFunction" name="Cpg.Instructions.CustomFunction" />
+  <symbol type="manual" cname="CpgInstructionFunction" name="Cpg.Instructions.Function" />
+  <symbol type="manual" cname="CpgInstructionNumber" name="Cpg.Instructions.Number" />
+  <symbol type="manual" cname="CpgInstructionProperty" name="Cpg.Instructions.Property" />
+  <symbol type="manual" cname="CpgInstructionProperty" name="Cpg.Instructions.Operator" />
+</api>
