@@ -47,15 +47,22 @@ EXTRA_DIST =			\
 	$(sources)		\
 	$(SYMBOLS)
 
+if HAS_GAPI_FIXUP
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
 	cp $(srcdir)/$(RAW_API) $(API)
 	chmod u+w $(API)
 	$(GAPI_FIXUP) --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols)
+endif
 
+if HAS_GAPI_CODEGEN
 generated-stamp: $(API) $(build_customs)
 	rm -f generated/* &&	\
 	$(GAPI_CODEGEN) --generate $(API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
 	&& touch generated-stamp
+else
+generated-stamp:
+	touch generated-stamp
+endif
 
 $(ASSEMBLY): $(build_sources) generated-stamp
 	$(CSC) -debug -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) generated/*.cs
