@@ -14,6 +14,8 @@
         <file>../libcpg-network/cpg-network/cpg-link-action.h</file>
         <file>../libcpg-network/cpg-network/cpg-expression.c</file>
         <file>../libcpg-network/cpg-network/cpg-expression.h</file>
+        <file>../libcpg-network/cpg-network/cpg-modifiable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-modifiable.h</file>
         <file>../libcpg-network/cpg-network/cpg-monitor.c</file>
         <file>../libcpg-network/cpg-network/cpg-monitor.h</file>
         <file>../libcpg-network/cpg-network/cpg-network.c</file>

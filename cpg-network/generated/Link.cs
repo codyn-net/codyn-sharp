@@ -216,6 +216,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_link_get_action_template(IntPtr raw, IntPtr action, bool match_full);
+
+		public Cpg.Link GetActionTemplate(Cpg.LinkAction action, bool match_full) {
+			IntPtr raw_ret = cpg_link_get_action_template(Handle, action == null ? IntPtr.Zero : action.Handle, match_full);
+			Cpg.Link ret = GLib.Object.GetObject(raw_ret) as Cpg.Link;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_link_get_type();
 
 		public static new GLib.GType GType { 

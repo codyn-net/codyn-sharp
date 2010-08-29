@@ -215,10 +215,32 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_operator_get_name(IntPtr raw);
+
+		public string Name { 
+			get {
+				IntPtr raw_ret = cpg_operator_get_name(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_operator_reset_variadic(IntPtr raw, IntPtr data);
 
 		public void ResetVariadic(Cpg.OperatorData data) {
 			cpg_operator_reset_variadic(Handle, data == null ? IntPtr.Zero : data.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern int cpg_operator_get_num_arguments(IntPtr raw);
+
+		public int NumArguments { 
+			get {
+				int raw_ret = cpg_operator_get_num_arguments(Handle);
+				int ret = raw_ret;
+				return ret;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -238,10 +260,12 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_operator_free_data(IntPtr raw, IntPtr data);
+		static extern IntPtr cpg_operator_get_expressions(IntPtr raw, IntPtr data);
 
-		public void FreeData(Cpg.OperatorData data) {
-			cpg_operator_free_data(Handle, data == null ? IntPtr.Zero : data.Handle);
+		public GLib.SList GetExpressions(Cpg.OperatorData data) {
+			IntPtr raw_ret = cpg_operator_get_expressions(Handle, data == null ? IntPtr.Zero : data.Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -252,25 +276,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_operator_get_name(IntPtr raw);
+		static extern void cpg_operator_free_data(IntPtr raw, IntPtr data);
 
-		public string Name { 
-			get {
-				IntPtr raw_ret = cpg_operator_get_name(Handle);
-				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern int cpg_operator_get_num_arguments(IntPtr raw);
-
-		public int NumArguments { 
-			get {
-				int raw_ret = cpg_operator_get_num_arguments(Handle);
-				int ret = raw_ret;
-				return ret;
-			}
+		public void FreeData(Cpg.OperatorData data) {
+			cpg_operator_free_data(Handle, data == null ? IntPtr.Zero : data.Handle);
 		}
 
 #endregion

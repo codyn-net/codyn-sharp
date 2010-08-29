@@ -97,6 +97,53 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
+		delegate void ArgumentsReorderedVMDelegate (IntPtr function);
+
+		static ArgumentsReorderedVMDelegate ArgumentsReorderedVMCallback;
+
+		static void argumentsreordered_cb (IntPtr function)
+		{
+			try {
+				Function function_managed = GLib.Object.GetObject (function, false) as Function;
+				function_managed.OnArgumentsReordered ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideArgumentsReordered (GLib.GType gtype)
+		{
+			if (ArgumentsReorderedVMCallback == null)
+				ArgumentsReorderedVMCallback = new ArgumentsReorderedVMDelegate (argumentsreordered_cb);
+			OverrideVirtualMethod (gtype, "arguments-reordered", ArgumentsReorderedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Function), ConnectionMethod="OverrideArgumentsReordered")]
+		protected virtual void OnArgumentsReordered ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("arguments-reordered")]
+		public event System.EventHandler ArgumentsReordered {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "arguments-reordered");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "arguments-reordered");
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
 		delegate void ArgumentAddedVMDelegate (IntPtr function, IntPtr argument);
 
 		static ArgumentAddedVMDelegate ArgumentAddedVMCallback;

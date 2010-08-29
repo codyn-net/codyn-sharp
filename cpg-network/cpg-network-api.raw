@@ -21,6 +21,11 @@
       <member cname="CPG_FUNCTION_ERROR_ARGUMENT_NOT_FOUND" name="ErrorArgumentNotFound" />
       <member cname="CPG_FUNCTION_NUM_ERRORS" name="NumErrors" />
     </enum>
+    <enum name="GroupError" cname="CpgGroupError" type="enum">
+      <member cname="CPG_GROUP_ERROR_CHILD_ALREADY_EXISTS" name="ChildAlreadyExists" />
+      <member cname="CPG_GROUP_ERROR_CHILD_DOES_NOT_EXIST" name="ChildDoesNotExist" />
+      <member cname="CPG_GROUP_ERROR_NUM" name="Num" />
+    </enum>
     <enum name="InstructionBinding" cname="CpgInstructionBinding" type="enum">
       <member cname="CPG_INSTRUCTION_BINDING_NONE" name="None" />
       <member cname="CPG_INSTRUCTION_BINDING_FROM" name="From" />
@@ -35,6 +40,10 @@
       <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_FUNCTION" name="CustomFunction" />
       <member cname="CPG_INSTRUCTION_TYPE_VARIADIC_FUNCTION" name="VariadicFunction" />
       <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_OPERATOR" name="CustomOperator" />
+    </enum>
+    <enum name="NetworkError" cname="CpgNetworkError" type="enum">
+      <member cname="CPG_NETWORK_ERROR_UNOWNED_TEMPLATE" name="UnownedTemplate" />
+      <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
     </enum>
     <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
       <member cname="CPG_NETWORK_LOAD_ERROR_XML" name="Xml" />
@@ -65,6 +74,33 @@
         <parameter type="gpointer" name="userdata" />
       </parameters>
     </callback>
+    <interface name="Modifiable" cname="CpgModifiable">
+      <virtual_method name="GetModified" cname="get_modified">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgModifiable*" name="modifiable" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetModified" cname="set_modified">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgModifiable*" name="modifiable" />
+          <parameter type="gboolean" name="modified" />
+        </parameters>
+      </virtual_method>
+      <method name="GetModified" cname="cpg_modifiable_get_modified">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetType" cname="cpg_modifiable_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="SetModified" cname="cpg_modifiable_set_modified">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="modified" />
+        </parameters>
+      </method>
+    </interface>
     <interface name="Operator" cname="CpgOperator">
       <virtual_method name="Execute" cname="execute">
         <return-type type="void" />
@@ -129,6 +165,12 @@
       </method>
       <method name="FreeData" cname="cpg_operator_free_data">
         <return-type type="void" />
+        <parameters>
+          <parameter type="CpgOperatorData*" name="data" />
+        </parameters>
+      </method>
+      <method name="GetExpressions" cname="cpg_operator_get_expressions">
+        <return-type type="const-GSList*" />
         <parameters>
           <parameter type="CpgOperatorData*" name="data" />
         </parameters>
@@ -379,6 +421,12 @@
           <parameter type="CpgFunctionArgument*" name="argument" />
         </parameters>
       </signal>
+      <signal name="ArgumentsReordered" cname="arguments-reordered" when="LAST" field_name="arguments_reordered">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+        </parameters>
+      </signal>
       <virtual_method name="Evaluate" cname="evaluate">
         <return-type type="gdouble" />
         <parameters>
@@ -619,11 +667,28 @@
           <parameter type="CpgObject*" name="object" />
         </parameters>
       </signal>
+      <signal name="VerifyRemoveChild" cname="verify-remove-child" when="LAST" manual="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter name="inst" type="CpgGroup*" />
+          <parameter name="p0" type="GObject*" />
+          <parameter name="p1" type="gpointer" />
+        </parameters>
+      </signal>
+      <signal name="VerifyAddChild" cname="verify-add-child" when="LAST" manual="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter name="inst" type="CpgGroup*" />
+          <parameter name="p0" type="GObject*" />
+          <parameter name="p1" type="gpointer" />
+        </parameters>
+      </signal>
       <virtual_method name="Add" cname="add">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgGroup*" name="group" />
           <parameter type="CpgObject*" name="object" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
       <virtual_method name="Remove" cname="remove">
@@ -631,13 +696,18 @@
         <parameters>
           <parameter type="CpgGroup*" name="group" />
           <parameter type="CpgObject*" name="object" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
       <method name="Add" cname="cpg_group_add">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
+          <parameter type="GError**" name="error" />
         </parameters>
+      </method>
+      <method name="ErrorQuark" cname="cpg_group_error_quark" shared="true">
+        <return-type type="GQuark" />
       </method>
       <method name="FindObject" cname="cpg_group_find_object">
         <return-type type="CpgObject*" />
@@ -689,6 +759,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="SetProxy" cname="cpg_group_set_proxy">
@@ -970,6 +1041,13 @@
           <parameter type="const-gchar*" name="target" />
         </parameters>
       </method>
+      <method name="GetActionTemplate" cname="cpg_link_get_action_template">
+        <return-type type="CpgLink*" />
+        <parameters>
+          <parameter type="CpgLinkAction*" name="action" />
+          <parameter type="gboolean" name="match_full" />
+        </parameters>
+      </method>
       <method name="GetActions" cname="cpg_link_get_actions">
         <return-type type="const-GSList*" />
       </method>
@@ -1001,6 +1079,9 @@
       <property name="Target" cname="target" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Equation" cname="equation" type="CpgExpression" readable="true" writeable="true" construct="true" />
       <property name="TargetProperty" cname="target-property" type="CpgProperty" readable="true" />
+      <implements>
+        <interface cname="CpgModifiable" />
+      </implements>
       <method name="Copy" cname="cpg_link_action_copy">
         <return-type type="CpgLinkAction*" owned="true" />
       </method>
@@ -1008,6 +1089,12 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="cpg_link_action_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgLinkAction*" name="other" />
         </parameters>
       </method>
       <method name="GetEquation" cname="cpg_link_action_get_equation">
@@ -1090,6 +1177,9 @@
       <property name="Integrator" cname="integrator" type="CpgIntegrator" readable="true" writeable="true" />
       <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct="true" />
       <property name="Filename" cname="filename" type="gchar*" readable="true" />
+      <method name="ErrorQuark" cname="cpg_network_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
       <method name="GetFile" cname="cpg_network_get_file">
         <return-type type="GFile*" />
       </method>
@@ -1593,9 +1683,23 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </signal>
-      <property name="Modified" cname="modified" type="gboolean" readable="true" writeable="true" />
+      <signal name="ExpressionChanged" cname="expression-changed" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgProperty*" />
+          <parameter name="p0" type="gexpression" />
+        </parameters>
+      </signal>
+      <signal name="FlagsChanged" cname="flags-changed" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgProperty*" />
+          <parameter name="p0" type="gproperty_flags" />
+        </parameters>
+      </signal>
       <implements>
         <interface cname="CpgUsable" />
+        <interface cname="CpgModifiable" />
       </implements>
       <method name="AddFlags" cname="cpg_property_add_flags">
         <return-type type="void" />
@@ -1638,9 +1742,6 @@
       </method>
       <method name="GetLastValue" cname="cpg_property_get_last_value">
         <return-type type="gdouble" />
-      </method>
-      <method name="GetModified" cname="cpg_property_get_modified">
-        <return-type type="gboolean" />
       </method>
       <method name="GetName" cname="cpg_property_get_name">
         <return-type type="const-gchar*" />
@@ -1686,12 +1787,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="integrated" />
-        </parameters>
-      </method>
-      <method name="SetModified" cname="cpg_property_set_modified">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="modified" />
         </parameters>
       </method>
       <method name="SetName" cname="cpg_property_set_name">

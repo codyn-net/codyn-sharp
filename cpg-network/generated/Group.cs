@@ -146,12 +146,198 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_group_remove(IntPtr raw, IntPtr objekt);
+		[GLib.CDeclCallback]
+		delegate bool VerifyAddChildVMDelegate (IntPtr inst, IntPtr p0, IntPtr p1);
 
-		public bool Remove(Cpg.Object objekt) {
-			bool raw_ret = cpg_group_remove(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
+		static VerifyAddChildVMDelegate VerifyAddChildVMCallback;
+
+		static bool verifyaddchild_cb (IntPtr inst, IntPtr p0, IntPtr p1)
+		{
+			try {
+				Group inst_managed = GLib.Object.GetObject (inst, false) as Group;
+				return inst_managed.OnVerifyAddChild (GLib.Object.GetObject (p0), p1);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, true);
+				// NOTREACHED: above call doesn't return
+				throw e;
+			}
+		}
+
+		private static void OverrideVerifyAddChild (GLib.GType gtype)
+		{
+			if (VerifyAddChildVMCallback == null)
+				VerifyAddChildVMCallback = new VerifyAddChildVMDelegate (verifyaddchild_cb);
+			OverrideVirtualMethod (gtype, "verify-add-child", VerifyAddChildVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Group), ConnectionMethod="OverrideVerifyAddChild")]
+		protected virtual bool OnVerifyAddChild (GLib.Object p0, IntPtr p1)
+		{
+			GLib.Value ret = new GLib.Value (GLib.GType.Boolean);
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (3);
+			GLib.Value[] vals = new GLib.Value [3];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (p0);
+			inst_and_params.Append (vals [1]);
+			vals [2] = new GLib.Value (p1);
+			inst_and_params.Append (vals [2]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+			bool result = (bool) ret;
+			ret.Dispose ();
+			return result;
+		}
+
+		[GLib.CDeclCallback]
+		delegate bool VerifyAddChildSignalDelegate (IntPtr arg0, IntPtr arg1, IntPtr arg2, IntPtr gch);
+
+		static bool VerifyAddChildSignalCallback (IntPtr arg0, IntPtr arg1, IntPtr arg2, IntPtr gch)
+		{
+			Cpg.VerifyAddChildArgs args = new Cpg.VerifyAddChildArgs ();
+			try {
+				GLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;
+				if (sig == null)
+					throw new Exception("Unknown signal GC handle received " + gch);
+
+				args.Args = new object[2];
+				if (arg1 == IntPtr.Zero)
+					args.Args[0] = null;
+				else {
+					args.Args[0] = GLib.Object.GetObject (arg1);
+				}
+				args.Args[1] = arg2;
+				Cpg.VerifyAddChildHandler handler = (Cpg.VerifyAddChildHandler) sig.Handler;
+				handler (GLib.Object.GetObject (arg0), args);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			try {
+				if (args.RetVal == null)
+					return false;
+				return ((bool)args.RetVal);
+			} catch (Exception) {
+				Exception ex = new Exception ("args.RetVal or 'out' property unset or set to incorrect type in Cpg.VerifyAddChildHandler callback");
+				GLib.ExceptionManager.RaiseUnhandledException (ex, true);
+				// NOTREACHED: above call doesn't return.
+				throw ex;
+			}
+		}
+
+		[GLib.Signal("verify-add-child")]
+		public event Cpg.VerifyAddChildHandler VerifyAddChild {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "verify-add-child", new VerifyAddChildSignalDelegate(VerifyAddChildSignalCallback));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "verify-add-child", new VerifyAddChildSignalDelegate(VerifyAddChildSignalCallback));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate bool VerifyRemoveChildVMDelegate (IntPtr inst, IntPtr p0, IntPtr p1);
+
+		static VerifyRemoveChildVMDelegate VerifyRemoveChildVMCallback;
+
+		static bool verifyremovechild_cb (IntPtr inst, IntPtr p0, IntPtr p1)
+		{
+			try {
+				Group inst_managed = GLib.Object.GetObject (inst, false) as Group;
+				return inst_managed.OnVerifyRemoveChild (GLib.Object.GetObject (p0), p1);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, true);
+				// NOTREACHED: above call doesn't return
+				throw e;
+			}
+		}
+
+		private static void OverrideVerifyRemoveChild (GLib.GType gtype)
+		{
+			if (VerifyRemoveChildVMCallback == null)
+				VerifyRemoveChildVMCallback = new VerifyRemoveChildVMDelegate (verifyremovechild_cb);
+			OverrideVirtualMethod (gtype, "verify-remove-child", VerifyRemoveChildVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Group), ConnectionMethod="OverrideVerifyRemoveChild")]
+		protected virtual bool OnVerifyRemoveChild (GLib.Object p0, IntPtr p1)
+		{
+			GLib.Value ret = new GLib.Value (GLib.GType.Boolean);
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (3);
+			GLib.Value[] vals = new GLib.Value [3];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (p0);
+			inst_and_params.Append (vals [1]);
+			vals [2] = new GLib.Value (p1);
+			inst_and_params.Append (vals [2]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+			bool result = (bool) ret;
+			ret.Dispose ();
+			return result;
+		}
+
+		[GLib.CDeclCallback]
+		delegate bool VerifyRemoveChildSignalDelegate (IntPtr arg0, IntPtr arg1, IntPtr arg2, IntPtr gch);
+
+		static bool VerifyRemoveChildSignalCallback (IntPtr arg0, IntPtr arg1, IntPtr arg2, IntPtr gch)
+		{
+			Cpg.VerifyRemoveChildArgs args = new Cpg.VerifyRemoveChildArgs ();
+			try {
+				GLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;
+				if (sig == null)
+					throw new Exception("Unknown signal GC handle received " + gch);
+
+				args.Args = new object[2];
+				if (arg1 == IntPtr.Zero)
+					args.Args[0] = null;
+				else {
+					args.Args[0] = GLib.Object.GetObject (arg1);
+				}
+				args.Args[1] = arg2;
+				Cpg.VerifyRemoveChildHandler handler = (Cpg.VerifyRemoveChildHandler) sig.Handler;
+				handler (GLib.Object.GetObject (arg0), args);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			try {
+				if (args.RetVal == null)
+					return false;
+				return ((bool)args.RetVal);
+			} catch (Exception) {
+				Exception ex = new Exception ("args.RetVal or 'out' property unset or set to incorrect type in Cpg.VerifyRemoveChildHandler callback");
+				GLib.ExceptionManager.RaiseUnhandledException (ex, true);
+				// NOTREACHED: above call doesn't return.
+				throw ex;
+			}
+		}
+
+		[GLib.Signal("verify-remove-child")]
+		public event Cpg.VerifyRemoveChildHandler VerifyRemoveChild {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "verify-remove-child", new VerifyRemoveChildSignalDelegate(VerifyRemoveChildSignalCallback));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "verify-remove-child", new VerifyRemoveChildSignalDelegate(VerifyRemoveChildSignalCallback));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern unsafe bool cpg_group_remove(IntPtr raw, IntPtr objekt, out IntPtr error);
+
+		public unsafe bool Remove(Cpg.Object objekt) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_group_remove(Handle, objekt == null ? IntPtr.Zero : objekt.Handle, out error);
 			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 
@@ -189,11 +375,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_group_add(IntPtr raw, IntPtr objekt);
+		static extern int cpg_group_error_quark();
 
-		public bool Add(Cpg.Object objekt) {
-			bool raw_ret = cpg_group_add(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
-			bool ret = raw_ret;
+		public static new int ErrorQuark() {
+			int raw_ret = cpg_group_error_quark();
+			int ret = raw_ret;
 			return ret;
 		}
 
@@ -203,6 +389,17 @@ namespace Cpg {
 		public bool SetProxy(Cpg.Object proxy) {
 			bool raw_ret = cpg_group_set_proxy(Handle, proxy == null ? IntPtr.Zero : proxy.Handle);
 			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern unsafe bool cpg_group_add(IntPtr raw, IntPtr objekt, out IntPtr error);
+
+		public unsafe bool Add(Cpg.Object objekt) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_group_add(Handle, objekt == null ? IntPtr.Zero : objekt.Handle, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 

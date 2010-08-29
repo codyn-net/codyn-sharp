@@ -181,6 +181,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern int cpg_network_error_quark();
+
+		public static new int ErrorQuark() {
+			int raw_ret = cpg_network_error_quark();
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern unsafe bool cpg_network_load_from_path(IntPtr raw, IntPtr path, out IntPtr error);
 
 		public unsafe bool LoadFromPath(string path) {
