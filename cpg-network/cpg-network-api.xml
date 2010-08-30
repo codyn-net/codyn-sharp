@@ -35,6 +35,10 @@
       <member cname="CPG_NETWORK_ERROR_UNOWNED_TEMPLATE" name="UnownedTemplate" />
       <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
     </enum>
+    <enum name="NetworkError" cname="CpgNetworkError" type="enum">
+      <member cname="CPG_NETWORK_ERROR_UNOWNED_TEMPLATE" name="UnownedTemplate" />
+      <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
+    </enum>
     <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
       <member cname="CPG_NETWORK_LOAD_ERROR_XML" name="Xml" />
       <member cname="CPG_NETWORK_LOAD_ERROR_PROPERTY" name="Property" />
