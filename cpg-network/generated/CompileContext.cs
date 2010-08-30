@@ -36,18 +36,19 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_compile_context_get_operators(IntPtr raw);
 
+		public Cpg.Operator[] Operators { 
+			get {
+				IntPtr raw_ret = cpg_compile_context_get_operators(Handle);
+				Cpg.Operator[] ret = (Cpg.Operator[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Operator));
+				return ret;
+			}
+		}
+
 		[DllImport("cpg-network-2.0")]
 		static extern void cpg_compile_context_set_operators(IntPtr raw, IntPtr operators);
 
-		public GLib.SList Operators { 
-			get {
-				IntPtr raw_ret = cpg_compile_context_get_operators(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
-				return ret;
-			}
-			set {
-				cpg_compile_context_set_operators(Handle, value == null ? IntPtr.Zero : value.Handle);
-			}
+		public void SetOperators(GLib.SList operators) {
+			cpg_compile_context_set_operators(Handle, operators == null ? IntPtr.Zero : operators.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]

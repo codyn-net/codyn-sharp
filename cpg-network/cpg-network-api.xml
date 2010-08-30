@@ -250,7 +250,7 @@
         <return-type type="const-GSList*" element_type="CpgObject*" />
       </method>
       <method name="GetOperators" cname="cpg_compile_context_get_operators">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CpgOperator*" />
       </method>
       <method name="GetType" cname="cpg_compile_context_get_type" shared="true">
         <return-type type="GType" />
@@ -283,7 +283,7 @@
       <method name="SetOperators" cname="cpg_compile_context_set_operators">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-GSList*" name="operators" />
+          <parameter type="const-GSList*" name="operators" element_type="CpgOperator*" />
         </parameters>
       </method>
       <method name="LookupProperty" cname="cpg_compile_context_lookup_property">
@@ -400,7 +400,7 @@
       <method name="SetInstructions" cname="cpg_expression_set_instructions">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GSList*" name="instructions" />
+          <parameter type="GSList*" name="instructions" element_type="CpgInstruction*" />
         </parameters>
       </method>
       <method name="SetOnce" cname="cpg_expression_set_once">
@@ -829,7 +829,7 @@
         </parameters>
       </virtual_method>
       <virtual_method name="GetDependencies" cname="get_dependencies">
-        <return-type type="GSList*" />
+        <return-type type="GSList*" element_type="CpgProperty*" />
         <parameters>
           <parameter type="CpgInstruction*" name="instruction" />
         </parameters>
@@ -910,7 +910,7 @@
       <constructor cname="cpg_instruction_custom_operator_new">
         <parameters>
           <parameter type="CpgOperator*" name="op" />
-          <parameter type="const-GSList*" name="expressions" />
+          <parameter type="const-GSList*" name="expressions" element_type="CpgExpression*" />
         </parameters>
       </constructor>
     </object>

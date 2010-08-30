@@ -61,13 +61,15 @@
 
   <!-- CpgExpression -->
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']/return-type" name="element_type">CpgInstruction*</attr>
-  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']/parameters/parameter[@name='expressions']" name="element_type">CpgInstruction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']/parameters/parameter[@name='instructions']" name="element_type">CpgInstruction*</attr>
   <attr path="/api/namespace/object[@cname='CpgExpression']/constructor" name="hidden">true</attr>
 
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
 
   <!-- CpgInstruction -->
   <attr path="/api/namespace/object[@cname='CpgInstruction']/method[@cname='cpg_instruction_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgInstruction']/virtual_method[@cname='get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgInstructionCustomOperator']/constructor[@cname='cpg_instruction_custom_operator_new']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
 
   <!-- CpgOperator -->
   <attr path="/api/namespace/interface[@cname='CpgOperator']/method[@cname='cpg_operator_get_expressions']/return-type" name="element_type">CpgExpression*</attr>
@@ -104,6 +106,9 @@
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_objects']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']/return-type" name="element_type">CpgFunction*</attr>
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']/parameters/parameter[@name='functions']" name="element_type">CpgFunction*</attr>
+
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_operators']/return-type" name="element_type">CpgOperator*</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_operators']/parameters/parameter[@name='operators']" name="element_type">CpgOperator*</attr>
 
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']" name="hidden">true</attr>
