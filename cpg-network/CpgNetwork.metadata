@@ -60,11 +60,19 @@
   <remove-node path="/api/namespace/object[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_sites']"/>
 
   <!-- CpgExpression -->
-  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']/return-type" name="element_type">CpgInstruction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']/parameters/parameter[@name='expressions']" name="element_type">CpgInstruction*</attr>
   <attr path="/api/namespace/object[@cname='CpgExpression']/constructor" name="hidden">true</attr>
 
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
+
+  <!-- CpgInstruction -->
+  <attr path="/api/namespace/object[@cname='CpgInstruction']/method[@cname='cpg_instruction_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
+
+  <!-- CpgOperator -->
+  <attr path="/api/namespace/interface[@cname='CpgOperator']/method[@cname='cpg_operator_get_expressions']/return-type" name="element_type">CpgExpression*</attr>
+  <attr path="/api/namespace/interface[@cname='CpgOperator']/method[@cname='cpg_operator_create_data']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
+  <attr path="/api/namespace/interface[@cname='CpgOperator']/virtual_method[@cname='create_data']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
 
   <!-- CpgFunction -->
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_execute']"/>
@@ -122,30 +130,12 @@
   <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cpg_integrators_list']/return-type" name="element_type">GType</attr>
   <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cpg_integrators_create']/return-type" name="element_type">CpgIntegrator*</attr>
 
-  <!-- CpgInstruction -->
-  <attr path="/api/namespace/struct[@cname='CpgInstructionCustomFunction']" name="hidden">true</attr>
-  <attr path="/api/namespace/struct[@cname='CpgInstructionFunction']" name="hidden">true</attr>
-  <attr path="/api/namespace/struct[@cname='CpgInstructionNumber']" name="hidden">true</attr>
-  <attr path="/api/namespace/struct[@cname='CpgInstructionProperty']" name="hidden">true</attr>
-  <attr path="/api/namespace/struct[@cname='CpgInstruction']" name="hidden">true</attr>
-  <attr path="/api/namespace/struct[@cname='CpgInstructionVariadicFunction']" name="hidden">true</attr>
-  <attr path="/api/namespace/struct[@cname='CpgInstructionCustomOperator']" name="hidden">true</attr>
-
-  <!-- CpgInstructionType -->
-  <add-node path="/api">
-    <namespace name="Cpg.Instructions"/>
-  </add-node>
-  <move-node path="/api/namespace/enum[@cname='CpgInstructionType']">/api/namespace[@name='Cpg.Instructions']</move-node>
-  <attr path="/api/namespace/enum[@cname='CpgInstructionType']" name="name">Type</attr>
-
-  <move-node path="/api/namespace/enum[@cname='CpgInstructionBinding']">/api/namespace[@name='Cpg.Instructions']</move-node>
-  <attr path="/api/namespace/enum[@cname='CpgInstructionBinding']" name="name">Binding</attr>
-
   <!-- CpgIntegratorState -->
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_direct_link_actions']/return-type" name="element_type">CpgLinkAction*</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_integrated_link_actions']/return-type" name="element_type">CpgLinkAction*</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_direct_properties']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_integrated_properties']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_all_properties']/return-type" name="element_type">CpgProperty*</attr>
 
   <!-- CpgNetworkSerializer -->
   <remove-node path="/api/namespace/object[@cname='CpgNetworkSerializer']/method[@cname='cpg_network_serializer_serialize']"/>
@@ -154,5 +144,9 @@
   <!-- CpgNetworkDeserializer -->
   <remove-node path="/api/namespace/object[@cname='CpgNetworkDeserializer']/method[@cname='cpg_network_deserializer_deserialize']"/>
   <remove-node path="/api/namespace/object[@cname='CpgNetworkDeserializer']/method[@cname='cpg_network_deserializer_deserialize_file']"/>
+
+  <remove-node path="/api/namespace/class[@name='Global']"/>
+  <remove-node path="/api/namespace/object[@name='ParamSpecMiniObject']"/>
+  <remove-node path="/api/namespace/class[@name='Value']"/>
 </metadata>
 <!-- vi:ts=2:et -->

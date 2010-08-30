@@ -103,9 +103,9 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_state_all_properties(IntPtr raw);
 
-		public GLib.SList AllProperties() {
+		public Cpg.Property[] AllProperties() {
 			IntPtr raw_ret = cpg_integrator_state_all_properties(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cpg.Property[] ret = (Cpg.Property[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Property));
 			return ret;
 		}
 

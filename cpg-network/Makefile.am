@@ -11,20 +11,18 @@ noinst_DATA = $(ASSEMBLY)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 DISTCLEANFILES = AssemblyInfo.cs $(ASSEMBLY).mdb
 
-SYMBOLS = cpg-network-symbols.xml
+SYMBOLS = cpg-network.symbols
 build_symbols = $(addprefix --symbols=$(srcdir)/, $(SYMBOLS))
 
-sources = \
-	Instruction.cs \
-	InstructionCustomFunction.cs \
-	InstructionFunction.cs \
-	InstructionNumber.cs \
-	InstructionProperty.cs \
-	InstructionOperator.cs \
-	InstructionVariadicFunction.cs \
-	InstructionCustomOperator.cs
+sources =
+
+overrides = \
+	MiniObject.cs \
+	CpgSharp.MiniObjectCopyFunctionNative.cs \
+	CpgSharp.MiniObjectFinalizeFunctionNative.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
+overrides_sources = $(addprefix $(srcdir)/, $(overrides))
 
 customs = \
 	Monitor.custom \
@@ -45,7 +43,8 @@ EXTRA_DIST =			\
 	$(METADATA)		\
 	$(customs)		\
 	$(sources)		\
-	$(SYMBOLS)
+	$(SYMBOLS)		\
+	$(overrides)
 
 if HAS_GAPI_FIXUP
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
@@ -55,9 +54,10 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
 endif
 
 if HAS_GAPI_CODEGEN
-generated-stamp: $(API) $(build_customs)
+generated-stamp: $(API) $(build_customs) $(overrides_sources)
 	rm -f generated/* &&	\
 	$(GAPI_CODEGEN) --generate $(API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
+	&& cp $(overrides_sources) generated/ \
 	&& touch generated-stamp
 else
 generated-stamp:

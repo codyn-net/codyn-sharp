@@ -60,6 +60,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_expression_set_instructions(IntPtr raw, IntPtr instructions);
+
+		public bool SetInstructions(GLib.SList instructions) {
+			bool raw_ret = cpg_expression_set_instructions(Handle, instructions == null ? IntPtr.Zero : instructions.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_expression_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cpg.Expression other) {
@@ -133,6 +142,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_expression_get_instructions(IntPtr raw);
+
+		public Cpg.Instruction[] Instructions { 
+			get {
+				IntPtr raw_ret = cpg_expression_get_instructions(Handle);
+				Cpg.Instruction[] ret = (Cpg.Instruction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Instruction));
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_expression_get_dependencies(IntPtr raw);
 
 		public Cpg.Property[] Dependencies { 
@@ -201,37 +221,6 @@ namespace Cpg {
 			if (Raw != IntPtr.Zero)
 			{
 				g_object_ref_sink (Raw);
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_expression_get_instructions(IntPtr raw);
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_expression_set_instructions(IntPtr raw, IntPtr instructions);
-
-		public Cpg.Instructions.Instruction[] Instructions
-		{
-			get
-			{
-				IntPtr raw_ret = cpg_expression_get_instructions(Handle);
-
-				GLib.SList slist = new GLib.SList(raw_ret);
-				Cpg.Instructions.Instruction[] ret = new Cpg.Instructions.Instruction[slist.Count];
-
-				for (int i = 0; i < slist.Count; ++i)
-				{
-					ret[i] = Cpg.Instructions.Instruction.FromIntPtr((IntPtr)slist[i]);
-				}
-
-				return ret;
-			}
-			set
-			{
-				using (GLib.SList slist = new GLib.SList(value, typeof(Cpg.Instructions.Instruction), true, false))
-				{
-					cpg_expression_set_instructions(Handle, slist.Handle);
-				}
 			}
 		}
 

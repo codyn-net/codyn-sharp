@@ -26,6 +26,11 @@
       <member cname="CPG_GROUP_ERROR_CHILD_DOES_NOT_EXIST" name="ChildDoesNotExist" />
       <member cname="CPG_GROUP_ERROR_NUM" name="Num" />
     </enum>
+    <enum name="InstructionPropertyBinding" cname="CpgInstructionPropertyBinding" type="enum">
+      <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_NONE" name="None" />
+      <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_FROM" name="From" />
+      <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_TO" name="To" />
+    </enum>
     <enum name="NetworkError" cname="CpgNetworkError" type="enum">
       <member cname="CPG_NETWORK_ERROR_UNOWNED_TEMPLATE" name="UnownedTemplate" />
       <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
@@ -57,6 +62,18 @@
       <parameters>
         <parameter type="CpgExpression*" name="expression" />
         <parameter type="gpointer" name="userdata" />
+      </parameters>
+    </callback>
+    <callback name="MiniObjectCopyFunction" cname="CpgMiniObjectCopyFunction">
+      <return-type type="CpgMiniObject*" />
+      <parameters>
+        <parameter type="const-CpgMiniObject*" name="obj" />
+      </parameters>
+    </callback>
+    <callback name="MiniObjectFinalizeFunction" cname="CpgMiniObjectFinalizeFunction">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="CpgMiniObject*" name="obj" />
       </parameters>
     </callback>
     <interface name="Modifiable" cname="CpgModifiable">
@@ -105,7 +122,7 @@
         <return-type type="CpgOperatorData*" />
         <parameters>
           <parameter type="CpgOperator*" name="op" />
-          <parameter type="GSList*" name="expressions" />
+          <parameter type="const-GSList*" name="expressions" element_type="CpgExpression*" />
         </parameters>
       </virtual_method>
       <virtual_method name="FreeData" cname="free_data">
@@ -138,7 +155,7 @@
       <method name="CreateData" cname="cpg_operator_create_data">
         <return-type type="CpgOperatorData*" />
         <parameters>
-          <parameter type="GSList*" name="expressions" />
+          <parameter type="const-GSList*" name="expressions" element_type="CpgExpression*" />
         </parameters>
       </method>
       <method name="Execute" cname="cpg_operator_execute">
@@ -155,7 +172,7 @@
         </parameters>
       </method>
       <method name="GetExpressions" cname="cpg_operator_get_expressions">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CpgExpression*" />
         <parameters>
           <parameter type="CpgOperatorData*" name="data" />
         </parameters>
@@ -347,8 +364,8 @@
       <method name="GetDependencies" cname="cpg_expression_get_dependencies">
         <return-type type="const-GSList*" element_type="CpgProperty*" />
       </method>
-      <method name="GetInstructions" cname="cpg_expression_get_instructions" hidden="true">
-        <return-type type="const-GSList*" />
+      <method name="GetInstructions" cname="cpg_expression_get_instructions">
+        <return-type type="const-GSList*" element_type="CpgInstruction*" />
       </method>
       <method name="GetOnce" cname="cpg_expression_get_once">
         <return-type type="gboolean" />
@@ -376,7 +393,7 @@
           <parameter type="const-gchar*" name="value" />
         </parameters>
       </method>
-      <method name="SetInstructions" cname="cpg_expression_set_instructions" hidden="true">
+      <method name="SetInstructions" cname="cpg_expression_set_instructions">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GSList*" name="instructions" />
@@ -786,6 +803,243 @@
         </parameters>
       </constructor>
     </object>
+    <object name="Instruction" cname="CpgInstruction" parent="CpgMiniObject">
+      <field name="Priv" cname="priv" type="CpgInstructionPrivate*" />
+      <virtual_method name="ToString" cname="to_string">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgInstruction*" name="instruction" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Execute" cname="execute">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgInstruction*" name="instruction" />
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetStackCount" cname="get_stack_count">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="CpgInstruction*" name="instruction" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetDependencies" cname="get_dependencies">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="CpgInstruction*" name="instruction" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Equal" cname="equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgInstruction*" name="i1" />
+          <parameter type="CpgInstruction*" name="i2" />
+        </parameters>
+      </virtual_method>
+      <method name="Equal" cname="cpg_instruction_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgInstruction*" name="i2" />
+        </parameters>
+      </method>
+      <method name="Execute" cname="cpg_instruction_execute">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </method>
+      <method name="GetDependencies" cname="cpg_instruction_get_dependencies">
+        <return-type type="GSList*" element_type="CpgProperty*" />
+      </method>
+      <method name="GetStackCount" cname="cpg_instruction_get_stack_count">
+        <return-type type="gint" />
+      </method>
+      <method name="GetType" cname="cpg_instruction_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="ToString" cname="cpg_instruction_to_string">
+        <return-type type="gchar*" />
+      </method>
+    </object>
+    <object name="InstructionCustomFunction" cname="CpgInstructionCustomFunction" parent="CpgInstruction">
+      <field name="Priv" cname="priv" type="CpgInstructionCustomFunctionPrivate*" />
+      <method name="GetArguments" cname="cpg_instruction_custom_function_get_arguments">
+        <return-type type="gint" />
+      </method>
+      <method name="GetFunction" cname="cpg_instruction_custom_function_get_function">
+        <return-type type="CpgFunction*" />
+      </method>
+      <method name="GetType" cname="cpg_instruction_custom_function_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_instruction_custom_function_new">
+        <parameters>
+          <parameter type="CpgFunction*" name="function" />
+          <parameter type="gint" name="arguments" />
+        </parameters>
+      </constructor>
+      <method name="SetArguments" cname="cpg_instruction_custom_function_set_arguments">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="arguments" />
+        </parameters>
+      </method>
+      <method name="SetFunction" cname="cpg_instruction_custom_function_set_function">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgFunction*" name="func" />
+        </parameters>
+      </method>
+    </object>
+    <object name="InstructionCustomOperator" cname="CpgInstructionCustomOperator" parent="CpgInstruction">
+      <field name="Priv" cname="priv" type="CpgInstructionCustomOperatorPrivate*" />
+      <method name="GetData" cname="cpg_instruction_custom_operator_get_data">
+        <return-type type="CpgOperatorData*" />
+      </method>
+      <method name="GetOperator" cname="cpg_instruction_custom_operator_get_operator">
+        <return-type type="CpgOperator*" />
+      </method>
+      <method name="GetType" cname="cpg_instruction_custom_operator_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_instruction_custom_operator_new">
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="const-GSList*" name="expressions" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="InstructionFunction" cname="CpgInstructionFunction" parent="CpgInstruction">
+      <field name="Priv" cname="priv" type="CpgInstructionFunctionPrivate*" />
+      <method name="GetArguments" cname="cpg_instruction_function_get_arguments">
+        <return-type type="gint" />
+      </method>
+      <method name="GetId" cname="cpg_instruction_function_get_id">
+        <return-type type="guint" />
+      </method>
+      <method name="GetName" cname="cpg_instruction_function_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="cpg_instruction_function_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetVariable" cname="cpg_instruction_function_get_variable">
+        <return-type type="gboolean" />
+      </method>
+      <constructor cname="cpg_instruction_function_new">
+        <parameters>
+          <parameter type="guint" name="id" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="arguments" />
+          <parameter type="gboolean" name="variable" />
+        </parameters>
+      </constructor>
+      <method name="SetArguments" cname="cpg_instruction_function_set_arguments">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="arguments" />
+        </parameters>
+      </method>
+      <method name="SetId" cname="cpg_instruction_function_set_id">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="id" />
+        </parameters>
+      </method>
+      <method name="SetName" cname="cpg_instruction_function_set_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="SetVariable" cname="cpg_instruction_function_set_variable">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="variable" />
+        </parameters>
+      </method>
+    </object>
+    <object name="InstructionNumber" cname="CpgInstructionNumber" parent="CpgInstruction">
+      <field name="Priv" cname="priv" type="CpgInstructionNumberPrivate*" />
+      <method name="GetType" cname="cpg_instruction_number_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetValue" cname="cpg_instruction_number_get_value">
+        <return-type type="gdouble" />
+      </method>
+      <constructor cname="cpg_instruction_number_new">
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </constructor>
+      <method name="SetValue" cname="cpg_instruction_number_set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+    </object>
+    <object name="InstructionOperator" cname="CpgInstructionOperator" parent="CpgInstructionFunction">
+      <field name="Stub" cname="stub" type="gpointer" />
+      <method name="GetType" cname="cpg_instruction_operator_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_instruction_operator_new">
+        <parameters>
+          <parameter type="guint" name="id" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="arguments" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="InstructionProperty" cname="CpgInstructionProperty" parent="CpgInstruction">
+      <field name="Priv" cname="priv" type="CpgInstructionPropertyPrivate*" />
+      <method name="GetBinding" cname="cpg_instruction_property_get_binding">
+        <return-type type="CpgInstructionPropertyBinding" />
+      </method>
+      <method name="GetProperty" cname="cpg_instruction_property_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_instruction_property_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_instruction_property_new">
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="CpgInstructionPropertyBinding" name="binding" />
+        </parameters>
+      </constructor>
+      <method name="SetBinding" cname="cpg_instruction_property_set_binding">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgInstructionPropertyBinding" name="binding" />
+        </parameters>
+      </method>
+      <method name="SetProperty" cname="cpg_instruction_property_set_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </method>
+    </object>
+    <object name="InstructionVariadicFunction" cname="CpgInstructionVariadicFunction" parent="CpgInstructionFunction">
+      <field name="Priv" cname="priv" type="CpgInstructionVariadicFunctionPrivate*" />
+      <method name="GetType" cname="cpg_instruction_variadic_function_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_instruction_variadic_function_new">
+        <parameters>
+          <parameter type="guint" name="id" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="arguments" />
+          <parameter type="gboolean" name="variable" />
+        </parameters>
+      </constructor>
+      <method name="ResetCache" cname="cpg_instruction_variadic_function_reset_cache">
+        <return-type type="void" />
+      </method>
+    </object>
     <object name="Integrator" cname="CpgIntegrator" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgIntegratorPrivate*" />
       <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" />
@@ -896,7 +1150,7 @@
       </signal>
       <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" construct-only="true" />
       <method name="AllProperties" cname="cpg_integrator_state_all_properties">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CpgProperty*" />
       </method>
       <method name="DirectLinkActions" cname="cpg_integrator_state_direct_link_actions">
         <return-type type="const-GSList*" element_type="CpgLinkAction*" />
@@ -1048,6 +1302,22 @@
           <parameter type="const-gchar*" name="target" />
         </parameters>
       </method>
+    </object>
+    <object name="MiniObject" cname="CpgMiniObject" parent="GTypeInstance">
+      <method name="Copy" cname="cpg_mini_object_copy">
+        <return-type type="CpgMiniObject*" owned="true" />
+      </method>
+      <method name="Free" cname="cpg_mini_object_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetType" cname="cpg_mini_object_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_mini_object_new">
+        <parameters>
+          <parameter type="GType" name="type" />
+        </parameters>
+      </constructor>
     </object>
     <object name="Monitor" cname="CpgMonitor" parent="GObject">
       <field name="Priv" cname="priv" type="CpgMonitorPrivate*" />
@@ -1674,96 +1944,6 @@
         </parameters>
       </constructor>
     </object>
-    <struct name="Instruction" cname="CpgInstruction" hidden="true">
-      <field name="Type" cname="type" type="CpgInstructionType" />
-      <method name="Copy" cname="cpg_instruction_copy">
-        <return-type type="CpgInstruction*" owned="true" />
-      </method>
-      <method name="Free" cname="cpg_instruction_free">
-        <return-type type="void" />
-      </method>
-      <method name="OperatorNew" cname="cpg_instruction_operator_new" shared="true">
-        <return-type type="CpgInstruction*" />
-        <parameters>
-          <parameter type="guint" name="id" />
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="gint" name="arguments" />
-        </parameters>
-      </method>
-      <method name="ToString" cname="cpg_instruction_to_string">
-        <return-type type="gchar*" />
-      </method>
-    </struct>
-    <struct name="InstructionCustomFunction" cname="CpgInstructionCustomFunction" opaque="true" hidden="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
-      <field name="Function" cname="function" type="CpgFunction*" access="public" writeable="true" />
-      <field name="Arguments" cname="arguments" type="gint" access="public" writeable="true" />
-      <constructor cname="cpg_instruction_custom_function_new">
-        <parameters>
-          <parameter type="CpgFunction*" name="function" />
-          <parameter type="gint" name="arguments" />
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="InstructionCustomOperator" cname="CpgInstructionCustomOperator" opaque="true" hidden="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
-      <field name="Op" cname="op" type="CpgOperator*" access="public" writeable="true" />
-      <field name="Data" cname="data" type="CpgOperatorData*" access="public" writeable="true" />
-      <constructor cname="cpg_instruction_custom_operator_new">
-        <parameters>
-          <parameter type="CpgOperator*" name="op" />
-          <parameter type="GSList*" name="expressions" />
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="InstructionFunction" cname="CpgInstructionFunction" opaque="true" hidden="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
-      <field name="Id" cname="id" type="guint" access="public" writeable="true" />
-      <field name="Name" cname="name" type="gchar*" access="public" writeable="true" />
-      <field name="Arguments" cname="arguments" type="gint" access="public" writeable="true" />
-      <field name="Variable" cname="variable" type="gboolean" access="public" writeable="true" />
-      <constructor cname="cpg_instruction_function_new">
-        <parameters>
-          <parameter type="guint" name="id" />
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="gint" name="arguments" />
-          <parameter type="gboolean" name="variable" />
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="InstructionNumber" cname="CpgInstructionNumber" opaque="true" hidden="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
-      <field name="Value" cname="value" type="gdouble" access="public" writeable="true" />
-      <constructor cname="cpg_instruction_number_new">
-        <parameters>
-          <parameter type="gdouble" name="value" />
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="InstructionProperty" cname="CpgInstructionProperty" opaque="true" hidden="true">
-      <field name="Parent" cname="parent" type="CpgInstruction" access="private" />
-      <field name="Property" cname="property" type="CpgProperty*" access="public" writeable="true" />
-      <field name="Binding" cname="binding" type="CpgInstructionBinding" access="public" writeable="true" />
-      <constructor cname="cpg_instruction_property_new">
-        <parameters>
-          <parameter type="CpgProperty*" name="property" />
-          <parameter type="CpgInstructionBinding" name="binding" />
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="InstructionVariadicFunction" cname="CpgInstructionVariadicFunction" opaque="true" hidden="true">
-      <field name="Parent" cname="parent" type="CpgInstructionFunction" access="private" />
-      <field name="Cached" cname="cached" type="gboolean" access="public" writeable="true" />
-      <field name="CachedResult" cname="cached_result" type="gdouble" access="public" writeable="true" />
-      <constructor cname="cpg_instruction_variadic_function_new">
-        <parameters>
-          <parameter type="guint" name="id" />
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="gint" name="arguments" />
-          <parameter type="gboolean" name="variable" />
-        </parameters>
-      </constructor>
-    </struct>
     <struct name="OperatorData" cname="CpgOperatorData" opaque="true">
       <field name="Expressions" cname="expressions" type="GSList*" access="public" writeable="true" element_type="CpgExpression*" />
       <method name="Destroy" cname="cpg_operator_data_destroy">
@@ -1772,7 +1952,7 @@
       <method name="Init" cname="cpg_operator_data_init">
         <return-type type="CpgOperatorData*" />
         <parameters>
-          <parameter type="GSList*" name="expressions" element_type="CpgExpression*" />
+          <parameter type="const-GSList*" name="expressions" element_type="CpgExpression*" />
         </parameters>
       </method>
     </struct>
@@ -1846,27 +2026,4 @@
       </method>
     </class>
   </namespace>
-  <namespace name="Cpg.Instructions">
-    <enum name="Type" cname="CpgInstructionType" type="enum">
-      <member cname="CPG_INSTRUCTION_TYPE_NONE" name="None" />
-      <member cname="CPG_INSTRUCTION_TYPE_FUNCTION" name="Function" />
-      <member cname="CPG_INSTRUCTION_TYPE_NUMBER" name="Number" />
-      <member cname="CPG_INSTRUCTION_TYPE_OPERATOR" name="Operator" />
-      <member cname="CPG_INSTRUCTION_TYPE_PROPERTY" name="Property" />
-      <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_FUNCTION" name="CustomFunction" />
-      <member cname="CPG_INSTRUCTION_TYPE_VARIADIC_FUNCTION" name="VariadicFunction" />
-      <member cname="CPG_INSTRUCTION_TYPE_CUSTOM_OPERATOR" name="CustomOperator" />
-    </enum>
-    <enum name="Binding" cname="CpgInstructionBinding" type="enum">
-      <member cname="CPG_INSTRUCTION_BINDING_NONE" name="None" />
-      <member cname="CPG_INSTRUCTION_BINDING_FROM" name="From" />
-      <member cname="CPG_INSTRUCTION_BINDING_TO" name="To" />
-    </enum>
-  </namespace>
-  <symbol type="manual" cname="CpgInstruction" name="Cpg.Instructions.Instruction" />
-  <symbol type="manual" cname="CpgInstructionCustomFunction" name="Cpg.Instructions.CustomFunction" />
-  <symbol type="manual" cname="CpgInstructionFunction" name="Cpg.Instructions.Function" />
-  <symbol type="manual" cname="CpgInstructionNumber" name="Cpg.Instructions.Number" />
-  <symbol type="manual" cname="CpgInstructionProperty" name="Cpg.Instructions.Property" />
-  <symbol type="manual" cname="CpgInstructionProperty" name="Cpg.Instructions.Operator" />
 </api>

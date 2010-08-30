@@ -56,14 +56,32 @@
         <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrators.c</file>
         <file>../libcpg-network/cpg-network/cpg-integrators.h</file>
-        <file>../libcpg-network/cpg-network/cpg-instructions.c</file>
-        <file>../libcpg-network/cpg-network/cpg-instructions.h</file>
         <file>../libcpg-network/cpg-network/cpg-group.c</file>
         <file>../libcpg-network/cpg-network/cpg-group.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-state.c</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-state.h</file>
         <file>../libcpg-network/cpg-network/cpg-usable.c</file>
         <file>../libcpg-network/cpg-network/cpg-usable.h</file>
+        <file>../libcpg-network/cpg-network/cpg-modifiable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-modifiable.h</file>
+        <file>../libcpg-network/cpg-network/cpg-mini-object.c</file>
+        <file>../libcpg-network/cpg-network/cpg-mini-object.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-function.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-function.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-operator.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-operator.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-function.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-function.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-number.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-number.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-operator.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-operator.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-property.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-property.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-variadic-function.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-variadic-function.h</file>
       </namespace>
     </library>
   </api>

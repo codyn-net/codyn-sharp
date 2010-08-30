@@ -17,7 +17,7 @@ namespace Cpg {
 		}
 		void Execute(Cpg.OperatorData data, Cpg.Stack stack);
 		Cpg.OperatorData CreateData(GLib.SList expressions);
-		GLib.SList GetExpressions(Cpg.OperatorData data);
+		Cpg.Expression[] GetExpressions(Cpg.OperatorData data);
 		void ResetCache(Cpg.OperatorData data);
 		void FreeData(Cpg.OperatorData data);
 	}

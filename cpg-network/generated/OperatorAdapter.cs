@@ -262,9 +262,9 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_operator_get_expressions(IntPtr raw, IntPtr data);
 
-		public GLib.SList GetExpressions(Cpg.OperatorData data) {
+		public Cpg.Expression[] GetExpressions(Cpg.OperatorData data) {
 			IntPtr raw_ret = cpg_operator_get_expressions(Handle, data == null ? IntPtr.Zero : data.Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cpg.Expression[] ret = (Cpg.Expression[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Expression));
 			return ret;
 		}
 
