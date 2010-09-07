@@ -388,6 +388,13 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
+      <method name="MergeFromPartialXml" cname="cpg_network_merge_from_partial_xml">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="xml" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="MergeFromXml" cname="cpg_network_merge_from_xml">
         <return-type type="void" />
         <parameters>

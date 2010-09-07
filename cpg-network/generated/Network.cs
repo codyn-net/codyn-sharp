@@ -186,6 +186,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-1.0")]
+		static extern unsafe bool cpg_network_merge_from_partial_xml(IntPtr raw, IntPtr xml, out IntPtr error);
+
+		public unsafe bool MergeFromPartialXml(string xml) {
+			IntPtr native_xml = GLib.Marshaller.StringToPtrGStrdup (xml);
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_network_merge_from_partial_xml(Handle, native_xml, out error);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_xml);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("cpg-network-1.0")]
 		static extern IntPtr cpg_network_write_to_xml(IntPtr raw);
 
 		public string WriteToXml() {
