@@ -1,3 +1,9 @@
+cpg-network1-sharp (1.2-1) UNRELEASED; urgency=low
+
+  * New upstream release
+
+ -- Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>  Tue, 07 Sep 2010 20:57:32 +0100
+
 cpg-network-sharp (1.1-1) UNRELEASED; urgency=low
 
   * New upstream release
