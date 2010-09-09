@@ -45,6 +45,7 @@
       <member cname="CPG_PROPERTY_HINT_NONE" name="None" />
       <member cname="CPG_PROPERTY_HINT_IN" name="In" value="1 &lt;&lt; 0" />
       <member cname="CPG_PROPERTY_HINT_OUT" name="Out" value="1 &lt;&lt; 1" />
+	  <member cname="CPG_PROPERTY_HINT_ONCE" name="Once" value="1 &lt;&lt; 2" />
     </enum>
     <object name="Function" cname="CpgFunction" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgFunctionPrivate*" />
@@ -384,6 +385,13 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="filename" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="MergeFromPartialXml" cname="cpg_network_merge_from_partial_xml">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="xml" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
