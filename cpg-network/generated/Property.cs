@@ -88,6 +88,55 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
+		delegate void ExpressionChangedVMDelegate (IntPtr property, IntPtr expression);
+
+		static ExpressionChangedVMDelegate ExpressionChangedVMCallback;
+
+		static void expressionchanged_cb (IntPtr property, IntPtr expression)
+		{
+			try {
+				Property property_managed = GLib.Object.GetObject (property, false) as Property;
+				property_managed.OnExpressionChanged (GLib.Object.GetObject(expression) as Cpg.Expression);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideExpressionChanged (GLib.GType gtype)
+		{
+			if (ExpressionChangedVMCallback == null)
+				ExpressionChangedVMCallback = new ExpressionChangedVMDelegate (expressionchanged_cb);
+			OverrideVirtualMethod (gtype, "expression-changed", ExpressionChangedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Property), ConnectionMethod="OverrideExpressionChanged")]
+		protected virtual void OnExpressionChanged (Cpg.Expression expression)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (expression);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("expression-changed")]
+		public event Cpg.ExpressionChangedHandler ExpressionChanged {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "expression-changed", typeof (Cpg.ExpressionChangedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "expression-changed", typeof (Cpg.ExpressionChangedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
 		delegate bool InvalidateNameVMDelegate (IntPtr property, IntPtr name);
 
 		static InvalidateNameVMDelegate InvalidateNameVMCallback;
@@ -137,6 +186,55 @@ namespace Cpg {
 			}
 			remove {
 				GLib.Signal sig = GLib.Signal.Lookup (this, "invalidate-name", typeof (Cpg.InvalidateNameArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void FlagsChangedVMDelegate (IntPtr property, int flags);
+
+		static FlagsChangedVMDelegate FlagsChangedVMCallback;
+
+		static void flagschanged_cb (IntPtr property, int flags)
+		{
+			try {
+				Property property_managed = GLib.Object.GetObject (property, false) as Property;
+				property_managed.OnFlagsChanged ((Cpg.PropertyFlags) flags);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideFlagsChanged (GLib.GType gtype)
+		{
+			if (FlagsChangedVMCallback == null)
+				FlagsChangedVMCallback = new FlagsChangedVMDelegate (flagschanged_cb);
+			OverrideVirtualMethod (gtype, "flags-changed", FlagsChangedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Property), ConnectionMethod="OverrideFlagsChanged")]
+		protected virtual void OnFlagsChanged (Cpg.PropertyFlags flags)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (flags);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("flags-changed")]
+		public event Cpg.FlagsChangedHandler FlagsChanged {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "flags-changed", typeof (Cpg.FlagsChangedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "flags-changed", typeof (Cpg.FlagsChangedArgs));
 				sig.RemoveDelegate (value);
 			}
 		}

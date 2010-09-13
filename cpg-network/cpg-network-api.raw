@@ -35,10 +35,6 @@
       <member cname="CPG_NETWORK_ERROR_UNOWNED_TEMPLATE" name="UnownedTemplate" />
       <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
     </enum>
-    <enum name="NetworkError" cname="CpgNetworkError" type="enum">
-      <member cname="CPG_NETWORK_ERROR_UNOWNED_TEMPLATE" name="UnownedTemplate" />
-      <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
-    </enum>
     <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
       <member cname="CPG_NETWORK_LOAD_ERROR_XML" name="Xml" />
       <member cname="CPG_NETWORK_LOAD_ERROR_PROPERTY" name="Property" />
@@ -1680,6 +1676,20 @@
           <parameter type="CpgProperty*" name="property" />
         </parameters>
       </signal>
+      <signal name="TemplateApplied" cname="template-applied" when="LAST" field_name="template_applied">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </signal>
+      <signal name="TemplateUnapplied" cname="template-unapplied" when="LAST" field_name="template_unapplied">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgObject*" name="templ" />
+        </parameters>
+      </signal>
       <virtual_method name="Compile" cname="compile">
         <return-type type="gboolean" />
         <parameters>
@@ -1947,18 +1957,18 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </signal>
-      <signal name="ExpressionChanged" cname="expression-changed" when="LAST">
+      <signal name="ExpressionChanged" cname="expression-changed" when="LAST" field_name="expression_changed">
         <return-type type="void" />
         <parameters>
-          <parameter name="inst" type="CpgProperty*" />
-          <parameter name="p0" type="gexpression" />
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="CpgExpression*" name="expression" />
         </parameters>
       </signal>
-      <signal name="FlagsChanged" cname="flags-changed" when="LAST">
+      <signal name="FlagsChanged" cname="flags-changed" when="LAST" field_name="flags_changed">
         <return-type type="void" />
         <parameters>
-          <parameter name="inst" type="CpgProperty*" />
-          <parameter name="p0" type="gproperty_flags" />
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="CpgPropertyFlags" name="flags" />
         </parameters>
       </signal>
       <implements>
@@ -2087,7 +2097,7 @@
       </constructor>
     </object>
     <struct name="OperatorData" cname="CpgOperatorData" opaque="true">
-      <field name="Expressions" cname="expressions" type="GSList*" access="public" writeable="true" />
+      <field name="Expressions" cname="expressions" type="GSList*" access="private" />
       <method name="Destroy" cname="cpg_operator_data_destroy">
         <return-type type="void" />
       </method>

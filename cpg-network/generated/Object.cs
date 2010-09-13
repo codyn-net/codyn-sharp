@@ -83,149 +83,6 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void ResettedVMDelegate (IntPtr objekt);
-
-		static ResettedVMDelegate ResettedVMCallback;
-
-		static void resetted_cb (IntPtr objekt)
-		{
-			try {
-				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
-				objekt_managed.OnResetted ();
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-
-		private static void OverrideResetted (GLib.GType gtype)
-		{
-			if (ResettedVMCallback == null)
-				ResettedVMCallback = new ResettedVMDelegate (resetted_cb);
-			OverrideVirtualMethod (gtype, "resetted", ResettedVMCallback);
-		}
-
-		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideResetted")]
-		protected virtual void OnResetted ()
-		{
-			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
-			GLib.Value[] vals = new GLib.Value [1];
-			vals [0] = new GLib.Value (this);
-			inst_and_params.Append (vals [0]);
-			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
-			foreach (GLib.Value v in vals)
-				v.Dispose ();
-		}
-
-		[GLib.Signal("resetted")]
-		public event System.EventHandler Resetted {
-			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "resetted");
-				sig.AddDelegate (value);
-			}
-			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "resetted");
-				sig.RemoveDelegate (value);
-			}
-		}
-
-		[GLib.CDeclCallback]
-		delegate void CompiledVMDelegate (IntPtr objekt);
-
-		static CompiledVMDelegate CompiledVMCallback;
-
-		static void compiled_cb (IntPtr objekt)
-		{
-			try {
-				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
-				objekt_managed.OnCompiled ();
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-
-		private static void OverrideCompiled (GLib.GType gtype)
-		{
-			if (CompiledVMCallback == null)
-				CompiledVMCallback = new CompiledVMDelegate (compiled_cb);
-			OverrideVirtualMethod (gtype, "compiled", CompiledVMCallback);
-		}
-
-		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideCompiled")]
-		protected virtual void OnCompiled ()
-		{
-			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
-			GLib.Value[] vals = new GLib.Value [1];
-			vals [0] = new GLib.Value (this);
-			inst_and_params.Append (vals [0]);
-			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
-			foreach (GLib.Value v in vals)
-				v.Dispose ();
-		}
-
-		[GLib.Signal("compiled")]
-		public event System.EventHandler Compiled {
-			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "compiled");
-				sig.AddDelegate (value);
-			}
-			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "compiled");
-				sig.RemoveDelegate (value);
-			}
-		}
-
-		[GLib.CDeclCallback]
-		delegate void CopiedVMDelegate (IntPtr objekt, IntPtr copy);
-
-		static CopiedVMDelegate CopiedVMCallback;
-
-		static void copied_cb (IntPtr objekt, IntPtr copy)
-		{
-			try {
-				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
-				objekt_managed.OnCopied (GLib.Object.GetObject(copy) as Cpg.Object);
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-
-		private static void OverrideCopied (GLib.GType gtype)
-		{
-			if (CopiedVMCallback == null)
-				CopiedVMCallback = new CopiedVMDelegate (copied_cb);
-			OverrideVirtualMethod (gtype, "copied", CopiedVMCallback);
-		}
-
-		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideCopied")]
-		protected virtual void OnCopied (Cpg.Object copy)
-		{
-			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
-			GLib.Value[] vals = new GLib.Value [2];
-			vals [0] = new GLib.Value (this);
-			inst_and_params.Append (vals [0]);
-			vals [1] = new GLib.Value (copy);
-			inst_and_params.Append (vals [1]);
-			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
-			foreach (GLib.Value v in vals)
-				v.Dispose ();
-		}
-
-		[GLib.Signal("copied")]
-		public event Cpg.CopiedHandler Copied {
-			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "copied", typeof (Cpg.CopiedArgs));
-				sig.AddDelegate (value);
-			}
-			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "copied", typeof (Cpg.CopiedArgs));
-				sig.RemoveDelegate (value);
-			}
-		}
-
-		[GLib.CDeclCallback]
 		delegate void PropertyAddedVMDelegate (IntPtr objekt, IntPtr property);
 
 		static PropertyAddedVMDelegate PropertyAddedVMCallback;
@@ -270,6 +127,55 @@ namespace Cpg {
 			}
 			remove {
 				GLib.Signal sig = GLib.Signal.Lookup (this, "property-added", typeof (Cpg.PropertyAddedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void TemplateUnappliedVMDelegate (IntPtr objekt, IntPtr templ);
+
+		static TemplateUnappliedVMDelegate TemplateUnappliedVMCallback;
+
+		static void templateunapplied_cb (IntPtr objekt, IntPtr templ)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnTemplateUnapplied (GLib.Object.GetObject(templ) as Cpg.Object);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideTemplateUnapplied (GLib.GType gtype)
+		{
+			if (TemplateUnappliedVMCallback == null)
+				TemplateUnappliedVMCallback = new TemplateUnappliedVMDelegate (templateunapplied_cb);
+			OverrideVirtualMethod (gtype, "template-unapplied", TemplateUnappliedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideTemplateUnapplied")]
+		protected virtual void OnTemplateUnapplied (Cpg.Object templ)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (templ);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("template-unapplied")]
+		public event Cpg.TemplateUnappliedHandler TemplateUnapplied {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "template-unapplied", typeof (Cpg.TemplateUnappliedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "template-unapplied", typeof (Cpg.TemplateUnappliedArgs));
 				sig.RemoveDelegate (value);
 			}
 		}
@@ -371,6 +277,53 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
+		delegate void CompiledVMDelegate (IntPtr objekt);
+
+		static CompiledVMDelegate CompiledVMCallback;
+
+		static void compiled_cb (IntPtr objekt)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnCompiled ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideCompiled (GLib.GType gtype)
+		{
+			if (CompiledVMCallback == null)
+				CompiledVMCallback = new CompiledVMDelegate (compiled_cb);
+			OverrideVirtualMethod (gtype, "compiled", CompiledVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideCompiled")]
+		protected virtual void OnCompiled ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("compiled")]
+		public event System.EventHandler Compiled {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "compiled");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "compiled");
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
 		delegate void PropertyChangedVMDelegate (IntPtr objekt, IntPtr property);
 
 		static PropertyChangedVMDelegate PropertyChangedVMCallback;
@@ -415,6 +368,151 @@ namespace Cpg {
 			}
 			remove {
 				GLib.Signal sig = GLib.Signal.Lookup (this, "property-changed", typeof (Cpg.PropertyChangedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void ResettedVMDelegate (IntPtr objekt);
+
+		static ResettedVMDelegate ResettedVMCallback;
+
+		static void resetted_cb (IntPtr objekt)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnResetted ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideResetted (GLib.GType gtype)
+		{
+			if (ResettedVMCallback == null)
+				ResettedVMCallback = new ResettedVMDelegate (resetted_cb);
+			OverrideVirtualMethod (gtype, "resetted", ResettedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideResetted")]
+		protected virtual void OnResetted ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("resetted")]
+		public event System.EventHandler Resetted {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "resetted");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "resetted");
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void CopiedVMDelegate (IntPtr objekt, IntPtr copy);
+
+		static CopiedVMDelegate CopiedVMCallback;
+
+		static void copied_cb (IntPtr objekt, IntPtr copy)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnCopied (GLib.Object.GetObject(copy) as Cpg.Object);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideCopied (GLib.GType gtype)
+		{
+			if (CopiedVMCallback == null)
+				CopiedVMCallback = new CopiedVMDelegate (copied_cb);
+			OverrideVirtualMethod (gtype, "copied", CopiedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideCopied")]
+		protected virtual void OnCopied (Cpg.Object copy)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (copy);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("copied")]
+		public event Cpg.CopiedHandler Copied {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "copied", typeof (Cpg.CopiedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "copied", typeof (Cpg.CopiedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void TemplateAppliedVMDelegate (IntPtr objekt, IntPtr templ);
+
+		static TemplateAppliedVMDelegate TemplateAppliedVMCallback;
+
+		static void templateapplied_cb (IntPtr objekt, IntPtr templ)
+		{
+			try {
+				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
+				objekt_managed.OnTemplateApplied (GLib.Object.GetObject(templ) as Cpg.Object);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideTemplateApplied (GLib.GType gtype)
+		{
+			if (TemplateAppliedVMCallback == null)
+				TemplateAppliedVMCallback = new TemplateAppliedVMDelegate (templateapplied_cb);
+			OverrideVirtualMethod (gtype, "template-applied", TemplateAppliedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Object), ConnectionMethod="OverrideTemplateApplied")]
+		protected virtual void OnTemplateApplied (Cpg.Object templ)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (templ);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("template-applied")]
+		public event Cpg.TemplateAppliedHandler TemplateApplied {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "template-applied", typeof (Cpg.TemplateAppliedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "template-applied", typeof (Cpg.TemplateAppliedArgs));
 				sig.RemoveDelegate (value);
 			}
 		}
