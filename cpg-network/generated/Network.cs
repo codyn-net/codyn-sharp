@@ -141,6 +141,30 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern unsafe bool cpg_network_load_from_xml(IntPtr raw, IntPtr xml, out IntPtr error);
+
+		public unsafe bool LoadFromXml(string xml) {
+			IntPtr native_xml = GLib.Marshaller.StringToPtrGStrdup (xml);
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_network_load_from_xml(Handle, native_xml, out error);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_xml);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_network_get_path(IntPtr raw);
+
+		public string Path { 
+			get {
+				IntPtr raw_ret = cpg_network_get_path(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_network_get_template_group(IntPtr raw);
 
 		public Cpg.Group TemplateGroup { 
@@ -149,13 +173,6 @@ namespace Cpg {
 				Cpg.Group ret = GLib.Object.GetObject(raw_ret) as Cpg.Group;
 				return ret;
 			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_network_merge(IntPtr raw, IntPtr other);
-
-		public void Merge(Cpg.Network other) {
-			cpg_network_merge(Handle, other == null ? IntPtr.Zero : other.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -170,14 +187,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_network_get_function_group(IntPtr raw);
+		static extern void cpg_network_merge(IntPtr raw, IntPtr other);
 
-		public Cpg.Group FunctionGroup { 
-			get {
-				IntPtr raw_ret = cpg_network_get_function_group(Handle);
-				Cpg.Group ret = GLib.Object.GetObject(raw_ret) as Cpg.Group;
-				return ret;
-			}
+		public void Merge(Cpg.Network other) {
+			cpg_network_merge(Handle, other == null ? IntPtr.Zero : other.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -210,16 +223,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern unsafe bool cpg_network_load_from_xml(IntPtr raw, IntPtr xml, out IntPtr error);
+		static extern IntPtr cpg_network_get_function_group(IntPtr raw);
 
-		public unsafe bool LoadFromXml(string xml) {
-			IntPtr native_xml = GLib.Marshaller.StringToPtrGStrdup (xml);
-			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cpg_network_load_from_xml(Handle, native_xml, out error);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_xml);
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-			return ret;
+		public Cpg.Group FunctionGroup { 
+			get {
+				IntPtr raw_ret = cpg_network_get_function_group(Handle);
+				Cpg.Group ret = GLib.Object.GetObject(raw_ret) as Cpg.Group;
+				return ret;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]

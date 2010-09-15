@@ -1361,6 +1361,9 @@
       <method name="GetIntegrator" cname="cpg_network_get_integrator">
         <return-type type="CpgIntegrator*" />
       </method>
+      <method name="GetPath" cname="cpg_network_get_path">
+        <return-type type="gchar*" />
+      </method>
       <method name="GetTemplateGroup" cname="cpg_network_get_template_group">
         <return-type type="CpgGroup*" />
       </method>
