@@ -1090,12 +1090,17 @@
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CpgIntegrator*" />
+          <parameter name="p0" type="gdouble" />
+          <parameter name="p1" type="gdouble" />
         </parameters>
       </signal>
       <signal name="Begin" cname="begin" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CpgIntegrator*" />
+          <parameter name="p0" type="gdouble" />
+          <parameter name="p1" type="gdouble" />
+          <parameter name="p2" type="gdouble" />
         </parameters>
       </signal>
       <signal name="End" cname="end" when="LAST">

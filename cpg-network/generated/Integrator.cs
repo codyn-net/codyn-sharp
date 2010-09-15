@@ -67,15 +67,15 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void SteppedVMDelegate (IntPtr inst);
+		delegate void SteppedVMDelegate (IntPtr inst, double timestep, double time);
 
 		static SteppedVMDelegate SteppedVMCallback;
 
-		static void stepped_cb (IntPtr inst)
+		static void stepped_cb (IntPtr inst, double timestep, double time)
 		{
 			try {
 				Integrator inst_managed = GLib.Object.GetObject (inst, false) as Integrator;
-				inst_managed.OnStepped ();
+				inst_managed.OnStepped (timestep, time);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -89,26 +89,30 @@ namespace Cpg {
 		}
 
 		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Integrator), ConnectionMethod="OverrideStepped")]
-		protected virtual void OnStepped ()
+		protected virtual void OnStepped (double timestep, double time)
 		{
 			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
-			GLib.Value[] vals = new GLib.Value [1];
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (3);
+			GLib.Value[] vals = new GLib.Value [3];
 			vals [0] = new GLib.Value (this);
 			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (timestep);
+			inst_and_params.Append (vals [1]);
+			vals [2] = new GLib.Value (time);
+			inst_and_params.Append (vals [2]);
 			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
 			foreach (GLib.Value v in vals)
 				v.Dispose ();
 		}
 
 		[GLib.Signal("step")]
-		public event System.EventHandler Stepped {
+		public event Cpg.SteppedHandler Stepped {
 			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "step");
+				GLib.Signal sig = GLib.Signal.Lookup (this, "step", typeof (Cpg.SteppedArgs));
 				sig.AddDelegate (value);
 			}
 			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "step");
+				GLib.Signal sig = GLib.Signal.Lookup (this, "step", typeof (Cpg.SteppedArgs));
 				sig.RemoveDelegate (value);
 			}
 		}
@@ -161,15 +165,15 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void BeginVMDelegate (IntPtr inst);
+		delegate void BeginVMDelegate (IntPtr inst, double from, double step, double to);
 
 		static BeginVMDelegate BeginVMCallback;
 
-		static void begin_cb (IntPtr inst)
+		static void begin_cb (IntPtr inst, double from, double step, double to)
 		{
 			try {
 				Integrator inst_managed = GLib.Object.GetObject (inst, false) as Integrator;
-				inst_managed.OnBegin ();
+				inst_managed.OnBegin (from, step, to);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -183,26 +187,32 @@ namespace Cpg {
 		}
 
 		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Integrator), ConnectionMethod="OverrideBegin")]
-		protected virtual void OnBegin ()
+		protected virtual void OnBegin (double from, double step, double to)
 		{
 			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
-			GLib.Value[] vals = new GLib.Value [1];
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (4);
+			GLib.Value[] vals = new GLib.Value [4];
 			vals [0] = new GLib.Value (this);
 			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (from);
+			inst_and_params.Append (vals [1]);
+			vals [2] = new GLib.Value (step);
+			inst_and_params.Append (vals [2]);
+			vals [3] = new GLib.Value (to);
+			inst_and_params.Append (vals [3]);
 			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
 			foreach (GLib.Value v in vals)
 				v.Dispose ();
 		}
 
 		[GLib.Signal("begin")]
-		public event System.EventHandler Begin {
+		public event Cpg.BeginHandler Begin {
 			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "begin");
+				GLib.Signal sig = GLib.Signal.Lookup (this, "begin", typeof (Cpg.BeginArgs));
 				sig.AddDelegate (value);
 			}
 			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "begin");
+				GLib.Signal sig = GLib.Signal.Lookup (this, "begin", typeof (Cpg.BeginArgs));
 				sig.RemoveDelegate (value);
 			}
 		}

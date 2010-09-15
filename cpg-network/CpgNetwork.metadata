@@ -129,7 +129,13 @@
   <remove-node path="/api/namespace/object[@cname='CpgIntegrator']/method[@cname='cpg_integrator_evaluate']"/>
   <remove-node path="/api/namespace/object[@cname='CpgIntegrator']/method[@cname='cpg_integrator_run']"/>
   <remove-node path="/api/namespace/object[@cname='CpgIntegrator']/method[@cname='cpg_integrator_step']"/>
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Step']/parameters/parameter[@name='p0']" name="name">timestep</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Step']/parameters/parameter[@name='p1']" name="name">time</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Step']" name="name">Stepped</attr>
+
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p0']" name="name">from</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p1']" name="name">step</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p2']" name="name">to</attr>
 
   <!-- CpgIntegrators -->
   <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cpg_integrators_list']/return-type" name="element_type">GType</attr>

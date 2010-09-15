@@ -1048,12 +1048,17 @@
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CpgIntegrator*" />
+          <parameter name="timestep" type="gdouble" />
+          <parameter name="time" type="gdouble" />
         </parameters>
       </signal>
       <signal name="Begin" cname="begin" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CpgIntegrator*" />
+          <parameter name="from" type="gdouble" />
+          <parameter name="step" type="gdouble" />
+          <parameter name="to" type="gdouble" />
         </parameters>
       </signal>
       <signal name="End" cname="end" when="LAST">
