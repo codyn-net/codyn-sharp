@@ -44,14 +44,23 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_import_get_type();
+		static extern bool cpg_import_imports_object(IntPtr raw, IntPtr objekt);
 
-		public static new GLib.GType GType { 
-			get {
-				IntPtr raw_ret = cpg_import_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
+		public bool ImportsObject(Cpg.Object objekt) {
+			bool raw_ret = cpg_import_imports_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern unsafe bool cpg_import_load(IntPtr raw, IntPtr network, IntPtr parent, out IntPtr error);
+
+		public unsafe bool Load(Cpg.Network network, Cpg.Group parent) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_import_load(Handle, network == null ? IntPtr.Zero : network.Handle, parent == null ? IntPtr.Zero : parent.Handle, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -77,17 +86,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern unsafe bool cpg_import_load(IntPtr raw, IntPtr network, IntPtr parent, out IntPtr error);
-
-		public unsafe bool Load(Cpg.Network network, Cpg.Group parent) {
-			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cpg_import_load(Handle, network == null ? IntPtr.Zero : network.Handle, parent == null ? IntPtr.Zero : parent.Handle, out error);
-			bool ret = raw_ret;
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern void cpg_import_append_search_path(IntPtr path);
 
 		public static void AppendSearchPath(string path) {
@@ -97,12 +95,32 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern int cpg_import_error_quark();
+
+		public static new int ErrorQuark() {
+			int raw_ret = cpg_import_error_quark();
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_import_prepend_search_path(IntPtr path);
 
 		public static void PrependSearchPath(string path) {
 			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
 			cpg_import_prepend_search_path(native_path);
 			GLib.Marshaller.Free (native_path);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_import_get_type();
+
+		public static new GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cpg_import_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]

@@ -26,6 +26,9 @@
       <member cname="CPG_GROUP_ERROR_CHILD_DOES_NOT_EXIST" name="ChildDoesNotExist" />
       <member cname="CPG_GROUP_ERROR_NUM" name="Num" />
     </enum>
+    <enum name="ImportError" cname="CpgImportError" type="enum">
+      <member cname="CPG_IMPORT_ERROR_REMOVE" name="Remove" />
+    </enum>
     <enum name="InstructionPropertyBinding" cname="CpgInstructionPropertyBinding" type="enum">
       <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_NONE" name="None" />
       <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_FROM" name="From" />
@@ -770,6 +773,13 @@
           <parameter type="CpgObject*" name="proxy" />
         </parameters>
       </method>
+      <method name="VerifyRemoveChild" cname="cpg_group_verify_remove_child">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="child" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
     </object>
     <object name="Import" cname="CpgImport" parent="CpgGroup">
       <field name="Priv" cname="priv" type="CpgImportPrivate*" />
@@ -784,6 +794,9 @@
           <parameter type="const-gchar*" name="path" />
         </parameters>
       </method>
+      <method name="ErrorQuark" cname="cpg_import_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
       <method name="GetFile" cname="cpg_import_get_file">
         <return-type type="GFile*" />
       </method>
@@ -795,6 +808,12 @@
       </method>
       <method name="GetType" cname="cpg_import_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="ImportsObject" cname="cpg_import_imports_object">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
       </method>
       <method name="Load" cname="cpg_import_load">
         <return-type type="gboolean" />
