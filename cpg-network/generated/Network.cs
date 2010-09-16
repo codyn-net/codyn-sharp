@@ -165,6 +165,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_network_get_import_from_path(IntPtr raw, IntPtr path);
+
+		public Cpg.Import GetImportFromPath(string path) {
+			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
+			IntPtr raw_ret = cpg_network_get_import_from_path(Handle, native_path);
+			Cpg.Import ret = GLib.Object.GetObject(raw_ret) as Cpg.Import;
+			GLib.Marshaller.Free (native_path);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_network_get_template_group(IntPtr raw);
 
 		public Cpg.Group TemplateGroup { 

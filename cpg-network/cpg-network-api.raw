@@ -774,8 +774,10 @@
     <object name="Import" cname="CpgImport" parent="CpgGroup">
       <field name="Priv" cname="priv" type="CpgImportPrivate*" />
       <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct-only="true" />
-      <property name="Modified" cname="modified" type="gboolean" readable="true" />
-      <property name="Filename" cname="filename" type="gchar*" readable="true" />
+      <property name="Path" cname="path" type="gchar*" readable="true" />
+      <implements>
+        <interface cname="CpgModifiable" />
+      </implements>
       <method name="AppendSearchPath" cname="cpg_import_append_search_path" shared="true">
         <return-type type="void" />
         <parameters>
@@ -785,8 +787,8 @@
       <method name="GetFile" cname="cpg_import_get_file">
         <return-type type="GFile*" />
       </method>
-      <method name="GetModified" cname="cpg_import_get_modified">
-        <return-type type="gboolean" />
+      <method name="GetPath" cname="cpg_import_get_path">
+        <return-type type="gchar*" />
       </method>
       <method name="GetSearchPath" cname="cpg_import_get_search_path" shared="true">
         <return-type type="const-gchar**" />

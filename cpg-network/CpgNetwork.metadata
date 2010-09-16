@@ -119,6 +119,15 @@
     </method>
   </add-node>
 
+  <add-node path="/api/namespace/object[@cname='CpgNetwork']">
+    <method name="GetImportFromPath" cname="cpg_network_get_import_from_path">
+      <return-type type="CpgImport*" />
+      <parameters>
+        <parameter type="const-gchar*" name="path" />
+      </parameters>
+    </method>
+  </add-node>
+
   <add-node path="/api/namespace/object[@cname='CpgCompileContext']">
     <method name="LookupFunction" cname="cpg_compile_context_lookup_function">
       <return-type type="CpgFunction*" />

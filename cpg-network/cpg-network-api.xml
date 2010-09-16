@@ -744,16 +744,18 @@
     </object>
     <object name="Import" cname="CpgImport" parent="CpgGroup">
       <field name="Priv" cname="priv" type="CpgImportPrivate*" />
-      <property name="Modified" cname="modified" type="gboolean" readable="true" />
-      <property name="Filename" cname="filename" type="gchar*" readable="true" />
+      <property name="Path" cname="path" type="gchar*" readable="true" />
+      <implements>
+        <interface cname="CpgModifiable" />
+      </implements>
       <method name="AppendSearchPath" cname="cpg_import_append_search_path" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="path" />
         </parameters>
       </method>
-      <method name="GetModified" cname="cpg_import_get_modified">
-        <return-type type="gboolean" />
+      <method name="GetPath" cname="cpg_import_get_path">
+        <return-type type="gchar*" />
       </method>
       <method name="GetSearchPath" cname="cpg_import_get_search_path" shared="true">
         <return-type type="const-gchar**" null_term_array="" />
@@ -1438,6 +1440,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
+      <method name="GetImportFromPath" cname="cpg_network_get_import_from_path">
+        <return-type type="CpgImport*" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
         </parameters>
       </method>
     </object>
