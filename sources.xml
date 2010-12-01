@@ -6,8 +6,6 @@
       <namespace name="Cpg">
         <file>../libcpg-network/cpg-network/cpg-object.c</file>
         <file>../libcpg-network/cpg-network/cpg-object.h</file>
-        <file>../libcpg-network/cpg-network/cpg-state.c</file>
-        <file>../libcpg-network/cpg-network/cpg-state.h</file>
         <file>../libcpg-network/cpg-network/cpg-link.c</file>
         <file>../libcpg-network/cpg-network/cpg-link.h</file>
         <file>../libcpg-network/cpg-network/cpg-link-action.c</file>
@@ -18,6 +16,10 @@
         <file>../libcpg-network/cpg-network/cpg-monitor.h</file>
         <file>../libcpg-network/cpg-network/cpg-network.c</file>
         <file>../libcpg-network/cpg-network/cpg-network.h</file>
+        <file>../libcpg-network/cpg-network/cpg-input.c</file>
+        <file>../libcpg-network/cpg-network/cpg-input.h</file>
+        <file>../libcpg-network/cpg-network/cpg-input-file.c</file>
+        <file>../libcpg-network/cpg-network/cpg-input-file.h</file>
         <file>../libcpg-network/cpg-network/cpg-import.c</file>
         <file>../libcpg-network/cpg-network/cpg-import.h</file>
         <file>../libcpg-network/cpg-network/cpg-import-alias.c</file>

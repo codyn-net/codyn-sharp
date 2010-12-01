@@ -33,7 +33,8 @@ customs = \
 	Group.custom \
 	LinkAction.custom \
 	Property.custom \
-	FunctionArgument.custom
+	FunctionArgument.custom \
+	InputFile.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 

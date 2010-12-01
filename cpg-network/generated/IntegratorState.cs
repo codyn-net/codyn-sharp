@@ -92,11 +92,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_integrator_state_integrated_link_actions(IntPtr raw);
+		static extern IntPtr cpg_integrator_state_inputs(IntPtr raw);
 
-		public Cpg.LinkAction[] IntegratedLinkActions() {
-			IntPtr raw_ret = cpg_integrator_state_integrated_link_actions(Handle);
-			Cpg.LinkAction[] ret = (Cpg.LinkAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.LinkAction));
+		public Cpg.Input[] Inputs() {
+			IntPtr raw_ret = cpg_integrator_state_inputs(Handle);
+			Cpg.Input[] ret = (Cpg.Input[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Input));
 			return ret;
 		}
 
@@ -119,17 +119,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_integrator_state_get_type();
-
-		public static new GLib.GType GType { 
-			get {
-				IntPtr raw_ret = cpg_integrator_state_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_state_direct_link_actions(IntPtr raw);
 
 		public Cpg.LinkAction[] DirectLinkActions() {
@@ -145,6 +134,26 @@ namespace Cpg {
 			IntPtr raw_ret = cpg_integrator_state_integrated_properties(Handle);
 			Cpg.Property[] ret = (Cpg.Property[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Property));
 			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_integrator_state_integrated_link_actions(IntPtr raw);
+
+		public Cpg.LinkAction[] IntegratedLinkActions() {
+			IntPtr raw_ret = cpg_integrator_state_integrated_link_actions(Handle);
+			Cpg.LinkAction[] ret = (Cpg.LinkAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.LinkAction));
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_integrator_state_get_type();
+
+		public static new GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cpg_integrator_state_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]

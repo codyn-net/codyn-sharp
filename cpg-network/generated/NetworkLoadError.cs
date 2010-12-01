@@ -15,6 +15,7 @@ namespace Cpg {
 		Link,
 		Function,
 		Import,
+		InputFile,
 	}
 #endregion
 }

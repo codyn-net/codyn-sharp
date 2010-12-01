@@ -45,6 +45,7 @@
       <member cname="CPG_NETWORK_LOAD_ERROR_LINK" name="Link" />
       <member cname="CPG_NETWORK_LOAD_ERROR_FUNCTION" name="Function" />
       <member cname="CPG_NETWORK_LOAD_ERROR_IMPORT" name="Import" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_INPUT_FILE" name="InputFile" />
     </enum>
     <enum name="ObjectError" cname="CpgObjectError" type="enum">
       <member cname="CPG_OBJECT_ERROR_PROPERTY_UNKNOWN" name="ErrorPropertyUnknown" />
@@ -655,7 +656,7 @@
         </parameters>
       </method>
     </object>
-    <object name="Group" cname="CpgGroup" parent="CpgState">
+    <object name="Group" cname="CpgGroup" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgGroupPrivate*" />
       <property name="Proxy" cname="proxy" type="CpgObject" readable="true" writeable="true" construct-only="true" />
       <signal name="ChildAdded" cname="child-added" when="LAST" field_name="child_added">
@@ -865,6 +866,100 @@
           <parameter type="CpgImport*" name="source" />
         </parameters>
       </constructor>
+    </object>
+    <object name="Input" cname="CpgInput" parent="CpgObject">
+      <field name="Priv" cname="priv" type="CpgInputPrivate*" />
+      <virtual_method name="Update" cname="update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgInput*" name="input" />
+          <parameter type="CpgIntegrator*" name="integrator" />
+        </parameters>
+      </virtual_method>
+      <method name="GetType" cname="cpg_input_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Update" cname="cpg_input_update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgIntegrator*" name="integrator" />
+        </parameters>
+      </method>
+    </object>
+    <object name="InputFile" cname="CpgInputFile" parent="CpgInput">
+      <field name="Priv" cname="priv" type="CpgInputFilePrivate*" />
+      <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct="true" />
+      <property name="Repeat" cname="repeat" type="gboolean" readable="true" writeable="true" />
+      <property name="TimeColumn" cname="time-column" type="gint" readable="true" writeable="true" />
+      <method name="Ensure" cname="cpg_input_file_ensure">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetColumns" cname="cpg_input_file_get_columns">
+        <return-type type="gchar**" />
+      </method>
+      <method name="GetFile" cname="cpg_input_file_get_file">
+        <return-type type="GFile*" />
+      </method>
+      <method name="GetFilePath" cname="cpg_input_file_get_file_path">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetRepeat" cname="cpg_input_file_get_repeat">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetTimeColumn" cname="cpg_input_file_get_time_column">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="gboolean*" name="isset" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_input_file_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_input_file_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="GFile*" name="file" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_input_file_new_for_path">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="const-gchar*" name="filename" />
+        </parameters>
+      </constructor>
+      <method name="SetColumns" cname="cpg_input_file_set_columns">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gchar" name="const-const*" />
+        </parameters>
+      </method>
+      <method name="SetFile" cname="cpg_input_file_set_file">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GFile*" name="file" />
+        </parameters>
+      </method>
+      <method name="SetFilePath" cname="cpg_input_file_set_file_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="SetRepeat" cname="cpg_input_file_set_repeat">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="repeat" />
+        </parameters>
+      </method>
+      <method name="SetTimeColumn" cname="cpg_input_file_set_time_column">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="column" />
+        </parameters>
+      </method>
     </object>
     <object name="Instruction" cname="CpgInstruction" parent="CpgMiniObject">
       <field name="Priv" cname="priv" type="CpgInstructionPrivate*" />
@@ -1253,6 +1348,9 @@
       </method>
       <method name="GetType" cname="cpg_integrator_state_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="Inputs" cname="cpg_integrator_state_inputs">
+        <return-type type="const-GSList*" />
       </method>
       <method name="IntegratedLinkActions" cname="cpg_integrator_state_integrated_link_actions">
         <return-type type="const-GSList*" />
@@ -2113,17 +2211,6 @@
       <method name="UpdateLastValue" cname="cpg_property_update_last_value">
         <return-type type="void" />
       </method>
-    </object>
-    <object name="State" cname="CpgState" parent="CpgObject">
-      <field name="Priv" cname="priv" type="CpgStatePrivate*" />
-      <method name="GetType" cname="cpg_state_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cpg_state_new">
-        <parameters>
-          <parameter type="const-gchar*" name="id" />
-        </parameters>
-      </constructor>
     </object>
     <struct name="OperatorData" cname="CpgOperatorData" opaque="true">
       <field name="Expressions" cname="expressions" type="GSList*" access="private" />

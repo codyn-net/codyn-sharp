@@ -15,6 +15,18 @@
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/property[@cname='file']"/>
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_load_from_file']"/>
 
+  <!-- CpgInputFile -->
+  <remove-node path="/api/namespace/object[@cname='CpgInputFile']/constructor[@cname='cpg_input_file_new']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_get_file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_set_file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgInputFile']/property[@cname='file']"/>
+  <attr path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_set_columns']/parameters/parameter" name="name">columns</attr>
+  <attr path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_set_columns']/parameters/parameter" name="type">const-gchar**</attr>
+  <attr path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_get_columns']/return-type" name="null_term_array"/>
+  <attr path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_set_columns']/parameters/parameter" name="null_term_array"/>
+
+  <remove-node path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_get_data']"/>
+
   <!-- CpgImport -->
   <remove-node path="/api/namespace/object[@cname='CpgImport']/constructor[@cname='cpg_import_new']"/>
   <remove-node path="/api/namespace/object[@cname='CpgImport']/method[@cname='cpg_import_get_file']"/>
@@ -157,6 +169,7 @@
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_direct_properties']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_integrated_properties']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_all_properties']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgIntegratorState']/method[@cname='cpg_integrator_state_inputs']/return-type" name="element_type">CpgInput*</attr>
 
   <!-- CpgNetworkSerializer -->
   <remove-node path="/api/namespace/object[@cname='CpgNetworkSerializer']/method[@cname='cpg_network_serializer_serialize']"/>
