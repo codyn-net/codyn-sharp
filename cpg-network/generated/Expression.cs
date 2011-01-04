@@ -228,7 +228,7 @@ namespace Cpg {
 			}
 			set
 			{
-				GLib.SList ptr = new GLib.SList(typeof(Cpg.Instruction));
+				GLib.SList ptr = new GLib.SList(typeof(IntPtr));
 
 				for (int i = 0; i < value.Length; ++i)
 				{
