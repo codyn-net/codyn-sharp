@@ -215,7 +215,15 @@ namespace Cpg {
 			get
 			{
 				IntPtr raw_ret = cpg_expression_get_instructions(Handle);
-				Cpg.Instruction[] ret = (Cpg.Instruction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Instruction));
+				IntPtr[] ptrs = (IntPtr[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(IntPtr));
+
+				Cpg.Instruction[] ret = new Cpg.Instruction[ptrs.Length];
+
+				for (int i = 0; i < ret.Length; ++i)
+				{
+					ret[i] = (Cpg.Instruction)MiniObject.GetObject(ptrs[i]);
+				}
+
 				return ret;
 			}
 			set
