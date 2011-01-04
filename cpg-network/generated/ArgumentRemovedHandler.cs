@@ -10,7 +10,7 @@ namespace Cpg {
 	public class ArgumentRemovedArgs : GLib.SignalArgs {
 		public Cpg.FunctionArgument Argument{
 			get {
-				return (Cpg.FunctionArgument) Args[0];
+				return (Cpg.FunctionArgument) Args [0];
 			}
 		}
 

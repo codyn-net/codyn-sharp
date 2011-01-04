@@ -44,6 +44,7 @@
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_actors']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_foreach_expression']/parameters/parameter[@name='func']" name="scope">call</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/signal[@name='VerifyRemoveProperty']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_links']/return-type" name="element_type">CpgLink*</attr>
 
   <attr path="/api/namespace/object[@cname='CpgObject']/constructor[@cname='cpg_object_new_from_template']" name="hidden">true</attr>
   <add-node path="/api/namespace/object[@cname='CpgObject']">
@@ -73,8 +74,8 @@
   <remove-node path="/api/namespace/object[@cname='CpgMonitor']/method[@cname='cpg_monitor_get_sites']"/>
 
   <!-- CpgExpression -->
-  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']/return-type" name="element_type">CpgInstruction*</attr>
-  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']/parameters/parameter[@name='instructions']" name="element_type">CpgInstruction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_instructions']" name="hidden"/>
+  <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_set_instructions']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CpgExpression']/constructor" name="hidden">true</attr>
 
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>

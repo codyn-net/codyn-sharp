@@ -15,15 +15,15 @@ namespace Cpg {
 		public InstructionVariadicFunction(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_instruction_variadic_function_new(uint id, IntPtr name, int arguments, bool variable);
+		static extern IntPtr cpg_instruction_variadic_function_new(uint id, IntPtr name, int arguments);
 
-		public InstructionVariadicFunction (uint id, string name, int arguments, bool variable) : base (IntPtr.Zero)
+		public InstructionVariadicFunction (uint id, string name, int arguments) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (InstructionVariadicFunction)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			Raw = cpg_instruction_variadic_function_new(id, native_name, arguments, variable);
+			Raw = cpg_instruction_variadic_function_new(id, native_name, arguments);
 			GLib.Marshaller.Free (native_name);
 		}
 

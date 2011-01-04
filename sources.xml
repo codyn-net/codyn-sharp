@@ -64,6 +64,8 @@
         <file>../libcpg-network/cpg-network/cpg-usable.h</file>
         <file>../libcpg-network/cpg-network/cpg-modifiable.c</file>
         <file>../libcpg-network/cpg-network/cpg-modifiable.h</file>
+        <file>../libcpg-network/cpg-network/cpg-math.c</file>
+        <file>../libcpg-network/cpg-network/cpg-math.h</file>
         <file>../libcpg-network/cpg-network/cpg-mini-object.c</file>
         <file>../libcpg-network/cpg-network/cpg-mini-object.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction.c</file>

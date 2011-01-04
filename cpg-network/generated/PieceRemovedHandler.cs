@@ -10,7 +10,7 @@ namespace Cpg {
 	public class PieceRemovedArgs : GLib.SignalArgs {
 		public Cpg.FunctionPolynomialPiece Piece{
 			get {
-				return (Cpg.FunctionPolynomialPiece) Args[0];
+				return (Cpg.FunctionPolynomialPiece) Args [0];
 			}
 		}
 

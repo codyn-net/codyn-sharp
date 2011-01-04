@@ -554,19 +554,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern unsafe bool cpg_object_verify_remove_property(IntPtr raw, IntPtr name, out IntPtr error);
-
-		public unsafe bool VerifyRemoveProperty(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cpg_object_verify_remove_property(Handle, native_name, out error);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_property(IntPtr raw, IntPtr name);
 
 		public Cpg.Property Property(string name) {
@@ -649,6 +636,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_links(IntPtr raw);
+
+		public Cpg.Link[] Links { 
+			get {
+				IntPtr raw_ret = cpg_object_get_links(Handle);
+				Cpg.Link[] ret = (Cpg.Link[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Link));
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_actors(IntPtr raw);
 
 		public Cpg.Property[] Actors { 
@@ -714,6 +712,19 @@ namespace Cpg {
 		public static int ErrorQuark() {
 			int raw_ret = cpg_object_error_quark();
 			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern unsafe bool cpg_object_verify_remove_property(IntPtr raw, IntPtr name, out IntPtr error);
+
+		public unsafe bool VerifyRemoveProperty(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_object_verify_remove_property(Handle, native_name, out error);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 

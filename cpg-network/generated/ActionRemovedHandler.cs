@@ -10,7 +10,7 @@ namespace Cpg {
 	public class ActionRemovedArgs : GLib.SignalArgs {
 		public Cpg.LinkAction Action{
 			get {
-				return (Cpg.LinkAction) Args[0];
+				return (Cpg.LinkAction) Args [0];
 			}
 		}
 

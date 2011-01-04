@@ -34,6 +34,57 @@
       <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_FROM" name="From" />
       <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_TO" name="To" />
     </enum>
+    <enum name="MathFunctionType" cname="CpgMathFunctionType" type="enum">
+      <member cname="CPG_MATH_FUNCTION_TYPE_NONE" name="None" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_SIN" name="Sin" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_COS" name="Cos" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_TAN" name="Tan" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_ASIN" name="Asin" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_ACOS" name="Acos" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_ATAN" name="Atan" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_ATAN2" name="Atan2" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_SQRT" name="Sqrt" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_INVSQRT" name="Invsqrt" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_MIN" name="Min" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_MAX" name="Max" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_EXP" name="Exp" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_FLOOR" name="Floor" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_CEIL" name="Ceil" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_ROUND" name="Round" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_ABS" name="Abs" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_POW" name="Pow" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_RAND" name="Rand" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_LN" name="Ln" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_LOG10" name="Log10" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_HYPOT" name="Hypot" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_EXP2" name="Exp2" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_SINH" name="Sinh" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_COSH" name="Cosh" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_TANH" name="Tanh" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_LERP" name="Lerp" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_SQSUM" name="Sqsum" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_NUM" name="Num" />
+    </enum>
+    <enum name="MathOperatorType" cname="CpgMathOperatorType" type="enum">
+      <member cname="CPG_MATH_OPERATOR_TYPE_NONE" name="None" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_UNARY_MINUS" name="UnaryMinus" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_MINUS" name="Minus" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_PLUS" name="Plus" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_MULTIPLY" name="Multiply" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_DIVIDE" name="Divide" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_MODULO" name="Modulo" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_POWER" name="Power" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_GREATER" name="Greater" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_LESS" name="Less" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_GREATER_OR_EQUAL" name="GreaterOrEqual" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_LESS_OR_EQUAL" name="LessOrEqual" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_EQUAL" name="Equal" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_OR" name="Or" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_AND" name="And" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_NEGATE" name="Negate" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_TERNARY" name="Ternary" />
+      <member cname="CPG_MATH_OPERATOR_TYPE_NUM" name="Num" />
+    </enum>
     <enum name="NetworkError" cname="CpgNetworkError" type="enum">
       <member cname="CPG_NETWORK_ERROR_UNOWNED_TEMPLATE" name="UnownedTemplate" />
       <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
@@ -392,9 +443,9 @@
         </parameters>
       </method>
       <method name="SetInstructions" cname="cpg_expression_set_instructions">
-        <return-type type="gboolean" />
+        <return-type type="void" />
         <parameters>
-          <parameter type="GSList*" name="instructions" />
+          <parameter type="const-GSList*" name="instructions" />
         </parameters>
       </method>
       <method name="SetOnce" cname="cpg_expression_set_once">
@@ -1082,15 +1133,11 @@
       <method name="GetType" cname="cpg_instruction_function_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="GetVariable" cname="cpg_instruction_function_get_variable">
-        <return-type type="gboolean" />
-      </method>
       <constructor cname="cpg_instruction_function_new">
         <parameters>
           <parameter type="guint" name="id" />
           <parameter type="const-gchar*" name="name" />
           <parameter type="gint" name="arguments" />
-          <parameter type="gboolean" name="variable" />
         </parameters>
       </constructor>
       <method name="SetArguments" cname="cpg_instruction_function_set_arguments">
@@ -1109,12 +1156,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="SetVariable" cname="cpg_instruction_function_set_variable">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="variable" />
         </parameters>
       </method>
     </object>
@@ -1191,7 +1232,6 @@
           <parameter type="guint" name="id" />
           <parameter type="const-gchar*" name="name" />
           <parameter type="gint" name="arguments" />
-          <parameter type="gboolean" name="variable" />
         </parameters>
       </constructor>
       <method name="ResetCache" cname="cpg_instruction_variadic_function_reset_cache">
@@ -1979,6 +2019,9 @@
       <method name="GetId" cname="cpg_object_get_id">
         <return-type type="const-gchar*" />
       </method>
+      <method name="GetLinks" cname="cpg_object_get_links">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="GetParent" cname="cpg_object_get_parent">
         <return-type type="CpgObject*" />
       </method>
@@ -2290,6 +2333,75 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GType" name="gtype" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Math" cname="CpgMath_">
+      <method name="ConstantLookup" cname="cpg_math_constant_lookup" shared="true">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gboolean*" name="found" />
+        </parameters>
+      </method>
+      <method name="FunctionExecute" cname="cpg_math_function_execute" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgMathFunctionType" name="type" />
+          <parameter type="gint" name="numargs" />
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </method>
+      <method name="FunctionIsConstant" cname="cpg_math_function_is_constant" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgMathFunctionType" name="type" />
+        </parameters>
+      </method>
+      <method name="FunctionIsVariable" cname="cpg_math_function_is_variable" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgMathFunctionType" name="type" />
+        </parameters>
+      </method>
+      <method name="FunctionLookup" cname="cpg_math_function_lookup" shared="true">
+        <return-type type="CpgMathFunctionType" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint*" name="arguments" />
+        </parameters>
+      </method>
+      <method name="FunctionLookupById" cname="cpg_math_function_lookup_by_id" shared="true">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="CpgMathFunctionType" name="type" />
+          <parameter type="gint*" name="arguments" />
+        </parameters>
+      </method>
+      <method name="OperatorExecute" cname="cpg_math_operator_execute" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgMathOperatorType" name="type" />
+          <parameter type="gint" name="numargs" />
+          <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </method>
+      <method name="OperatorIsConstant" cname="cpg_math_operator_is_constant" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgMathOperatorType" name="type" />
+        </parameters>
+      </method>
+      <method name="OperatorIsVariable" cname="cpg_math_operator_is_variable" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgMathOperatorType" name="type" />
+        </parameters>
+      </method>
+      <method name="OperatorLookup" cname="cpg_math_operator_lookup" shared="true">
+        <return-type type="CpgMathOperatorType" />
+        <parameters>
+          <parameter type="CpgMathOperatorType" name="type" />
         </parameters>
       </method>
     </class>

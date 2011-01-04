@@ -15,32 +15,26 @@ namespace Cpg {
 		public InstructionFunction(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_instruction_function_new(uint id, IntPtr name, int arguments, bool variable);
+		static extern IntPtr cpg_instruction_function_new(uint id, IntPtr name, int arguments);
 
-		public InstructionFunction (uint id, string name, int arguments, bool variable) : base (IntPtr.Zero)
+		public InstructionFunction (uint id, string name, int arguments) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (InstructionFunction)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			Raw = cpg_instruction_function_new(id, native_name, arguments, variable);
+			Raw = cpg_instruction_function_new(id, native_name, arguments);
 			GLib.Marshaller.Free (native_name);
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern uint cpg_instruction_function_get_id(IntPtr raw);
+		static extern IntPtr cpg_instruction_function_get_type();
 
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_instruction_function_set_id(IntPtr raw, uint id);
-
-		public uint Id { 
+		public static new GLib.GType GType { 
 			get {
-				uint raw_ret = cpg_instruction_function_get_id(Handle);
-				uint ret = raw_ret;
+				IntPtr raw_ret = cpg_instruction_function_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
-			}
-			set {
-				cpg_instruction_function_set_id(Handle, value);
 			}
 		}
 
@@ -81,30 +75,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_instruction_function_get_variable(IntPtr raw);
+		static extern uint cpg_instruction_function_get_id(IntPtr raw);
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_instruction_function_set_variable(IntPtr raw, bool variable);
+		static extern void cpg_instruction_function_set_id(IntPtr raw, uint id);
 
-		public bool Variable { 
+		public uint Id { 
 			get {
-				bool raw_ret = cpg_instruction_function_get_variable(Handle);
-				bool ret = raw_ret;
+				uint raw_ret = cpg_instruction_function_get_id(Handle);
+				uint ret = raw_ret;
 				return ret;
 			}
 			set {
-				cpg_instruction_function_set_variable(Handle, value);
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_instruction_function_get_type();
-
-		public static new GLib.GType GType { 
-			get {
-				IntPtr raw_ret = cpg_instruction_function_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
+				cpg_instruction_function_set_id(Handle, value);
 			}
 		}
 

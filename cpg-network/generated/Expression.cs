@@ -60,15 +60,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_expression_set_instructions(IntPtr raw, IntPtr instructions);
-
-		public bool SetInstructions(GLib.SList instructions) {
-			bool raw_ret = cpg_expression_set_instructions(Handle, instructions == null ? IntPtr.Zero : instructions.Handle);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_expression_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cpg.Expression other) {
@@ -138,17 +129,6 @@ namespace Cpg {
 				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
 				cpg_expression_set_from_string(Handle, native_value);
 				GLib.Marshaller.Free (native_value);
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_expression_get_instructions(IntPtr raw);
-
-		public Cpg.Instruction[] Instructions { 
-			get {
-				IntPtr raw_ret = cpg_expression_get_instructions(Handle);
-				Cpg.Instruction[] ret = (Cpg.Instruction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Instruction));
-				return ret;
 			}
 		}
 
@@ -223,6 +203,39 @@ namespace Cpg {
 				g_object_ref_sink (Raw);
 			}
 		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_expression_get_instructions(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expression_set_instructions(IntPtr raw, IntPtr instructions);
+
+		public Cpg.Instruction[] Instructions
+		{
+			get
+			{
+				IntPtr raw_ret = cpg_expression_get_instructions(Handle);
+				Cpg.Instruction[] ret = (Cpg.Instruction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Instruction));
+				return ret;
+			}
+			set
+			{
+				object[] ret = new object[value.Length];
+
+				for (int i = 0; i < value.Length; ++i)
+				{
+					ret[i] = value[i];
+				}
+
+				GLib.SList ptr = new GLib.SList(ret,
+				                                typeof(Cpg.Instruction),
+				                                true,
+				                                true);
+
+				cpg_expression_set_instructions(Handle, ptr.Handle);
+			}
+		}
+
 
 #endregion
 	}

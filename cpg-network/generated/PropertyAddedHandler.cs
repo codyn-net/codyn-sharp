@@ -10,7 +10,7 @@ namespace Cpg {
 	public class PropertyAddedArgs : GLib.SignalArgs {
 		public Cpg.Property Property{
 			get {
-				return (Cpg.Property) Args[0];
+				return (Cpg.Property) Args [0];
 			}
 		}
 
