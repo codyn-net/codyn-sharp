@@ -11,7 +11,14 @@ namespace Cpg {
 
 		public MiniObject(IntPtr raw)
 		{
-			d_raw = raw;
+			if (raw != IntPtr.Zero)
+			{
+				d_raw = cpg_mini_object_copy (raw);
+			}
+			else
+			{
+				d_raw = raw;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -43,7 +50,7 @@ namespace Cpg {
 					cpg_mini_object_free(d_raw);
 				}
 
-				d_raw = value;
+				d_raw = cpg_mini_object_copy (value);
 			}
 		}
 
