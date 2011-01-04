@@ -220,17 +220,12 @@ namespace Cpg {
 			}
 			set
 			{
-				object[] ret = new object[value.Length];
+				GLib.SList ptr = new GLib.SList(typeof(Cpg.Instruction));
 
 				for (int i = 0; i < value.Length; ++i)
 				{
-					ret[i] = value[i];
+					ptr.Append(value[i].Handle);
 				}
-
-				GLib.SList ptr = new GLib.SList(ret,
-				                                typeof(Cpg.Instruction),
-				                                true,
-				                                true);
 
 				cpg_expression_set_instructions(Handle, ptr.Handle);
 			}

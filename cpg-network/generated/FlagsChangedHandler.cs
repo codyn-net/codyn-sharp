@@ -10,7 +10,7 @@ namespace Cpg {
 	public class FlagsChangedArgs : GLib.SignalArgs {
 		public Cpg.PropertyFlags Flags{
 			get {
-				return (Cpg.PropertyFlags) Args [0];
+				return (Cpg.PropertyFlags) Args[0];
 			}
 		}
 

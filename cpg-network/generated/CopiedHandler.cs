@@ -10,7 +10,7 @@ namespace Cpg {
 	public class CopiedArgs : GLib.SignalArgs {
 		public Cpg.Object Copy{
 			get {
-				return (Cpg.Object) Args [0];
+				return (Cpg.Object) Args[0];
 			}
 		}
 

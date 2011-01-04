@@ -10,7 +10,7 @@ namespace Cpg {
 	public class TemplateUnappliedArgs : GLib.SignalArgs {
 		public Cpg.Object Templ{
 			get {
-				return (Cpg.Object) Args [0];
+				return (Cpg.Object) Args[0];
 			}
 		}
 
