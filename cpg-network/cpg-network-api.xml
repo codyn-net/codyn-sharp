@@ -2204,6 +2204,12 @@
           <parameter type="CpgStack*" name="stack" />
         </parameters>
       </method>
+      <method name="FunctionIsCommutative" cname="cpg_math_function_is_commutative" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgMathFunctionType" name="type" />
+        </parameters>
+      </method>
       <method name="FunctionIsConstant" cname="cpg_math_function_is_constant" shared="true">
         <return-type type="gboolean" />
         <parameters>
@@ -2236,6 +2242,12 @@
           <parameter type="CpgMathOperatorType" name="type" />
           <parameter type="gint" name="numargs" />
           <parameter type="CpgStack*" name="stack" />
+        </parameters>
+      </method>
+      <method name="OperatorIsCommutative" cname="cpg_math_operator_is_commutative" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgMathOperatorType" name="type" />
         </parameters>
       </method>
       <method name="OperatorIsConstant" cname="cpg_math_operator_is_constant" shared="true">

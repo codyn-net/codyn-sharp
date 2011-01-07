@@ -28,11 +28,29 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_math_operator_is_commutative(int type);
+
+		public static bool OperatorIsCommutative(Cpg.MathOperatorType type) {
+			bool raw_ret = cpg_math_operator_is_commutative((int) type);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_math_function_lookup_by_id(int type, out int arguments);
 
 		public static string FunctionLookupById(Cpg.MathFunctionType type, out int arguments) {
 			IntPtr raw_ret = cpg_math_function_lookup_by_id((int) type, out arguments);
 			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_math_function_is_commutative(int type);
+
+		public static bool FunctionIsCommutative(Cpg.MathFunctionType type) {
+			bool raw_ret = cpg_math_function_is_commutative((int) type);
+			bool ret = raw_ret;
 			return ret;
 		}
 
