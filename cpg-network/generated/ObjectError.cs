@@ -13,6 +13,7 @@ namespace Cpg {
 		ErrorPropertyNotFound,
 		ErrorPropertyInUse,
 		ErrorPropertyFromTemplate,
+		ErrorInvalidPropertyName,
 		NumErrors,
 	}
 #endregion

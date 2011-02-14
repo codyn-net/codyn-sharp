@@ -103,6 +103,7 @@
       <member cname="CPG_OBJECT_ERROR_PROPERTY_NOT_FOUND" name="ErrorPropertyNotFound" />
       <member cname="CPG_OBJECT_ERROR_PROPERTY_IN_USE" name="ErrorPropertyInUse" />
       <member cname="CPG_OBJECT_ERROR_PROPERTY_FROM_TEMPLATE" name="ErrorPropertyFromTemplate" />
+      <member cname="CPG_OBJECT_ERROR_INVALID_PROPERTY_NAME" name="ErrorInvalidPropertyName" />
       <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
     </enum>
     <enum name="PropertyFlags" cname="CpgPropertyFlags" type="flags">
@@ -1791,6 +1792,7 @@
         <parameters>
           <parameter type="CpgObject*" name="object" />
           <parameter type="CpgProperty*" name="property" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
       <virtual_method name="RemoveProperty" cname="remove_property">
@@ -1821,6 +1823,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgProperty*" name="property" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="ApplyTemplate" cname="cpg_object_apply_template">

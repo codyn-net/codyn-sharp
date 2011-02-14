@@ -665,11 +665,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_object_add_property(IntPtr raw, IntPtr property);
+		static extern unsafe bool cpg_object_add_property(IntPtr raw, IntPtr property, out IntPtr error);
 
-		public bool AddProperty(Cpg.Property property) {
-			bool raw_ret = cpg_object_add_property(Handle, property == null ? IntPtr.Zero : property.Handle);
+		public unsafe bool AddProperty(Cpg.Property property) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_object_add_property(Handle, property == null ? IntPtr.Zero : property.Handle, out error);
 			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 
