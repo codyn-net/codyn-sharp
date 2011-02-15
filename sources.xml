@@ -30,6 +30,8 @@
         <file>../libcpg-network/cpg-network/cpg-network-deserializer.h</file>
         <file>../libcpg-network/cpg-network/cpg-property.c</file>
         <file>../libcpg-network/cpg-network/cpg-property.h</file>
+        <file>../libcpg-network/cpg-network/cpg-property-interface.c</file>
+        <file>../libcpg-network/cpg-network/cpg-property-interface.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.c</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.h</file>
         <file>../libcpg-network/cpg-network/cpg-operator.c</file>

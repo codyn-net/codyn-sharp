@@ -97,6 +97,7 @@
       <member cname="CPG_NETWORK_LOAD_ERROR_FUNCTION" name="Function" />
       <member cname="CPG_NETWORK_LOAD_ERROR_IMPORT" name="Import" />
       <member cname="CPG_NETWORK_LOAD_ERROR_INPUT_FILE" name="InputFile" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_INTERFACE" name="Interface" />
     </enum>
     <enum name="ObjectError" cname="CpgObjectError" type="enum">
       <member cname="CPG_OBJECT_ERROR_PROPERTY_UNKNOWN" name="ErrorPropertyUnknown" />
@@ -112,6 +113,11 @@
       <member cname="CPG_PROPERTY_FLAG_IN" name="In" value="1 &lt;&lt; 1" />
       <member cname="CPG_PROPERTY_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
       <member cname="CPG_PROPERTY_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
+    </enum>
+    <enum name="PropertyInterfaceError" cname="CpgPropertyInterfaceError" type="enum">
+      <member cname="CPG_PROPERTY_INTERFACE_ERROR_EXISTS" name="Exists" />
+      <member cname="CPG_PROPERTY_INTERFACE_ERROR_NOT_FOUND" name="NotFound" />
+      <member cname="CPG_PROPERTY_INTERFACE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
     <callback name="ForeachExpressionFunc" cname="CpgForeachExpressionFunc">
       <return-type type="void" />
@@ -794,6 +800,9 @@
       </method>
       <method name="GetChildren" cname="cpg_group_get_children">
         <return-type type="const-GSList*" />
+      </method>
+      <method name="GetPropertyInterface" cname="cpg_group_get_property_interface">
+        <return-type type="CpgPropertyInterface*" />
       </method>
       <method name="GetProxy" cname="cpg_group_get_proxy">
         <return-type type="CpgObject*" />
@@ -2262,6 +2271,64 @@
       </method>
       <method name="UpdateLastValue" cname="cpg_property_update_last_value">
         <return-type type="void" />
+      </method>
+    </object>
+    <object name="PropertyInterface" cname="CpgPropertyInterface" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgPropertyInterfacePrivate*" />
+      <signal name="Added" cname="added" when="LAST" field_name="added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgPropertyInterface*" name="iface" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
+      <signal name="Removed" cname="removed" when="LAST" field_name="removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgPropertyInterface*" name="iface" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
+      <property name="Object" cname="object" type="CpgGroup" readable="true" writeable="true" construct-only="true" />
+      <method name="Add" cname="cpg_property_interface_add">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="ErrorQuark" cname="cpg_property_interface_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="GetNames" cname="cpg_property_interface_get_names">
+        <return-type type="gchar**" />
+      </method>
+      <method name="GetObject" cname="cpg_property_interface_get_object">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetType" cname="cpg_property_interface_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Lookup" cname="cpg_property_interface_lookup">
+        <return-type type="CpgProperty*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_property_interface_new">
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+        </parameters>
+      </constructor>
+      <method name="Remove" cname="cpg_property_interface_remove">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
       </method>
     </object>
     <struct name="OperatorData" cname="CpgOperatorData" opaque="true">

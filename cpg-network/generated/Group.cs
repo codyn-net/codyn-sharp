@@ -283,6 +283,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_group_get_property_interface(IntPtr raw);
+
+		public Cpg.PropertyInterface PropertyInterface { 
+			get {
+				IntPtr raw_ret = cpg_group_get_property_interface(Handle);
+				Cpg.PropertyInterface ret = GLib.Object.GetObject(raw_ret) as Cpg.PropertyInterface;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_group_find_property(IntPtr raw, IntPtr path);
 
 		public Cpg.Property FindProperty(string path) {

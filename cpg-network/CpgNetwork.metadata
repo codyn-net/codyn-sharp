@@ -183,5 +183,8 @@
   <remove-node path="/api/namespace/class[@name='Global']"/>
   <remove-node path="/api/namespace/object[@name='ParamSpecMiniObject']"/>
   <remove-node path="/api/namespace/class[@name='Value']"/>
+
+  <!-- CpgPropertyInterface -->
+  <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/method[@cname='cpg_property_interface_get_names']/return-type" name="null_term_array"/>
 </metadata>
 <!-- vi:ts=2:et -->
