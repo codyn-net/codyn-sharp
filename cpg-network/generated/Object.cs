@@ -518,6 +518,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_relative_id(IntPtr raw, IntPtr parent);
+
+		public string GetRelativeId(Cpg.Object parent) {
+			IntPtr raw_ret = cpg_object_get_relative_id(Handle, parent == null ? IntPtr.Zero : parent.Handle);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_type();
 
 		public static new GLib.GType GType { 

@@ -2044,6 +2044,12 @@
           <parameter type="gboolean" name="match_full" />
         </parameters>
       </method>
+      <method name="GetRelativeId" cname="cpg_object_get_relative_id">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgObject*" name="parent" />
+        </parameters>
+      </method>
       <method name="GetType" cname="cpg_object_get_type" shared="true">
         <return-type type="GType" />
       </method>
