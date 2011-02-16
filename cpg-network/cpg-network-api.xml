@@ -24,6 +24,7 @@
     <enum name="GroupError" cname="CpgGroupError" type="enum">
       <member cname="CPG_GROUP_ERROR_CHILD_ALREADY_EXISTS" name="ChildAlreadyExists" />
       <member cname="CPG_GROUP_ERROR_CHILD_DOES_NOT_EXIST" name="ChildDoesNotExist" />
+      <member cname="CPG_GROUP_ERROR_INTERFACE_IS_PROXY" name="InterfaceIsProxy" />
       <member cname="CPG_GROUP_ERROR_NUM" name="Num" />
     </enum>
     <enum name="ImportError" cname="CpgImportError" type="enum">
@@ -2141,6 +2142,23 @@
           <parameter type="CpgPropertyInterface*" name="iface" />
           <parameter type="const-gchar*" name="name" />
           <parameter type="CpgProperty*" name="property" />
+        </parameters>
+      </signal>
+      <signal name="VerifyRemove" cname="verify-remove" when="LAST" manual="true" field_name="verify_remove" hidden="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgPropertyInterface*" name="iface" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </signal>
+      <signal name="VerifyAdd" cname="verify-add" when="LAST" manual="true" field_name="verify_add" hidden="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgPropertyInterface*" name="iface" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </signal>
       <property name="Object" cname="object" type="CpgGroup" readable="true" writeable="true" construct-only="true" />

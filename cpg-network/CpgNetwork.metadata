@@ -186,5 +186,7 @@
 
   <!-- CpgPropertyInterface -->
   <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/method[@cname='cpg_property_interface_get_names']/return-type" name="null_term_array"/>
+  <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/signal[@name='VerifyAdd']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/signal[@name='VerifyRemove']" name="hidden">true</attr>
 </metadata>
 <!-- vi:ts=2:et -->
