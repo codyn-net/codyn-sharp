@@ -139,6 +139,20 @@
         <parameter type="CpgMiniObject*" name="obj" />
       </parameters>
     </callback>
+    <interface name="Annotatable" cname="CpgAnnotatable">
+      <method name="GetAnnotation" cname="cpg_annotatable_get_annotation">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetType" cname="cpg_annotatable_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="SetAnnotation" cname="cpg_annotatable_set_annotation">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="annotation" />
+        </parameters>
+      </method>
+    </interface>
     <interface name="Modifiable" cname="CpgModifiable">
       <virtual_method name="GetModified" cname="get_modified">
         <return-type type="gboolean" />
@@ -1493,8 +1507,10 @@
       <property name="Target" cname="target" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Equation" cname="equation" type="CpgExpression" readable="true" writeable="true" construct="true" />
       <property name="TargetProperty" cname="target-property" type="CpgProperty" readable="true" />
+      <property name="Enabled" cname="enabled" type="gboolean" readable="true" writeable="true" construct="true" />
       <implements>
         <interface cname="CpgModifiable" />
+        <interface cname="CpgAnnotatable" />
       </implements>
       <method name="Copy" cname="cpg_link_action_copy">
         <return-type type="CpgLinkAction*" owned="true" />
@@ -1510,6 +1526,9 @@
         <parameters>
           <parameter type="CpgLinkAction*" name="other" />
         </parameters>
+      </method>
+      <method name="GetEnabled" cname="cpg_link_action_get_enabled">
+        <return-type type="gboolean" />
       </method>
       <method name="GetEquation" cname="cpg_link_action_get_equation">
         <return-type type="CpgExpression*" />
@@ -1529,6 +1548,12 @@
           <parameter type="CpgExpression*" name="equation" />
         </parameters>
       </constructor>
+      <method name="SetEnabled" cname="cpg_link_action_set_enabled">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="enabled" />
+        </parameters>
+      </method>
       <method name="SetEquation" cname="cpg_link_action_set_equation">
         <return-type type="void" />
         <parameters>
@@ -1974,6 +1999,7 @@
       </virtual_method>
       <implements>
         <interface cname="CpgUsable" />
+        <interface cname="CpgAnnotatable" />
       </implements>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="gboolean" />
@@ -2163,6 +2189,7 @@
       <implements>
         <interface cname="CpgUsable" />
         <interface cname="CpgModifiable" />
+        <interface cname="CpgAnnotatable" />
       </implements>
       <method name="AddFlags" cname="cpg_property_add_flags">
         <return-type type="void" />

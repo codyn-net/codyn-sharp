@@ -4,6 +4,8 @@
   <api filename="cpg-network/cpg-network-api.raw">
     <library name="cpg-network-2.0">
       <namespace name="Cpg">
+        <file>../libcpg-network/cpg-network/cpg-annotatable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-annotatable.h</file>
         <file>../libcpg-network/cpg-network/cpg-object.c</file>
         <file>../libcpg-network/cpg-network/cpg-object.h</file>
         <file>../libcpg-network/cpg-network/cpg-link.c</file>
