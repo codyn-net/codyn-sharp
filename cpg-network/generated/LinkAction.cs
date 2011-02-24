@@ -69,6 +69,16 @@ namespace Cpg {
 			}
 		}
 
+		[GLib.Property ("link")]
+		public Cpg.Link Link {
+			get {
+				GLib.Value val = GetProperty ("link");
+				Cpg.Link ret = (Cpg.Link) val;
+				val.Dispose ();
+				return ret;
+			}
+		}
+
 		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_link_action_get_enabled(IntPtr raw);
 
@@ -158,6 +168,17 @@ namespace Cpg {
 				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
 				cpg_annotatable_set_annotation(Handle, native_value);
 				GLib.Marshaller.Free (native_value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_annotatable_get_title(IntPtr raw);
+
+		public string Title { 
+			get {
+				IntPtr raw_ret = cpg_annotatable_get_title(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
 			}
 		}
 

@@ -15,16 +15,70 @@ namespace Cpg {
 			public IntPtr gtype;
 			public IntPtr itype;
 
+			public GetTitleDelegate get_title;
+			public SetAnnotationDelegate set_annotation;
+			public GetAnnotationDelegate get_annotation;
 		}
 
 		static AnnotatableAdapter ()
 		{
 			GLib.GType.Register (_gtype, typeof(AnnotatableAdapter));
+			iface.get_title = new GetTitleDelegate (GetTitleCallback);
+			iface.set_annotation = new SetAnnotationDelegate (SetAnnotationCallback);
+			iface.get_annotation = new GetAnnotationDelegate (GetAnnotationCallback);
 		}
 
+
+		[GLib.CDeclCallback]
+		delegate IntPtr GetTitleDelegate (IntPtr annotatable);
+
+		static IntPtr GetTitleCallback (IntPtr annotatable)
+		{
+			try {
+				Cpg.AnnotatableImplementor __obj = GLib.Object.GetObject (annotatable, false) as Cpg.AnnotatableImplementor;
+				string __result = __obj.Title;
+				return GLib.Marshaller.StringToPtrGStrdup(__result);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, true);
+				// NOTREACHED: above call does not return.
+				throw e;
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void SetAnnotationDelegate (IntPtr annotatable, IntPtr annotation);
+
+		static void SetAnnotationCallback (IntPtr annotatable, IntPtr annotation)
+		{
+			try {
+				Cpg.AnnotatableImplementor __obj = GLib.Object.GetObject (annotatable, false) as Cpg.AnnotatableImplementor;
+				__obj.Annotation = GLib.Marshaller.Utf8PtrToString (annotation);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate IntPtr GetAnnotationDelegate (IntPtr annotatable);
+
+		static IntPtr GetAnnotationCallback (IntPtr annotatable)
+		{
+			try {
+				Cpg.AnnotatableImplementor __obj = GLib.Object.GetObject (annotatable, false) as Cpg.AnnotatableImplementor;
+				string __result = __obj.Annotation;
+				return GLib.Marshaller.StringToPtrGStrdup(__result);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, true);
+				// NOTREACHED: above call does not return.
+				throw e;
+			}
+		}
 		static void Initialize (IntPtr ifaceptr, IntPtr data)
 		{
 			AnnotatableIface native_iface = (AnnotatableIface) Marshal.PtrToStructure (ifaceptr, typeof (AnnotatableIface));
+			native_iface.get_title = iface.get_title;
+			native_iface.set_annotation = iface.set_annotation;
+			native_iface.get_annotation = iface.get_annotation;
 			Marshal.StructureToPtr (native_iface, ifaceptr, false);
 			GCHandle gch = (GCHandle) data;
 			gch.Free ();
@@ -109,6 +163,17 @@ namespace Cpg {
 				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
 				cpg_annotatable_set_annotation(Handle, native_value);
 				GLib.Marshaller.Free (native_value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_annotatable_get_title(IntPtr raw);
+
+		public string Title { 
+			get {
+				IntPtr raw_ret = cpg_annotatable_get_title(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
 			}
 		}
 

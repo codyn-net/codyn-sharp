@@ -11,11 +11,16 @@ namespace Cpg {
 		string Annotation { 
 			get; set;
 		}
+		string Title { 
+			get;
+		}
 	}
 
 	[GLib.GInterface (typeof (AnnotatableAdapter))]
 	public interface AnnotatableImplementor : GLib.IWrapper {
 
+		string Title { get; }
+		string Annotation { get; set; }
 	}
 #endregion
 }

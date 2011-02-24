@@ -140,7 +140,29 @@
       </parameters>
     </callback>
     <interface name="Annotatable" cname="CpgAnnotatable">
+      <virtual_method name="GetTitle" cname="get_title">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgAnnotatable*" name="annotatable" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetAnnotation" cname="set_annotation">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgAnnotatable*" name="annotatable" />
+          <parameter type="const-gchar*" name="annotation" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetAnnotation" cname="get_annotation">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgAnnotatable*" name="annotatable" />
+        </parameters>
+      </virtual_method>
       <method name="GetAnnotation" cname="cpg_annotatable_get_annotation">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetTitle" cname="cpg_annotatable_get_title">
         <return-type type="gchar*" />
       </method>
       <method name="GetType" cname="cpg_annotatable_get_type" shared="true">
@@ -1424,6 +1446,7 @@
     </object>
     <object name="LinkAction" cname="CpgLinkAction" parent="GInitiallyUnowned">
       <field name="Priv" cname="priv" type="CpgLinkActionPrivate*" />
+      <property name="Link" cname="link" type="CpgLink" readable="true" />
       <property name="Target" cname="target" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Equation" cname="equation" type="CpgExpression" readable="true" writeable="true" construct="true" />
       <property name="TargetProperty" cname="target-property" type="CpgProperty" readable="true" />

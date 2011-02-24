@@ -803,6 +803,17 @@ namespace Cpg {
 			}
 		}
 
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_annotatable_get_title(IntPtr raw);
+
+		public string Title { 
+			get {
+				IntPtr raw_ret = cpg_annotatable_get_title(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
 #endregion
 	}
 }
