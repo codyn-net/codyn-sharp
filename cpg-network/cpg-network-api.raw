@@ -114,6 +114,7 @@
       <member cname="CPG_PROPERTY_FLAG_IN" name="In" value="1 &lt;&lt; 1" />
       <member cname="CPG_PROPERTY_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
       <member cname="CPG_PROPERTY_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
+      <member cname="CPG_PROPERTY_FLAG_INOUT" name="Inout" value="CPG_PROPERTY_FLAG_IN | CPG_PROPERTY_FLAG_OUT" />
     </enum>
     <enum name="PropertyInterfaceError" cname="CpgPropertyInterfaceError" type="enum">
       <member cname="CPG_PROPERTY_INTERFACE_ERROR_EXISTS" name="Exists" />
@@ -1118,6 +1119,26 @@
         <return-type type="gchar*" />
       </method>
     </object>
+    <object name="InstructionConstant" cname="CpgInstructionConstant" parent="CpgInstructionNumber">
+      <field name="Priv" cname="priv" type="CpgInstructionConstantPrivate*" />
+      <method name="GetSymbol" cname="cpg_instruction_constant_get_symbol">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="cpg_instruction_constant_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_instruction_constant_new">
+        <parameters>
+          <parameter type="const-gchar*" name="symbol" />
+        </parameters>
+      </constructor>
+      <method name="SetSymbol" cname="cpg_instruction_constant_set_symbol">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="symbol" />
+        </parameters>
+      </method>
+    </object>
     <object name="InstructionCustomFunction" cname="CpgInstructionCustomFunction" parent="CpgInstruction">
       <field name="Priv" cname="priv" type="CpgInstructionCustomFunctionPrivate*" />
       <method name="GetArguments" cname="cpg_instruction_custom_function_get_arguments">
@@ -1939,17 +1960,19 @@
         </parameters>
       </virtual_method>
       <virtual_method name="ApplyTemplate" cname="apply_template">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
           <parameter type="CpgObject*" name="templ" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
       <virtual_method name="UnapplyTemplate" cname="unapply_template">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="object" />
           <parameter type="CpgObject*" name="templ" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
       <virtual_method name="Copy" cname="copy">
@@ -2032,9 +2055,10 @@
         </parameters>
       </method>
       <method name="ApplyTemplate" cname="cpg_object_apply_template">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="templ" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="Clear" cname="cpg_object_clear">
@@ -2129,6 +2153,7 @@
       <constructor cname="cpg_object_new_from_template">
         <parameters>
           <parameter type="CpgObject*" name="templ" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
       <method name="RemoveProperty" cname="cpg_object_remove_property">
@@ -2157,9 +2182,10 @@
         <return-type type="void" />
       </method>
       <method name="UnapplyTemplate" cname="cpg_object_unapply_template">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgObject*" name="templ" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="VerifyRemoveProperty" cname="cpg_object_verify_remove_property">

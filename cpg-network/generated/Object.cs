@@ -545,10 +545,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_object_apply_template(IntPtr raw, IntPtr templ);
+		static extern unsafe bool cpg_object_apply_template(IntPtr raw, IntPtr templ, out IntPtr error);
 
-		public void ApplyTemplate(Cpg.Object templ) {
-			cpg_object_apply_template(Handle, templ == null ? IntPtr.Zero : templ.Handle);
+		public unsafe bool ApplyTemplate(Cpg.Object templ) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_object_apply_template(Handle, templ == null ? IntPtr.Zero : templ.Handle, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -667,10 +671,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_object_unapply_template(IntPtr raw, IntPtr templ);
+		static extern unsafe bool cpg_object_unapply_template(IntPtr raw, IntPtr templ, out IntPtr error);
 
-		public void UnapplyTemplate(Cpg.Object templ) {
-			cpg_object_unapply_template(Handle, templ == null ? IntPtr.Zero : templ.Handle);
+		public unsafe bool UnapplyTemplate(Cpg.Object templ) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_object_unapply_template(Handle, templ == null ? IntPtr.Zero : templ.Handle, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]

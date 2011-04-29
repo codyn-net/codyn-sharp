@@ -188,5 +188,9 @@
   <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/method[@cname='cpg_property_interface_get_names']/return-type" name="null_term_array"/>
   <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/signal[@name='VerifyAdd']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/signal[@name='VerifyRemove']" name="hidden">true</attr>
+
+  <!-- CpgPropertyFlags -->
+  <attr path="/api/namespace/enum[@cname='CpgPropertyFlags']/member[@cname='CPG_PROPERTY_FLAG_INOUT']" name="value">In | Out</attr>
+  <attr path="/api/namespace/enum[@cname='CpgPropertyFlags']/member[@cname='CPG_PROPERTY_FLAG_INOUT']" name="name">InOut</attr>
 </metadata>
 <!-- vi:ts=2:et -->

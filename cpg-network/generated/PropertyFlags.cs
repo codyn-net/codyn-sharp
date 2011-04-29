@@ -15,6 +15,7 @@ namespace Cpg {
 		In = 1 << 1,
 		Out = 1 << 2,
 		Once = 1 << 3,
+		InOut = In | Out,
 	}
 #endregion
 }

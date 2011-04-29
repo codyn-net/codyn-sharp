@@ -88,6 +88,8 @@
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-property.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-variadic-function.c</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-variadic-function.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-constant.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-constant.h</file>
       </namespace>
     </library>
   </api>
