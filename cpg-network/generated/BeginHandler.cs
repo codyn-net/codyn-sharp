@@ -10,19 +10,19 @@ namespace Cpg {
 	public class BeginArgs : GLib.SignalArgs {
 		public double From{
 			get {
-				return (double) Args[0];
+				return (double) Args [0];
 			}
 		}
 
 		public double Step{
 			get {
-				return (double) Args[1];
+				return (double) Args [1];
 			}
 		}
 
 		public double To{
 			get {
-				return (double) Args[2];
+				return (double) Args [2];
 			}
 		}
 

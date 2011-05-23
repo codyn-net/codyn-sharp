@@ -10,7 +10,7 @@ namespace Cpg {
 	public class ExpressionChangedArgs : GLib.SignalArgs {
 		public Cpg.Expression Expression{
 			get {
-				return (Cpg.Expression) Args[0];
+				return (Cpg.Expression) Args [0];
 			}
 		}
 

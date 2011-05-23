@@ -27,6 +27,21 @@
 
   <remove-node path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_get_data']"/>
 
+  <!-- CpgExpansion -->
+  <attr path="/api/namespace/object[@cname='CpgExpansion']/constructor[@cname='cpg_expansion_new']/parameters/parameter" name="name">items</attr>
+  <attr path="/api/namespace/object[@cname='CpgExpansion']/constructor[@cname='cpg_expansion_new']/parameters/parameter" name="type">const-gchar**</attr>
+
+  <!-- CpgSelection -->
+  <attr path="/api/namespace/object[@cname='CpgSelection']/method[@cname='cpg_selection_get_expansions']/return-type" name="element-type">CpgExpansion*</attr>
+
+  <!-- CpgSelection -->
+  <attr path="/api/namespace/object[@cname='CpgSelection']/method[@cname='cpg_selection_get_expansions']/return-type" name="element-type">CpgExpansion*</attr>
+
+  <!-- CpgEmbeddedContext -->
+  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_push_expansions']/parameters/parameter[@name='expansions']" name="element-type">CpgExpansion*</attr>
+  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_set_expansions']/parameters/parameter[@name='expansions']" name="element-type">CpgExpansion*</attr>
+  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_get_expansions']/return-type" name="element-type">CpgExpansion*</attr>
+
   <!-- CpgImport -->
   <remove-node path="/api/namespace/object[@cname='CpgImport']/constructor[@cname='cpg_import_new']"/>
   <remove-node path="/api/namespace/object[@cname='CpgImport']/method[@cname='cpg_import_get_file']"/>

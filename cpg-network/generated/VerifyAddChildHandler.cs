@@ -10,13 +10,13 @@ namespace Cpg {
 	public class VerifyAddChildArgs : GLib.SignalArgs {
 		public GLib.Object P0{
 			get {
-				return (GLib.Object) Args[0];
+				return (GLib.Object) Args [0];
 			}
 		}
 
 		public IntPtr P1{
 			get {
-				return (IntPtr) Args[1];
+				return (IntPtr) Args [1];
 			}
 		}
 

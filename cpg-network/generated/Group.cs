@@ -261,6 +261,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_group_find_objects(IntPtr raw, IntPtr selector);
+
+		public GLib.SList FindObjects(string selector) {
+			IntPtr native_selector = GLib.Marshaller.StringToPtrGStrdup (selector);
+			IntPtr raw_ret = cpg_group_find_objects(Handle, native_selector);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			GLib.Marshaller.Free (native_selector);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_group_property_is_proxy(IntPtr raw, IntPtr name);
 
 		public bool PropertyIsProxy(string name) {
@@ -272,13 +283,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_group_find_object(IntPtr raw, IntPtr path);
+		static extern IntPtr cpg_group_find_object(IntPtr raw, IntPtr selector);
 
-		public Cpg.Object FindObject(string path) {
-			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
-			IntPtr raw_ret = cpg_group_find_object(Handle, native_path);
+		public Cpg.Object FindObject(string selector) {
+			IntPtr native_selector = GLib.Marshaller.StringToPtrGStrdup (selector);
+			IntPtr raw_ret = cpg_group_find_object(Handle, native_selector);
 			Cpg.Object ret = GLib.Object.GetObject(raw_ret) as Cpg.Object;
-			GLib.Marshaller.Free (native_path);
+			GLib.Marshaller.Free (native_selector);
 			return ret;
 		}
 
@@ -294,13 +305,24 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_group_find_property(IntPtr raw, IntPtr path);
+		static extern IntPtr cpg_group_find_property(IntPtr raw, IntPtr selector);
 
-		public Cpg.Property FindProperty(string path) {
-			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
-			IntPtr raw_ret = cpg_group_find_property(Handle, native_path);
+		public Cpg.Property FindProperty(string selector) {
+			IntPtr native_selector = GLib.Marshaller.StringToPtrGStrdup (selector);
+			IntPtr raw_ret = cpg_group_find_property(Handle, native_selector);
 			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
-			GLib.Marshaller.Free (native_path);
+			GLib.Marshaller.Free (native_selector);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_group_find_properties(IntPtr raw, IntPtr selector);
+
+		public GLib.SList FindProperties(string selector) {
+			IntPtr native_selector = GLib.Marshaller.StringToPtrGStrdup (selector);
+			IntPtr raw_ret = cpg_group_find_properties(Handle, native_selector);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			GLib.Marshaller.Free (native_selector);
 			return ret;
 		}
 

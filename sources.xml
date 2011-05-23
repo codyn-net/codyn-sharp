@@ -72,6 +72,24 @@
         <file>../libcpg-network/cpg-network/cpg-math.h</file>
         <file>../libcpg-network/cpg-network/cpg-mini-object.c</file>
         <file>../libcpg-network/cpg-network/cpg-mini-object.h</file>
+        <file>../libcpg-network/cpg-network/cpg-selector.c</file>
+        <file>../libcpg-network/cpg-network/cpg-selector.h</file>
+        <file>../libcpg-network/cpg-network/cpg-selection.c</file>
+        <file>../libcpg-network/cpg-network/cpg-selection.h</file>
+        <file>../libcpg-network/cpg-network/cpg-layout.c</file>
+        <file>../libcpg-network/cpg-network/cpg-layout.h</file>
+        <file>../libcpg-network/cpg-network/cpg-layoutable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-layoutable.h</file>
+        <file>../libcpg-network/cpg-network/cpg-expansion.c</file>
+        <file>../libcpg-network/cpg-network/cpg-expansion.h</file>
+        <file>../libcpg-network/cpg-network/cpg-embedded-string.c</file>
+        <file>../libcpg-network/cpg-network/cpg-embedded-string.h</file>
+        <file>../libcpg-network/cpg-network/cpg-embedded-context.c</file>
+        <file>../libcpg-network/cpg-network/cpg-embedded-context.h</file>
+        <file>../libcpg-network/cpg-network/cpg-parser-context.c</file>
+        <file>../libcpg-network/cpg-network/cpg-parser-context.h</file>
+        <file>../libcpg-network/cpg-network/cpg-attribute.c</file>
+        <file>../libcpg-network/cpg-network/cpg-attribute.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction.c</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-function.c</file>

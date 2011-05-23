@@ -16,6 +16,13 @@
       <member cname="CPG_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
       <member cname="CPG_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
+    <enum name="EmbeddedStringNodeType" cname="CpgEmbeddedStringNodeType" type="enum">
+      <member cname="CPG_EMBEDDED_STRING_NODE_TEXT" name="Text" />
+      <member cname="CPG_EMBEDDED_STRING_NODE_EQUATION" name="Equation" />
+      <member cname="CPG_EMBEDDED_STRING_NODE_DEFINE" name="Define" />
+      <member cname="CPG_EMBEDDED_STRING_NODE_REF" name="Ref" />
+      <member cname="CPG_EMBEDDED_STRING_NODE_INDIRECTION" name="Indirection" />
+    </enum>
     <enum name="FunctionError" cname="CpgFunctionError" type="enum">
       <member cname="CPG_FUNCTION_ERROR_UNKNOWN" name="ErrorUnknown" />
       <member cname="CPG_FUNCTION_ERROR_ARGUMENT_NOT_FOUND" name="ErrorArgumentNotFound" />
@@ -34,6 +41,12 @@
       <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_NONE" name="None" />
       <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_FROM" name="From" />
       <member cname="CPG_INSTRUCTION_PROPERTY_BINDING_TO" name="To" />
+    </enum>
+    <enum name="LayoutRelation" cname="CpgLayoutRelation" type="flags">
+      <member cname="CPG_LAYOUT_RELATION_ABOVE" name="Above" value="1 &lt;&lt; 0" />
+      <member cname="CPG_LAYOUT_RELATION_BELOW" name="Below" value="1 &lt;&lt; 1" />
+      <member cname="CPG_LAYOUT_RELATION_LEFT_OF" name="LeftOf" value="1 &lt;&lt; 2" />
+      <member cname="CPG_LAYOUT_RELATION_RIGHT_OF" name="RightOf" value="1 &lt;&lt; 3" />
     </enum>
     <enum name="MathFunctionType" cname="CpgMathFunctionType" type="enum">
       <member cname="CPG_MATH_FUNCTION_TYPE_NONE" name="None" />
@@ -91,7 +104,8 @@
       <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
     </enum>
     <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
-      <member cname="CPG_NETWORK_LOAD_ERROR_XML" name="Xml" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_NONE" name="None" />
+      <member cname="CPG_NETWORK_LOAD_ERROR_SYNTAX" name="Syntax" />
       <member cname="CPG_NETWORK_LOAD_ERROR_PROPERTY" name="Property" />
       <member cname="CPG_NETWORK_LOAD_ERROR_OBJECT" name="Object" />
       <member cname="CPG_NETWORK_LOAD_ERROR_LINK" name="Link" />
@@ -107,6 +121,12 @@
       <member cname="CPG_OBJECT_ERROR_PROPERTY_FROM_TEMPLATE" name="ErrorPropertyFromTemplate" />
       <member cname="CPG_OBJECT_ERROR_INVALID_PROPERTY_NAME" name="ErrorInvalidPropertyName" />
       <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
+    </enum>
+    <enum name="ParserContextScope" cname="CpgParserContextScope" type="enum">
+      <member cname="CPG_PARSER_CONTEXT_SCOPE_NONE" name="None" />
+      <member cname="CPG_PARSER_CONTEXT_SCOPE_STATE" name="State" />
+      <member cname="CPG_PARSER_CONTEXT_SCOPE_LINK" name="Link" />
+      <member cname="CPG_PARSER_CONTEXT_SCOPE_NETWORK" name="Network" />
     </enum>
     <enum name="PropertyFlags" cname="CpgPropertyFlags" type="flags">
       <member cname="CPG_PROPERTY_FLAG_NONE" name="None" />
@@ -174,6 +194,50 @@
         <parameters>
           <parameter type="const-gchar*" name="annotation" />
         </parameters>
+      </method>
+    </interface>
+    <interface name="Layoutable" cname="CpgLayoutable">
+      <virtual_method name="GetLocation" cname="get_location">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLayoutable*" name="layoutable" />
+          <parameter type="gint*" name="x" />
+          <parameter type="gint*" name="y" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetLocation" cname="set_location">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLayoutable*" name="layoutable" />
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SupportsLocation" cname="supports_location">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgLayoutable*" name="layoutable" />
+        </parameters>
+      </virtual_method>
+      <method name="GetLocation" cname="cpg_layoutable_get_location">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint*" name="x" />
+          <parameter type="gint*" name="y" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_layoutable_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="SetLocation" cname="cpg_layoutable_set_location">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+        </parameters>
+      </method>
+      <method name="SupportsLocation" cname="cpg_layoutable_supports_location">
+        <return-type type="gboolean" />
       </method>
     </interface>
     <interface name="Modifiable" cname="CpgModifiable">
@@ -331,6 +395,40 @@
         <return-type type="guint" />
       </method>
     </interface>
+    <object name="Attribute" cname="CpgAttribute" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgAttributePrivate*" />
+      <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <method name="GetArgument" cname="cpg_attribute_get_argument">
+        <return-type type="CpgEmbeddedString*" />
+        <parameters>
+          <parameter type="gint" name="i" />
+        </parameters>
+      </method>
+      <method name="GetArguments" cname="cpg_attribute_get_arguments">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetId" cname="cpg_attribute_get_id">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="cpg_attribute_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_attribute_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+          <parameter type="GSList*" name="arguments" />
+        </parameters>
+      </constructor>
+      <method name="NumArguments" cname="cpg_attribute_num_arguments">
+        <return-type type="gint" />
+      </method>
+      <method name="SetArguments" cname="cpg_attribute_set_arguments">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="arguments" />
+        </parameters>
+      </method>
+    </object>
     <object name="CompileContext" cname="CpgCompileContext" parent="GObject">
       <field name="Priv" cname="priv" type="CpgCompileContextPrivate*" />
       <method name="AppendObject" cname="cpg_compile_context_append_object">
@@ -427,6 +525,167 @@
       </method>
       <method name="TypeQuark" cname="cpg_compile_error_type_quark" shared="true">
         <return-type type="GQuark" />
+      </method>
+    </object>
+    <object name="EmbeddedContext" cname="CpgEmbeddedContext" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgEmbeddedContextPrivate*" />
+      <method name="Calculate" cname="cpg_embedded_context_calculate">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="equation" />
+        </parameters>
+      </method>
+      <method name="Define" cname="cpg_embedded_context_define">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="value" />
+        </parameters>
+      </method>
+      <method name="GetExpansions" cname="cpg_embedded_context_get_expansions">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetType" cname="cpg_embedded_context_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="LookupDefine" cname="cpg_embedded_context_lookup_define">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="LookupRef" cname="cpg_embedded_context_lookup_ref">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="gint" name="parent" />
+          <parameter type="gint" name="idx" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_embedded_context_new" />
+      <method name="PopExpansions" cname="cpg_embedded_context_pop_expansions">
+        <return-type type="void" />
+      </method>
+      <method name="PushExpansion" cname="cpg_embedded_context_push_expansion">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgExpansion*" name="expansion" />
+        </parameters>
+      </method>
+      <method name="PushExpansions" cname="cpg_embedded_context_push_expansions">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="expansions" />
+        </parameters>
+      </method>
+      <method name="SetExpansions" cname="cpg_embedded_context_set_expansions">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="expansions" />
+        </parameters>
+      </method>
+    </object>
+    <object name="EmbeddedString" cname="CpgEmbeddedString" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgEmbeddedStringPrivate*" />
+      <method name="AddDefine" cname="cpg_embedded_string_add_define">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="text" />
+        </parameters>
+      </method>
+      <method name="AddReference" cname="cpg_embedded_string_add_reference">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="parent" />
+          <parameter type="gint" name="idx" />
+        </parameters>
+      </method>
+      <method name="AddText" cname="cpg_embedded_string_add_text">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="text" />
+        </parameters>
+      </method>
+      <method name="Expand" cname="cpg_embedded_string_expand">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="CpgEmbeddedContext*" name="ctx" />
+        </parameters>
+      </method>
+      <method name="ExpandMultiple" cname="cpg_embedded_string_expand_multiple">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="CpgEmbeddedContext*" name="ctx" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_embedded_string_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_embedded_string_new" />
+      <constructor cname="cpg_embedded_string_new_from_double">
+        <parameters>
+          <parameter type="gdouble" name="s" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_embedded_string_new_from_integer">
+        <parameters>
+          <parameter type="gint" name="s" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_embedded_string_new_from_string">
+        <parameters>
+          <parameter type="const-gchar*" name="s" />
+        </parameters>
+      </constructor>
+      <method name="Pop" cname="cpg_embedded_string_pop">
+        <return-type type="CpgEmbeddedString*" />
+      </method>
+      <method name="Push" cname="cpg_embedded_string_push">
+        <return-type type="CpgEmbeddedString*" />
+        <parameters>
+          <parameter type="CpgEmbeddedStringNodeType" name="type" />
+          <parameter type="gint" name="num" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Expansion" cname="CpgExpansion" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgExpansionPrivate*" />
+      <method name="Add" cname="cpg_expansion_add">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="item" />
+        </parameters>
+      </method>
+      <method name="Copy" cname="cpg_expansion_copy">
+        <return-type type="CpgExpansion*" owned="true" />
+      </method>
+      <method name="Get" cname="cpg_expansion_get">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="gint" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_expansion_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_expansion_new">
+        <parameters>
+          <parameter type="gchar" name="const-const*" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_expansion_new_one">
+        <parameters>
+          <parameter type="const-gchar*" name="item" />
+        </parameters>
+      </constructor>
+      <method name="Num" cname="cpg_expansion_num">
+        <return-type type="gint" />
+      </method>
+      <method name="Set" cname="cpg_expansion_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="idx" />
+          <parameter type="const-gchar*" name="val" />
+        </parameters>
       </method>
     </object>
     <object name="Expression" cname="CpgExpression" parent="GInitiallyUnowned">
@@ -814,13 +1073,25 @@
       <method name="FindObject" cname="cpg_group_find_object">
         <return-type type="CpgObject*" />
         <parameters>
-          <parameter type="const-gchar*" name="path" />
+          <parameter type="const-gchar*" name="selector" />
+        </parameters>
+      </method>
+      <method name="FindObjects" cname="cpg_group_find_objects">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="const-gchar*" name="selector" />
+        </parameters>
+      </method>
+      <method name="FindProperties" cname="cpg_group_find_properties">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="const-gchar*" name="selector" />
         </parameters>
       </method>
       <method name="FindProperty" cname="cpg_group_find_property">
         <return-type type="CpgProperty*" />
         <parameters>
-          <parameter type="const-gchar*" name="path" />
+          <parameter type="const-gchar*" name="selector" />
         </parameters>
       </method>
       <method name="Foreach" cname="cpg_group_foreach">
@@ -1475,6 +1746,34 @@
         <return-type type="void" />
       </method>
     </object>
+    <object name="Layout" cname="CpgLayout" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgLayoutPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
+      <method name="Add" cname="cpg_layout_add">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLayoutable*" name="left" />
+          <parameter type="CpgLayoutable*" name="right" />
+          <parameter type="CpgLayoutRelation" name="relation" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cpg_layout_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_layout_new">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+        </parameters>
+      </constructor>
+      <method name="Set" cname="cpg_layout_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLayoutable*" name="layoutable" />
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+        </parameters>
+      </method>
+    </object>
     <object name="Link" cname="CpgLink" parent="CpgObject">
       <field name="Priv" cname="priv" type="CpgLinkPrivate*" />
       <signal name="ActionAdded" cname="action-added" when="LAST" field_name="action_added">
@@ -1493,6 +1792,9 @@
       </signal>
       <property name="From" cname="from" type="CpgObject" readable="true" writeable="true" construct="true" />
       <property name="To" cname="to" type="CpgObject" readable="true" writeable="true" construct="true" />
+      <implements>
+        <interface cname="CpgLayoutable" />
+      </implements>
       <method name="AddAction" cname="cpg_link_add_action">
         <return-type type="gboolean" />
         <parameters>
@@ -2046,6 +2348,7 @@
       <implements>
         <interface cname="CpgUsable" />
         <interface cname="CpgAnnotatable" />
+        <interface cname="CpgLayoutable" />
       </implements>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="gboolean" />
@@ -2206,6 +2509,304 @@
     <object name="ParamSpecMiniObject" cname="CpgParamSpecMiniObject" parent="GParamSpec">
       <method name="GetType" cname="cpg_param_spec_mini_object_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ParserContext" cname="CpgParserContext" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgParserContextPrivate*" />
+      <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
+      <method name="AddAction" cname="cpg_parser_context_add_action">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="target" />
+          <parameter type="CpgEmbeddedString*" name="expression" />
+        </parameters>
+      </method>
+      <method name="AddFunction" cname="cpg_parser_context_add_function">
+        <return-type type="CpgFunction*" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="name" />
+          <parameter type="CpgEmbeddedString*" name="expression" />
+          <parameter type="GArray*" name="arguments" />
+        </parameters>
+      </method>
+      <method name="AddIntegratorProperty" cname="cpg_parser_context_add_integrator_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="name" />
+          <parameter type="CpgEmbeddedString*" name="value" />
+        </parameters>
+      </method>
+      <method name="AddInterface" cname="cpg_parser_context_add_interface">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="name" />
+          <parameter type="CpgSelector*" name="target" />
+        </parameters>
+      </method>
+      <method name="AddLayout" cname="cpg_parser_context_add_layout">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgLayoutRelation" name="relation" />
+          <parameter type="CpgSelector*" name="left" />
+          <parameter type="CpgSelector*" name="right" />
+        </parameters>
+      </method>
+      <method name="AddLayoutPosition" cname="cpg_parser_context_add_layout_position">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgSelector*" name="selector" />
+          <parameter type="CpgEmbeddedString*" name="x" />
+          <parameter type="CpgEmbeddedString*" name="y" />
+          <parameter type="CpgSelector*" name="of" />
+        </parameters>
+      </method>
+      <method name="AddPolynomial" cname="cpg_parser_context_add_polynomial">
+        <return-type type="CpgFunctionPolynomial*" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="name" />
+          <parameter type="GArray*" name="pieces" />
+        </parameters>
+      </method>
+      <method name="AddProperty" cname="cpg_parser_context_add_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="name" />
+          <parameter type="CpgEmbeddedString*" name="expression" />
+          <parameter type="CpgPropertyFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="Define" cname="cpg_parser_context_define">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="name" />
+          <parameter type="CpgEmbeddedString*" name="value" />
+        </parameters>
+      </method>
+      <method name="GetColumn" cname="cpg_parser_context_get_column">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint*" name="start" />
+          <parameter type="gint*" name="end" />
+        </parameters>
+      </method>
+      <method name="GetEmbedded" cname="cpg_parser_context_get_embedded">
+        <return-type type="CpgEmbeddedContext*" />
+      </method>
+      <method name="GetError" cname="cpg_parser_context_get_error">
+        <return-type type="GError*" />
+      </method>
+      <method name="GetFile" cname="cpg_parser_context_get_file">
+        <return-type type="GFile*" />
+      </method>
+      <method name="GetLine" cname="cpg_parser_context_get_line">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="gint*" name="lineno" />
+        </parameters>
+      </method>
+      <method name="GetScanner" cname="cpg_parser_context_get_scanner">
+        <return-type type="gpointer" />
+      </method>
+      <method name="GetStartToken" cname="cpg_parser_context_get_start_token">
+        <return-type type="gint" />
+      </method>
+      <method name="GetToken" cname="cpg_parser_context_get_token">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="cpg_parser_context_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Import" cname="cpg_parser_context_import">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="id" />
+          <parameter type="CpgEmbeddedString*" name="path" />
+        </parameters>
+      </method>
+      <constructor cname="cpg_parser_context_new">
+        <parameters>
+          <parameter type="CpgNetwork*" name="network" />
+        </parameters>
+      </constructor>
+      <method name="Parse" cname="cpg_parser_context_parse">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="PeekString" cname="cpg_parser_context_peek_string">
+        <return-type type="CpgEmbeddedString*" />
+      </method>
+      <method name="Pop" cname="cpg_parser_context_pop">
+        <return-type type="GSList*" />
+      </method>
+      <method name="PopEquationDepth" cname="cpg_parser_context_pop_equation_depth">
+        <return-type type="gboolean" />
+      </method>
+      <method name="PopInput" cname="cpg_parser_context_pop_input">
+        <return-type type="void" />
+      </method>
+      <method name="PopSelector" cname="cpg_parser_context_pop_selector">
+        <return-type type="CpgSelector*" />
+      </method>
+      <method name="PopString" cname="cpg_parser_context_pop_string">
+        <return-type type="CpgEmbeddedString*" />
+      </method>
+      <method name="PushAnnotation" cname="cpg_parser_context_push_annotation">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="annotation" />
+        </parameters>
+      </method>
+      <method name="PushEquation" cname="cpg_parser_context_push_equation">
+        <return-type type="void" />
+      </method>
+      <method name="PushEquationDepth" cname="cpg_parser_context_push_equation_depth">
+        <return-type type="void" />
+      </method>
+      <method name="PushGroup" cname="cpg_parser_context_push_group">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="id" />
+          <parameter type="GArray*" name="templates" />
+        </parameters>
+      </method>
+      <method name="PushInput" cname="cpg_parser_context_push_input">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GFile*" name="file" />
+          <parameter type="GInputStream*" name="stream" />
+        </parameters>
+      </method>
+      <method name="PushInputFromPath" cname="cpg_parser_context_push_input_from_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="path" />
+        </parameters>
+      </method>
+      <method name="PushInputFromString" cname="cpg_parser_context_push_input_from_string">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="s" />
+        </parameters>
+      </method>
+      <method name="PushIntegrator" cname="cpg_parser_context_push_integrator">
+        <return-type type="void" />
+      </method>
+      <method name="PushLayout" cname="cpg_parser_context_push_layout">
+        <return-type type="void" />
+      </method>
+      <method name="PushLink" cname="cpg_parser_context_push_link">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="id" />
+          <parameter type="GArray*" name="templates" />
+          <parameter type="GSList*" name="attributes" />
+          <parameter type="GArray*" name="fromto" />
+        </parameters>
+      </method>
+      <method name="PushNetwork" cname="cpg_parser_context_push_network">
+        <return-type type="void" />
+      </method>
+      <method name="PushObject" cname="cpg_parser_context_push_object">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="objects" />
+        </parameters>
+      </method>
+      <method name="PushSelector" cname="cpg_parser_context_push_selector">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="identifier" />
+          <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
+      <method name="PushSelectorPseudo" cname="cpg_parser_context_push_selector_pseudo">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="identifier" />
+          <parameter type="GArray*" name="arguments" />
+        </parameters>
+      </method>
+      <method name="PushSelectorRegex" cname="cpg_parser_context_push_selector_regex">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="regex" />
+          <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
+      <method name="PushState" cname="cpg_parser_context_push_state">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="id" />
+          <parameter type="GArray*" name="templates" />
+        </parameters>
+      </method>
+      <method name="PushString" cname="cpg_parser_context_push_string">
+        <return-type type="CpgEmbeddedString*" />
+      </method>
+      <method name="PushTemplates" cname="cpg_parser_context_push_templates">
+        <return-type type="void" />
+      </method>
+      <method name="Read" cname="cpg_parser_context_read">
+        <return-type type="gssize" />
+        <parameters>
+          <parameter type="gchar*" name="buffer" />
+          <parameter type="gsize" name="max_size" />
+        </parameters>
+      </method>
+      <method name="Remove" cname="cpg_parser_context_remove">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GArray*" name="selectors" />
+        </parameters>
+      </method>
+      <method name="SetColumn" cname="cpg_parser_context_set_column">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="start" />
+          <parameter type="gint" name="end" />
+        </parameters>
+      </method>
+      <method name="SetError" cname="cpg_parser_context_set_error">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="message" />
+        </parameters>
+      </method>
+      <method name="SetIntegrator" cname="cpg_parser_context_set_integrator">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetLine" cname="cpg_parser_context_set_line">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="line" />
+          <parameter type="gint" name="lineno" />
+        </parameters>
+      </method>
+      <method name="SetProxy" cname="cpg_parser_context_set_proxy">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="objects" />
+        </parameters>
+      </method>
+      <method name="SetStartToken" cname="cpg_parser_context_set_start_token">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="token" />
+        </parameters>
+      </method>
+      <method name="SetToken" cname="cpg_parser_context_set_token">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="token" />
+        </parameters>
+      </method>
+      <method name="StealStartToken" cname="cpg_parser_context_steal_start_token">
+        <return-type type="gint" />
       </method>
     </object>
     <object name="Property" cname="CpgProperty" parent="GInitiallyUnowned">
@@ -2425,6 +3026,99 @@
         </parameters>
       </method>
     </object>
+    <object name="Selection" cname="CpgSelection" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgSelectionPrivate*" />
+      <method name="Copy" cname="cpg_selection_copy">
+        <return-type type="CpgSelection*" owned="true" />
+      </method>
+      <method name="GetExpansions" cname="cpg_selection_get_expansions">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetObject" cname="cpg_selection_get_object">
+        <return-type type="CpgObject*" />
+      </method>
+      <method name="GetProperty" cname="cpg_selection_get_property">
+        <return-type type="CpgProperty*" />
+      </method>
+      <method name="GetType" cname="cpg_selection_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_selection_new">
+        <parameters>
+          <parameter type="gpointer" name="object" />
+          <parameter type="GSList*" name="expansions" />
+        </parameters>
+      </constructor>
+    </object>
+    <object name="Selector" cname="CpgSelector" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgSelectorPrivate*" />
+      <method name="Add" cname="cpg_selector_add">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="identifier" />
+          <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
+      <method name="AddPseudo" cname="cpg_selector_add_pseudo">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="pseudo" />
+          <parameter type="GSList*" name="arguments" />
+        </parameters>
+      </method>
+      <method name="AddRegex" cname="cpg_selector_add_regex">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="regex" />
+          <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
+      <method name="AsString" cname="cpg_selector_as_string">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="Copy" cname="cpg_selector_copy">
+        <return-type type="CpgSelector*" owned="true" />
+      </method>
+      <method name="GetType" cname="cpg_selector_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_selector_new" />
+      <method name="Parse" cname="cpg_selector_parse" shared="true">
+        <return-type type="CpgSelector*" />
+        <parameters>
+          <parameter type="const-gchar*" name="ptr" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Select" cname="cpg_selector_select">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="CpgObject*" name="parent" />
+          <parameter type="CpgEmbeddedContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="SelectLinks" cname="cpg_selector_select_links">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="CpgObject*" name="parent" />
+          <parameter type="CpgEmbeddedContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="SelectProperties" cname="cpg_selector_select_properties">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="CpgObject*" name="parent" />
+          <parameter type="CpgEmbeddedContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="SelectStates" cname="cpg_selector_select_states">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="CpgObject*" name="parent" />
+          <parameter type="CpgEmbeddedContext*" name="context" />
+        </parameters>
+      </method>
+    </object>
     <struct name="OperatorData" cname="CpgOperatorData" opaque="true">
       <field name="Expressions" cname="expressions" type="GSList*" access="private" />
       <method name="Destroy" cname="cpg_operator_data_destroy">
@@ -2480,6 +3174,26 @@
         <return-type type="guint" />
       </method>
     </struct>
+    <class name="Global" cname="CpgGlobal">
+      <method name="ExpansionsExpand" cname="cpg_expansions_expand" shared="true">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="GSList*" name="expansions" />
+          <parameter type="const-gchar*" name="s" />
+          <parameter type="GRegex*" name="regex" />
+        </parameters>
+      </method>
+      <method name="ParamSpecMiniObject" cname="cpg_param_spec_mini_object" shared="true">
+        <return-type type="GParamSpec*" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="const-char*" name="nick" />
+          <parameter type="const-char*" name="blurb" />
+          <parameter type="GType" name="object_type" />
+          <parameter type="GParamFlags" name="flags" />
+        </parameters>
+      </method>
+    </class>
     <class name="Integrators" cname="CpgIntegrators_">
       <method name="Create" cname="cpg_integrators_create" shared="true">
         <return-type type="GSList*" />
@@ -2584,18 +3298,6 @@
         <return-type type="CpgMathOperatorType" />
         <parameters>
           <parameter type="CpgMathOperatorType" name="type" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Global" cname="CpgGlobal">
-      <method name="ParamSpecMiniObject" cname="cpg_param_spec_mini_object" shared="true">
-        <return-type type="GParamSpec*" />
-        <parameters>
-          <parameter type="const-char*" name="name" />
-          <parameter type="const-char*" name="nick" />
-          <parameter type="const-char*" name="blurb" />
-          <parameter type="GType" name="object_type" />
-          <parameter type="GParamFlags" name="flags" />
         </parameters>
       </method>
     </class>

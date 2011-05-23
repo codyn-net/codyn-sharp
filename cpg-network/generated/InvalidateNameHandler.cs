@@ -10,7 +10,7 @@ namespace Cpg {
 	public class InvalidateNameArgs : GLib.SignalArgs {
 		public string Name{
 			get {
-				return (string) Args[0];
+				return (string) Args [0];
 			}
 		}
 

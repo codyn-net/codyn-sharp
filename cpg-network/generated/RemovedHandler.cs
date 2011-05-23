@@ -10,13 +10,13 @@ namespace Cpg {
 	public class RemovedArgs : GLib.SignalArgs {
 		public string Name{
 			get {
-				return (string) Args[0];
+				return (string) Args [0];
 			}
 		}
 
 		public Cpg.Property Property{
 			get {
-				return (Cpg.Property) Args[1];
+				return (Cpg.Property) Args [1];
 			}
 		}
 
