@@ -10,13 +10,13 @@ namespace Cpg {
 	public class SteppedArgs : GLib.SignalArgs {
 		public double Timestep{
 			get {
-				return (double) Args [0];
+				return (double) Args[0];
 			}
 		}
 
 		public double Time{
 			get {
-				return (double) Args [1];
+				return (double) Args[1];
 			}
 		}
 

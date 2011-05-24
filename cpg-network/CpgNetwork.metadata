@@ -207,5 +207,8 @@
   <!-- CpgPropertyFlags -->
   <attr path="/api/namespace/enum[@cname='CpgPropertyFlags']/member[@cname='CPG_PROPERTY_FLAG_INOUT']" name="value">In | Out</attr>
   <attr path="/api/namespace/enum[@cname='CpgPropertyFlags']/member[@cname='CPG_PROPERTY_FLAG_INOUT']" name="name">InOut</attr>
+
+   <!-- CpgSelectorType -->
+  <attr path="/api/namespace/enum[@cname='CpgSelectorType']/member[@cname='CPG_SELECTOR_TYPE_OBJECT']" name="value">State | Link | Group | Function</attr>
 </metadata>
 <!-- vi:ts=2:et -->

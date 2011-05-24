@@ -19,8 +19,6 @@
     <enum name="EmbeddedStringNodeType" cname="CpgEmbeddedStringNodeType" type="enum">
       <member cname="CPG_EMBEDDED_STRING_NODE_TEXT" name="Text" />
       <member cname="CPG_EMBEDDED_STRING_NODE_EQUATION" name="Equation" />
-      <member cname="CPG_EMBEDDED_STRING_NODE_DEFINE" name="Define" />
-      <member cname="CPG_EMBEDDED_STRING_NODE_REF" name="Ref" />
       <member cname="CPG_EMBEDDED_STRING_NODE_INDIRECTION" name="Indirection" />
     </enum>
     <enum name="FunctionError" cname="CpgFunctionError" type="enum">
@@ -122,11 +120,13 @@
       <member cname="CPG_OBJECT_ERROR_INVALID_PROPERTY_NAME" name="ErrorInvalidPropertyName" />
       <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
     </enum>
-    <enum name="ParserContextScope" cname="CpgParserContextScope" type="enum">
-      <member cname="CPG_PARSER_CONTEXT_SCOPE_NONE" name="None" />
-      <member cname="CPG_PARSER_CONTEXT_SCOPE_STATE" name="State" />
-      <member cname="CPG_PARSER_CONTEXT_SCOPE_LINK" name="Link" />
-      <member cname="CPG_PARSER_CONTEXT_SCOPE_NETWORK" name="Network" />
+    <enum name="ParserContextDeleteType" cname="CpgParserContextDeleteType" type="enum">
+      <member cname="CPG_PARSER_CONTEXT_SELECTOR_TYPE_OBJECT" name="Object" />
+      <member cname="CPG_PARSER_CONTEXT_SELECTOR_TYPE_STATE" name="State" />
+      <member cname="CPG_PARSER_CONTEXT_SELECTOR_TYPE_LINK" name="Link" />
+      <member cname="CPG_PARSER_CONTEXT_SELECTOR_TYPE_PROPERTY" name="Property" />
+      <member cname="CPG_PARSER_CONTEXT_SELECTOR_TYPE_ACTION" name="Action" />
+      <member cname="CPG_PARSER_CONTEXT_SELECTOR_TYPE_FUNCTION" name="Function" />
     </enum>
     <enum name="PropertyFlags" cname="CpgPropertyFlags" type="flags">
       <member cname="CPG_PROPERTY_FLAG_NONE" name="None" />
@@ -140,6 +140,15 @@
       <member cname="CPG_PROPERTY_INTERFACE_ERROR_EXISTS" name="Exists" />
       <member cname="CPG_PROPERTY_INTERFACE_ERROR_NOT_FOUND" name="NotFound" />
       <member cname="CPG_PROPERTY_INTERFACE_ERROR_NUM_ERRORS" name="NumErrors" />
+    </enum>
+    <enum name="SelectorType" cname="CpgSelectorType" type="flags">
+      <member cname="CPG_SELECTOR_TYPE_STATE" name="State" value="1 &lt;&lt; 0" />
+      <member cname="CPG_SELECTOR_TYPE_LINK" name="Link" value="1 &lt;&lt; 1" />
+      <member cname="CPG_SELECTOR_TYPE_GROUP" name="Group" value="1 &lt;&lt; 2" />
+      <member cname="CPG_SELECTOR_TYPE_PROPERTY" name="Property" value="1 &lt;&lt; 3" />
+      <member cname="CPG_SELECTOR_TYPE_ACTION" name="Action" value="1 &lt;&lt; 4" />
+      <member cname="CPG_SELECTOR_TYPE_FUNCTION" name="Function" value="1 &lt;&lt; 5" />
+      <member cname="CPG_SELECTOR_TYPE_OBJECT" name="Object" value="CPG_SELECTOR_TYPE_STATE |CPG_SELECTOR_TYPE_LINK |CPG_SELECTOR_TYPE_GROUP |CPG_SELECTOR_TYPE_FUNCTION" />
     </enum>
     <callback name="ForeachExpressionFunc" cname="CpgForeachExpressionFunc">
       <return-type type="void" />
@@ -554,15 +563,20 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
-      <method name="LookupRef" cname="cpg_embedded_context_lookup_ref">
-        <return-type type="gchar*" />
+      <method name="LookupExpansion" cname="cpg_embedded_context_lookup_expansion">
+        <return-type type="CpgExpansion*" />
         <parameters>
-          <parameter type="gint" name="parent" />
-          <parameter type="gint" name="idx" />
+          <parameter type="gint" name="depth" />
         </parameters>
       </method>
       <constructor cname="cpg_embedded_context_new" />
+      <method name="PopDefine" cname="cpg_embedded_context_pop_define">
+        <return-type type="void" />
+      </method>
       <method name="PopExpansions" cname="cpg_embedded_context_pop_expansions">
+        <return-type type="void" />
+      </method>
+      <method name="PushDefine" cname="cpg_embedded_context_push_define">
         <return-type type="void" />
       </method>
       <method name="PushExpansion" cname="cpg_embedded_context_push_expansion">
@@ -586,19 +600,6 @@
     </object>
     <object name="EmbeddedString" cname="CpgEmbeddedString" parent="GObject">
       <field name="Priv" cname="priv" type="CpgEmbeddedStringPrivate*" />
-      <method name="AddDefine" cname="cpg_embedded_string_add_define">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="text" />
-        </parameters>
-      </method>
-      <method name="AddReference" cname="cpg_embedded_string_add_reference">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="parent" />
-          <parameter type="gint" name="idx" />
-        </parameters>
-      </method>
       <method name="AddText" cname="cpg_embedded_string_add_text">
         <return-type type="void" />
         <parameters>
@@ -643,7 +644,7 @@
         <return-type type="CpgEmbeddedString*" />
         <parameters>
           <parameter type="CpgEmbeddedStringNodeType" name="type" />
-          <parameter type="gint" name="num" />
+          <parameter type="gint" name="depth" />
         </parameters>
       </method>
     </object>
@@ -1099,6 +1100,12 @@
         <parameters>
           <parameter type="GFunc" name="func" />
           <parameter type="gpointer" name="data" />
+        </parameters>
+      </method>
+      <method name="GetAutoTemplatesForChild" cname="cpg_group_get_auto_templates_for_child">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="CpgObject*" name="child" />
         </parameters>
       </method>
       <method name="GetChild" cname="cpg_group_get_child">
@@ -2575,11 +2582,32 @@
           <parameter type="CpgPropertyFlags" name="flags" />
         </parameters>
       </method>
+      <method name="DebugSelector" cname="cpg_parser_context_debug_selector">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgSelectorType" name="type" />
+          <parameter type="CpgSelector*" name="selector" />
+        </parameters>
+      </method>
+      <method name="DebugString" cname="cpg_parser_context_debug_string">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="s" />
+        </parameters>
+      </method>
       <method name="Define" cname="cpg_parser_context_define">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgEmbeddedString*" name="name" />
           <parameter type="CpgEmbeddedString*" name="value" />
+          <parameter type="gboolean" name="expand" />
+        </parameters>
+      </method>
+      <method name="DeleteSelector" cname="cpg_parser_context_delete_selector">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgSelectorType" name="type" />
+          <parameter type="CpgSelector*" name="selector" />
         </parameters>
       </method>
       <method name="GetColumn" cname="cpg_parser_context_get_column">
@@ -2644,6 +2672,9 @@
         <return-type type="gboolean" />
       </method>
       <method name="PopInput" cname="cpg_parser_context_pop_input">
+        <return-type type="void" />
+      </method>
+      <method name="PopLayout" cname="cpg_parser_context_pop_layout">
         <return-type type="void" />
       </method>
       <method name="PopSelector" cname="cpg_parser_context_pop_selector">
@@ -3035,10 +3066,7 @@
         <return-type type="GSList*" />
       </method>
       <method name="GetObject" cname="cpg_selection_get_object">
-        <return-type type="CpgObject*" />
-      </method>
-      <method name="GetProperty" cname="cpg_selection_get_property">
-        <return-type type="CpgProperty*" />
+        <return-type type="gpointer" />
       </method>
       <method name="GetType" cname="cpg_selection_get_type" shared="true">
         <return-type type="GType" />
@@ -3094,27 +3122,7 @@
         <return-type type="GSList*" />
         <parameters>
           <parameter type="CpgObject*" name="parent" />
-          <parameter type="CpgEmbeddedContext*" name="context" />
-        </parameters>
-      </method>
-      <method name="SelectLinks" cname="cpg_selector_select_links">
-        <return-type type="GSList*" />
-        <parameters>
-          <parameter type="CpgObject*" name="parent" />
-          <parameter type="CpgEmbeddedContext*" name="context" />
-        </parameters>
-      </method>
-      <method name="SelectProperties" cname="cpg_selector_select_properties">
-        <return-type type="GSList*" />
-        <parameters>
-          <parameter type="CpgObject*" name="parent" />
-          <parameter type="CpgEmbeddedContext*" name="context" />
-        </parameters>
-      </method>
-      <method name="SelectStates" cname="cpg_selector_select_states">
-        <return-type type="GSList*" />
-        <parameters>
-          <parameter type="CpgObject*" name="parent" />
+          <parameter type="CpgSelectorType" name="type" />
           <parameter type="CpgEmbeddedContext*" name="context" />
         </parameters>
       </method>

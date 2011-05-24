@@ -10,7 +10,7 @@ namespace Cpg {
 	public class CompileErrorArgs : GLib.SignalArgs {
 		public Cpg.CompileError Error{
 			get {
-				return (Cpg.CompileError) Args [0];
+				return (Cpg.CompileError) Args[0];
 			}
 		}
 

@@ -388,6 +388,15 @@ namespace Cpg {
 			return ret;
 		}
 
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_group_get_auto_templates_for_child(IntPtr raw, IntPtr child);
+
+		public GLib.SList GetAutoTemplatesForChild(Cpg.Object child) {
+			IntPtr raw_ret = cpg_group_get_auto_templates_for_child(Handle, child == null ? IntPtr.Zero : child.Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
 #endregion
 #region Customized extensions
 #line 1 "Group.custom"

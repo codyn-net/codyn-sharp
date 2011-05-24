@@ -10,7 +10,7 @@ namespace Cpg {
 	public class ChildAddedArgs : GLib.SignalArgs {
 		public Cpg.Object Object{
 			get {
-				return (Cpg.Object) Args [0];
+				return (Cpg.Object) Args[0];
 			}
 		}
 
