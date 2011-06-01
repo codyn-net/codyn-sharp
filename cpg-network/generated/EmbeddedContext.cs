@@ -27,59 +27,21 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_embedded_context_lookup_expansion(IntPtr raw, int depth);
+		static extern void cpg_embedded_context_add_selection(IntPtr raw, IntPtr selection);
 
-		public Cpg.Expansion LookupExpansion(int depth) {
-			IntPtr raw_ret = cpg_embedded_context_lookup_expansion(Handle, depth);
-			Cpg.Expansion ret = GLib.Object.GetObject(raw_ret) as Cpg.Expansion;
-			return ret;
+		public void AddSelection(Cpg.Selection selection) {
+			cpg_embedded_context_add_selection(Handle, selection == null ? IntPtr.Zero : selection.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_embedded_context_lookup_define(IntPtr raw, IntPtr name);
+		static extern System.IntPtr cpg_embedded_context_get_defines(IntPtr raw);
 
-		public string LookupDefine(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cpg_embedded_context_lookup_define(Handle, native_name);
-			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-			GLib.Marshaller.Free (native_name);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_embedded_context_calculate(IntPtr raw, IntPtr equation);
-
-		public string Calculate(string equation) {
-			IntPtr native_equation = GLib.Marshaller.StringToPtrGStrdup (equation);
-			IntPtr raw_ret = cpg_embedded_context_calculate(Handle, native_equation);
-			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-			GLib.Marshaller.Free (native_equation);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_embedded_context_define(IntPtr raw, IntPtr name, IntPtr value);
-
-		public void Define(string name, string value) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
-			cpg_embedded_context_define(Handle, native_name, native_value);
-			GLib.Marshaller.Free (native_name);
-			GLib.Marshaller.Free (native_value);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_embedded_context_push_expansions(IntPtr raw, IntPtr expansions);
-
-		public void PushExpansions(GLib.SList expansions) {
-			cpg_embedded_context_push_expansions(Handle, expansions == null ? IntPtr.Zero : expansions.Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_embedded_context_pop_define(IntPtr raw);
-
-		public void PopDefine() {
-			cpg_embedded_context_pop_define(Handle);
+		public System.IntPtr Defines { 
+			get {
+				System.IntPtr raw_ret = cpg_embedded_context_get_defines(Handle);
+				System.IntPtr ret = raw_ret;
+				return ret;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -100,24 +62,100 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_embedded_context_push_define(IntPtr raw);
+		static extern IntPtr cpg_embedded_context_calculate(IntPtr raw, IntPtr equation);
 
-		public void PushDefine() {
-			cpg_embedded_context_push_define(Handle);
+		public string Calculate(string equation) {
+			IntPtr native_equation = GLib.Marshaller.StringToPtrGStrdup (equation);
+			IntPtr raw_ret = cpg_embedded_context_calculate(Handle, native_equation);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			GLib.Marshaller.Free (native_equation);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_embedded_context_push_expansion(IntPtr raw, IntPtr expansion);
+		static extern void cpg_embedded_context_add_expansions(IntPtr raw, IntPtr expansions);
 
-		public void PushExpansion(Cpg.Expansion expansion) {
-			cpg_embedded_context_push_expansion(Handle, expansion == null ? IntPtr.Zero : expansion.Handle);
+		public void AddExpansions(GLib.SList expansions) {
+			cpg_embedded_context_add_expansions(Handle, expansions == null ? IntPtr.Zero : expansions.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_embedded_context_pop_expansions(IntPtr raw);
+		static extern void cpg_embedded_context_add_defines(IntPtr raw, System.IntPtr defines);
 
-		public void PopExpansions() {
-			cpg_embedded_context_pop_expansions(Handle);
+		public void AddDefines(System.IntPtr defines) {
+			cpg_embedded_context_add_defines(Handle, defines);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_context_save(IntPtr raw);
+
+		public void Save() {
+			cpg_embedded_context_save(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_context_add_define(IntPtr raw, IntPtr name, IntPtr value);
+
+		public void AddDefine(string name, string value) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+			cpg_embedded_context_add_define(Handle, native_name, native_value);
+			GLib.Marshaller.Free (native_name);
+			GLib.Marshaller.Free (native_value);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_embedded_context_get_define(IntPtr raw, IntPtr name);
+
+		public string GetDefine(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cpg_embedded_context_get_define(Handle, native_name);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_context_add_expansion(IntPtr raw, IntPtr expansion);
+
+		public void AddExpansion(Cpg.Expansion expansion) {
+			cpg_embedded_context_add_expansion(Handle, expansion == null ? IntPtr.Zero : expansion.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern UIntPtr cpg_embedded_context_get_marker(IntPtr raw);
+
+		public ulong Marker { 
+			get {
+				UIntPtr raw_ret = cpg_embedded_context_get_marker(Handle);
+				ulong ret = (ulong) raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_context_set_selection(IntPtr raw, IntPtr selection);
+
+		public Cpg.Selection Selection { 
+			set {
+				cpg_embedded_context_set_selection(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_embedded_context_get_expansion(IntPtr raw, int depth);
+
+		public Cpg.Expansion GetExpansion(int depth) {
+			IntPtr raw_ret = cpg_embedded_context_get_expansion(Handle, depth);
+			Cpg.Expansion ret = GLib.Object.GetObject(raw_ret) as Cpg.Expansion;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_context_restore(IntPtr raw);
+
+		public void Restore() {
+			cpg_embedded_context_restore(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -129,6 +167,13 @@ namespace Cpg {
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_context_set_defines(IntPtr raw, System.IntPtr defines, bool inherit);
+
+		public void SetDefines(System.IntPtr defines, bool inherit) {
+			cpg_embedded_context_set_defines(Handle, defines, inherit);
 		}
 
 #endregion

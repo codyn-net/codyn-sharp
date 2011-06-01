@@ -15,14 +15,45 @@ namespace Cpg {
 		public Selection(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_selection_new(IntPtr objekt, IntPtr expansions);
+		static extern IntPtr cpg_selection_new(IntPtr objekt, IntPtr expansions, System.IntPtr defines);
 
-		public Selection (IntPtr objekt, GLib.SList expansions) : base (IntPtr.Zero)
+		public Selection (IntPtr objekt, GLib.SList expansions, System.IntPtr defines) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Selection)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
-			Raw = cpg_selection_new(objekt, expansions == null ? IntPtr.Zero : expansions.Handle);
+			Raw = cpg_selection_new(objekt, expansions == null ? IntPtr.Zero : expansions.Handle, defines);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_selection_new_defines(IntPtr objekt, IntPtr expansions, System.IntPtr defines, bool copy_defines);
+
+		public Selection (IntPtr objekt, GLib.SList expansions, System.IntPtr defines, bool copy_defines) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Selection)) {
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+			Raw = cpg_selection_new_defines(objekt, expansions == null ? IntPtr.Zero : expansions.Handle, defines, copy_defines);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_selection_add_define(IntPtr raw, IntPtr key, IntPtr value);
+
+		public void AddDefine(string key, string value) {
+			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (key);
+			IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+			cpg_selection_add_define(Handle, native_key, native_value);
+			GLib.Marshaller.Free (native_key);
+			GLib.Marshaller.Free (native_value);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_selection_copy_defines(IntPtr raw, bool copy_defines);
+
+		public Cpg.Selection CopyDefines(bool copy_defines) {
+			IntPtr raw_ret = cpg_selection_copy_defines(Handle, copy_defines);
+			Cpg.Selection ret = GLib.Object.GetObject(raw_ret) as Cpg.Selection;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -35,12 +66,34 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_selection_get_define(IntPtr raw, IntPtr key);
+
+		public string GetDefine(string key) {
+			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (key);
+			IntPtr raw_ret = cpg_selection_get_define(Handle, native_key);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			GLib.Marshaller.Free (native_key);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_selection_get_expansions(IntPtr raw);
 
 		public GLib.SList Expansions { 
 			get {
 				IntPtr raw_ret = cpg_selection_get_expansions(Handle);
 				GLib.SList ret = new GLib.SList(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern System.IntPtr cpg_selection_get_defines(IntPtr raw);
+
+		public System.IntPtr Defines { 
+			get {
+				System.IntPtr raw_ret = cpg_selection_get_defines(Handle);
+				System.IntPtr ret = raw_ret;
 				return ret;
 			}
 		}

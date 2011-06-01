@@ -136,10 +136,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_define(IntPtr raw, IntPtr name, IntPtr value, bool expand);
+		static extern void cpg_parser_context_define(IntPtr raw, IntPtr name, IntPtr values, bool expand);
 
-		public void Define(Cpg.EmbeddedString name, Cpg.EmbeddedString value, bool expand) {
-			cpg_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle, expand);
+		public void Define(Cpg.EmbeddedString name, GLib.SList values, bool expand) {
+			cpg_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, values == null ? IntPtr.Zero : values.Handle, expand);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -149,6 +149,13 @@ namespace Cpg {
 			IntPtr raw_ret = cpg_parser_context_pop(Handle);
 			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_selector_identifier(IntPtr raw, IntPtr identifier, bool onset);
+
+		public void PushSelectorIdentifier(Cpg.EmbeddedString identifier, bool onset) {
+			cpg_parser_context_push_selector_identifier(Handle, identifier == null ? IntPtr.Zero : identifier.Handle, onset);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -200,6 +207,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_define(IntPtr raw, IntPtr attributes);
+
+		public void PushDefine(GLib.SList attributes) {
+			cpg_parser_context_push_define(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_parser_context_remove(IntPtr raw, IntPtr selectors);
 
 		public void Remove(IntPtr selectors) {
@@ -207,10 +221,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_network(IntPtr raw);
+		static extern void cpg_parser_context_push_network(IntPtr raw, IntPtr attributes);
 
-		public void PushNetwork() {
-			cpg_parser_context_push_network(Handle);
+		public void PushNetwork(GLib.SList attributes) {
+			cpg_parser_context_push_network(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -282,10 +296,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_layout(IntPtr raw);
+		static extern void cpg_parser_context_push_layout(IntPtr raw, IntPtr attributes);
 
-		public void PushLayout() {
-			cpg_parser_context_push_layout(Handle);
+		public void PushLayout(GLib.SList attributes) {
+			cpg_parser_context_push_layout(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -318,10 +332,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_templates(IntPtr raw);
+		static extern void cpg_parser_context_push_templates(IntPtr raw, IntPtr attributes);
 
-		public void PushTemplates() {
-			cpg_parser_context_push_templates(Handle);
+		public void PushTemplates(GLib.SList attributes) {
+			cpg_parser_context_push_templates(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -332,10 +346,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_integrator(IntPtr raw);
+		static extern void cpg_parser_context_push_integrator(IntPtr raw, IntPtr attributes);
 
-		public void PushIntegrator() {
-			cpg_parser_context_push_integrator(Handle);
+		public void PushIntegrator(GLib.SList attributes) {
+			cpg_parser_context_push_integrator(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -346,10 +360,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_selector_pseudo(IntPtr raw, IntPtr identifier, IntPtr arguments);
+		static extern void cpg_parser_context_push_selector_pseudo(IntPtr raw, int type, IntPtr arguments);
 
-		public void PushSelectorPseudo(Cpg.EmbeddedString identifier, IntPtr arguments) {
-			cpg_parser_context_push_selector_pseudo(Handle, identifier == null ? IntPtr.Zero : identifier.Handle, arguments);
+		public void PushSelectorPseudo(Cpg.SelectorPseudoType type, GLib.SList arguments) {
+			cpg_parser_context_push_selector_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -381,17 +395,31 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_add_property(IntPtr raw, IntPtr name, IntPtr expression, int flags);
+		static extern void cpg_parser_context_debug_context(IntPtr raw);
 
-		public void AddProperty(Cpg.EmbeddedString name, Cpg.EmbeddedString expression, Cpg.PropertyFlags flags) {
-			cpg_parser_context_add_property(Handle, name == null ? IntPtr.Zero : name.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) flags);
+		public void DebugContext() {
+			cpg_parser_context_debug_context(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_state(IntPtr raw, IntPtr id, IntPtr templates);
+		static extern void cpg_parser_context_add_property(IntPtr raw, IntPtr name, IntPtr expression, int add_flags, int remove_flags, IntPtr integration);
 
-		public void PushState(Cpg.EmbeddedString id, IntPtr templates) {
-			cpg_parser_context_push_state(Handle, id == null ? IntPtr.Zero : id.Handle, templates);
+		public void AddProperty(Cpg.EmbeddedString name, Cpg.EmbeddedString expression, Cpg.PropertyFlags add_flags, Cpg.PropertyFlags remove_flags, Cpg.EmbeddedString integration) {
+			cpg_parser_context_add_property(Handle, name == null ? IntPtr.Zero : name.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, integration == null ? IntPtr.Zero : integration.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_scope(IntPtr raw, IntPtr attributes);
+
+		public void PushScope(GLib.SList attributes) {
+			cpg_parser_context_push_scope(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_state(IntPtr raw, IntPtr id, IntPtr templates, IntPtr attributes);
+
+		public void PushState(Cpg.EmbeddedString id, IntPtr templates, GLib.SList attributes) {
+			cpg_parser_context_push_state(Handle, id == null ? IntPtr.Zero : id.Handle, templates, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -465,17 +493,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_group(IntPtr raw, IntPtr id, IntPtr templates);
+		static extern void cpg_parser_context_push_group(IntPtr raw, IntPtr id, IntPtr templates, IntPtr attributes);
 
-		public void PushGroup(Cpg.EmbeddedString id, IntPtr templates) {
-			cpg_parser_context_push_group(Handle, id == null ? IntPtr.Zero : id.Handle, templates);
+		public void PushGroup(Cpg.EmbeddedString id, IntPtr templates, GLib.SList attributes) {
+			cpg_parser_context_push_group(Handle, id == null ? IntPtr.Zero : id.Handle, templates, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_selector(IntPtr raw, IntPtr identifier, bool onset);
+		static extern void cpg_parser_context_push_selector(IntPtr raw);
 
-		public void PushSelector(Cpg.EmbeddedString identifier, bool onset) {
-			cpg_parser_context_push_selector(Handle, identifier == null ? IntPtr.Zero : identifier.Handle, onset);
+		public void PushSelector() {
+			cpg_parser_context_push_selector(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]

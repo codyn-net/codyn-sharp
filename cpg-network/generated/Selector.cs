@@ -27,11 +27,50 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_selector_add_regex(IntPtr raw, IntPtr regex, bool onset);
+
+		public void AddRegex(Cpg.EmbeddedString regex, bool onset) {
+			cpg_selector_add_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle, onset);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_selector_add_pseudo(IntPtr raw, int type, IntPtr arguments);
+
+		public void AddPseudo(Cpg.SelectorPseudoType type, GLib.SList arguments) {
+			cpg_selector_add_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_selector_select(IntPtr raw, IntPtr parent, int type, IntPtr context);
 
 		public GLib.SList Select(Cpg.Object parent, Cpg.SelectorType type, Cpg.EmbeddedContext context) {
 			IntPtr raw_ret = cpg_selector_select(Handle, parent == null ? IntPtr.Zero : parent.Handle, (int) type, context == null ? IntPtr.Zero : context.Handle);
 			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_selector_set_first_onset(IntPtr raw, bool onset);
+
+		public bool FirstOnset { 
+			set {
+				cpg_selector_set_first_onset(Handle, value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_selector_add(IntPtr raw, IntPtr identifier, bool onset);
+
+		public void Add(Cpg.EmbeddedString identifier, bool onset) {
+			cpg_selector_add(Handle, identifier == null ? IntPtr.Zero : identifier.Handle, onset);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_selector_as_string(IntPtr raw);
+
+		public string AsString() {
+			IntPtr raw_ret = cpg_selector_as_string(Handle);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 			return ret;
 		}
 
@@ -49,45 +88,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_add_regex(IntPtr raw, IntPtr regex, bool onset);
-
-		public void AddRegex(Cpg.EmbeddedString regex, bool onset) {
-			cpg_selector_add_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle, onset);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_add_pseudo(IntPtr raw, IntPtr pseudo, IntPtr arguments);
-
-		public void AddPseudo(Cpg.EmbeddedString pseudo, GLib.SList arguments) {
-			cpg_selector_add_pseudo(Handle, pseudo == null ? IntPtr.Zero : pseudo.Handle, arguments == null ? IntPtr.Zero : arguments.Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_selector_as_string(IntPtr raw);
-
-		public string AsString() {
-			IntPtr raw_ret = cpg_selector_as_string(Handle);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_add(IntPtr raw, IntPtr identifier, bool onset);
-
-		public void Add(Cpg.EmbeddedString identifier, bool onset) {
-			cpg_selector_add(Handle, identifier == null ? IntPtr.Zero : identifier.Handle, onset);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_selector_copy(IntPtr raw);
-
-		public Cpg.Selector Copy() {
-			IntPtr raw_ret = cpg_selector_copy(Handle);
-			Cpg.Selector ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Selector;
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_selector_get_type();
 
 		public static new GLib.GType GType { 
@@ -98,9 +98,14 @@ namespace Cpg {
 			}
 		}
 
-#endregion
-#region Customized extensions
-#line 1 "Selector.custom"
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_selector_copy(IntPtr raw);
+
+		public Cpg.Selector Copy() {
+			IntPtr raw_ret = cpg_selector_copy(Handle);
+			Cpg.Selector ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Selector;
+			return ret;
+		}
 
 #endregion
 	}

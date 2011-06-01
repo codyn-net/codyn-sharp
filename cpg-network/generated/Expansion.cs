@@ -48,6 +48,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern int cpg_expansion_get_index(IntPtr raw, int idx);
+
+		public int GetIndex(int idx) {
+			int raw_ret = cpg_expansion_get_index(Handle, idx);
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern int cpg_expansion_num(IntPtr raw);
 
 		public int Num() {

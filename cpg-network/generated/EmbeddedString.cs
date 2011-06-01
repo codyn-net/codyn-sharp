@@ -100,6 +100,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_string_clear_cache(IntPtr raw);
+
+		public void ClearCache() {
+			cpg_embedded_string_clear_cache(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_embedded_string_expand(IntPtr raw, IntPtr ctx);
 
 		public string Expand(Cpg.EmbeddedContext ctx) {
