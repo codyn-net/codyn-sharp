@@ -75,6 +75,8 @@
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_foreach']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_get_children']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/signal[@name='VerifyRemoveChild']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='copg_group_find_objects']/return-type" name="element_type">CpgObject*</attr>
+  <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='copg_group_find_properties']/return-type" name="element_type">CpgProperty*</attr>
 
   <!-- CpgOperatorData -->
   <attr path="/api/namespace/struct[@cname='CpgOperatorData']/method[@cname='cpg_operator_data_init']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
