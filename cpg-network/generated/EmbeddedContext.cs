@@ -116,6 +116,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern int cpg_embedded_context_increment_define(IntPtr raw, IntPtr name, int num);
+
+		public int IncrementDefine(string name, int num) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			int raw_ret = cpg_embedded_context_increment_define(Handle, native_name, num);
+			int ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_embedded_context_add_expansion(IntPtr raw, IntPtr expansion);
 
 		public void AddExpansion(Cpg.Expansion expansion) {

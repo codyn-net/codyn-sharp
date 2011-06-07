@@ -518,6 +518,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_template_applies_to(IntPtr raw);
+
+		public Cpg.Object[] TemplateAppliesTo { 
+			get {
+				IntPtr raw_ret = cpg_object_get_template_applies_to(Handle);
+				Cpg.Object[] ret = (Cpg.Object[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Object));
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_object_get_relative_id(IntPtr raw, IntPtr parent);
 
 		public string GetRelativeId(Cpg.Object parent) {

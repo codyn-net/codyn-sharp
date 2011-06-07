@@ -15,6 +15,7 @@ namespace Cpg {
 		InvalidToken,
 		Maxarg,
 		InvalidStack,
+		PropertyRecurse,
 		NumErrors,
 	}
 #endregion

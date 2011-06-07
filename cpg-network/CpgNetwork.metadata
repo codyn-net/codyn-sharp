@@ -56,6 +56,7 @@
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="type">CpgCompileError*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_compile']/parameters/parameter[@name='(CpgCompileError)*']" name="name">error</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_applied_templates']/return-type" name="element_type">CpgObject*</attr>
+  <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_template_applies_to']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_get_actors']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/method[@cname='cpg_object_foreach_expression']/parameters/parameter[@name='func']" name="scope">call</attr>
   <attr path="/api/namespace/object[@cname='CpgObject']/signal[@name='VerifyRemoveProperty']" name="hidden">true</attr>

@@ -89,10 +89,21 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_error_set(IntPtr raw, IntPtr gerror, IntPtr objekt, IntPtr property, IntPtr action);
+		static extern IntPtr cpg_compile_error_get_formatted_string(IntPtr raw);
 
-		public void Set(IntPtr gerror, Cpg.Object objekt, Cpg.Property property, Cpg.LinkAction action) {
-			cpg_compile_error_set(Handle, gerror, objekt == null ? IntPtr.Zero : objekt.Handle, property == null ? IntPtr.Zero : property.Handle, action == null ? IntPtr.Zero : action.Handle);
+		public string FormattedString { 
+			get {
+				IntPtr raw_ret = cpg_compile_error_get_formatted_string(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_compile_error_set(IntPtr raw, IntPtr gerror, IntPtr objekt, IntPtr property, IntPtr action, int pos);
+
+		public void Set(IntPtr gerror, Cpg.Object objekt, Cpg.Property property, Cpg.LinkAction action, int pos) {
+			cpg_compile_error_set(Handle, gerror, objekt == null ? IntPtr.Zero : objekt.Handle, property == null ? IntPtr.Zero : property.Handle, action == null ? IntPtr.Zero : action.Handle, pos);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -133,6 +144,17 @@ namespace Cpg {
 			get {
 				IntPtr raw_ret = cpg_compile_error_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern int cpg_compile_error_get_pos(IntPtr raw);
+
+		public int Pos { 
+			get {
+				int raw_ret = cpg_compile_error_get_pos(Handle);
+				int ret = raw_ret;
 				return ret;
 			}
 		}

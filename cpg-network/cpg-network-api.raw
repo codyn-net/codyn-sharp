@@ -14,6 +14,7 @@
       <member cname="CPG_COMPILE_ERROR_INVALID_TOKEN" name="InvalidToken" />
       <member cname="CPG_COMPILE_ERROR_MAXARG" name="Maxarg" />
       <member cname="CPG_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
+      <member cname="CPG_COMPILE_ERROR_PROPERTY_RECURSE" name="PropertyRecurse" />
       <member cname="CPG_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
     <enum name="EmbeddedStringNodeType" cname="CpgEmbeddedStringNodeType" type="enum">
@@ -30,6 +31,7 @@
       <member cname="CPG_GROUP_ERROR_CHILD_ALREADY_EXISTS" name="ChildAlreadyExists" />
       <member cname="CPG_GROUP_ERROR_CHILD_DOES_NOT_EXIST" name="ChildDoesNotExist" />
       <member cname="CPG_GROUP_ERROR_INTERFACE_IS_PROXY" name="InterfaceIsProxy" />
+      <member cname="CPG_GROUP_ERROR_CHILD_IN_USE" name="ChildInUse" />
       <member cname="CPG_GROUP_ERROR_NUM" name="Num" />
     </enum>
     <enum name="ImportError" cname="CpgImportError" type="enum">
@@ -118,6 +120,8 @@
       <member cname="CPG_OBJECT_ERROR_PROPERTY_IN_USE" name="ErrorPropertyInUse" />
       <member cname="CPG_OBJECT_ERROR_PROPERTY_FROM_TEMPLATE" name="ErrorPropertyFromTemplate" />
       <member cname="CPG_OBJECT_ERROR_INVALID_PROPERTY_NAME" name="ErrorInvalidPropertyName" />
+      <member cname="CPG_OBJECT_ERROR_TEMPLATE_ALREADY_APPLIED" name="ErrorTemplateAlreadyApplied" />
+      <member cname="CPG_OBJECT_ERROR_TEMPLATE_NOT_FOUND" name="ErrorTemplateNotFound" />
       <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
     </enum>
     <enum name="ParserContextDeleteType" cname="CpgParserContextDeleteType" type="enum">
@@ -523,6 +527,9 @@
       <method name="GetError" cname="cpg_compile_error_get_error">
         <return-type type="GError*" />
       </method>
+      <method name="GetFormattedString" cname="cpg_compile_error_get_formatted_string">
+        <return-type type="gchar*" />
+      </method>
       <method name="GetLinkAction" cname="cpg_compile_error_get_link_action">
         <return-type type="CpgLinkAction*" />
       </method>
@@ -531,6 +538,9 @@
       </method>
       <method name="GetObject" cname="cpg_compile_error_get_object">
         <return-type type="CpgObject*" />
+      </method>
+      <method name="GetPos" cname="cpg_compile_error_get_pos">
+        <return-type type="gint" />
       </method>
       <method name="GetProperty" cname="cpg_compile_error_get_property">
         <return-type type="CpgProperty*" />
@@ -546,6 +556,7 @@
           <parameter type="CpgObject*" name="object" />
           <parameter type="CpgProperty*" name="property" />
           <parameter type="CpgLinkAction*" name="action" />
+          <parameter type="gint" name="pos" />
         </parameters>
       </method>
       <method name="String" cname="cpg_compile_error_string">
@@ -617,6 +628,13 @@
       </method>
       <method name="GetType" cname="cpg_embedded_context_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="IncrementDefine" cname="cpg_embedded_context_increment_define">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="num" />
+        </parameters>
       </method>
       <constructor cname="cpg_embedded_context_new" />
       <method name="Restore" cname="cpg_embedded_context_restore">
@@ -773,6 +791,9 @@
       </method>
       <method name="GetDependencies" cname="cpg_expression_get_dependencies">
         <return-type type="const-GSList*" />
+      </method>
+      <method name="GetErrorAt" cname="cpg_expression_get_error_at">
+        <return-type type="gint" />
       </method>
       <method name="GetInstructions" cname="cpg_expression_get_instructions">
         <return-type type="const-GSList*" />
@@ -1085,12 +1106,12 @@
           <parameter type="CpgObject*" name="object" />
         </parameters>
       </signal>
-      <signal name="VerifyRemoveChild" cname="verify-remove-child" when="LAST" manual="true">
+      <signal name="VerifyRemoveChild" cname="verify-remove-child" when="LAST" manual="true" field_name="verify_remove_child">
         <return-type type="gboolean" />
         <parameters>
-          <parameter name="inst" type="CpgGroup*" />
-          <parameter name="p0" type="GObject*" />
-          <parameter name="p1" type="gpointer" />
+          <parameter type="CpgGroup*" name="group" />
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </signal>
       <signal name="VerifyAddChild" cname="verify-add-child" when="LAST" manual="true">
@@ -2498,6 +2519,9 @@
         <parameters>
           <parameter type="CpgObject*" name="parent" />
         </parameters>
+      </method>
+      <method name="GetTemplateAppliesTo" cname="cpg_object_get_template_applies_to">
+        <return-type type="const-GSList*" />
       </method>
       <method name="GetType" cname="cpg_object_get_type" shared="true">
         <return-type type="GType" />

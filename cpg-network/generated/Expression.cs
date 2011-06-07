@@ -51,6 +51,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern int cpg_expression_get_error_at(IntPtr raw);
+
+		public int ErrorAt { 
+			get {
+				int raw_ret = cpg_expression_get_error_at(Handle);
+				int ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern double cpg_expression_evaluate(IntPtr raw);
 
 		public double Evaluate() {

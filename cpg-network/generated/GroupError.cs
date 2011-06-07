@@ -12,6 +12,7 @@ namespace Cpg {
 		ChildAlreadyExists,
 		ChildDoesNotExist,
 		InterfaceIsProxy,
+		ChildInUse,
 		Num,
 	}
 #endregion
