@@ -32,15 +32,15 @@
   <attr path="/api/namespace/object[@cname='CpgExpansion']/constructor[@cname='cpg_expansion_new']/parameters/parameter" name="type">const-gchar**</attr>
 
   <!-- CpgSelection -->
-  <attr path="/api/namespace/object[@cname='CpgSelection']/method[@cname='cpg_selection_get_expansions']/return-type" name="element-type">CpgExpansion*</attr>
+  <attr path="/api/namespace/object[@cname='CpgSelection']/method[@cname='cpg_selection_get_expansions']/return-type" name="element_type">CpgExpansion*</attr>
 
   <!-- CpgSelection -->
-  <attr path="/api/namespace/object[@cname='CpgSelection']/method[@cname='cpg_selection_get_expansions']/return-type" name="element-type">CpgExpansion*</attr>
+  <attr path="/api/namespace/object[@cname='CpgSelection']/method[@cname='cpg_selection_get_expansions']/return-type" name="element_type">CpgExpansion*</attr>
 
   <!-- CpgEmbeddedContext -->
-  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_push_expansions']/parameters/parameter[@name='expansions']" name="element-type">CpgExpansion*</attr>
-  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_set_expansions']/parameters/parameter[@name='expansions']" name="element-type">CpgExpansion*</attr>
-  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_get_expansions']/return-type" name="element-type">CpgExpansion*</attr>
+  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_add_expansions']/parameters/parameter[@name='expansions']" name="element_type">CpgExpansion*</attr>
+  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_set_expansions']/parameters/parameter[@name='expansions']" name="element_type">CpgExpansion*</attr>
+  <attr path="/api/namespace/object[@cname='CpgEmbeddedContext']/method[@cname='cpg_embedded_context_get_expansions']/return-type" name="element_type">CpgExpansion*</attr>
 
   <!-- CpgImport -->
   <remove-node path="/api/namespace/object[@cname='CpgImport']/constructor[@cname='cpg_import_new']"/>
@@ -76,8 +76,8 @@
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_foreach']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_get_children']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/signal[@name='VerifyRemoveChild']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='copg_group_find_objects']/return-type" name="element_type">CpgObject*</attr>
-  <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='copg_group_find_properties']/return-type" name="element_type">CpgProperty*</attr>
+  <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_find_objects']/return-type" name="element_type">CpgObject*</attr>
+  <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_find_properties']/return-type" name="element_type">CpgProperty*</attr>
 
   <!-- CpgOperatorData -->
   <attr path="/api/namespace/struct[@cname='CpgOperatorData']/method[@cname='cpg_operator_data_init']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
@@ -213,5 +213,8 @@
 
    <!-- CpgSelectorType -->
   <attr path="/api/namespace/enum[@cname='CpgSelectorType']/member[@cname='CPG_SELECTOR_TYPE_OBJECT']" name="value">State | Link | Group | Function</attr>
+
+  <!-- CpgSelector -->
+  <attr path="/api/namespace/object[@cname='CpgSelector']/method[@cname='cpg_selector_select']/return-type" name="element_type">CpgSelection*</attr>
 </metadata>
 <!-- vi:ts=2:et -->

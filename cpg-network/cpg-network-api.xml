@@ -596,7 +596,7 @@
       <method name="AddExpansions" cname="cpg_embedded_context_add_expansions">
         <return-type type="void" />
         <parameters>
-          <parameter type="GSList*" name="expansions" />
+          <parameter type="GSList*" name="expansions" element_type="CpgExpansion*" />
         </parameters>
       </method>
       <method name="AddSelection" cname="cpg_embedded_context_add_selection">
@@ -627,7 +627,7 @@
         </parameters>
       </method>
       <method name="GetExpansions" cname="cpg_embedded_context_get_expansions">
-        <return-type type="GSList*" element-type="CpgExpansion*" />
+        <return-type type="GSList*" element_type="CpgExpansion*" />
       </method>
       <method name="GetMarker" cname="cpg_embedded_context_get_marker">
         <return-type type="gulong" />
@@ -659,7 +659,7 @@
       <method name="SetExpansions" cname="cpg_embedded_context_set_expansions">
         <return-type type="void" />
         <parameters>
-          <parameter type="GSList*" name="expansions" element-type="CpgExpansion*" />
+          <parameter type="GSList*" name="expansions" element_type="CpgExpansion*" />
         </parameters>
       </method>
       <method name="SetSelection" cname="cpg_embedded_context_set_selection">
@@ -766,6 +766,13 @@
         <parameters>
           <parameter type="gint" name="idx" />
           <parameter type="const-gchar*" name="val" />
+        </parameters>
+      </method>
+      <method name="SetIndex" cname="cpg_expansion_set_index">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="idx" />
+          <parameter type="gint" name="val" />
         </parameters>
       </method>
     </object>
@@ -1126,13 +1133,13 @@
         </parameters>
       </method>
       <method name="FindObjects" cname="cpg_group_find_objects">
-        <return-type type="GSList*" />
+        <return-type type="GSList*" element_type="CpgObject*" />
         <parameters>
           <parameter type="const-gchar*" name="selector" />
         </parameters>
       </method>
       <method name="FindProperties" cname="cpg_group_find_properties">
-        <return-type type="GSList*" />
+        <return-type type="GSList*" element_type="CpgProperty*" />
         <parameters>
           <parameter type="const-gchar*" name="selector" />
         </parameters>
@@ -1726,6 +1733,9 @@
       <method name="DirectProperties" cname="cpg_integrator_state_direct_properties">
         <return-type type="const-GSList*" element_type="CpgProperty*" />
       </method>
+      <method name="Expressions" cname="cpg_integrator_state_expressions">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="GetObject" cname="cpg_integrator_state_get_object">
         <return-type type="CpgObject*" />
       </method>
@@ -1989,6 +1999,13 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
+      <method name="LoadFromStream" cname="cpg_network_load_from_stream">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GInputStream*" name="stream" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="LoadFromXml" cname="cpg_network_load_from_xml">
         <return-type type="gboolean" />
         <parameters>
@@ -2020,6 +2037,12 @@
       <constructor cname="cpg_network_new_from_path">
         <parameters>
           <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_network_new_from_stream">
+        <parameters>
+          <parameter type="GInputStream*" name="stream" />
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
@@ -3054,7 +3077,7 @@
         <return-type type="GHashTable*" />
       </method>
       <method name="GetExpansions" cname="cpg_selection_get_expansions">
-        <return-type type="GSList*" element-type="CpgExpansion*" />
+        <return-type type="GSList*" element_type="CpgExpansion*" />
       </method>
       <method name="GetObject" cname="cpg_selection_get_object">
         <return-type type="gpointer" />
@@ -3087,6 +3110,13 @@
           <parameter type="gboolean" name="onset" />
         </parameters>
       </method>
+      <method name="AddPartial" cname="cpg_selector_add_partial">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="identifier" />
+          <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
       <method name="AddPseudo" cname="cpg_selector_add_pseudo">
         <return-type type="void" />
         <parameters>
@@ -3095,6 +3125,13 @@
         </parameters>
       </method>
       <method name="AddRegex" cname="cpg_selector_add_regex">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="regex" />
+          <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
+      <method name="AddRegexPartial" cname="cpg_selector_add_regex_partial">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgEmbeddedString*" name="regex" />
@@ -3119,7 +3156,7 @@
         </parameters>
       </method>
       <method name="Select" cname="cpg_selector_select">
-        <return-type type="GSList*" />
+        <return-type type="GSList*" element_type="CpgSelection*" />
         <parameters>
           <parameter type="CpgObject*" name="parent" />
           <parameter type="CpgSelectorType" name="type" />
@@ -3130,6 +3167,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
+      <method name="SetPartial" cname="cpg_selector_set_partial">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="partial" />
         </parameters>
       </method>
     </object>

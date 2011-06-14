@@ -128,6 +128,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_integrator_state_expressions(IntPtr raw);
+
+		public GLib.SList Expressions() {
+			IntPtr raw_ret = cpg_integrator_state_expressions(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_state_integrated_properties(IntPtr raw);
 
 		public Cpg.Property[] IntegratedProperties() {

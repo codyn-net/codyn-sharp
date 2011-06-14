@@ -762,6 +762,13 @@
           <parameter type="const-gchar*" name="val" />
         </parameters>
       </method>
+      <method name="SetIndex" cname="cpg_expansion_set_index">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="idx" />
+          <parameter type="gint" name="val" />
+        </parameters>
+      </method>
     </object>
     <object name="Expression" cname="CpgExpression" parent="GInitiallyUnowned">
       <field name="Priv" cname="priv" type="CpgExpressionPrivate*" />
@@ -1806,6 +1813,9 @@
       <method name="DirectProperties" cname="cpg_integrator_state_direct_properties">
         <return-type type="const-GSList*" />
       </method>
+      <method name="Expressions" cname="cpg_integrator_state_expressions">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="GetObject" cname="cpg_integrator_state_get_object">
         <return-type type="CpgObject*" />
       </method>
@@ -2100,6 +2110,13 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
+      <method name="LoadFromStream" cname="cpg_network_load_from_stream">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GInputStream*" name="stream" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="LoadFromXml" cname="cpg_network_load_from_xml">
         <return-type type="gboolean" />
         <parameters>
@@ -2144,6 +2161,12 @@
       <constructor cname="cpg_network_new_from_path">
         <parameters>
           <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_network_new_from_stream">
+        <parameters>
+          <parameter type="GInputStream*" name="stream" />
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
@@ -3235,6 +3258,13 @@
           <parameter type="gboolean" name="onset" />
         </parameters>
       </method>
+      <method name="AddPartial" cname="cpg_selector_add_partial">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="identifier" />
+          <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
       <method name="AddPseudo" cname="cpg_selector_add_pseudo">
         <return-type type="void" />
         <parameters>
@@ -3243,6 +3273,13 @@
         </parameters>
       </method>
       <method name="AddRegex" cname="cpg_selector_add_regex">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="regex" />
+          <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
+      <method name="AddRegexPartial" cname="cpg_selector_add_regex_partial">
         <return-type type="void" />
         <parameters>
           <parameter type="CpgEmbeddedString*" name="regex" />
@@ -3278,6 +3315,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="onset" />
+        </parameters>
+      </method>
+      <method name="SetPartial" cname="cpg_selector_set_partial">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="partial" />
         </parameters>
       </method>
     </object>

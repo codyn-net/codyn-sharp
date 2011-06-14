@@ -103,6 +103,13 @@ namespace Cpg {
 			GLib.Marshaller.Free (native_item);
 		}
 
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expansion_set_index(IntPtr raw, int idx, int val);
+
+		public void SetIndex(int idx, int val) {
+			cpg_expansion_set_index(Handle, idx, val);
+		}
+
 #endregion
 	}
 }

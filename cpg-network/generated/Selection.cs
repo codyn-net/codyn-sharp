@@ -79,10 +79,10 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_selection_get_expansions(IntPtr raw);
 
-		public GLib.SList Expansions { 
+		public Cpg.Expansion[] Expansions { 
 			get {
 				IntPtr raw_ret = cpg_selection_get_expansions(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cpg.Expansion[] ret = (Cpg.Expansion[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Expansion));
 				return ret;
 			}
 		}

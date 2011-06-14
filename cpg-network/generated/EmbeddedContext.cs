@@ -34,6 +34,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_context_set_expansions(IntPtr raw, IntPtr expansions);
+
+		public void SetExpansions(GLib.SList expansions) {
+			cpg_embedded_context_set_expansions(Handle, expansions == null ? IntPtr.Zero : expansions.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern System.IntPtr cpg_embedded_context_get_defines(IntPtr raw);
 
 		public System.IntPtr Defines { 
@@ -47,17 +54,11 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_embedded_context_get_expansions(IntPtr raw);
 
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_embedded_context_set_expansions(IntPtr raw, IntPtr expansions);
-
-		public GLib.SList Expansions { 
+		public Cpg.Expansion[] Expansions { 
 			get {
 				IntPtr raw_ret = cpg_embedded_context_get_expansions(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cpg.Expansion[] ret = (Cpg.Expansion[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Expansion));
 				return ret;
-			}
-			set {
-				cpg_embedded_context_set_expansions(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
 		}
 
