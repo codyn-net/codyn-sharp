@@ -136,10 +136,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_define(IntPtr raw, IntPtr name, IntPtr values, bool expand);
+		static extern void cpg_parser_context_define(IntPtr raw, IntPtr name, IntPtr values, bool expand, bool optional);
 
-		public void Define(Cpg.EmbeddedString name, GLib.SList values, bool expand) {
-			cpg_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, values == null ? IntPtr.Zero : values.Handle, expand);
+		public void Define(Cpg.EmbeddedString name, GLib.SList values, bool expand, bool optional) {
+			cpg_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, values == null ? IntPtr.Zero : values.Handle, expand, optional);
 		}
 
 		[DllImport("cpg-network-2.0")]

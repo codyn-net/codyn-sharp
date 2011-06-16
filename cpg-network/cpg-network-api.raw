@@ -103,6 +103,11 @@
       <member cname="CPG_NETWORK_ERROR_UNOWNED_TEMPLATE" name="UnownedTemplate" />
       <member cname="CPG_NETWORK_ERROR_NUM" name="Num" />
     </enum>
+    <enum name="NetworkFormat" cname="CpgNetworkFormat" type="enum">
+      <member cname="CPG_NETWORK_FORMAT_UNKNOWN" name="Unknown" />
+      <member cname="CPG_NETWORK_FORMAT_CPG" name="Cpg" />
+      <member cname="CPG_NETWORK_FORMAT_XML" name="Xml" />
+    </enum>
     <enum name="NetworkLoadError" cname="CpgNetworkLoadError" type="enum">
       <member cname="CPG_NETWORK_LOAD_ERROR_NONE" name="None" />
       <member cname="CPG_NETWORK_LOAD_ERROR_SYNTAX" name="Syntax" />
@@ -2075,6 +2080,18 @@
       <method name="ErrorQuark" cname="cpg_network_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
+      <method name="FormatFromFile" cname="cpg_network_format_from_file" shared="true">
+        <return-type type="CpgNetworkFormat" />
+        <parameters>
+          <parameter type="GFile*" name="file" />
+        </parameters>
+      </method>
+      <method name="FormatFromStream" cname="cpg_network_format_from_stream" shared="true">
+        <return-type type="CpgNetworkFormat" />
+        <parameters>
+          <parameter type="GInputStream*" name="stream" />
+        </parameters>
+      </method>
       <method name="GetFile" cname="cpg_network_get_file">
         <return-type type="GFile*" />
       </method>
@@ -2117,10 +2134,10 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
-      <method name="LoadFromXml" cname="cpg_network_load_from_xml">
+      <method name="LoadFromString" cname="cpg_network_load_from_string">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="const-gchar*" name="xml" />
+          <parameter type="const-gchar*" name="s" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -2144,10 +2161,10 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
-      <method name="MergeFromXml" cname="cpg_network_merge_from_xml">
+      <method name="MergeFromString" cname="cpg_network_merge_from_string">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="xml" />
+          <parameter type="const-gchar*" name="s" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -2170,9 +2187,9 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
-      <constructor cname="cpg_network_new_from_xml">
+      <constructor cname="cpg_network_new_from_string">
         <parameters>
-          <parameter type="const-gchar*" name="xml" />
+          <parameter type="const-gchar*" name="s" />
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
@@ -2709,6 +2726,7 @@
           <parameter type="CpgEmbeddedString*" name="name" />
           <parameter type="GSList*" name="values" />
           <parameter type="gboolean" name="expand" />
+          <parameter type="gboolean" name="optional" />
         </parameters>
       </method>
       <method name="DeleteSelector" cname="cpg_parser_context_delete_selector">
