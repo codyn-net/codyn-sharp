@@ -10,12 +10,14 @@ namespace Cpg {
 	[Flags]
 	public enum SelectorType {
 
-		State = 1 << 0,
-		Link = 1 << 1,
-		Group = 1 << 2,
-		Property = 1 << 3,
-		Action = 1 << 4,
-		Function = 1 << 5,
+		None,
+		Any = 1 << 0,
+		State = 1 << 1,
+		Link = 1 << 2,
+		Group = 1 << 3,
+		Property = 1 << 4,
+		Action = 1 << 5,
+		Function = 1 << 6,
 		Object = State | Link | Group | Function,
 	}
 #endregion

@@ -42,11 +42,114 @@ namespace Cpg {
 			}
 		}
 
+		[GLib.CDeclCallback]
+		delegate void ContextPushedVMDelegate (IntPtr inst);
+
+		static ContextPushedVMDelegate ContextPushedVMCallback;
+
+		static void contextpushed_cb (IntPtr inst)
+		{
+			try {
+				ParserContext inst_managed = GLib.Object.GetObject (inst, false) as ParserContext;
+				inst_managed.OnContextPushed ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideContextPushed (GLib.GType gtype)
+		{
+			if (ContextPushedVMCallback == null)
+				ContextPushedVMCallback = new ContextPushedVMDelegate (contextpushed_cb);
+			OverrideVirtualMethod (gtype, "context-pushed", ContextPushedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.ParserContext), ConnectionMethod="OverrideContextPushed")]
+		protected virtual void OnContextPushed ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("context-pushed")]
+		public event System.EventHandler ContextPushed {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "context-pushed");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "context-pushed");
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void ContextPoppedVMDelegate (IntPtr inst);
+
+		static ContextPoppedVMDelegate ContextPoppedVMCallback;
+
+		static void contextpopped_cb (IntPtr inst)
+		{
+			try {
+				ParserContext inst_managed = GLib.Object.GetObject (inst, false) as ParserContext;
+				inst_managed.OnContextPopped ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideContextPopped (GLib.GType gtype)
+		{
+			if (ContextPoppedVMCallback == null)
+				ContextPoppedVMCallback = new ContextPoppedVMDelegate (contextpopped_cb);
+			OverrideVirtualMethod (gtype, "context-popped", ContextPoppedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.ParserContext), ConnectionMethod="OverrideContextPopped")]
+		protected virtual void OnContextPopped ()
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
+			GLib.Value[] vals = new GLib.Value [1];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("context-popped")]
+		public event System.EventHandler ContextPopped {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "context-popped");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "context-popped");
+				sig.RemoveDelegate (value);
+			}
+		}
+
 		[DllImport("cpg-network-2.0")]
 		static extern void cpg_parser_context_set_column(IntPtr raw, int start, int end);
 
 		public void SetColumn(int start, int end) {
 			cpg_parser_context_set_column(Handle, start, end);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_parser_context_current_selections(IntPtr raw);
+
+		public GLib.SList CurrentSelections() {
+			IntPtr raw_ret = cpg_parser_context_current_selections(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -143,6 +246,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_input_file(IntPtr raw, IntPtr id, IntPtr path, IntPtr attributes);
+
+		public void PushInputFile(Cpg.EmbeddedString id, Cpg.EmbeddedString path, GLib.SList attributes) {
+			cpg_parser_context_push_input_file(Handle, id == null ? IntPtr.Zero : id.Handle, path == null ? IntPtr.Zero : path.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_parser_context_pop(IntPtr raw);
 
 		public GLib.SList Pop() {
@@ -152,10 +262,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_selector_identifier(IntPtr raw, IntPtr identifier, bool onset);
+		static extern void cpg_parser_context_push_selector_identifier(IntPtr raw, IntPtr identifier);
 
-		public void PushSelectorIdentifier(Cpg.EmbeddedString identifier, bool onset) {
-			cpg_parser_context_push_selector_identifier(Handle, identifier == null ? IntPtr.Zero : identifier.Handle, onset);
+		public void PushSelectorIdentifier(Cpg.EmbeddedString identifier) {
+			cpg_parser_context_push_selector_identifier(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -168,10 +278,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_delete_selector(IntPtr raw, int type, IntPtr selector);
+		static extern void cpg_parser_context_delete_selector(IntPtr raw, IntPtr selector);
 
-		public void DeleteSelector(Cpg.SelectorType type, Cpg.Selector selector) {
-			cpg_parser_context_delete_selector(Handle, (int) type, selector == null ? IntPtr.Zero : selector.Handle);
+		public void DeleteSelector(Cpg.Selector selector) {
+			cpg_parser_context_delete_selector(Handle, selector == null ? IntPtr.Zero : selector.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -264,10 +374,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_selector_regex(IntPtr raw, IntPtr regex, bool onset);
+		static extern void cpg_parser_context_push_selector_regex(IntPtr raw, IntPtr regex);
 
-		public void PushSelectorRegex(Cpg.EmbeddedString regex, bool onset) {
-			cpg_parser_context_push_selector_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle, onset);
+		public void PushSelectorRegex(Cpg.EmbeddedString regex) {
+			cpg_parser_context_push_selector_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -336,6 +446,13 @@ namespace Cpg {
 
 		public void PushTemplates(GLib.SList attributes) {
 			cpg_parser_context_push_templates(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_selection(IntPtr raw, IntPtr selector, int type, IntPtr attributes);
+
+		public void PushSelection(Cpg.Selector selector, Cpg.SelectorType type, GLib.SList attributes) {
+			cpg_parser_context_push_selection(Handle, selector == null ? IntPtr.Zero : selector.Handle, (int) type, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -477,10 +594,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_debug_selector(IntPtr raw, int type, IntPtr selector);
+		static extern void cpg_parser_context_debug_selector(IntPtr raw, IntPtr selector);
 
-		public void DebugSelector(Cpg.SelectorType type, Cpg.Selector selector) {
-			cpg_parser_context_debug_selector(Handle, (int) type, selector == null ? IntPtr.Zero : selector.Handle);
+		public void DebugSelector(Cpg.Selector selector) {
+			cpg_parser_context_debug_selector(Handle, selector == null ? IntPtr.Zero : selector.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -520,6 +637,13 @@ namespace Cpg {
 
 		public void DebugString(Cpg.EmbeddedString s) {
 			cpg_parser_context_debug_string(Handle, s == null ? IntPtr.Zero : s.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_set_input_file_setting(IntPtr raw, IntPtr name, IntPtr value);
+
+		public void SetInputFileSetting(Cpg.EmbeddedString name, Cpg.EmbeddedString value) {
+			cpg_parser_context_set_input_file_setting(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle);
 		}
 
 #endregion

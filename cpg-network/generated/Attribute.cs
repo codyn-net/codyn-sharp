@@ -15,15 +15,20 @@ namespace Cpg {
 		public Attribute(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_attribute_new(IntPtr id, IntPtr arguments);
+		static extern IntPtr cpg_attribute_new(IntPtr id);
 
-		public Attribute (string id, GLib.SList arguments) : base (IntPtr.Zero)
+		public Attribute (string id) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Attribute)) {
-				throw new InvalidOperationException ("Can't override this constructor.");
+				ArrayList vals = new ArrayList();
+				ArrayList names = new ArrayList();
+				names.Add ("id");
+				vals.Add (new GLib.Value (id));
+				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+				return;
 			}
 			IntPtr native_id = GLib.Marshaller.StringToPtrGStrdup (id);
-			Raw = cpg_attribute_new(native_id, arguments == null ? IntPtr.Zero : arguments.Handle);
+			Raw = cpg_attribute_new(native_id);
 			GLib.Marshaller.Free (native_id);
 		}
 
