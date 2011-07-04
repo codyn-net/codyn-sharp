@@ -15,25 +15,14 @@ namespace Cpg {
 		public InstructionCustomOperator(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_instruction_custom_operator_new(IntPtr op, IntPtr expressions);
+		static extern IntPtr cpg_instruction_custom_operator_new(IntPtr op);
 
-		public InstructionCustomOperator (Cpg.Operator op, GLib.SList expressions) : base (IntPtr.Zero)
+		public InstructionCustomOperator (Cpg.Operator op) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (InstructionCustomOperator)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
-			Raw = cpg_instruction_custom_operator_new(op == null ? IntPtr.Zero : op.Handle, expressions == null ? IntPtr.Zero : expressions.Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_instruction_custom_operator_get_data(IntPtr raw);
-
-		public Cpg.OperatorData Data { 
-			get {
-				IntPtr raw_ret = cpg_instruction_custom_operator_get_data(Handle);
-				Cpg.OperatorData ret = raw_ret == IntPtr.Zero ? null : (Cpg.OperatorData) GLib.Opaque.GetOpaque (raw_ret, typeof (Cpg.OperatorData), false);
-				return ret;
-			}
+			Raw = cpg_instruction_custom_operator_new(op == null ? IntPtr.Zero : op.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -53,7 +42,7 @@ namespace Cpg {
 		public Cpg.Operator Operator { 
 			get {
 				IntPtr raw_ret = cpg_instruction_custom_operator_get_operator(Handle);
-				Cpg.Operator ret = Cpg.OperatorAdapter.GetObject (raw_ret, false);
+				Cpg.Operator ret = GLib.Object.GetObject(raw_ret) as Cpg.Operator;
 				return ret;
 			}
 		}

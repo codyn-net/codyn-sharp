@@ -58,9 +58,9 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_attribute_get_argument(IntPtr raw, int i);
 
-		public IntPtr GetArgument(int i) {
+		public GLib.Object GetArgument(int i) {
 			IntPtr raw_ret = cpg_attribute_get_argument(Handle, i);
-			IntPtr ret = raw_ret;
+			GLib.Object ret = GLib.Object.GetObject (raw_ret);
 			return ret;
 		}
 

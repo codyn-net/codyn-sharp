@@ -180,10 +180,26 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_set_proxy(IntPtr raw, IntPtr objects);
+
+		public GLib.SList Proxy { 
+			set {
+				cpg_parser_context_set_proxy(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_parser_context_add_layout(IntPtr raw, int relation, IntPtr left, IntPtr right);
 
 		public void AddLayout(Cpg.LayoutRelation relation, Cpg.Selector left, Cpg.Selector right) {
 			cpg_parser_context_add_layout(Handle, (int) relation, left == null ? IntPtr.Zero : left.Handle, right == null ? IntPtr.Zero : right.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_input_file(IntPtr raw, IntPtr id, IntPtr path, IntPtr attributes);
+
+		public void PushInputFile(Cpg.EmbeddedString id, Cpg.EmbeddedString path, GLib.SList attributes) {
+			cpg_parser_context_push_input_file(Handle, id == null ? IntPtr.Zero : id.Handle, path == null ? IntPtr.Zero : path.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -246,10 +262,12 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_input_file(IntPtr raw, IntPtr id, IntPtr path, IntPtr attributes);
+		static extern IntPtr cpg_parser_context_previous_selections(IntPtr raw);
 
-		public void PushInputFile(Cpg.EmbeddedString id, Cpg.EmbeddedString path, GLib.SList attributes) {
-			cpg_parser_context_push_input_file(Handle, id == null ? IntPtr.Zero : id.Handle, path == null ? IntPtr.Zero : path.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public GLib.SList PreviousSelections() {
+			IntPtr raw_ret = cpg_parser_context_previous_selections(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -317,6 +335,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_group(IntPtr raw, IntPtr id, IntPtr templates, IntPtr attributes);
+
+		public void PushGroup(Cpg.EmbeddedString id, IntPtr templates, GLib.SList attributes) {
+			cpg_parser_context_push_group(Handle, id == null ? IntPtr.Zero : id.Handle, templates, attributes == null ? IntPtr.Zero : attributes.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_parser_context_push_define(IntPtr raw, IntPtr attributes);
 
 		public void PushDefine(GLib.SList attributes) {
@@ -378,6 +403,13 @@ namespace Cpg {
 
 		public void PushSelectorRegex(Cpg.EmbeddedString regex) {
 			cpg_parser_context_push_selector_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_get_last_selector_item_line(IntPtr raw, out int line_start, out int line_end);
+
+		public void GetLastSelectorItemLine(out int line_start, out int line_end) {
+			cpg_parser_context_get_last_selector_item_line(Handle, out line_start, out line_end);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -503,6 +535,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_parser_context_push_annotation(IntPtr raw, IntPtr annotation);
+
+		public void PushAnnotation(Cpg.EmbeddedString annotation) {
+			cpg_parser_context_push_annotation(Handle, annotation == null ? IntPtr.Zero : annotation.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_parser_context_read(IntPtr raw, IntPtr buffer, UIntPtr max_size);
 
 		public long Read(string buffer, ulong max_size) {
@@ -540,10 +579,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_annotation(IntPtr raw, IntPtr annotation);
+		static extern void cpg_parser_context_get_last_selector_item_column(IntPtr raw, out int start, out int end);
 
-		public void PushAnnotation(Cpg.EmbeddedString annotation) {
-			cpg_parser_context_push_annotation(Handle, annotation == null ? IntPtr.Zero : annotation.Handle);
+		public void GetLastSelectorItemColumn(out int start, out int end) {
+			cpg_parser_context_get_last_selector_item_column(Handle, out start, out end);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -610,10 +649,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_push_group(IntPtr raw, IntPtr id, IntPtr templates, IntPtr attributes);
+		static extern void cpg_parser_context_begin_selector_item(IntPtr raw);
 
-		public void PushGroup(Cpg.EmbeddedString id, IntPtr templates, GLib.SList attributes) {
-			cpg_parser_context_push_group(Handle, id == null ? IntPtr.Zero : id.Handle, templates, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public void BeginSelectorItem() {
+			cpg_parser_context_begin_selector_item(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -624,12 +663,12 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_set_proxy(IntPtr raw, IntPtr objects);
+		static extern IntPtr cpg_parser_context_peek_selector(IntPtr raw);
 
-		public GLib.SList Proxy { 
-			set {
-				cpg_parser_context_set_proxy(Handle, value == null ? IntPtr.Zero : value.Handle);
-			}
+		public Cpg.Selector PeekSelector() {
+			IntPtr raw_ret = cpg_parser_context_peek_selector(Handle);
+			Cpg.Selector ret = GLib.Object.GetObject(raw_ret) as Cpg.Selector;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]

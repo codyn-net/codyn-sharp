@@ -27,55 +27,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_context_append_object(IntPtr raw, IntPtr objekt);
+		static extern void cpg_compile_context_restore(IntPtr raw);
 
-		public void AppendObject(Cpg.Object objekt) {
-			cpg_compile_context_append_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_compile_context_get_operators(IntPtr raw);
-
-		public Cpg.Operator[] Operators { 
-			get {
-				IntPtr raw_ret = cpg_compile_context_get_operators(Handle);
-				Cpg.Operator[] ret = (Cpg.Operator[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Operator));
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_context_set_operators(IntPtr raw, IntPtr operators);
-
-		public void SetOperators(GLib.SList operators) {
-			cpg_compile_context_set_operators(Handle, operators == null ? IntPtr.Zero : operators.Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_compile_context_lookup_property(IntPtr raw);
-
-		public Cpg.Property LookupProperty() {
-			IntPtr raw_ret = cpg_compile_context_lookup_property(Handle);
-			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_compile_context_get_objects(IntPtr raw);
-
-		public Cpg.Object[] Objects { 
-			get {
-				IntPtr raw_ret = cpg_compile_context_get_objects(Handle);
-				Cpg.Object[] ret = (Cpg.Object[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Object));
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_context_prepend_object(IntPtr raw, IntPtr objekt);
-
-		public void PrependObject(Cpg.Object objekt) {
-			cpg_compile_context_prepend_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
+		public void Restore() {
+			cpg_compile_context_restore(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -85,20 +40,6 @@ namespace Cpg {
 			IntPtr raw_ret = cpg_compile_context_lookup_function(Handle);
 			Cpg.Function ret = GLib.Object.GetObject(raw_ret) as Cpg.Function;
 			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_context_save(IntPtr raw);
-
-		public void Save() {
-			cpg_compile_context_save(Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_context_restore(IntPtr raw);
-
-		public void Restore() {
-			cpg_compile_context_restore(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -113,13 +54,43 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_compile_context_lookup_operator(IntPtr raw, IntPtr name);
+		static extern IntPtr cpg_compile_context_get_objects(IntPtr raw);
 
-		public Cpg.Operator LookupOperator(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cpg_compile_context_lookup_operator(Handle, native_name);
-			Cpg.Operator ret = Cpg.OperatorAdapter.GetObject (raw_ret, false);
-			GLib.Marshaller.Free (native_name);
+		public Cpg.Object[] Objects { 
+			get {
+				IntPtr raw_ret = cpg_compile_context_get_objects(Handle);
+				Cpg.Object[] ret = (Cpg.Object[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Object));
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_compile_context_append_object(IntPtr raw, IntPtr objekt);
+
+		public void AppendObject(Cpg.Object objekt) {
+			cpg_compile_context_append_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_compile_context_prepend_object(IntPtr raw, IntPtr objekt);
+
+		public void PrependObject(Cpg.Object objekt) {
+			cpg_compile_context_prepend_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_compile_context_save(IntPtr raw);
+
+		public void Save() {
+			cpg_compile_context_save(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_compile_context_lookup_property(IntPtr raw);
+
+		public Cpg.Property LookupProperty() {
+			IntPtr raw_ret = cpg_compile_context_lookup_property(Handle);
+			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
 			return ret;
 		}
 

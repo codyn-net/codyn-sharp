@@ -216,5 +216,14 @@
 
   <!-- CpgSelector -->
   <attr path="/api/namespace/object[@cname='CpgSelector']/method[@cname='cpg_selector_select']/return-type" name="element_type">CpgSelection*</attr>
+
+  <attr path="/api/namespace/object[@cname='CpgSelector']/signal[@cname='select']" name="name">Selected</attr>
+
+  <!-- CpgEmbeddedString -->
+  <attr path="/api/namespace/object[@cname='CpgEmbeddedString']/method[@cname='cpg_embedded_string_collapse']/parameters/parameter[@name='const-const*']" name="type">gchar**</attr>
+  <attr path="/api/namespace/object[@cname='CpgEmbeddedString']/method[@cname='cpg_embedded_string_collapse']/parameters/parameter[@name='const-const*']" name="name">s</attr>
+
 </metadata>
+
 <!-- vi:ts=2:et -->
+

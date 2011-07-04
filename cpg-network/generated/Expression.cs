@@ -62,6 +62,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_expression_get_operators(IntPtr raw);
+
+		public GLib.SList Operators { 
+			get {
+				IntPtr raw_ret = cpg_expression_get_operators(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern double cpg_expression_evaluate(IntPtr raw);
 
 		public double Evaluate() {

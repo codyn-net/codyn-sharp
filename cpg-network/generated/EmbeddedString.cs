@@ -80,6 +80,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_embedded_string_push(IntPtr raw, int type, int depth);
+
+		public Cpg.EmbeddedString Push(Cpg.EmbeddedStringNodeType type, int depth) {
+			IntPtr raw_ret = cpg_embedded_string_push(Handle, (int) type, depth);
+			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_embedded_string_get_type();
 
 		public static new GLib.GType GType { 
@@ -116,11 +125,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_embedded_string_push(IntPtr raw, int type, int depth);
+		static extern IntPtr cpg_embedded_string_collapse(IntPtr s);
 
-		public Cpg.EmbeddedString Push(Cpg.EmbeddedStringNodeType type, int depth) {
-			IntPtr raw_ret = cpg_embedded_string_push(Handle, (int) type, depth);
-			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
+		public static string Collapse(string s) {
+			IntPtr raw_ret = cpg_embedded_string_collapse(GLib.Marshaller.StringToPtrGStrdup(s));
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 			return ret;
 		}
 

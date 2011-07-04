@@ -40,12 +40,18 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern double cpg_integrator_get_time(IntPtr raw);
 
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_integrator_set_time(IntPtr raw, double t);
+
 		[GLib.Property ("time")]
 		public double Time {
 			get  {
 				double raw_ret = cpg_integrator_get_time(Handle);
 				double ret = raw_ret;
 				return ret;
+			}
+			set  {
+				cpg_integrator_set_time(Handle, value);
 			}
 		}
 
@@ -218,6 +224,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_integrator_get_name(IntPtr raw);
+
+		public string Name { 
+			get {
+				IntPtr raw_ret = cpg_integrator_get_name(Handle);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_integrator_reset(IntPtr raw);
 
 		public new void Reset() {
@@ -240,17 +257,6 @@ namespace Cpg {
 			get {
 				IntPtr raw_ret = cpg_integrator_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_integrator_get_name(IntPtr raw);
-
-		public string Name { 
-			get {
-				IntPtr raw_ret = cpg_integrator_get_name(Handle);
-				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
 			}
 		}

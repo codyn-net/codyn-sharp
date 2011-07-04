@@ -26,48 +26,138 @@ namespace Cpg {
 			Raw = cpg_selector_new();
 		}
 
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_append_regex_partial(IntPtr raw, IntPtr regex);
+		[GLib.CDeclCallback]
+		delegate void SelectedVMDelegate (IntPtr inst, uint p0);
 
-		public void AppendRegexPartial(Cpg.EmbeddedString regex) {
-			cpg_selector_append_regex_partial(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+		static SelectedVMDelegate SelectedVMCallback;
+
+		static void selected_cb (IntPtr inst, uint p0)
+		{
+			try {
+				Selector inst_managed = GLib.Object.GetObject (inst, false) as Selector;
+				inst_managed.OnSelected (p0);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideSelected (GLib.GType gtype)
+		{
+			if (SelectedVMCallback == null)
+				SelectedVMCallback = new SelectedVMDelegate (selected_cb);
+			OverrideVirtualMethod (gtype, "select", SelectedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Selector), ConnectionMethod="OverrideSelected")]
+		protected virtual void OnSelected (uint p0)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (p0);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("select")]
+		public event Cpg.SelectedHandler Selected {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "select", typeof (Cpg.SelectedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "select", typeof (Cpg.SelectedArgs));
+				sig.RemoveDelegate (value);
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_prepend(IntPtr raw, IntPtr identifier);
+		static extern IntPtr cpg_selector_get_type();
 
-		public void Prepend(Cpg.EmbeddedString identifier) {
-			cpg_selector_prepend(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+		public static new GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cpg_selector_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_prepend_pseudo(IntPtr raw, int type, IntPtr arguments);
+		static extern uint cpg_selector_append_regex_partial(IntPtr raw, IntPtr regex);
 
-		public void PrependPseudo(Cpg.SelectorPseudoType type, GLib.SList arguments) {
-			cpg_selector_prepend_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
+		public uint AppendRegexPartial(Cpg.EmbeddedString regex) {
+			uint raw_ret = cpg_selector_append_regex_partial(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+			uint ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_append_partial(IntPtr raw, IntPtr identifier);
+		static extern IntPtr cpg_selector_get_out_context(IntPtr raw, uint id);
 
-		public void AppendPartial(Cpg.EmbeddedString identifier) {
-			cpg_selector_append_partial(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+		public GLib.SList GetOutContext(uint id) {
+			IntPtr raw_ret = cpg_selector_get_out_context(Handle, id);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern uint cpg_selector_prepend(IntPtr raw, IntPtr identifier);
+
+		public uint Prepend(Cpg.EmbeddedString identifier) {
+			uint raw_ret = cpg_selector_prepend(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+			uint ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern uint cpg_selector_prepend_pseudo(IntPtr raw, int type, IntPtr arguments);
+
+		public uint PrependPseudo(Cpg.SelectorPseudoType type, GLib.SList arguments) {
+			uint raw_ret = cpg_selector_prepend_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
+			uint ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern uint cpg_selector_append_partial(IntPtr raw, IntPtr identifier);
+
+		public uint AppendPartial(Cpg.EmbeddedString identifier) {
+			uint raw_ret = cpg_selector_append_partial(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+			uint ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_selector_is_pseudo_name(IntPtr name);
+
+		public static bool IsPseudoName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cpg_selector_is_pseudo_name(native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_selector_select(IntPtr raw, IntPtr parent, int type, IntPtr context);
 
-		public Cpg.Selection[] Select(IntPtr parent, Cpg.SelectorType type, Cpg.EmbeddedContext context) {
-			IntPtr raw_ret = cpg_selector_select(Handle, parent, (int) type, context == null ? IntPtr.Zero : context.Handle);
+		public Cpg.Selection[] Select(GLib.Object parent, Cpg.SelectorType type, Cpg.EmbeddedContext context) {
+			IntPtr raw_ret = cpg_selector_select(Handle, parent == null ? IntPtr.Zero : parent.Handle, (int) type, context == null ? IntPtr.Zero : context.Handle);
 			Cpg.Selection[] ret = (Cpg.Selection[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Selection));
 			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_prepend_partial(IntPtr raw, IntPtr identifier);
+		static extern uint cpg_selector_prepend_partial(IntPtr raw, IntPtr identifier);
 
-		public void PrependPartial(Cpg.EmbeddedString identifier) {
-			cpg_selector_prepend_partial(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+		public uint PrependPartial(Cpg.EmbeddedString identifier) {
+			uint raw_ret = cpg_selector_prepend_partial(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+			uint ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -80,38 +170,57 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_prepend_regex_partial(IntPtr raw, IntPtr regex);
+		static extern uint cpg_selector_prepend_regex_partial(IntPtr raw, IntPtr regex);
 
-		public void PrependRegexPartial(Cpg.EmbeddedString regex) {
-			cpg_selector_prepend_regex_partial(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+		public uint PrependRegexPartial(Cpg.EmbeddedString regex) {
+			uint raw_ret = cpg_selector_prepend_regex_partial(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+			uint ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_prepend_regex(IntPtr raw, IntPtr regex);
+		static extern uint cpg_selector_prepend_regex(IntPtr raw, IntPtr regex);
 
-		public void PrependRegex(Cpg.EmbeddedString regex) {
-			cpg_selector_prepend_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+		public uint PrependRegex(Cpg.EmbeddedString regex) {
+			uint raw_ret = cpg_selector_prepend_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+			uint ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_append_regex(IntPtr raw, IntPtr regex);
+		static extern IntPtr cpg_selector_get_in_context(IntPtr raw, uint id);
 
-		public void AppendRegex(Cpg.EmbeddedString regex) {
-			cpg_selector_append_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+		public GLib.SList GetInContext(uint id) {
+			IntPtr raw_ret = cpg_selector_get_in_context(Handle, id);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_append_pseudo(IntPtr raw, int type, IntPtr arguments);
+		static extern uint cpg_selector_append_pseudo(IntPtr raw, int type, IntPtr arguments);
 
-		public void AppendPseudo(Cpg.SelectorPseudoType type, GLib.SList arguments) {
-			cpg_selector_append_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
+		public uint AppendPseudo(Cpg.SelectorPseudoType type, GLib.SList arguments) {
+			uint raw_ret = cpg_selector_append_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
+			uint ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_selector_append(IntPtr raw, IntPtr identifier);
+		static extern uint cpg_selector_append(IntPtr raw, IntPtr identifier);
 
-		public void Append(Cpg.EmbeddedString identifier) {
-			cpg_selector_append(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+		public uint Append(Cpg.EmbeddedString identifier) {
+			uint raw_ret = cpg_selector_append(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+			uint ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern uint cpg_selector_append_regex(IntPtr raw, IntPtr regex);
+
+		public uint AppendRegex(Cpg.EmbeddedString regex) {
+			uint raw_ret = cpg_selector_append_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+			uint ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -137,22 +246,24 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_selector_get_type();
+		static extern uint cpg_selector_get_last_id(IntPtr raw);
 
-		public static new GLib.GType GType { 
+		public uint LastId { 
 			get {
-				IntPtr raw_ret = cpg_selector_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
+				uint raw_ret = cpg_selector_get_last_id(Handle);
+				uint ret = raw_ret;
 				return ret;
 			}
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_selector_copy(IntPtr raw);
+		static extern IntPtr cpg_selector_escape_identifier(IntPtr name);
 
-		public Cpg.Selector Copy() {
-			IntPtr raw_ret = cpg_selector_copy(Handle);
-			Cpg.Selector ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Selector;
+		public static string EscapeIdentifier(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cpg_selector_escape_identifier(native_name);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 
