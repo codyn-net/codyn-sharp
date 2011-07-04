@@ -14,7 +14,7 @@ namespace Cpg {
 		protected Link(GLib.GType gtype) : base(gtype) {}
 		public Link(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_link_new(IntPtr id, IntPtr from, IntPtr to);
 
 		public Link (string id, Cpg.Object from, Cpg.Object to) : base (IntPtr.Zero)
@@ -70,7 +70,112 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[GLib.CDeclCallback]
+		delegate void ActionAddedVMDelegate (IntPtr link, IntPtr action);
+
+		static ActionAddedVMDelegate ActionAddedVMCallback;
+
+		static void actionadded_cb (IntPtr link, IntPtr action)
+		{
+			try {
+				Link link_managed = GLib.Object.GetObject (link, false) as Link;
+				link_managed.OnActionAdded (GLib.Object.GetObject(action) as Cpg.LinkAction);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideActionAdded (GLib.GType gtype)
+		{
+			if (ActionAddedVMCallback == null)
+				ActionAddedVMCallback = new ActionAddedVMDelegate (actionadded_cb);
+			OverrideVirtualMethod (gtype, "action-added", ActionAddedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Link), ConnectionMethod="OverrideActionAdded")]
+		protected virtual void OnActionAdded (Cpg.LinkAction action)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (action);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("action-added")]
+		public event Cpg.ActionAddedHandler ActionAdded {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "action-added", typeof (Cpg.ActionAddedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "action-added", typeof (Cpg.ActionAddedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void ActionRemovedVMDelegate (IntPtr link, IntPtr action);
+
+		static ActionRemovedVMDelegate ActionRemovedVMCallback;
+
+		static void actionremoved_cb (IntPtr link, IntPtr action)
+		{
+			try {
+				Link link_managed = GLib.Object.GetObject (link, false) as Link;
+				link_managed.OnActionRemoved (GLib.Object.GetObject(action) as Cpg.LinkAction);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideActionRemoved (GLib.GType gtype)
+		{
+			if (ActionRemovedVMCallback == null)
+				ActionRemovedVMCallback = new ActionRemovedVMDelegate (actionremoved_cb);
+			OverrideVirtualMethod (gtype, "action-removed", ActionRemovedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Link), ConnectionMethod="OverrideActionRemoved")]
+		protected virtual void OnActionRemoved (Cpg.LinkAction action)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (action);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("action-removed")]
+		public event Cpg.ActionRemovedHandler ActionRemoved {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "action-removed", typeof (Cpg.ActionRemovedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "action-removed", typeof (Cpg.ActionRemovedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_link_attach(IntPtr raw, IntPtr from, IntPtr to);
+
+		public void Attach(Cpg.Object from, Cpg.Object to) {
+			cpg_link_attach(Handle, from == null ? IntPtr.Zero : from.Handle, to == null ? IntPtr.Zero : to.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_link_remove_action(IntPtr raw, IntPtr action);
 
 		public bool RemoveAction(Cpg.LinkAction action) {
@@ -79,18 +184,16 @@ namespace Cpg {
 			return ret;
 		}
 
-		[DllImport("cpg-network-1.0")]
-		static extern IntPtr cpg_link_add_action(IntPtr raw, IntPtr target, IntPtr expression);
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_link_add_action(IntPtr raw, IntPtr action);
 
-		public Cpg.LinkAction AddAction(Cpg.Property target, string expression) {
-			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
-			IntPtr raw_ret = cpg_link_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, native_expression);
-			Cpg.LinkAction ret = raw_ret == IntPtr.Zero ? null : (Cpg.LinkAction) GLib.Opaque.GetOpaque (raw_ret, typeof (Cpg.LinkAction), false);
-			GLib.Marshaller.Free (native_expression);
+		public bool AddAction(Cpg.LinkAction action) {
+			bool raw_ret = cpg_link_add_action(Handle, action == null ? IntPtr.Zero : action.Handle);
+			bool ret = raw_ret;
 			return ret;
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_link_get_actions(IntPtr raw);
 
 		public Cpg.LinkAction[] Actions { 
@@ -101,7 +204,27 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_link_get_action(IntPtr raw, IntPtr target);
+
+		public Cpg.LinkAction GetAction(string target) {
+			IntPtr native_target = GLib.Marshaller.StringToPtrGStrdup (target);
+			IntPtr raw_ret = cpg_link_get_action(Handle, native_target);
+			Cpg.LinkAction ret = GLib.Object.GetObject(raw_ret) as Cpg.LinkAction;
+			GLib.Marshaller.Free (native_target);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_link_get_action_template(IntPtr raw, IntPtr action, bool match_full);
+
+		public Cpg.Link GetActionTemplate(Cpg.LinkAction action, bool match_full) {
+			IntPtr raw_ret = cpg_link_get_action_template(Handle, action == null ? IntPtr.Zero : action.Handle, match_full);
+			Cpg.Link ret = GLib.Object.GetObject(raw_ret) as Cpg.Link;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_link_get_type();
 
 		public static new GLib.GType GType { 
