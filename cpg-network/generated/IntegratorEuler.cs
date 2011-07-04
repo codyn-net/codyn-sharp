@@ -14,7 +14,7 @@ namespace Cpg {
 		protected IntegratorEuler(GLib.GType gtype) : base(gtype) {}
 		public IntegratorEuler(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_euler_new();
 
 		public IntegratorEuler () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cpg {
 			Raw = cpg_integrator_euler_new();
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_euler_get_type();
 
 		public static new GLib.GType GType { 

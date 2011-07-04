@@ -2,30 +2,54 @@
 
 <gapi-parser-input>
   <api filename="cpg-network/cpg-network-api.raw">
-    <library name="cpg-network-1.0">
+    <library name="cpg-network-2.0">
       <namespace name="Cpg">
+        <file>../libcpg-network/cpg-network/cpg-annotatable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-annotatable.h</file>
         <file>../libcpg-network/cpg-network/cpg-object.c</file>
         <file>../libcpg-network/cpg-network/cpg-object.h</file>
-        <file>../libcpg-network/cpg-network/cpg-state.c</file>
-        <file>../libcpg-network/cpg-network/cpg-state.h</file>
-        <file>../libcpg-network/cpg-network/cpg-relay.c</file>
-        <file>../libcpg-network/cpg-network/cpg-relay.h</file>
         <file>../libcpg-network/cpg-network/cpg-link.c</file>
         <file>../libcpg-network/cpg-network/cpg-link.h</file>
+        <file>../libcpg-network/cpg-network/cpg-link-action.c</file>
+        <file>../libcpg-network/cpg-network/cpg-link-action.h</file>
         <file>../libcpg-network/cpg-network/cpg-expression.c</file>
         <file>../libcpg-network/cpg-network/cpg-expression.h</file>
         <file>../libcpg-network/cpg-network/cpg-monitor.c</file>
         <file>../libcpg-network/cpg-network/cpg-monitor.h</file>
         <file>../libcpg-network/cpg-network/cpg-network.c</file>
         <file>../libcpg-network/cpg-network/cpg-network.h</file>
+        <file>../libcpg-network/cpg-network/cpg-input.c</file>
+        <file>../libcpg-network/cpg-network/cpg-input.h</file>
+        <file>../libcpg-network/cpg-network/cpg-input-file.c</file>
+        <file>../libcpg-network/cpg-network/cpg-input-file.h</file>
+        <file>../libcpg-network/cpg-network/cpg-import.c</file>
+        <file>../libcpg-network/cpg-network/cpg-import.h</file>
+        <file>../libcpg-network/cpg-network/cpg-import-alias.c</file>
+        <file>../libcpg-network/cpg-network/cpg-import-alias.h</file>
+        <file>../libcpg-network/cpg-network/cpg-network-serializer.c</file>
+        <file>../libcpg-network/cpg-network/cpg-network-serializer.h</file>
+        <file>../libcpg-network/cpg-network/cpg-network-deserializer.c</file>
+        <file>../libcpg-network/cpg-network/cpg-network-deserializer.h</file>
         <file>../libcpg-network/cpg-network/cpg-property.c</file>
         <file>../libcpg-network/cpg-network/cpg-property.h</file>
+        <file>../libcpg-network/cpg-network/cpg-property-interface.c</file>
+        <file>../libcpg-network/cpg-network/cpg-property-interface.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.c</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.h</file>
+        <file>../libcpg-network/cpg-network/cpg-operator.c</file>
+        <file>../libcpg-network/cpg-network/cpg-operator.h</file>
+        <file>../libcpg-network/cpg-network/cpg-operator-delayed.c</file>
+        <file>../libcpg-network/cpg-network/cpg-operator-delayed.h</file>
+        <file>../libcpg-network/cpg-network/cpg-stack.c</file>
+        <file>../libcpg-network/cpg-network/cpg-stack.h</file>
         <file>../libcpg-network/cpg-network/cpg-function.c</file>
         <file>../libcpg-network/cpg-network/cpg-function.h</file>
+        <file>../libcpg-network/cpg-network/cpg-function-argument.c</file>
+        <file>../libcpg-network/cpg-network/cpg-function-argument.h</file>
         <file>../libcpg-network/cpg-network/cpg-function-polynomial.c</file>
         <file>../libcpg-network/cpg-network/cpg-function-polynomial.h</file>
+        <file>../libcpg-network/cpg-network/cpg-function-polynomial-piece.c</file>
+        <file>../libcpg-network/cpg-network/cpg-function-polynomial-piece.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-context.c</file>
         <file>../libcpg-network/cpg-network/cpg-compile-context.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrator.c</file>
@@ -34,8 +58,56 @@
         <file>../libcpg-network/cpg-network/cpg-integrator-euler.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.c</file>
         <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.h</file>
-		<file>../libcpg-network/cpg-network/cpg-integrators.c</file>
-		<file>../libcpg-network/cpg-network/cpg-integrators.h</file>
+        <file>../libcpg-network/cpg-network/cpg-integrators.c</file>
+        <file>../libcpg-network/cpg-network/cpg-integrators.h</file>
+        <file>../libcpg-network/cpg-network/cpg-group.c</file>
+        <file>../libcpg-network/cpg-network/cpg-group.h</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator-state.c</file>
+        <file>../libcpg-network/cpg-network/cpg-integrator-state.h</file>
+        <file>../libcpg-network/cpg-network/cpg-usable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-usable.h</file>
+        <file>../libcpg-network/cpg-network/cpg-modifiable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-modifiable.h</file>
+        <file>../libcpg-network/cpg-network/cpg-math.c</file>
+        <file>../libcpg-network/cpg-network/cpg-math.h</file>
+        <file>../libcpg-network/cpg-network/cpg-mini-object.c</file>
+        <file>../libcpg-network/cpg-network/cpg-mini-object.h</file>
+        <file>../libcpg-network/cpg-network/cpg-selector.c</file>
+        <file>../libcpg-network/cpg-network/cpg-selector.h</file>
+        <file>../libcpg-network/cpg-network/cpg-selection.c</file>
+        <file>../libcpg-network/cpg-network/cpg-selection.h</file>
+        <file>../libcpg-network/cpg-network/cpg-layout.c</file>
+        <file>../libcpg-network/cpg-network/cpg-layout.h</file>
+        <file>../libcpg-network/cpg-network/cpg-layoutable.c</file>
+        <file>../libcpg-network/cpg-network/cpg-layoutable.h</file>
+        <file>../libcpg-network/cpg-network/cpg-expansion.c</file>
+        <file>../libcpg-network/cpg-network/cpg-expansion.h</file>
+        <file>../libcpg-network/cpg-network/cpg-embedded-string.c</file>
+        <file>../libcpg-network/cpg-network/cpg-embedded-string.h</file>
+        <file>../libcpg-network/cpg-network/cpg-embedded-context.c</file>
+        <file>../libcpg-network/cpg-network/cpg-embedded-context.h</file>
+        <file>../libcpg-network/cpg-network/cpg-parser-context.c</file>
+        <file>../libcpg-network/cpg-network/cpg-parser-context.h</file>
+        <file>../libcpg-network/cpg-network/cpg-attribute.c</file>
+        <file>../libcpg-network/cpg-network/cpg-attribute.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-function.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-function.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-operator.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-operator.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-function.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-function.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-number.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-number.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-operator.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-operator.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-property.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-property.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-variadic-function.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-variadic-function.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-constant.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-constant.h</file>
       </namespace>
     </library>
   </api>

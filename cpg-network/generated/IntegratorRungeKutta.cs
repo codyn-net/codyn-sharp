@@ -14,7 +14,7 @@ namespace Cpg {
 		protected IntegratorRungeKutta(GLib.GType gtype) : base(gtype) {}
 		public IntegratorRungeKutta(IntPtr raw) : base(raw) {}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_runge_kutta_new();
 
 		public IntegratorRungeKutta () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cpg {
 			Raw = cpg_integrator_runge_kutta_new();
 		}
 
-		[DllImport("cpg-network-1.0")]
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_integrator_runge_kutta_get_type();
 
 		public static new GLib.GType GType { 

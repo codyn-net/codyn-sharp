@@ -11,9 +11,11 @@ namespace Cpg {
 
 		PropertyNotFound,
 		FunctionNotFound,
+		OperatorNotFound,
 		InvalidToken,
 		Maxarg,
 		InvalidStack,
+		PropertyRecurse,
 		NumErrors,
 	}
 #endregion
