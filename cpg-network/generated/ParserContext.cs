@@ -43,6 +43,55 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
+		delegate void SelectorItemPushedVMDelegate (IntPtr inst, IntPtr p0);
+
+		static SelectorItemPushedVMDelegate SelectorItemPushedVMCallback;
+
+		static void selectoritempushed_cb (IntPtr inst, IntPtr p0)
+		{
+			try {
+				ParserContext inst_managed = GLib.Object.GetObject (inst, false) as ParserContext;
+				inst_managed.OnSelectorItemPushed (GLib.Object.GetObject(p0) as Cpg.Selector);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideSelectorItemPushed (GLib.GType gtype)
+		{
+			if (SelectorItemPushedVMCallback == null)
+				SelectorItemPushedVMCallback = new SelectorItemPushedVMDelegate (selectoritempushed_cb);
+			OverrideVirtualMethod (gtype, "selector-item-pushed", SelectorItemPushedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.ParserContext), ConnectionMethod="OverrideSelectorItemPushed")]
+		protected virtual void OnSelectorItemPushed (Cpg.Selector p0)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (p0);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("selector-item-pushed")]
+		public event Cpg.SelectorItemPushedHandler SelectorItemPushed {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "selector-item-pushed", typeof (Cpg.SelectorItemPushedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "selector-item-pushed", typeof (Cpg.SelectorItemPushedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
 		delegate void ContextPushedVMDelegate (IntPtr inst);
 
 		static ContextPushedVMDelegate ContextPushedVMCallback;
@@ -316,15 +365,6 @@ namespace Cpg {
 
 		public void AddAction(Cpg.EmbeddedString target, Cpg.EmbeddedString expression) {
 			cpg_parser_context_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, expression == null ? IntPtr.Zero : expression.Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern int cpg_parser_context_steal_start_token(IntPtr raw);
-
-		public int StealStartToken() {
-			int raw_ret = cpg_parser_context_steal_start_token(Handle);
-			int ret = raw_ret;
-			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -606,6 +646,15 @@ namespace Cpg {
 
 		public void PushLink(Cpg.EmbeddedString id, IntPtr templates, GLib.SList attributes, IntPtr fromto) {
 			cpg_parser_context_push_link(Handle, id == null ? IntPtr.Zero : id.Handle, templates, attributes == null ? IntPtr.Zero : attributes.Handle, fromto);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern int cpg_parser_context_steal_start_token(IntPtr raw);
+
+		public int StealStartToken() {
+			int raw_ret = cpg_parser_context_steal_start_token(Handle);
+			int ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]

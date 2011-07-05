@@ -366,12 +366,6 @@
           <parameter type="const-gchar*" name="id" />
         </parameters>
       </constructor>
-      <constructor cname="cpg_attribute_newv">
-        <parameters>
-          <parameter type="const-gchar*" name="id" />
-          <parameter ellipsis="true" />
-        </parameters>
-      </constructor>
       <method name="NumArguments" cname="cpg_attribute_num_arguments">
         <return-type type="gint" />
       </method>
@@ -1895,18 +1889,6 @@
       <method name="ErrorQuark" cname="cpg_network_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
-      <method name="FormatFromFile" cname="cpg_network_format_from_file" shared="true">
-        <return-type type="CpgNetworkFormat" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
-      </method>
-      <method name="FormatFromStream" cname="cpg_network_format_from_stream" shared="true">
-        <return-type type="CpgNetworkFormat" />
-        <parameters>
-          <parameter type="GInputStream*" name="stream" />
-        </parameters>
-      </method>
       <method name="GetFunctionGroup" cname="cpg_network_get_function_group">
         <return-type type="CpgGroup*" />
       </method>
@@ -1929,13 +1911,6 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="path" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="LoadFromStream" cname="cpg_network_load_from_stream">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -1970,12 +1945,6 @@
       <constructor cname="cpg_network_new_from_path">
         <parameters>
           <parameter type="const-gchar*" name="path" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </constructor>
-      <constructor cname="cpg_network_new_from_stream">
-        <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
@@ -2479,7 +2448,7 @@
         </parameters>
       </method>
       <method name="GetExpressions" cname="cpg_operator_get_expressions">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CpgExpression*" />
       </method>
       <method name="GetName" cname="cpg_operator_get_name" shared="true">
         <return-type type="const-gchar*" />
@@ -2508,7 +2477,7 @@
       <method name="Step" cname="cpg_operator_step">
         <return-type type="void" />
         <parameters>
-          <parameter type="_CpgIntegrator*" name="integrator" />
+          <parameter type="CpgIntegrator*" name="integrator" />
           <parameter type="gdouble" name="t" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
@@ -2516,7 +2485,7 @@
       <method name="StepEvaluate" cname="cpg_operator_step_evaluate">
         <return-type type="void" />
         <parameters>
-          <parameter type="_CpgIntegrator*" name="integrator" />
+          <parameter type="CpgIntegrator*" name="integrator" />
           <parameter type="gdouble" name="t" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
@@ -2524,7 +2493,7 @@
       <method name="StepPrepare" cname="cpg_operator_step_prepare">
         <return-type type="void" />
         <parameters>
-          <parameter type="_CpgIntegrator*" name="integrator" />
+          <parameter type="CpgIntegrator*" name="integrator" />
           <parameter type="gdouble" name="t" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
@@ -2563,7 +2532,7 @@
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CpgParserContext*" />
-          <parameter name="p0" type="gselector" />
+          <parameter name="p0" type="CpgSelector*" />
         </parameters>
       </signal>
       <method name="AddAction" cname="cpg_parser_context_add_action">
@@ -2678,9 +2647,6 @@
       <method name="GetError" cname="cpg_parser_context_get_error">
         <return-type type="GError*" />
       </method>
-      <method name="GetFile" cname="cpg_parser_context_get_file">
-        <return-type type="GFile*" />
-      </method>
       <method name="GetLastSelectorItemColumn" cname="cpg_parser_context_get_last_selector_item_column">
         <return-type type="void" />
         <parameters>
@@ -2782,13 +2748,6 @@
           <parameter type="CpgEmbeddedString*" name="id" />
           <parameter type="GArray*" name="templates" />
           <parameter type="GSList*" name="attributes" />
-        </parameters>
-      </method>
-      <method name="PushInput" cname="cpg_parser_context_push_input">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-          <parameter type="GInputStream*" name="stream" />
         </parameters>
       </method>
       <method name="PushInputFile" cname="cpg_parser_context_push_input_file">
@@ -3412,14 +3371,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GSList*" name="expansions" />
-        </parameters>
-      </method>
-      <method name="Expand" cname="cpg_expansions_expand" shared="true">
-        <return-type type="gchar*" />
-        <parameters>
-          <parameter type="GSList*" name="expansions" />
-          <parameter type="const-gchar*" name="s" />
-          <parameter type="GRegex*" name="regex" />
         </parameters>
       </method>
     </class>

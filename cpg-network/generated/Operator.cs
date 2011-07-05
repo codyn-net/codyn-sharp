@@ -20,6 +20,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_operator_step(IntPtr raw, IntPtr integrator, double t, double timestep);
+
+		public void Step(Cpg.Integrator integrator, double t, double timestep) {
+			cpg_operator_step(Handle, integrator == null ? IntPtr.Zero : integrator.Handle, t, timestep);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_operator_reset(IntPtr raw);
 
 		public void Reset() {
@@ -31,6 +38,13 @@ namespace Cpg {
 
 		public void ResetVariadic() {
 			cpg_operator_reset_variadic(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_operator_step_prepare(IntPtr raw, IntPtr integrator, double t, double timestep);
+
+		public void StepPrepare(Cpg.Integrator integrator, double t, double timestep) {
+			cpg_operator_step_prepare(Handle, integrator == null ? IntPtr.Zero : integrator.Handle, t, timestep);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -48,12 +62,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_operator_step_evaluate(IntPtr raw, IntPtr integrator, double t, double timestep);
+
+		public void StepEvaluate(Cpg.Integrator integrator, double t, double timestep) {
+			cpg_operator_step_evaluate(Handle, integrator == null ? IntPtr.Zero : integrator.Handle, t, timestep);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_operator_get_expressions(IntPtr raw);
 
-		public GLib.SList Expressions { 
+		public Cpg.Expression[] Expressions { 
 			get {
 				IntPtr raw_ret = cpg_operator_get_expressions(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cpg.Expression[] ret = (Cpg.Expression[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cpg.Expression));
 				return ret;
 			}
 		}

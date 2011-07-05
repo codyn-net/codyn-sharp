@@ -14,6 +14,10 @@
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_get_file']"/>
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/property[@cname='file']"/>
   <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_load_from_file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_load_from_stream']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_format_from_file']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/method[@cname='cpg_network_format_from_stream']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgNetwork']/constructor[@cname='cpg_network_new_from_stream']"/>
 
   <!-- CpgInputFile -->
   <remove-node path="/api/namespace/object[@cname='CpgInputFile']/constructor[@cname='cpg_input_file_new']"/>
@@ -24,8 +28,6 @@
   <attr path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_set_columns']/parameters/parameter" name="type">const-gchar**</attr>
   <attr path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_get_columns']/return-type" name="null_term_array"/>
   <attr path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_set_columns']/parameters/parameter" name="null_term_array"/>
-
-  <remove-node path="/api/namespace/object[@cname='CpgInputFile']/method[@cname='cpg_input_file_get_data']"/>
 
   <!-- CpgExpansion -->
   <attr path="/api/namespace/object[@cname='CpgExpansion']/constructor[@cname='cpg_expansion_new']/parameters/parameter" name="name">items</attr>
@@ -79,10 +81,6 @@
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_find_objects']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgGroup']/method[@cname='cpg_group_find_properties']/return-type" name="element_type">CpgProperty*</attr>
 
-  <!-- CpgOperatorData -->
-  <attr path="/api/namespace/struct[@cname='CpgOperatorData']/method[@cname='cpg_operator_data_init']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
-  <attr path="/api/namespace/struct[@cname='CpgOperatorData']/field[@cname='expressions']" name="element_type">CpgExpression*</attr>
-
   <!-- CpgMonitor -->
   <attr path="/api/namespace/object[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='(CpgNetwork)*']" name="type">CpgNetwork*</attr>
   <attr path="/api/namespace/object[@cname='CpgMonitor']/constructor[@cname='cpg_monitor_new']/parameters/parameter[@name='(CpgNetwork)*']" name="name">network</attr>
@@ -101,12 +99,12 @@
   <!-- CpgInstruction -->
   <attr path="/api/namespace/object[@cname='CpgInstruction']/method[@cname='cpg_instruction_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgInstruction']/virtual_method[@cname='get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
-  <attr path="/api/namespace/object[@cname='CpgInstructionCustomOperator']/constructor[@cname='cpg_instruction_custom_operator_new']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
 
   <!-- CpgOperator -->
-  <attr path="/api/namespace/interface[@cname='CpgOperator']/method[@cname='cpg_operator_get_expressions']/return-type" name="element_type">CpgExpression*</attr>
-  <attr path="/api/namespace/interface[@cname='CpgOperator']/method[@cname='cpg_operator_create_data']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
-  <attr path="/api/namespace/interface[@cname='CpgOperator']/virtual_method[@cname='create_data']/parameters/parameter[@name='expressions']" name="element_type">CpgExpression*</attr>
+  <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_get_expressions']/return-type" name="element_type">CpgExpression*</attr>
+  <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_step']/parameters/parameter[@name='integrator']" name="type">CpgIntegrator*</attr>
+  <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_step_prepare']/parameters/parameter[@name='integrator']" name="type">CpgIntegrator*</attr>
+  <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_step_evaluate']/parameters/parameter[@name='integrator']" name="type">CpgIntegrator*</attr>
 
   <!-- CpgFunction -->
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_execute']"/>
@@ -138,9 +136,6 @@
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_objects']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']/return-type" name="element_type">CpgFunction*</attr>
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']/parameters/parameter[@name='functions']" name="element_type">CpgFunction*</attr>
-
-  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_operators']/return-type" name="element_type">CpgOperator*</attr>
-  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_operators']/parameters/parameter[@name='operators']" name="element_type">CpgOperator*</attr>
 
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']" name="hidden">true</attr>
@@ -196,7 +191,6 @@
 
   <!-- CpgNetworkDeserializer -->
   <remove-node path="/api/namespace/object[@cname='CpgNetworkDeserializer']/method[@cname='cpg_network_deserializer_deserialize']"/>
-  <remove-node path="/api/namespace/object[@cname='CpgNetworkDeserializer']/method[@cname='cpg_network_deserializer_deserialize_file']"/>
 
   <remove-node path="/api/namespace/class[@name='Global']"/>
   <remove-node path="/api/namespace/object[@name='ParamSpecMiniObject']"/>
@@ -223,6 +217,16 @@
   <attr path="/api/namespace/object[@cname='CpgEmbeddedString']/method[@cname='cpg_embedded_string_collapse']/parameters/parameter[@name='const-const*']" name="type">gchar**</attr>
   <attr path="/api/namespace/object[@cname='CpgEmbeddedString']/method[@cname='cpg_embedded_string_collapse']/parameters/parameter[@name='const-const*']" name="name">s</attr>
 
+  <!-- CpgAttribute -->
+  <remove-node path="/api/namespace/object[@cname='CpgAttribute']/constructor[@cname='cpg_attribute_newv']"/>
+
+  <!-- CpgParserContext -->
+  <remove-node path="/api/namespace/object[@cname='CpgParserContext']/method[@cname='cpg_parser_context_push_input']"/>
+  <remove-node path="/api/namespace/object[@cname='CpgParserContext']/method[@cname='cpg_parser_context_get_file']"/>
+  <attr path="/api/namespace/object[@cname='CpgParserContext']/signal[@cname='selector-item-pushed']/parameters/parameter[@name='p0']" name="type">CpgSelector*</attr>
+
+  <!-- CpgExpansions -->
+  <remove-node path="/api/namespace/class[@name='Expansions']/method[@cname='cpg_expansions_expand']"/>
 </metadata>
 
 <!-- vi:ts=2:et -->
