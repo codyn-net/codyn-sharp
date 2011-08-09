@@ -589,6 +589,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_full_id_for_display(IntPtr raw);
+
+		public string FullIdForDisplay { 
+			get {
+				IntPtr raw_ret = cpg_object_get_full_id_for_display(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern unsafe bool cpg_object_remove_property(IntPtr raw, IntPtr name, out IntPtr error);
 
 		public unsafe bool RemoveProperty(string name) {
@@ -700,6 +711,15 @@ namespace Cpg {
 			bool raw_ret = cpg_object_add_property(Handle, property == null ? IntPtr.Zero : property.Handle, out error);
 			bool ret = raw_ret;
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_relative_id_for_display(IntPtr raw, IntPtr parent);
+
+		public string GetRelativeIdForDisplay(Cpg.Object parent) {
+			IntPtr raw_ret = cpg_object_get_relative_id_for_display(Handle, parent == null ? IntPtr.Zero : parent.Handle);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 			return ret;
 		}
 

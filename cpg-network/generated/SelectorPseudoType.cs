@@ -30,6 +30,12 @@ namespace Cpg {
 		TypeSelf,
 		TypeDebug,
 		TypeName,
+		TypeDescendants,
+		TypeAncestors,
+		TypeUnique,
+		TypeIf,
+		TypeIsempty,
+		TypeRemove,
 		Num,
 	}
 #endregion

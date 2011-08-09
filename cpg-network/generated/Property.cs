@@ -383,6 +383,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_get_full_name_for_display(IntPtr raw);
+
+		public string FullNameForDisplay { 
+			get {
+				IntPtr raw_ret = cpg_property_get_full_name_for_display(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_property_get_type();
 
 		public static new GLib.GType GType { 

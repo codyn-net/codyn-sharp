@@ -172,6 +172,12 @@
       <member cname="CPG_SELECTOR_PSEUDO_TYPE_SELF" name="TypeSelf" />
       <member cname="CPG_SELECTOR_PSEUDO_TYPE_DEBUG" name="TypeDebug" />
       <member cname="CPG_SELECTOR_PSEUDO_TYPE_NAME" name="TypeName" />
+      <member cname="CPG_SELECTOR_PSEUDO_TYPE_DESCENDANTS" name="TypeDescendants" />
+      <member cname="CPG_SELECTOR_PSEUDO_TYPE_ANCESTORS" name="TypeAncestors" />
+      <member cname="CPG_SELECTOR_PSEUDO_TYPE_UNIQUE" name="TypeUnique" />
+      <member cname="CPG_SELECTOR_PSEUDO_TYPE_IF" name="TypeIf" />
+      <member cname="CPG_SELECTOR_PSEUDO_TYPE_ISEMPTY" name="TypeIsempty" />
+      <member cname="CPG_SELECTOR_PSEUDO_TYPE_REMOVE" name="TypeRemove" />
       <member cname="CPG_SELECTOR_PSEUDO_NUM" name="Num" />
     </enum>
     <enum name="SelectorType" cname="CpgSelectorType" type="flags">
@@ -509,6 +515,7 @@
         <return-type type="gchar*" />
         <parameters>
           <parameter type="const-gchar*" name="equation" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="GetDefine" cname="cpg_embedded_context_get_define">
@@ -590,12 +597,14 @@
         <return-type type="const-gchar*" />
         <parameters>
           <parameter type="CpgEmbeddedContext*" name="ctx" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="ExpandMultiple" cname="cpg_embedded_string_expand_multiple">
         <return-type type="GSList*" />
         <parameters>
           <parameter type="CpgEmbeddedContext*" name="ctx" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="GetType" cname="cpg_embedded_string_get_type" shared="true">
@@ -2268,6 +2277,9 @@
       <method name="GetFullId" cname="cpg_object_get_full_id">
         <return-type type="gchar*" />
       </method>
+      <method name="GetFullIdForDisplay" cname="cpg_object_get_full_id_for_display">
+        <return-type type="gchar*" />
+      </method>
       <method name="GetId" cname="cpg_object_get_id">
         <return-type type="const-gchar*" />
       </method>
@@ -2294,6 +2306,12 @@
         </parameters>
       </method>
       <method name="GetRelativeId" cname="cpg_object_get_relative_id">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CpgObject*" name="parent" />
+        </parameters>
+      </method>
+      <method name="GetRelativeIdForDisplay" cname="cpg_object_get_relative_id_for_display">
         <return-type type="gchar*" />
         <parameters>
           <parameter type="CpgObject*" name="parent" />
@@ -2438,8 +2456,21 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </virtual_method>
+      <virtual_method name="Equal" cname="equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgOperator*" name="op" />
+          <parameter type="CpgOperator*" name="other" />
+        </parameters>
+      </virtual_method>
       <method name="Copy" cname="cpg_operator_copy">
         <return-type type="CpgOperator*" owned="true" />
+      </method>
+      <method name="Equal" cname="cpg_operator_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgOperator*" name="other" />
+        </parameters>
       </method>
       <method name="Execute" cname="cpg_operator_execute">
         <return-type type="void" />
@@ -2447,14 +2478,17 @@
           <parameter type="CpgStack*" name="stack" />
         </parameters>
       </method>
-      <method name="GetExpressions" cname="cpg_operator_get_expressions">
-        <return-type type="const-GSList*" element_type="CpgExpression*" />
-      </method>
-      <method name="GetName" cname="cpg_operator_get_name" shared="true">
+      <method name="GetClassName" cname="cpg_operator_get_class_name" shared="true">
         <return-type type="const-gchar*" />
         <parameters>
           <parameter type="CpgOperatorClass*" name="op" />
         </parameters>
+      </method>
+      <method name="GetExpressions" cname="cpg_operator_get_expressions">
+        <return-type type="const-GSList*" element_type="CpgExpression*" />
+      </method>
+      <method name="GetName" cname="cpg_operator_get_name">
+        <return-type type="const-gchar*" />
       </method>
       <method name="GetType" cname="cpg_operator_get_type" shared="true">
         <return-type type="GType" />
@@ -2508,6 +2542,18 @@
     </object>
     <object name="OperatorDelayed" cname="CpgOperatorDelayed" parent="CpgOperator">
       <field name="Priv" cname="priv" type="CpgOperatorDelayedPrivate*" />
+      <property name="Expression" cname="expression" type="CpgExpression" readable="true" />
+      <property name="InitialValue" cname="initial-value" type="CpgExpression" readable="true" />
+      <property name="Delay" cname="delay" type="gdouble" readable="true" />
+      <method name="GetDelay" cname="cpg_operator_delayed_get_delay">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetExpression" cname="cpg_operator_delayed_get_expression">
+        <return-type type="CpgExpression*" />
+      </method>
+      <method name="GetInitialValue" cname="cpg_operator_delayed_get_initial_value">
+        <return-type type="CpgExpression*" />
+      </method>
       <method name="GetType" cname="cpg_operator_delayed_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -2993,6 +3039,9 @@
         <return-type type="CpgPropertyFlags" />
       </method>
       <method name="GetFullName" cname="cpg_property_get_full_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetFullNameForDisplay" cname="cpg_property_get_full_name_for_display">
         <return-type type="gchar*" />
       </method>
       <method name="GetIntegrated" cname="cpg_property_get_integrated">

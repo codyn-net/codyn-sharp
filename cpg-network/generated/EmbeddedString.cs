@@ -71,11 +71,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_embedded_string_expand_multiple(IntPtr raw, IntPtr ctx);
+		static extern unsafe IntPtr cpg_embedded_string_expand_multiple(IntPtr raw, IntPtr ctx, out IntPtr error);
 
-		public GLib.SList ExpandMultiple(Cpg.EmbeddedContext ctx) {
-			IntPtr raw_ret = cpg_embedded_string_expand_multiple(Handle, ctx == null ? IntPtr.Zero : ctx.Handle);
+		public unsafe GLib.SList ExpandMultiple(Cpg.EmbeddedContext ctx) {
+			IntPtr error = IntPtr.Zero;
+			IntPtr raw_ret = cpg_embedded_string_expand_multiple(Handle, ctx == null ? IntPtr.Zero : ctx.Handle, out error);
 			GLib.SList ret = new GLib.SList(raw_ret);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 
@@ -116,11 +118,13 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_embedded_string_expand(IntPtr raw, IntPtr ctx);
+		static extern unsafe IntPtr cpg_embedded_string_expand(IntPtr raw, IntPtr ctx, out IntPtr error);
 
-		public string Expand(Cpg.EmbeddedContext ctx) {
-			IntPtr raw_ret = cpg_embedded_string_expand(Handle, ctx == null ? IntPtr.Zero : ctx.Handle);
+		public unsafe string Expand(Cpg.EmbeddedContext ctx) {
+			IntPtr error = IntPtr.Zero;
+			IntPtr raw_ret = cpg_embedded_string_expand(Handle, ctx == null ? IntPtr.Zero : ctx.Handle, out error);
 			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 

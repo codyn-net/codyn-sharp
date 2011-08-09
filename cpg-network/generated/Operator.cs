@@ -27,6 +27,26 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_operator_get_name(IntPtr raw);
+
+		public string Name { 
+			get {
+				IntPtr raw_ret = cpg_operator_get_name(Handle);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_operator_equal(IntPtr raw, IntPtr other);
+
+		public bool Equal(Cpg.Operator other) {
+			bool raw_ret = cpg_operator_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_operator_reset(IntPtr raw);
 
 		public void Reset() {

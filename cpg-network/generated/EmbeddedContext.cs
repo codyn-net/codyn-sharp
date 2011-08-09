@@ -63,13 +63,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_embedded_context_calculate(IntPtr raw, IntPtr equation);
+		static extern unsafe IntPtr cpg_embedded_context_calculate(IntPtr raw, IntPtr equation, out IntPtr error);
 
-		public string Calculate(string equation) {
+		public unsafe string Calculate(string equation) {
 			IntPtr native_equation = GLib.Marshaller.StringToPtrGStrdup (equation);
-			IntPtr raw_ret = cpg_embedded_context_calculate(Handle, native_equation);
+			IntPtr error = IntPtr.Zero;
+			IntPtr raw_ret = cpg_embedded_context_calculate(Handle, native_equation, out error);
 			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 			GLib.Marshaller.Free (native_equation);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 
