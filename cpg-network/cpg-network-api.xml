@@ -3552,7 +3552,10 @@
         </parameters>
       </method>
       <method name="AsString" cname="cpg_selector_as_string">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
+      </method>
+      <method name="CopyWith" cname="cpg_selector_copy_with">
+        <return-type type="CpgSelector*" />
       </method>
       <method name="EscapeIdentifier" cname="cpg_selector_escape_identifier" shared="true">
         <return-type type="gchar*" />
@@ -3597,37 +3600,6 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
-      <method name="Prepend" cname="cpg_selector_prepend">
-        <return-type type="guint" />
-        <parameters>
-          <parameter type="CpgEmbeddedString*" name="identifier" />
-        </parameters>
-      </method>
-      <method name="PrependPartial" cname="cpg_selector_prepend_partial">
-        <return-type type="guint" />
-        <parameters>
-          <parameter type="CpgEmbeddedString*" name="identifier" />
-        </parameters>
-      </method>
-      <method name="PrependPseudo" cname="cpg_selector_prepend_pseudo">
-        <return-type type="guint" />
-        <parameters>
-          <parameter type="CpgSelectorPseudoType" name="type" />
-          <parameter type="GSList*" name="arguments" />
-        </parameters>
-      </method>
-      <method name="PrependRegex" cname="cpg_selector_prepend_regex">
-        <return-type type="guint" />
-        <parameters>
-          <parameter type="CpgEmbeddedString*" name="regex" />
-        </parameters>
-      </method>
-      <method name="PrependRegexPartial" cname="cpg_selector_prepend_regex_partial">
-        <return-type type="guint" />
-        <parameters>
-          <parameter type="CpgEmbeddedString*" name="regex" />
-        </parameters>
-      </method>
       <method name="Select" cname="cpg_selector_select">
         <return-type type="GSList*" element_type="CpgSelection*" />
         <parameters>
@@ -3640,6 +3612,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GSList*" name="selections" />
+        </parameters>
+      </method>
+      <method name="SetImplicitChildren" cname="cpg_selector_set_implicit_children">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="isimplicit" />
         </parameters>
       </method>
       <method name="SetPartial" cname="cpg_selector_set_partial">
