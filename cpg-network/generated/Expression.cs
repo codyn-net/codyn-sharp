@@ -51,6 +51,24 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_expression_get_has_cache(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expression_set_has_cache(IntPtr raw, bool cache);
+
+		[GLib.Property ("has-cache")]
+		public bool HasCache {
+			get  {
+				bool raw_ret = cpg_expression_get_has_cache(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set  {
+				cpg_expression_set_has_cache(Handle, value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern int cpg_expression_get_error_at(IntPtr raw);
 
 		public int ErrorAt { 

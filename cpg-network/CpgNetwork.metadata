@@ -105,6 +105,8 @@
   <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_step']/parameters/parameter[@name='integrator']" name="type">CpgIntegrator*</attr>
   <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_step_prepare']/parameters/parameter[@name='integrator']" name="type">CpgIntegrator*</attr>
   <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_step_evaluate']/parameters/parameter[@name='integrator']" name="type">CpgIntegrator*</attr>
+  <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_get_class_name']" name="hidden"/>
+  <attr path="/api/namespace/object[@cname='CpgOperator']/method[@cname='cpg_operator_validate_num_arguments']" name="hidden"/>
 
   <!-- CpgFunction -->
   <remove-node path="/api/namespace/object[@cname='CpgFunction']/method[@cname='cpg_function_execute']"/>
@@ -135,10 +137,10 @@
 
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_objects']/return-type" name="element_type">CpgObject*</attr>
   <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']/return-type" name="element_type">CpgFunction*</attr>
-  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']/parameters/parameter[@name='functions']" name="element_type">CpgFunction*</attr>
-
-  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_get_functions']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_set_functions']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_prepend_function']/parameters/parameter[@name='(CpgFunction)*']" name="type">CpgFunction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_prepend_function']/parameters/parameter[@name='(CpgFunction)*']" name="name">function</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_append_function']/parameters/parameter[@name='(CpgFunction)*']" name="type">CpgFunction*</attr>
+  <attr path="/api/namespace/object[@cname='CpgCompileContext']/method[@cname='cpg_compile_context_append_function']/parameters/parameter[@name='(CpgFunction)*']" name="name">function</attr>
 
   <add-node path="/api/namespace/object[@cname='CpgCompileContext']">
     <method name="LookupProperty" cname="cpg_compile_context_lookup_property">
@@ -227,6 +229,10 @@
 
   <!-- CpgExpansions -->
   <remove-node path="/api/namespace/class[@name='Expansions']/method[@cname='cpg_expansions_expand']"/>
+
+  <!-- CpgWhenApplied -->
+    <attr path="/api/namespace/object[@cname='CpgWhenApplied']/method[@cname='cpg_when_applied_run']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
+    <attr path="/api/namespace/object[@cname='CpgWhenApplied']/method[@cname='cpg_when_applied_run']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
 </metadata>
 
 <!-- vi:ts=2:et -->

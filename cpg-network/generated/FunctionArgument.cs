@@ -37,6 +37,24 @@ namespace Cpg {
 			}
 		}
 
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_function_argument_get_explicit(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_function_argument_set_explicit(IntPtr raw, bool isexplicit);
+
+		[GLib.Property ("explicit")]
+		public bool Explicit {
+			get  {
+				bool raw_ret = cpg_function_argument_get_explicit(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set  {
+				cpg_function_argument_set_explicit(Handle, value);
+			}
+		}
+
 		[GLib.Property ("default")]
 		public double Default {
 			get {
@@ -119,15 +137,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_function_argument_copy(IntPtr raw);
-
-		public Cpg.FunctionArgument Copy() {
-			IntPtr raw_ret = cpg_function_argument_copy(Handle);
-			Cpg.FunctionArgument ret = GLib.Object.GetObject(raw_ret, true) as Cpg.FunctionArgument;
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern double cpg_function_argument_get_default_value(IntPtr raw);
 
 		[DllImport("cpg-network-2.0")]
@@ -145,6 +154,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_function_argument_set_name(IntPtr raw, IntPtr name);
+
+		public bool SetName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cpg_function_argument_set_name(Handle, native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_argument_get_type();
 
 		public static new GLib.GType GType { 
@@ -156,13 +176,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_function_argument_set_name(IntPtr raw, IntPtr name);
+		static extern IntPtr cpg_function_argument_copy(IntPtr raw);
 
-		public bool SetName(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cpg_function_argument_set_name(Handle, native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
+		public Cpg.FunctionArgument Copy() {
+			IntPtr raw_ret = cpg_function_argument_copy(Handle);
+			Cpg.FunctionArgument ret = GLib.Object.GetObject(raw_ret, true) as Cpg.FunctionArgument;
 			return ret;
 		}
 

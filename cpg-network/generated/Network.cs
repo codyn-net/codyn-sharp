@@ -141,19 +141,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern unsafe bool cpg_network_load_from_string(IntPtr raw, IntPtr s, out IntPtr error);
-
-		public unsafe bool LoadFromString(string s) {
-			IntPtr native_s = GLib.Marshaller.StringToPtrGStrdup (s);
-			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cpg_network_load_from_string(Handle, native_s, out error);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_s);
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_network_get_path(IntPtr raw);
 
 		public string Path { 
@@ -225,14 +212,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern unsafe bool cpg_network_load_from_path(IntPtr raw, IntPtr path, out IntPtr error);
+		static extern unsafe bool cpg_network_load_from_string(IntPtr raw, IntPtr s, out IntPtr error);
 
-		public unsafe bool LoadFromPath(string path) {
-			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
+		public unsafe bool LoadFromString(string s) {
+			IntPtr native_s = GLib.Marshaller.StringToPtrGStrdup (s);
 			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cpg_network_load_from_path(Handle, native_path, out error);
+			bool raw_ret = cpg_network_load_from_string(Handle, native_s, out error);
 			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_path);
+			GLib.Marshaller.Free (native_s);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
@@ -245,14 +232,16 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_network_get_function_group(IntPtr raw);
+		static extern unsafe bool cpg_network_load_from_path(IntPtr raw, IntPtr path, out IntPtr error);
 
-		public Cpg.Group FunctionGroup { 
-			get {
-				IntPtr raw_ret = cpg_network_get_function_group(Handle);
-				Cpg.Group ret = GLib.Object.GetObject(raw_ret) as Cpg.Group;
-				return ret;
-			}
+		public unsafe bool LoadFromPath(string path) {
+			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_network_load_from_path(Handle, native_path, out error);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_path);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]

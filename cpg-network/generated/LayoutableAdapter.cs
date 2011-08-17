@@ -18,6 +18,8 @@ namespace Cpg {
 			public GetLocationDelegate get_location;
 			public SetLocationDelegate set_location;
 			public SupportsLocationDelegate supports_location;
+			public GetHasLocationDelegate get_has_location;
+			public SetHasLocationDelegate set_has_location;
 		}
 
 		static LayoutableAdapter ()
@@ -26,6 +28,8 @@ namespace Cpg {
 			iface.get_location = new GetLocationDelegate (GetLocationCallback);
 			iface.set_location = new SetLocationDelegate (SetLocationCallback);
 			iface.supports_location = new SupportsLocationDelegate (SupportsLocationCallback);
+			iface.get_has_location = new GetHasLocationDelegate (GetHasLocationCallback);
+			iface.set_has_location = new SetHasLocationDelegate (SetHasLocationCallback);
 		}
 
 
@@ -72,12 +76,43 @@ namespace Cpg {
 				throw e;
 			}
 		}
+
+		[GLib.CDeclCallback]
+		delegate bool GetHasLocationDelegate (IntPtr layoutable);
+
+		static bool GetHasLocationCallback (IntPtr layoutable)
+		{
+			try {
+				Cpg.LayoutableImplementor __obj = GLib.Object.GetObject (layoutable, false) as Cpg.LayoutableImplementor;
+				bool __result = __obj.HasLocation;
+				return __result;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, true);
+				// NOTREACHED: above call does not return.
+				throw e;
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void SetHasLocationDelegate (IntPtr layoutable, bool has_location);
+
+		static void SetHasLocationCallback (IntPtr layoutable, bool has_location)
+		{
+			try {
+				Cpg.LayoutableImplementor __obj = GLib.Object.GetObject (layoutable, false) as Cpg.LayoutableImplementor;
+				__obj.HasLocation = has_location;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
 		static void Initialize (IntPtr ifaceptr, IntPtr data)
 		{
 			LayoutableIface native_iface = (LayoutableIface) Marshal.PtrToStructure (ifaceptr, typeof (LayoutableIface));
 			native_iface.get_location = iface.get_location;
 			native_iface.set_location = iface.set_location;
 			native_iface.supports_location = iface.supports_location;
+			native_iface.get_has_location = iface.get_has_location;
+			native_iface.set_has_location = iface.set_has_location;
 			Marshal.StructureToPtr (native_iface, ifaceptr, false);
 			GCHandle gch = (GCHandle) data;
 			gch.Free ();
@@ -151,6 +186,23 @@ namespace Cpg {
 
 		public void SetLocation(int x, int y) {
 			cpg_layoutable_set_location(Handle, x, y);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_layoutable_get_has_location(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_layoutable_set_has_location(IntPtr raw, bool has_location);
+
+		public bool HasLocation { 
+			get {
+				bool raw_ret = cpg_layoutable_get_has_location(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set {
+				cpg_layoutable_set_has_location(Handle, value);
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]

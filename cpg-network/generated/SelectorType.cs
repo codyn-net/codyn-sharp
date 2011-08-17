@@ -18,6 +18,7 @@ namespace Cpg {
 		Property = 1 << 4,
 		Action = 1 << 5,
 		Function = 1 << 6,
+		Template = 1 << 7,
 		Object = State | Link | Group | Function,
 	}
 #endregion

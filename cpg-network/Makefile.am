@@ -29,7 +29,6 @@ customs = \
 	FunctionPolynomialPiece.custom \
 	Integrator.custom \
 	Expression.custom \
-	CompileContext.custom \
 	Group.custom \
 	LinkAction.custom \
 	Property.custom \

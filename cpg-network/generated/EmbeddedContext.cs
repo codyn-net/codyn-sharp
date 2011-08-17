@@ -90,6 +90,22 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_embedded_context_copy_top(IntPtr raw);
+
+		public Cpg.EmbeddedContext CopyTop() {
+			IntPtr raw_ret = cpg_embedded_context_copy_top(Handle);
+			Cpg.EmbeddedContext ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedContext;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_embedded_context_save_defines(IntPtr raw, bool copy_defines);
+
+		public void SaveDefines(bool copy_defines) {
+			cpg_embedded_context_save_defines(Handle, copy_defines);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_embedded_context_save(IntPtr raw);
 
 		public void Save() {
@@ -119,11 +135,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern int cpg_embedded_context_increment_define(IntPtr raw, IntPtr name, int num);
+		static extern int cpg_embedded_context_increment_define(IntPtr raw, IntPtr name, int num, bool retold);
 
-		public int IncrementDefine(string name, int num) {
+		public int IncrementDefine(string name, int num, bool retold) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			int raw_ret = cpg_embedded_context_increment_define(Handle, native_name, num);
+			int raw_ret = cpg_embedded_context_increment_define(Handle, native_name, num, retold);
 			int ret = raw_ret;
 			GLib.Marshaller.Free (native_name);
 			return ret;
