@@ -122,14 +122,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_taggable_has_tag(IntPtr raw, IntPtr tag);
+		static extern void cpg_taggable_add_tag(IntPtr raw, IntPtr tag, IntPtr value);
 
-		public bool HasTag(string tag) {
+		public void AddTag(string tag, string value) {
 			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
-			bool raw_ret = cpg_taggable_has_tag(Handle, native_tag);
-			bool ret = raw_ret;
+			IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+			cpg_taggable_add_tag(Handle, native_tag, native_value);
 			GLib.Marshaller.Free (native_tag);
-			return ret;
+			GLib.Marshaller.Free (native_value);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -144,14 +144,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_taggable_get_tag(IntPtr raw, IntPtr tag);
+		static extern System.IntPtr cpg_taggable_create_table();
 
-		public string GetTag(string tag) {
-			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
-			IntPtr raw_ret = cpg_taggable_get_tag(Handle, native_tag);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
-			GLib.Marshaller.Free (native_tag);
+		public static System.IntPtr CreateTable() {
+			System.IntPtr raw_ret = cpg_taggable_create_table();
+			System.IntPtr ret = raw_ret;
 			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_taggable_copy_to(IntPtr raw, System.IntPtr tags);
+
+		public void CopyTo(System.IntPtr tags) {
+			cpg_taggable_copy_to(Handle, tags);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -168,23 +173,33 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern System.IntPtr cpg_taggable_create_table();
+		static extern bool cpg_taggable_has_tag(IntPtr raw, IntPtr tag);
 
-		public static System.IntPtr CreateTable() {
-			System.IntPtr raw_ret = cpg_taggable_create_table();
-			System.IntPtr ret = raw_ret;
+		public bool HasTag(string tag) {
+			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
+			bool raw_ret = cpg_taggable_has_tag(Handle, native_tag);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_tag);
 			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_taggable_add_tag(IntPtr raw, IntPtr tag, IntPtr value);
+		static extern IntPtr cpg_taggable_get_tag(IntPtr raw, IntPtr tag);
 
-		public void AddTag(string tag, string value) {
+		public string GetTag(string tag) {
 			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
-			IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
-			cpg_taggable_add_tag(Handle, native_tag, native_value);
+			IntPtr raw_ret = cpg_taggable_get_tag(Handle, native_tag);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 			GLib.Marshaller.Free (native_tag);
-			GLib.Marshaller.Free (native_value);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_taggable_foreach(IntPtr raw, CpgSharp.TaggableForeachFuncNative func, IntPtr userdata);
+
+		public void Foreach(Cpg.TaggableForeachFunc func) {
+			CpgSharp.TaggableForeachFuncWrapper func_wrapper = new CpgSharp.TaggableForeachFuncWrapper (func);
+			cpg_taggable_foreach(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
 #endregion

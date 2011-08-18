@@ -15,45 +15,45 @@ namespace Cpg {
 		public PropertyInterface(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_interface_new(IntPtr objekt);
+		static extern IntPtr cpg_property_interface_new(IntPtr group);
 
-		public PropertyInterface (Cpg.Object objekt) : base (IntPtr.Zero)
+		public PropertyInterface (Cpg.Group group) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (PropertyInterface)) {
 				ArrayList vals = new ArrayList();
 				ArrayList names = new ArrayList();
-				if (objekt != null) {
-					names.Add ("objekt");
-					vals.Add (new GLib.Value (objekt));
+				if (group != null) {
+					names.Add ("group");
+					vals.Add (new GLib.Value (group));
 				}
 				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
 				return;
 			}
-			Raw = cpg_property_interface_new(objekt == null ? IntPtr.Zero : objekt.Handle);
+			Raw = cpg_property_interface_new(group == null ? IntPtr.Zero : group.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_interface_get_object(IntPtr raw);
+		static extern IntPtr cpg_property_interface_get_group(IntPtr raw);
 
-		[GLib.Property ("object")]
-		public Cpg.Object Object {
+		[GLib.Property ("group")]
+		public Cpg.Group Group {
 			get  {
-				IntPtr raw_ret = cpg_property_interface_get_object(Handle);
-				Cpg.Object ret = GLib.Object.GetObject(raw_ret) as Cpg.Object;
+				IntPtr raw_ret = cpg_property_interface_get_group(Handle);
+				Cpg.Group ret = GLib.Object.GetObject(raw_ret) as Cpg.Group;
 				return ret;
 			}
 		}
 
 		[GLib.CDeclCallback]
-		delegate void RemovedVMDelegate (IntPtr iface, IntPtr name, IntPtr property);
+		delegate void RemovedVMDelegate (IntPtr iface, IntPtr name, IntPtr child_name, IntPtr property_name);
 
 		static RemovedVMDelegate RemovedVMCallback;
 
-		static void removed_cb (IntPtr iface, IntPtr name, IntPtr property)
+		static void removed_cb (IntPtr iface, IntPtr name, IntPtr child_name, IntPtr property_name)
 		{
 			try {
 				PropertyInterface iface_managed = GLib.Object.GetObject (iface, false) as PropertyInterface;
-				iface_managed.OnRemoved (GLib.Marshaller.Utf8PtrToString (name), GLib.Object.GetObject(property) as Cpg.Property);
+				iface_managed.OnRemoved (GLib.Marshaller.Utf8PtrToString (name), GLib.Marshaller.Utf8PtrToString (child_name), GLib.Marshaller.Utf8PtrToString (property_name));
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -67,17 +67,19 @@ namespace Cpg {
 		}
 
 		[GLib.DefaultSignalHandler(Type=typeof(Cpg.PropertyInterface), ConnectionMethod="OverrideRemoved")]
-		protected virtual void OnRemoved (string name, Cpg.Property property)
+		protected virtual void OnRemoved (string name, string child_name, string property_name)
 		{
 			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (3);
-			GLib.Value[] vals = new GLib.Value [3];
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (4);
+			GLib.Value[] vals = new GLib.Value [4];
 			vals [0] = new GLib.Value (this);
 			inst_and_params.Append (vals [0]);
 			vals [1] = new GLib.Value (name);
 			inst_and_params.Append (vals [1]);
-			vals [2] = new GLib.Value (property);
+			vals [2] = new GLib.Value (child_name);
 			inst_and_params.Append (vals [2]);
+			vals [3] = new GLib.Value (property_name);
+			inst_and_params.Append (vals [3]);
 			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
 			foreach (GLib.Value v in vals)
 				v.Dispose ();
@@ -96,15 +98,15 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void AddedVMDelegate (IntPtr iface, IntPtr name, IntPtr property);
+		delegate void AddedVMDelegate (IntPtr iface, IntPtr name, IntPtr child_name, IntPtr property_name);
 
 		static AddedVMDelegate AddedVMCallback;
 
-		static void added_cb (IntPtr iface, IntPtr name, IntPtr property)
+		static void added_cb (IntPtr iface, IntPtr name, IntPtr child_name, IntPtr property_name)
 		{
 			try {
 				PropertyInterface iface_managed = GLib.Object.GetObject (iface, false) as PropertyInterface;
-				iface_managed.OnAdded (GLib.Marshaller.Utf8PtrToString (name), GLib.Object.GetObject(property) as Cpg.Property);
+				iface_managed.OnAdded (GLib.Marshaller.Utf8PtrToString (name), GLib.Marshaller.Utf8PtrToString (child_name), GLib.Marshaller.Utf8PtrToString (property_name));
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -118,17 +120,19 @@ namespace Cpg {
 		}
 
 		[GLib.DefaultSignalHandler(Type=typeof(Cpg.PropertyInterface), ConnectionMethod="OverrideAdded")]
-		protected virtual void OnAdded (string name, Cpg.Property property)
+		protected virtual void OnAdded (string name, string child_name, string property_name)
 		{
 			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (3);
-			GLib.Value[] vals = new GLib.Value [3];
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (4);
+			GLib.Value[] vals = new GLib.Value [4];
 			vals [0] = new GLib.Value (this);
 			inst_and_params.Append (vals [0]);
 			vals [1] = new GLib.Value (name);
 			inst_and_params.Append (vals [1]);
-			vals [2] = new GLib.Value (property);
+			vals [2] = new GLib.Value (child_name);
 			inst_and_params.Append (vals [2]);
+			vals [3] = new GLib.Value (property_name);
+			inst_and_params.Append (vals [3]);
 			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
 			foreach (GLib.Value v in vals)
 				v.Dispose ();
@@ -160,6 +164,28 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_interface_lookup(IntPtr raw, IntPtr name);
+
+		public Cpg.Property Lookup(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cpg_property_interface_lookup(Handle, native_name);
+			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_interface_lookup_property_name(IntPtr raw, IntPtr name);
+
+		public string LookupPropertyName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cpg_property_interface_lookup_property_name(Handle, native_name);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_property_interface_get_names(IntPtr raw);
 
 		public string[] Names { 
@@ -171,14 +197,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_interface_get_type();
+		static extern IntPtr cpg_property_interface_lookup_child_name(IntPtr raw, IntPtr name);
 
-		public static new GLib.GType GType { 
-			get {
-				IntPtr raw_ret = cpg_property_interface_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
+		public string LookupChildName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cpg_property_interface_lookup_child_name(Handle, native_name);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			GLib.Marshaller.Free (native_name);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -191,27 +217,42 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_interface_lookup(IntPtr raw, IntPtr name);
+		static extern unsafe bool cpg_property_interface_add(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr property_name, out IntPtr error);
 
-		public Cpg.Property Lookup(string name) {
+		public unsafe bool Add(string name, string child_name, string property_name) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cpg_property_interface_lookup(Handle, native_name);
-			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
+			IntPtr native_child_name = GLib.Marshaller.StringToPtrGStrdup (child_name);
+			IntPtr native_property_name = GLib.Marshaller.StringToPtrGStrdup (property_name);
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cpg_property_interface_add(Handle, native_name, native_child_name, native_property_name, out error);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			GLib.Marshaller.Free (native_child_name);
+			GLib.Marshaller.Free (native_property_name);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_property_interface_implements(IntPtr raw, IntPtr name);
+
+		public bool Implements(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cpg_property_interface_implements(Handle, native_name);
+			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern unsafe bool cpg_property_interface_add(IntPtr raw, IntPtr name, IntPtr property, out IntPtr error);
+		static extern IntPtr cpg_property_interface_get_type();
 
-		public unsafe bool Add(string name, Cpg.Property property) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cpg_property_interface_add(Handle, native_name, property == null ? IntPtr.Zero : property.Handle, out error);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-			return ret;
+		public static new GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cpg_property_interface_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
 		}
 
 #endregion

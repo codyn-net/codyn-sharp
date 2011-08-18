@@ -92,8 +92,8 @@
         <file>../libcpg-network/cpg-network/cpg-attribute.h</file>
         <file>../libcpg-network/cpg-network/cpg-taggable.c</file>
         <file>../libcpg-network/cpg-network/cpg-taggable.h</file>
-        <file>../libcpg-network/cpg-network/cpg-when-applied.c</file>
-        <file>../libcpg-network/cpg-network/cpg-when-applied.h</file>
+        <file>../libcpg-network/cpg-network/cpg-parser-code.c</file>
+        <file>../libcpg-network/cpg-network/cpg-parser-code.h</file>
         <file>../libcpg-network/cpg-network/cpg-statement.c</file>
         <file>../libcpg-network/cpg-network/cpg-statement.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction.c</file>

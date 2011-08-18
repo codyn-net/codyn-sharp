@@ -9,13 +9,15 @@ namespace Cpg {
 	public interface Taggable : GLib.IWrapper {
 
 		void RemoveTag(string tag);
-		bool HasTag(string tag);
+		void AddTag(string tag, string value);
 		System.IntPtr TagTable { 
 			get;
 		}
-		string GetTag(string tag);
+		void CopyTo(System.IntPtr tags);
 		bool TryGetTag(string tag, string value);
-		void AddTag(string tag, string value);
+		bool HasTag(string tag);
+		string GetTag(string tag);
+		void Foreach(Cpg.TaggableForeachFunc func);
 	}
 
 	[GLib.GInterface (typeof (TaggableAdapter))]

@@ -129,6 +129,13 @@
       <member cname="CPG_OBJECT_ERROR_TEMPLATE_NOT_FOUND" name="ErrorTemplateNotFound" />
       <member cname="CPG_OBJECT_NUM_ERRORS" name="NumErrors" />
     </enum>
+    <enum name="ParserCodeEvent" cname="CpgParserCodeEvent" type="enum">
+      <member cname="CPG_PARSER_CODE_EVENT_NONE" name="None" />
+      <member cname="CPG_PARSER_CODE_EVENT_BEFORE_APPLY" name="BeforeApply" />
+      <member cname="CPG_PARSER_CODE_EVENT_AFTER_APPLY" name="AfterApply" />
+      <member cname="CPG_PARSER_CODE_EVENT_BEFORE_UNAPPLY" name="BeforeUnapply" />
+      <member cname="CPG_PARSER_CODE_EVENT_AFTER_UNAPPLY" name="AfterUnapply" />
+    </enum>
     <enum name="ParserContextDeleteType" cname="CpgParserContextDeleteType" type="enum">
       <member cname="CPG_PARSER_CONTEXT_SELECTOR_TYPE_OBJECT" name="Object" />
       <member cname="CPG_PARSER_CONTEXT_SELECTOR_TYPE_STATE" name="State" />
@@ -217,6 +224,15 @@
       <return-type type="void" />
       <parameters>
         <parameter type="CpgMiniObject*" name="obj" />
+      </parameters>
+    </callback>
+    <callback name="TaggableForeachFunc" cname="CpgTaggableForeachFunc">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="CpgTaggable*" name="taggable" />
+        <parameter type="const-gchar*" name="key" />
+        <parameter type="const-gchar*" name="value" />
+        <parameter type="gpointer" name="userdata" />
       </parameters>
     </callback>
     <interface name="Annotatable" cname="CpgAnnotatable">
@@ -395,8 +411,21 @@
           <parameter type="const-gchar*" name="value" />
         </parameters>
       </method>
+      <method name="CopyTo" cname="cpg_taggable_copy_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GHashTable*" name="tags" />
+        </parameters>
+      </method>
       <method name="CreateTable" cname="cpg_taggable_create_table" shared="true">
         <return-type type="GHashTable*" />
+      </method>
+      <method name="Foreach" cname="cpg_taggable_foreach">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgTaggableForeachFunc" name="func" />
+          <parameter type="gpointer" name="userdata" />
+        </parameters>
       </method>
       <method name="GetTag" cname="cpg_taggable_get_tag">
         <return-type type="const-gchar*" />
@@ -2383,17 +2412,17 @@
         <interface cname="CpgLayoutable" />
         <interface cname="CpgTaggable" />
       </implements>
+      <method name="AddEventHandler" cname="cpg_object_add_event_handler">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgParserCode*" name="code" />
+        </parameters>
+      </method>
       <method name="AddProperty" cname="cpg_object_add_property">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgProperty*" name="property" />
           <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="AddWhenApplied" cname="cpg_object_add_when_applied">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgWhenApplied*" name="applied" />
         </parameters>
       </method>
       <method name="ApplyTemplate" cname="cpg_object_apply_template">
@@ -2440,6 +2469,9 @@
       </method>
       <method name="GetAutoImported" cname="cpg_object_get_auto_imported">
         <return-type type="gboolean" />
+      </method>
+      <method name="GetEventHandlers" cname="cpg_object_get_event_handlers">
+        <return-type type="const-GSList*" />
       </method>
       <method name="GetFullId" cname="cpg_object_get_full_id">
         <return-type type="gchar*" />
@@ -2490,9 +2522,6 @@
       <method name="GetType" cname="cpg_object_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="GetWhenApplied" cname="cpg_object_get_when_applied">
-        <return-type type="const-GSList*" />
-      </method>
       <method name="HasProperty" cname="cpg_object_has_property">
         <return-type type="gboolean" />
         <parameters>
@@ -2513,17 +2542,17 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
+      <method name="RemoveEventHandler" cname="cpg_object_remove_event_handler">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgParserCode*" name="code" />
+        </parameters>
+      </method>
       <method name="RemoveProperty" cname="cpg_object_remove_property">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="name" />
           <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="RemoveWhenApplied" cname="cpg_object_remove_when_applied">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgWhenApplied*" name="applied" />
         </parameters>
       </method>
       <method name="Reset" cname="cpg_object_reset">
@@ -2735,6 +2764,38 @@
       </method>
       <constructor cname="cpg_operator_delayed_new" />
     </object>
+    <object name="ParserCode" cname="CpgParserCode" parent="GObject">
+      <field name="Priv" cname="priv" type="CpgParserCodePrivate*" />
+      <property name="Closure" cname="closure" type="CpgEmbeddedContext" readable="true" writeable="true" construct-only="true" />
+      <property name="Code" cname="code" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Event" cname="event" type="CpgParserCodeEvent" readable="true" writeable="true" construct-only="true" />
+      <method name="GetClosure" cname="cpg_parser_code_get_closure">
+        <return-type type="CpgEmbeddedContext*" />
+      </method>
+      <method name="GetCode" cname="cpg_parser_code_get_code">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetEvent" cname="cpg_parser_code_get_event">
+        <return-type type="CpgParserCodeEvent" />
+      </method>
+      <method name="GetType" cname="cpg_parser_code_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cpg_parser_code_new">
+        <parameters>
+          <parameter type="CpgEmbeddedContext*" name="closure" />
+          <parameter type="const-gchar*" name="code" />
+          <parameter type="CpgParserCodeEvent" name="event" />
+        </parameters>
+      </constructor>
+      <method name="Run" cname="cpg_parser_code_run">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgObject*" name="object" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+    </object>
     <object name="ParserContext" cname="CpgParserContext" parent="GObject">
       <field name="Priv" cname="priv" type="CpgParserContextPrivate*" />
       <property name="Network" cname="network" type="CpgNetwork" readable="true" writeable="true" construct-only="true" />
@@ -2785,7 +2846,8 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgEmbeddedString*" name="name" />
-          <parameter type="CpgSelector*" name="target" />
+          <parameter type="CpgEmbeddedString*" name="child_name" />
+          <parameter type="CpgEmbeddedString*" name="property_name" />
           <parameter type="GSList*" name="attributes" />
         </parameters>
       </method>
@@ -3067,6 +3129,14 @@
       <method name="PushObject" cname="cpg_parser_context_push_object">
         <return-type type="void" />
         <parameters>
+          <parameter type="CpgEmbeddedString*" name="id" />
+          <parameter type="GSList*" name="templates" />
+          <parameter type="GSList*" name="attributes" />
+        </parameters>
+      </method>
+      <method name="PushObjects" cname="cpg_parser_context_push_objects">
+        <return-type type="void" />
+        <parameters>
           <parameter type="GSList*" name="objects" />
           <parameter type="GSList*" name="attributes" />
         </parameters>
@@ -3082,6 +3152,7 @@
         <parameters>
           <parameter type="CpgSelector*" name="selector" />
           <parameter type="CpgSelectorType" name="type" />
+          <parameter type="GSList*" name="templates" />
           <parameter type="GSList*" name="attributes" />
         </parameters>
       </method>
@@ -3163,6 +3234,13 @@
           <parameter type="const-gchar*" name="message" />
         </parameters>
       </method>
+      <method name="SetEventHandler" cname="cpg_parser_context_set_event_handler">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgParserCodeEvent" name="event" />
+          <parameter type="GSList*" name="attributes" />
+        </parameters>
+      </method>
       <method name="SetFirstEof" cname="cpg_parser_context_set_first_eof">
         <return-type type="void" />
         <parameters>
@@ -3207,13 +3285,6 @@
           <parameter type="const-gchar*" name="token" />
         </parameters>
       </method>
-      <method name="SetWhenApplied" cname="cpg_parser_context_set_when_applied">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="apply" />
-          <parameter type="GSList*" name="attributes" />
-        </parameters>
-      </method>
       <method name="StealStartToken" cname="cpg_parser_context_steal_start_token">
         <return-type type="gint" />
       </method>
@@ -3224,7 +3295,7 @@
           <parameter type="CpgSelector*" name="targets" />
         </parameters>
       </method>
-      <method name="UnsetWhenApplied" cname="cpg_parser_context_unset_when_applied">
+      <method name="UnsetEventHandler" cname="cpg_parser_context_unset_event_handler">
         <return-type type="void" />
       </method>
     </object>
@@ -3384,7 +3455,8 @@
         <parameters>
           <parameter type="CpgPropertyInterface*" name="iface" />
           <parameter type="const-gchar*" name="name" />
-          <parameter type="CpgProperty*" name="property" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
         </parameters>
       </signal>
       <signal name="Removed" cname="removed" when="LAST" field_name="removed">
@@ -3392,7 +3464,8 @@
         <parameters>
           <parameter type="CpgPropertyInterface*" name="iface" />
           <parameter type="const-gchar*" name="name" />
-          <parameter type="CpgProperty*" name="property" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
         </parameters>
       </signal>
       <signal name="VerifyRemove" cname="verify-remove" when="LAST" manual="true" field_name="verify_remove" hidden="true">
@@ -3400,6 +3473,8 @@
         <parameters>
           <parameter type="CpgPropertyInterface*" name="iface" />
           <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
           <parameter type="GError**" name="error" />
         </parameters>
       </signal>
@@ -3408,30 +3483,38 @@
         <parameters>
           <parameter type="CpgPropertyInterface*" name="iface" />
           <parameter type="const-gchar*" name="name" />
-          <parameter type="CpgProperty*" name="property" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
           <parameter type="GError**" name="error" />
         </parameters>
       </signal>
-      <property name="Object" cname="object" type="CpgGroup" readable="true" writeable="true" construct-only="true" />
+      <property name="Group" cname="group" type="CpgGroup" readable="true" writeable="true" construct-only="true" />
       <method name="Add" cname="cpg_property_interface_add">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="name" />
-          <parameter type="CpgProperty*" name="property" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="ErrorQuark" cname="cpg_property_interface_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
+      <method name="GetGroup" cname="cpg_property_interface_get_group">
+        <return-type type="CpgGroup*" />
+      </method>
       <method name="GetNames" cname="cpg_property_interface_get_names">
         <return-type type="gchar**" null_term_array="" />
       </method>
-      <method name="GetObject" cname="cpg_property_interface_get_object">
-        <return-type type="CpgObject*" />
-      </method>
       <method name="GetType" cname="cpg_property_interface_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="Implements" cname="cpg_property_interface_implements">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
       </method>
       <method name="Lookup" cname="cpg_property_interface_lookup">
         <return-type type="CpgProperty*" />
@@ -3439,9 +3522,21 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
+      <method name="LookupChildName" cname="cpg_property_interface_lookup_child_name">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="LookupPropertyName" cname="cpg_property_interface_lookup_property_name">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
       <constructor cname="cpg_property_interface_new">
         <parameters>
-          <parameter type="CpgObject*" name="object" />
+          <parameter type="CpgGroup*" name="group" />
         </parameters>
       </constructor>
       <method name="Remove" cname="cpg_property_interface_remove">
@@ -3630,38 +3725,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgSelection*" name="selection" />
-        </parameters>
-      </method>
-    </object>
-    <object name="WhenApplied" cname="CpgWhenApplied" parent="GObject">
-      <field name="Priv" cname="priv" type="CpgWhenAppliedPrivate*" />
-      <property name="Closure" cname="closure" type="CpgEmbeddedContext" readable="true" writeable="true" construct-only="true" />
-      <property name="Code" cname="code" type="gchar*" readable="true" writeable="true" construct-only="true" />
-      <property name="IsApply" cname="is-apply" type="gboolean" readable="true" writeable="true" construct-only="true" />
-      <method name="GetClosure" cname="cpg_when_applied_get_closure">
-        <return-type type="CpgEmbeddedContext*" />
-      </method>
-      <method name="GetCode" cname="cpg_when_applied_get_code">
-        <return-type type="const-gchar*" />
-      </method>
-      <method name="GetIsApply" cname="cpg_when_applied_get_is_apply">
-        <return-type type="gboolean" />
-      </method>
-      <method name="GetType" cname="cpg_when_applied_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cpg_when_applied_new">
-        <parameters>
-          <parameter type="CpgEmbeddedContext*" name="closure" />
-          <parameter type="const-gchar*" name="code" />
-          <parameter type="gboolean" name="isapply" />
-        </parameters>
-      </constructor>
-      <method name="Run" cname="cpg_when_applied_run">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CpgObject*" name="object" />
-          <parameter type="GError**" name="error" />
         </parameters>
       </method>
     </object>

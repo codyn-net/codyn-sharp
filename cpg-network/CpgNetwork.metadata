@@ -199,7 +199,9 @@
   <remove-node path="/api/namespace/class[@name='Value']"/>
 
   <!-- CpgPropertyInterface -->
+  <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/constructor/parameters/parameter[@name='group']" name="type">CpgGroup*</attr>
   <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/method[@cname='cpg_property_interface_get_names']/return-type" name="null_term_array"/>
+  <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/method[@cname='cpg_property_interface_get_group']/return-type" name="type">CpgGroup*</attr>
   <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/signal[@name='VerifyAdd']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CpgPropertyInterface']/signal[@name='VerifyRemove']" name="hidden">true</attr>
 
@@ -230,9 +232,9 @@
   <!-- CpgExpansions -->
   <remove-node path="/api/namespace/class[@name='Expansions']/method[@cname='cpg_expansions_expand']"/>
 
-  <!-- CpgWhenApplied -->
-    <attr path="/api/namespace/object[@cname='CpgWhenApplied']/method[@cname='cpg_when_applied_run']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
-    <attr path="/api/namespace/object[@cname='CpgWhenApplied']/method[@cname='cpg_when_applied_run']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
+  <!-- CpgParserCode -->
+    <attr path="/api/namespace/object[@cname='CpgParserCode']/method[@cname='cpg_parser_code_run']/parameters/parameter[@name='(CpgObject)*']" name="type">CpgObject*</attr>
+    <attr path="/api/namespace/object[@cname='CpgParserCode']/method[@cname='cpg_parser_code_run']/parameters/parameter[@name='(CpgObject)*']" name="name">object</attr>
 </metadata>
 
 <!-- vi:ts=2:et -->
