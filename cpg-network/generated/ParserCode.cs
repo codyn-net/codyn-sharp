@@ -85,17 +85,6 @@ namespace Cpg {
 			}
 		}
 
-		[DllImport("cpg-network-2.0")]
-		static extern unsafe bool cpg_parser_code_run(IntPtr raw, IntPtr objekt, out IntPtr error);
-
-		public unsafe bool Run(Cpg.Object objekt) {
-			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cpg_parser_code_run(Handle, objekt == null ? IntPtr.Zero : objekt.Handle, out error);
-			bool ret = raw_ret;
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-			return ret;
-		}
-
 #endregion
 	}
 }

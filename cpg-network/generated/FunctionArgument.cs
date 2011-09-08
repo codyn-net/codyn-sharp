@@ -55,18 +55,21 @@ namespace Cpg {
 			}
 		}
 
-		[GLib.Property ("default")]
-		public double Default {
-			get {
-				GLib.Value val = GetProperty ("default");
-				double ret = (double) val;
-				val.Dispose ();
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_function_argument_get_default_value(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_function_argument_set_default_value(IntPtr raw, IntPtr expression);
+
+		[GLib.Property ("default-value")]
+		public Cpg.Expression DefaultValue {
+			get  {
+				IntPtr raw_ret = cpg_function_argument_get_default_value(Handle);
+				Cpg.Expression ret = GLib.Object.GetObject(raw_ret) as Cpg.Expression;
 				return ret;
 			}
-			set {
-				GLib.Value val = new GLib.Value(value);
-				SetProperty("default", val);
-				val.Dispose ();
+			set  {
+				cpg_function_argument_set_default_value(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
 		}
 
@@ -79,6 +82,11 @@ namespace Cpg {
 				IntPtr raw_ret = cpg_function_argument_get_name(Handle);
 				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
+			}
+			set {
+				GLib.Value val = new GLib.Value(value);
+				SetProperty("name", val);
+				val.Dispose ();
 			}
 		}
 
@@ -137,23 +145,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern double cpg_function_argument_get_default_value(IntPtr raw);
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_function_argument_set_default_value(IntPtr raw, double def);
-
-		public double DefaultValue { 
-			get {
-				double raw_ret = cpg_function_argument_get_default_value(Handle);
-				double ret = raw_ret;
-				return ret;
-			}
-			set {
-				cpg_function_argument_set_default_value(Handle, value);
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_function_argument_set_name(IntPtr raw, IntPtr name);
 
 		public bool SetName(string name) {
@@ -188,19 +179,19 @@ namespace Cpg {
 #region Customized extensions
 #line 1 "FunctionArgument.custom"
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_function_argument_new(IntPtr name, bool optional, double def);
+		static extern IntPtr cpg_function_argument_new(IntPtr name, IntPtr expression, bool isexplicit);
 
 		[DllImport ("libgobject-2.0")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
-		public FunctionArgument (string name, bool optional, double def) : base (IntPtr.Zero)
+		public FunctionArgument (string name, Cpg.Expression defaultValue, bool isexplicit) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (FunctionArgument)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
 
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			Raw = cpg_function_argument_new(native_name, optional, def);
+			Raw = cpg_function_argument_new(native_name, defaultValue != null ? defaultValue.Handle : IntPtr.Zero, isexplicit);
 			GLib.Marshaller.Free (native_name);
 
 			if (Raw != IntPtr.Zero)

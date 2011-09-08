@@ -1057,15 +1057,15 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </signal>
-      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
-      <property name="Optional" cname="optional" type="gboolean" readable="true" writeable="true" construct="true" />
-      <property name="Default" cname="default" type="gdouble" readable="true" writeable="true" construct="true" />
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="Optional" cname="optional" type="gboolean" readable="true" />
+      <property name="DefaultValue" cname="default-value" type="CpgExpression" readable="true" writeable="true" construct="true" />
       <property name="Explicit" cname="explicit" type="gboolean" readable="true" writeable="true" construct="true" />
       <method name="Copy" cname="cpg_function_argument_copy">
         <return-type type="CpgFunctionArgument*" owned="true" />
       </method>
       <method name="GetDefaultValue" cname="cpg_function_argument_get_default_value">
-        <return-type type="gdouble" />
+        <return-type type="CpgExpression*" />
       </method>
       <method name="GetExplicit" cname="cpg_function_argument_get_explicit">
         <return-type type="gboolean" />
@@ -1082,15 +1082,14 @@
       <constructor cname="cpg_function_argument_new">
         <parameters>
           <parameter type="const-gchar*" name="name" />
-          <parameter type="gboolean" name="optional" />
-          <parameter type="gdouble" name="def" />
+          <parameter type="CpgExpression*" name="expression" />
           <parameter type="gboolean" name="isexplicit" />
         </parameters>
       </constructor>
       <method name="SetDefaultValue" cname="cpg_function_argument_set_default_value">
         <return-type type="void" />
         <parameters>
-          <parameter type="gdouble" name="def" />
+          <parameter type="CpgExpression*" name="expression" />
         </parameters>
       </method>
       <method name="SetExplicit" cname="cpg_function_argument_set_explicit">
@@ -2965,7 +2964,8 @@
       <method name="Run" cname="cpg_parser_code_run">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="CPG_FORWARD_DECL" name="(CpgObject)*" />
+          <parameter type="CpgObjectForward*" name="object" />
+          <parameter type="CpgObjectForward*" name="context" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -3022,6 +3022,7 @@
           <parameter type="CpgEmbeddedString*" name="name" />
           <parameter type="CpgEmbeddedString*" name="child_name" />
           <parameter type="CpgEmbeddedString*" name="property_name" />
+          <parameter type="gboolean" name="is_optional" />
           <parameter type="GSList*" name="attributes" />
         </parameters>
       </method>
@@ -3961,6 +3962,7 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GSList*" name="expansions" />
+          <parameter type="gint" name="start" />
         </parameters>
       </method>
       <method name="Expand" cname="cpg_expansions_expand" shared="true">

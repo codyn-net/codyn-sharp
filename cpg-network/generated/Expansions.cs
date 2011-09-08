@@ -10,10 +10,10 @@ namespace Cpg {
 	public class Expansions {
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_expansions_annotate_indices(IntPtr expansions);
+		static extern void cpg_expansions_annotate_indices(IntPtr expansions, int start);
 
-		public static void AnnotateIndices(GLib.SList expansions) {
-			cpg_expansions_annotate_indices(expansions == null ? IntPtr.Zero : expansions.Handle);
+		public static void AnnotateIndices(GLib.SList expansions, int start) {
+			cpg_expansions_annotate_indices(expansions == null ? IntPtr.Zero : expansions.Handle, start);
 		}
 
 #endregion

@@ -545,10 +545,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_add_interface(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr property_name, IntPtr attributes);
+		static extern void cpg_parser_context_add_interface(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr property_name, bool is_optional, IntPtr attributes);
 
-		public void AddInterface(Cpg.EmbeddedString name, Cpg.EmbeddedString child_name, Cpg.EmbeddedString property_name, GLib.SList attributes) {
-			cpg_parser_context_add_interface(Handle, name == null ? IntPtr.Zero : name.Handle, child_name == null ? IntPtr.Zero : child_name.Handle, property_name == null ? IntPtr.Zero : property_name.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public void AddInterface(Cpg.EmbeddedString name, Cpg.EmbeddedString child_name, Cpg.EmbeddedString property_name, bool is_optional, GLib.SList attributes) {
+			cpg_parser_context_add_interface(Handle, name == null ? IntPtr.Zero : name.Handle, child_name == null ? IntPtr.Zero : child_name.Handle, property_name == null ? IntPtr.Zero : property_name.Handle, is_optional, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
