@@ -37,6 +37,8 @@ namespace Cpg {
 		Tanh,
 		Lerp,
 		Sqsum,
+		Sign,
+		Csign,
 		Num,
 	}
 #endregion

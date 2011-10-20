@@ -77,6 +77,8 @@
       <member cname="CPG_MATH_FUNCTION_TYPE_TANH" name="Tanh" />
       <member cname="CPG_MATH_FUNCTION_TYPE_LERP" name="Lerp" />
       <member cname="CPG_MATH_FUNCTION_TYPE_SQSUM" name="Sqsum" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_SIGN" name="Sign" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_CSIGN" name="Csign" />
       <member cname="CPG_MATH_FUNCTION_TYPE_NUM" name="Num" />
     </enum>
     <enum name="MathOperatorType" cname="CpgMathOperatorType" type="enum">
@@ -863,6 +865,9 @@
       <property name="Expression" cname="expression" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Value" cname="value" type="gdouble" readable="true" writeable="true" />
       <property name="HasCache" cname="has-cache" type="gboolean" readable="true" writeable="true" construct="true" />
+      <implements>
+        <interface cname="CpgModifiable" />
+      </implements>
       <method name="Compile" cname="cpg_expression_compile">
         <return-type type="gboolean" />
         <parameters>
@@ -2990,6 +2995,14 @@
         <parameters>
           <parameter name="inst" type="CpgParserContext*" />
           <parameter name="p0" type="gselector" />
+        </parameters>
+      </signal>
+      <signal name="FileUsed" cname="file-used" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgParserContext*" />
+          <parameter name="p0" type="gfile" />
+          <parameter name="p1" type="gchar*" />
         </parameters>
       </signal>
       <method name="AddAction" cname="cpg_parser_context_add_action">
