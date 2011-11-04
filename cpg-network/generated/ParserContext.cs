@@ -684,6 +684,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern int cpg_parser_context_peek_equation_depth(IntPtr raw);
+
+		public int PeekEquationDepth() {
+			int raw_ret = cpg_parser_context_peek_equation_depth(Handle);
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_parser_context_apply_template(IntPtr raw, IntPtr templates, IntPtr targets);
 
 		public void ApplyTemplate(Cpg.Selector templates, Cpg.Selector targets) {
@@ -769,10 +778,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_add_property(IntPtr raw, IntPtr name, IntPtr expression, int add_flags, int remove_flags, IntPtr attributes, bool assign_optional);
+		static extern void cpg_parser_context_add_property(IntPtr raw, IntPtr name, IntPtr count_name, IntPtr unexpanded_name, IntPtr expression, int add_flags, int remove_flags, IntPtr attributes, bool assign_optional);
 
-		public void AddProperty(Cpg.EmbeddedString name, Cpg.EmbeddedString expression, Cpg.PropertyFlags add_flags, Cpg.PropertyFlags remove_flags, GLib.SList attributes, bool assign_optional) {
-			cpg_parser_context_add_property(Handle, name == null ? IntPtr.Zero : name.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, attributes == null ? IntPtr.Zero : attributes.Handle, assign_optional);
+		public void AddProperty(Cpg.EmbeddedString name, Cpg.EmbeddedString count_name, Cpg.EmbeddedString unexpanded_name, Cpg.EmbeddedString expression, Cpg.PropertyFlags add_flags, Cpg.PropertyFlags remove_flags, GLib.SList attributes, bool assign_optional) {
+			cpg_parser_context_add_property(Handle, name == null ? IntPtr.Zero : name.Handle, count_name == null ? IntPtr.Zero : count_name.Handle, unexpanded_name == null ? IntPtr.Zero : unexpanded_name.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, attributes == null ? IntPtr.Zero : attributes.Handle, assign_optional);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -816,10 +825,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_define(IntPtr raw, IntPtr name, IntPtr values, bool expand, bool optional);
+		static extern void cpg_parser_context_define(IntPtr raw, IntPtr name, IntPtr value, bool optional, IntPtr count_name, IntPtr unexpanded_name);
 
-		public void Define(Cpg.EmbeddedString name, GLib.SList values, bool expand, bool optional) {
-			cpg_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, values == null ? IntPtr.Zero : values.Handle, expand, optional);
+		public void Define(Cpg.EmbeddedString name, Cpg.EmbeddedString value, bool optional, Cpg.EmbeddedString count_name, Cpg.EmbeddedString unexpanded_name) {
+			cpg_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle, optional, count_name == null ? IntPtr.Zero : count_name.Handle, unexpanded_name == null ? IntPtr.Zero : unexpanded_name.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]

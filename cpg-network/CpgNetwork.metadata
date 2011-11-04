@@ -175,6 +175,8 @@
   <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p1']" name="name">step</attr>
   <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p2']" name="name">to</attr>
 
+  <attr path="/api/namespace/object[@cname='CpgIntegrator']/signal[@name='StepPrepare']" name="name">StepPrepared</attr>
+
   <!-- CpgIntegrators -->
   <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cpg_integrators_list']/return-type" name="element_type">GType</attr>
   <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cpg_integrators_create']/return-type" name="element_type">CpgIntegrator*</attr>

@@ -91,6 +91,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_embedded_string_push_brace(IntPtr raw);
+
+		public Cpg.EmbeddedString PushBrace() {
+			IntPtr raw_ret = cpg_embedded_string_push_brace(Handle);
+			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_embedded_string_add_text(IntPtr raw, IntPtr text);
 
 		public Cpg.EmbeddedString AddText(string text) {
@@ -98,6 +107,24 @@ namespace Cpg {
 			IntPtr raw_ret = cpg_embedded_string_add_text(Handle, native_text);
 			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
 			GLib.Marshaller.Free (native_text);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern int cpg_embedded_string_brace_level(IntPtr raw);
+
+		public int BraceLevel() {
+			int raw_ret = cpg_embedded_string_brace_level(Handle);
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_embedded_string_pop_brace(IntPtr raw);
+
+		public Cpg.EmbeddedString PopBrace() {
+			IntPtr raw_ret = cpg_embedded_string_pop_brace(Handle);
+			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
 			return ret;
 		}
 

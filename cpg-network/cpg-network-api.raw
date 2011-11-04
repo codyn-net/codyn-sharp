@@ -21,6 +21,9 @@
       <member cname="CPG_EMBEDDED_STRING_NODE_TEXT" name="Text" />
       <member cname="CPG_EMBEDDED_STRING_NODE_EQUATION" name="Equation" />
       <member cname="CPG_EMBEDDED_STRING_NODE_INDIRECTION" name="Indirection" />
+      <member cname="CPG_EMBEDDED_STRING_NODE_REDUCE" name="Reduce" />
+      <member cname="CPG_EMBEDDED_STRING_NODE_MAP" name="Map" />
+      <member cname="CPG_EMBEDDED_STRING_NODE_CONDITION" name="Condition" />
     </enum>
     <enum name="FunctionError" cname="CpgFunctionError" type="enum">
       <member cname="CPG_FUNCTION_ERROR_UNKNOWN" name="ErrorUnknown" />
@@ -747,6 +750,9 @@
           <parameter type="const-gchar*" name="text" />
         </parameters>
       </method>
+      <method name="BraceLevel" cname="cpg_embedded_string_brace_level">
+        <return-type type="gint" />
+      </method>
       <method name="ClearCache" cname="cpg_embedded_string_clear_cache">
         <return-type type="void" />
       </method>
@@ -792,6 +798,9 @@
       <method name="Pop" cname="cpg_embedded_string_pop">
         <return-type type="CpgEmbeddedString*" />
       </method>
+      <method name="PopBrace" cname="cpg_embedded_string_pop_brace">
+        <return-type type="CpgEmbeddedString*" />
+      </method>
       <method name="PrependText" cname="cpg_embedded_string_prepend_text">
         <return-type type="CpgEmbeddedString*" />
         <parameters>
@@ -805,6 +814,9 @@
           <parameter type="gint" name="depth" />
         </parameters>
       </method>
+      <method name="PushBrace" cname="cpg_embedded_string_push_brace">
+        <return-type type="CpgEmbeddedString*" />
+      </method>
     </object>
     <object name="Expansion" cname="CpgExpansion" parent="GObject">
       <field name="Priv" cname="priv" type="CpgExpansionPrivate*" />
@@ -812,6 +824,13 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="item" />
+        </parameters>
+      </method>
+      <method name="Append" cname="cpg_expansion_append">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgExpansion*" name="other" />
+          <parameter type="gint" name="idx" />
         </parameters>
       </method>
       <method name="Copy" cname="cpg_expansion_copy">
@@ -831,6 +850,13 @@
       </method>
       <method name="GetType" cname="cpg_expansion_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="Insert" cname="cpg_expansion_insert">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="idx" />
+          <parameter type="const-gchar*" name="item" />
+        </parameters>
       </method>
       <constructor cname="cpg_expansion_new">
         <parameters>
@@ -1790,6 +1816,14 @@
       <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" />
       <property name="Time" cname="time" type="gdouble" readable="true" />
       <signal name="Step" cname="step" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="CpgIntegrator*" />
+          <parameter name="p0" type="gdouble" />
+          <parameter name="p1" type="gdouble" />
+        </parameters>
+      </signal>
+      <signal name="StepPrepare" cname="step-prepare" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CpgIntegrator*" />
@@ -3069,6 +3103,8 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgEmbeddedString*" name="name" />
+          <parameter type="CpgEmbeddedString*" name="count_name" />
+          <parameter type="CpgEmbeddedString*" name="unexpanded_name" />
           <parameter type="CpgEmbeddedString*" name="expression" />
           <parameter type="CpgPropertyFlags" name="add_flags" />
           <parameter type="CpgPropertyFlags" name="remove_flags" />
@@ -3108,9 +3144,10 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgEmbeddedString*" name="name" />
-          <parameter type="GSList*" name="values" />
-          <parameter type="gboolean" name="expand" />
+          <parameter type="CpgEmbeddedString*" name="value" />
           <parameter type="gboolean" name="optional" />
+          <parameter type="CpgEmbeddedString*" name="count_name" />
+          <parameter type="CpgEmbeddedString*" name="unexpanded_name" />
         </parameters>
       </method>
       <method name="DeleteSelector" cname="cpg_parser_context_delete_selector">
@@ -3214,6 +3251,9 @@
           <parameter type="gboolean" name="push_network" />
           <parameter type="GError**" name="error" />
         </parameters>
+      </method>
+      <method name="PeekEquationDepth" cname="cpg_parser_context_peek_equation_depth">
+        <return-type type="gint" />
       </method>
       <method name="PeekSelector" cname="cpg_parser_context_peek_selector">
         <return-type type="CpgSelector*" />

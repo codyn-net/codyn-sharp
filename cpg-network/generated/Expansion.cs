@@ -39,20 +39,52 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expansion_insert(IntPtr raw, int idx, IntPtr item);
+
+		public void Insert(int idx, string item) {
+			IntPtr native_item = GLib.Marshaller.StringToPtrGStrdup (item);
+			cpg_expansion_insert(Handle, idx, native_item);
+			GLib.Marshaller.Free (native_item);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expansion_set_index(IntPtr raw, int idx, int val);
+
+		public void SetIndex(int idx, int val) {
+			cpg_expansion_set_index(Handle, idx, val);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expansion_set(IntPtr raw, int idx, IntPtr val);
+
+		public void Set(int idx, string val) {
+			IntPtr native_val = GLib.Marshaller.StringToPtrGStrdup (val);
+			cpg_expansion_set(Handle, idx, native_val);
+			GLib.Marshaller.Free (native_val);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expansion_add(IntPtr raw, IntPtr item);
+
+		public void Add(string item) {
+			IntPtr native_item = GLib.Marshaller.StringToPtrGStrdup (item);
+			cpg_expansion_add(Handle, native_item);
+			GLib.Marshaller.Free (native_item);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expansion_append(IntPtr raw, IntPtr other, int idx);
+
+		public void Append(Cpg.Expansion other, int idx) {
+			cpg_expansion_append(Handle, other == null ? IntPtr.Zero : other.Handle, idx);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_expansion_get(IntPtr raw, int idx);
 
 		public string Get(int idx) {
 			IntPtr raw_ret = cpg_expansion_get(Handle, idx);
 			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern int cpg_expansion_get_index(IntPtr raw, int idx);
-
-		public int GetIndex(int idx) {
-			int raw_ret = cpg_expansion_get_index(Handle, idx);
-			int ret = raw_ret;
 			return ret;
 		}
 
@@ -66,21 +98,12 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_expansion_copy(IntPtr raw);
+		static extern int cpg_expansion_get_index(IntPtr raw, int idx);
 
-		public Cpg.Expansion Copy() {
-			IntPtr raw_ret = cpg_expansion_copy(Handle);
-			Cpg.Expansion ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Expansion;
+		public int GetIndex(int idx) {
+			int raw_ret = cpg_expansion_get_index(Handle, idx);
+			int ret = raw_ret;
 			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_expansion_set(IntPtr raw, int idx, IntPtr val);
-
-		public void Set(int idx, string val) {
-			IntPtr native_val = GLib.Marshaller.StringToPtrGStrdup (val);
-			cpg_expansion_set(Handle, idx, native_val);
-			GLib.Marshaller.Free (native_val);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -95,19 +118,12 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_expansion_add(IntPtr raw, IntPtr item);
+		static extern IntPtr cpg_expansion_copy(IntPtr raw);
 
-		public void Add(string item) {
-			IntPtr native_item = GLib.Marshaller.StringToPtrGStrdup (item);
-			cpg_expansion_add(Handle, native_item);
-			GLib.Marshaller.Free (native_item);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_expansion_set_index(IntPtr raw, int idx, int val);
-
-		public void SetIndex(int idx, int val) {
-			cpg_expansion_set_index(Handle, idx, val);
+		public Cpg.Expansion Copy() {
+			IntPtr raw_ret = cpg_expansion_copy(Handle);
+			Cpg.Expansion ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Expansion;
+			return ret;
 		}
 
 #endregion

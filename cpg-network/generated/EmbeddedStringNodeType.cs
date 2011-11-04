@@ -12,6 +12,9 @@ namespace Cpg {
 		Text,
 		Equation,
 		Indirection,
+		Reduce,
+		Map,
+		Condition,
 	}
 #endregion
 }
