@@ -1,3 +1,9 @@
+cpg-network2-sharp (2.1-1) UNRELEASED; urgency=low
+
+  * New upstream release 
+
+ -- Jesse van den Kieboom <jvanden@biorobpc21.epfl.ch>  Fri, 04 Nov 2011 15:50:56 +0100
+
 cpg-network2-sharp (2.0-1) UNRELEASED; urgency=low
 
   * New upstream release

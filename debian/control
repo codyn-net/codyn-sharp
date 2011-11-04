@@ -9,7 +9,7 @@ Build-Depends: debhelper (>= 7),
 			   mono-runtime,
 			   libmono-dev (>= 1.0),
 			   libmono2.0-cil,
-			   cpg-network2-dev (>= 2.1),
+			   cpg-network2-dev (>= 2.4),
 			   gtk-sharp2-gapi,
 			   libglib2.0-cil,
 			   libglib2.0-cil-dev
@@ -20,7 +20,7 @@ Homepage: http://biorob.epfl.ch
 Package: cpg-network2-sharp
 Section: libs
 Architecture: any
-Depends: mono-runtime, libmono-system2.0-cil, libmono-corlib2.0-cil, libmono2.0-cil, cpg-network2 (>= 2.1), libglib2.0-cil
+Depends: mono-runtime, libmono-system2.0-cil, libmono-corlib2.0-cil, libmono2.0-cil, cpg-network2 (>= 2.4), libglib2.0-cil
 Replaces: cpg-network-sharp2
 Conflicts: cpg-network-sharp2
 Description: cpg network C# bindings
