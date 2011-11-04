@@ -10,6 +10,7 @@ namespace Cpg {
 	public enum SelectorPseudoType {
 
 		TypeRoot,
+		TypeTemplatesRoot,
 		TypeChildren,
 		TypeParent,
 		TypeFirst,
@@ -18,6 +19,7 @@ namespace Cpg {
 		TypeStates,
 		TypeLinks,
 		TypeGroups,
+		TypeImports,
 		TypeProperties,
 		TypeActions,
 		TypeFunctions,
@@ -30,6 +32,18 @@ namespace Cpg {
 		TypeSelf,
 		TypeDebug,
 		TypeName,
+		TypeDescendants,
+		TypeAncestors,
+		TypeUnique,
+		TypeIf,
+		TypeIsEmpty,
+		TypeRemove,
+		TypeFromSet,
+		TypeType,
+		TypeHasFlag,
+		TypeHasTemplate,
+		TypeHasTag,
+		TypeReverse,
 		Num,
 	}
 #endregion

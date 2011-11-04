@@ -9,6 +9,9 @@ namespace Cpg {
 	public interface Layoutable : GLib.IWrapper {
 
 		void SetLocation(int x, int y);
+		bool HasLocation { 
+			get; set;
+		}
 		bool SupportsLocation();
 		void GetLocation(out int x, out int y);
 	}
@@ -19,6 +22,7 @@ namespace Cpg {
 		void GetLocation (out int x, out int y);
 		void SetLocation (int x, int y);
 		bool SupportsLocation ();
+		bool HasLocation { get; set; }
 	}
 #endregion
 }

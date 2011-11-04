@@ -27,6 +27,42 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern double cpg_operator_delayed_get_delay(IntPtr raw);
+
+		[GLib.Property ("delay")]
+		public double Delay {
+			get  {
+				double raw_ret = cpg_operator_delayed_get_delay(Handle);
+				double ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_operator_delayed_get_expression(IntPtr raw);
+
+		[GLib.Property ("expression")]
+		public Cpg.Expression Expression {
+			get  {
+				IntPtr raw_ret = cpg_operator_delayed_get_expression(Handle);
+				Cpg.Expression ret = GLib.Object.GetObject(raw_ret) as Cpg.Expression;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_operator_delayed_get_initial_value(IntPtr raw);
+
+		[GLib.Property ("initial-value")]
+		public Cpg.Expression InitialValue {
+			get  {
+				IntPtr raw_ret = cpg_operator_delayed_get_initial_value(Handle);
+				Cpg.Expression ret = GLib.Object.GetObject(raw_ret) as Cpg.Expression;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_operator_delayed_get_type();
 
 		public static new GLib.GType GType { 

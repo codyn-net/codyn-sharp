@@ -14,9 +14,15 @@ namespace Cpg {
 			}
 		}
 
-		public Cpg.Property Property{
+		public string ChildName{
 			get {
-				return (Cpg.Property) Args[1];
+				return (string) Args[1];
+			}
+		}
+
+		public string PropertyName{
+			get {
+				return (string) Args[2];
 			}
 		}
 

@@ -193,6 +193,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern uint cpg_function_get_n_implicit(IntPtr raw);
+
+		public uint NImplicit { 
+			get {
+				uint raw_ret = cpg_function_get_n_implicit(Handle);
+				uint ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern unsafe bool cpg_function_clear_arguments(IntPtr raw, out IntPtr error);
 
 		public unsafe bool ClearArguments() {

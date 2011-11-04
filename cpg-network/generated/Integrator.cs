@@ -171,6 +171,57 @@ namespace Cpg {
 		}
 
 		[GLib.CDeclCallback]
+		delegate void StepPreparedVMDelegate (IntPtr inst, double p0, double p1);
+
+		static StepPreparedVMDelegate StepPreparedVMCallback;
+
+		static void stepprepared_cb (IntPtr inst, double p0, double p1)
+		{
+			try {
+				Integrator inst_managed = GLib.Object.GetObject (inst, false) as Integrator;
+				inst_managed.OnStepPrepared (p0, p1);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideStepPrepared (GLib.GType gtype)
+		{
+			if (StepPreparedVMCallback == null)
+				StepPreparedVMCallback = new StepPreparedVMDelegate (stepprepared_cb);
+			OverrideVirtualMethod (gtype, "step-prepare", StepPreparedVMCallback);
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Cpg.Integrator), ConnectionMethod="OverrideStepPrepared")]
+		protected virtual void OnStepPrepared (double p0, double p1)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (3);
+			GLib.Value[] vals = new GLib.Value [3];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (p0);
+			inst_and_params.Append (vals [1]);
+			vals [2] = new GLib.Value (p1);
+			inst_and_params.Append (vals [2]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("step-prepare")]
+		public event Cpg.StepPreparedHandler StepPrepared {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "step-prepare", typeof (Cpg.StepPreparedArgs));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "step-prepare", typeof (Cpg.StepPreparedArgs));
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		[GLib.CDeclCallback]
 		delegate void BeginVMDelegate (IntPtr inst, double from, double step, double to);
 
 		static BeginVMDelegate BeginVMCallback;
