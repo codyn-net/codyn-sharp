@@ -778,10 +778,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_parser_context_add_property(IntPtr raw, IntPtr name, IntPtr count_name, IntPtr unexpanded_name, IntPtr expression, int add_flags, int remove_flags, IntPtr attributes, bool assign_optional);
+		static extern void cpg_parser_context_add_property(IntPtr raw, IntPtr name, IntPtr count_name, IntPtr unexpanded_name, IntPtr expression, int add_flags, int remove_flags, IntPtr attributes, bool assign_optional, IntPtr constraint);
 
-		public void AddProperty(Cpg.EmbeddedString name, Cpg.EmbeddedString count_name, Cpg.EmbeddedString unexpanded_name, Cpg.EmbeddedString expression, Cpg.PropertyFlags add_flags, Cpg.PropertyFlags remove_flags, GLib.SList attributes, bool assign_optional) {
-			cpg_parser_context_add_property(Handle, name == null ? IntPtr.Zero : name.Handle, count_name == null ? IntPtr.Zero : count_name.Handle, unexpanded_name == null ? IntPtr.Zero : unexpanded_name.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, attributes == null ? IntPtr.Zero : attributes.Handle, assign_optional);
+		public void AddProperty(Cpg.EmbeddedString name, Cpg.EmbeddedString count_name, Cpg.EmbeddedString unexpanded_name, Cpg.EmbeddedString expression, Cpg.PropertyFlags add_flags, Cpg.PropertyFlags remove_flags, GLib.SList attributes, bool assign_optional, Cpg.EmbeddedString constraint) {
+			cpg_parser_context_add_property(Handle, name == null ? IntPtr.Zero : name.Handle, count_name == null ? IntPtr.Zero : count_name.Handle, unexpanded_name == null ? IntPtr.Zero : unexpanded_name.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, attributes == null ? IntPtr.Zero : attributes.Handle, assign_optional, constraint == null ? IntPtr.Zero : constraint.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]

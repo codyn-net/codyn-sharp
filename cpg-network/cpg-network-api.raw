@@ -82,6 +82,8 @@
       <member cname="CPG_MATH_FUNCTION_TYPE_SQSUM" name="Sqsum" />
       <member cname="CPG_MATH_FUNCTION_TYPE_SIGN" name="Sign" />
       <member cname="CPG_MATH_FUNCTION_TYPE_CSIGN" name="Csign" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_CLIP" name="Clip" />
+      <member cname="CPG_MATH_FUNCTION_TYPE_CYCLE" name="Cycle" />
       <member cname="CPG_MATH_FUNCTION_TYPE_NUM" name="Num" />
     </enum>
     <enum name="MathOperatorType" cname="CpgMathOperatorType" type="enum">
@@ -744,6 +746,12 @@
       <implements>
         <interface cname="CpgStatement" />
       </implements>
+      <method name="AddString" cname="cpg_embedded_string_add_string">
+        <return-type type="CpgEmbeddedString*" />
+        <parameters>
+          <parameter type="CpgEmbeddedString*" name="other" />
+        </parameters>
+      </method>
       <method name="AddText" cname="cpg_embedded_string_add_text">
         <return-type type="CpgEmbeddedString*" />
         <parameters>
@@ -1734,6 +1742,9 @@
     </object>
     <object name="InstructionNumber" cname="CpgInstructionNumber" parent="CpgInstruction">
       <field name="Priv" cname="priv" type="CpgInstructionNumberPrivate*" />
+      <method name="GetRepresentation" cname="cpg_instruction_number_get_representation">
+        <return-type type="gchar*" />
+      </method>
       <method name="GetType" cname="cpg_instruction_number_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -1743,6 +1754,11 @@
       <constructor cname="cpg_instruction_number_new">
         <parameters>
           <parameter type="gdouble" name="value" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_instruction_number_new_from_string">
+        <parameters>
+          <parameter type="const-gchar*" name="repr" />
         </parameters>
       </constructor>
       <method name="SetValue" cname="cpg_instruction_number_set_value">
@@ -3110,6 +3126,7 @@
           <parameter type="CpgPropertyFlags" name="remove_flags" />
           <parameter type="GSList*" name="attributes" />
           <parameter type="gboolean" name="assign_optional" />
+          <parameter type="CpgEmbeddedString*" name="constraint" />
         </parameters>
       </method>
       <method name="ApplyTemplate" cname="cpg_parser_context_apply_template">
@@ -3544,6 +3561,7 @@
       <property name="Object" cname="object" type="CpgObject" readable="true" writeable="true" construct="true" />
       <property name="Flags" cname="flags" type="CpgPropertyFlags" readable="true" writeable="true" construct="true" />
       <property name="Expression" cname="expression" type="CpgExpression" readable="true" writeable="true" construct="true" />
+      <property name="Constraint" cname="constraint" type="CpgExpression" readable="true" writeable="true" construct="true" />
       <signal name="InvalidateName" cname="invalidate-name" when="LAST" field_name="invalidate_name">
         <return-type type="gboolean" />
         <parameters>
@@ -3577,6 +3595,9 @@
           <parameter type="CpgPropertyFlags" name="flags" />
         </parameters>
       </method>
+      <method name="ApplyConstraint" cname="cpg_property_apply_constraint">
+        <return-type type="void" />
+      </method>
       <method name="Copy" cname="cpg_property_copy">
         <return-type type="CpgProperty*" owned="true" />
       </method>
@@ -3601,6 +3622,9 @@
           <parameter type="CpgPropertyFlags" name="remove_flags" />
         </parameters>
       </method>
+      <method name="GetConstraint" cname="cpg_property_get_constraint">
+        <return-type type="CpgExpression*" />
+      </method>
       <method name="GetExpression" cname="cpg_property_get_expression">
         <return-type type="CpgExpression*" />
       </method>
@@ -3615,9 +3639,6 @@
       </method>
       <method name="GetIntegrated" cname="cpg_property_get_integrated">
         <return-type type="gboolean" />
-      </method>
-      <method name="GetLastValue" cname="cpg_property_get_last_value">
-        <return-type type="gdouble" />
       </method>
       <method name="GetName" cname="cpg_property_get_name">
         <return-type type="const-gchar*" />
@@ -3646,6 +3667,12 @@
       </method>
       <method name="Reset" cname="cpg_property_reset">
         <return-type type="void" />
+      </method>
+      <method name="SetConstraint" cname="cpg_property_set_constraint">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgExpression*" name="expression" />
+        </parameters>
       </method>
       <method name="SetExpression" cname="cpg_property_set_expression">
         <return-type type="void" />
@@ -3682,9 +3709,6 @@
         <parameters>
           <parameter type="gdouble" name="value" />
         </parameters>
-      </method>
-      <method name="UpdateLastValue" cname="cpg_property_update_last_value">
-        <return-type type="void" />
       </method>
     </object>
     <object name="PropertyInterface" cname="CpgPropertyInterface" parent="GObject">

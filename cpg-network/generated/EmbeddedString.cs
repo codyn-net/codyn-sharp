@@ -73,6 +73,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_embedded_string_add_string(IntPtr raw, IntPtr other);
+
+		public Cpg.EmbeddedString AddString(Cpg.EmbeddedString other) {
+			IntPtr raw_ret = cpg_embedded_string_add_string(Handle, other == null ? IntPtr.Zero : other.Handle);
+			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_embedded_string_clear_cache(IntPtr raw);
 
 		public void ClearCache() {

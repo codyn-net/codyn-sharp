@@ -55,6 +55,24 @@ namespace Cpg {
 			}
 		}
 
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_get_constraint(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_property_set_constraint(IntPtr raw, IntPtr expression);
+
+		[GLib.Property ("constraint")]
+		public Cpg.Expression Constraint {
+			get  {
+				IntPtr raw_ret = cpg_property_get_constraint(Handle);
+				Cpg.Expression ret = GLib.Object.GetObject(raw_ret) as Cpg.Expression;
+				return ret;
+			}
+			set  {
+				cpg_property_set_constraint(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
 		[GLib.Property ("object")]
 		public Cpg.Object Object {
 			get {
@@ -257,19 +275,21 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_property_equal(IntPtr raw, IntPtr other);
+		static extern bool cpg_property_set_name(IntPtr raw, IntPtr name);
 
-		public bool Equal(Cpg.Property other) {
-			bool raw_ret = cpg_property_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+		public bool SetName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cpg_property_set_name(Handle, native_name);
 			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_property_remove_flags(IntPtr raw, int flags);
+		static extern void cpg_property_apply_constraint(IntPtr raw);
 
-		public void RemoveFlags(Cpg.PropertyFlags flags) {
-			cpg_property_remove_flags(Handle, (int) flags);
+		public void ApplyConstraint() {
+			cpg_property_apply_constraint(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -286,14 +306,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern double cpg_property_get_last_value(IntPtr raw);
+		static extern void cpg_property_remove_flags(IntPtr raw, int flags);
 
-		public double LastValue { 
-			get {
-				double raw_ret = cpg_property_get_last_value(Handle);
-				double ret = raw_ret;
-				return ret;
-			}
+		public void RemoveFlags(Cpg.PropertyFlags flags) {
+			cpg_property_remove_flags(Handle, (int) flags);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_property_equal(IntPtr raw, IntPtr other);
+
+		public bool Equal(Cpg.Property other) {
+			bool raw_ret = cpg_property_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+			bool ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -337,13 +362,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_property_update_last_value(IntPtr raw);
-
-		public void UpdateLastValue() {
-			cpg_property_update_last_value(Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_property_get_full_name(IntPtr raw);
 
 		public string FullName { 
@@ -352,17 +370,6 @@ namespace Cpg {
 				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 				return ret;
 			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_property_set_name(IntPtr raw, IntPtr name);
-
-		public bool SetName(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cpg_property_set_name(Handle, native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
-			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]

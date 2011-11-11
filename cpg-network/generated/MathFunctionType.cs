@@ -39,6 +39,8 @@ namespace Cpg {
 		Sqsum,
 		Sign,
 		Csign,
+		Clip,
+		Cycle,
 		Num,
 	}
 #endregion

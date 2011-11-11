@@ -26,6 +26,19 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_instruction_number_new_from_string(IntPtr repr);
+
+		public InstructionNumber (string repr) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (InstructionNumber)) {
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+			IntPtr native_repr = GLib.Marshaller.StringToPtrGStrdup (repr);
+			Raw = cpg_instruction_number_new_from_string(native_repr);
+			GLib.Marshaller.Free (native_repr);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_instruction_number_get_type();
 
 		public static new GLib.GType GType { 
@@ -50,6 +63,17 @@ namespace Cpg {
 			}
 			set {
 				cpg_instruction_number_set_value(Handle, value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_instruction_number_get_representation(IntPtr raw);
+
+		public string Representation { 
+			get {
+				IntPtr raw_ret = cpg_instruction_number_get_representation(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
 			}
 		}
 
