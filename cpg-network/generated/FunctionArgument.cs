@@ -22,18 +22,12 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_function_argument_get_optional(IntPtr raw);
 
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_function_argument_set_optional(IntPtr raw, bool optional);
-
 		[GLib.Property ("optional")]
 		public bool Optional {
 			get  {
 				bool raw_ret = cpg_function_argument_get_optional(Handle);
 				bool ret = raw_ret;
 				return ret;
-			}
-			set  {
-				cpg_function_argument_set_optional(Handle, value);
 			}
 		}
 

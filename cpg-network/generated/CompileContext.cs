@@ -41,12 +41,36 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern void cpg_compile_context_prepend_object(IntPtr raw, IntPtr objekt);
+
+		public void PrependObject(Cpg.Object objekt) {
+			cpg_compile_context_prepend_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_compile_context_lookup_property(IntPtr raw);
 
 		public Cpg.Property LookupProperty() {
 			IntPtr raw_ret = cpg_compile_context_lookup_property(Handle);
 			Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
 			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_compile_context_get_function_arg_priority(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_compile_context_set_function_arg_priority(IntPtr raw, bool prio);
+
+		public bool FunctionArgPriority { 
+			get {
+				bool raw_ret = cpg_compile_context_get_function_arg_priority(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set {
+				cpg_compile_context_set_function_arg_priority(Handle, value);
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -61,10 +85,20 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_context_prepend_object(IntPtr raw, IntPtr objekt);
+		static extern bool cpg_compile_context_get_function_ref_priority(IntPtr raw);
 
-		public void PrependObject(Cpg.Object objekt) {
-			cpg_compile_context_prepend_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_compile_context_set_function_ref_priority(IntPtr raw, bool prio);
+
+		public bool FunctionRefPriority { 
+			get {
+				bool raw_ret = cpg_compile_context_get_function_ref_priority(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set {
+				cpg_compile_context_set_function_ref_priority(Handle, value);
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]

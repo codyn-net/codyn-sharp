@@ -123,6 +123,17 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern int cpg_expression_get_error_start(IntPtr raw);
+
+		public int ErrorStart { 
+			get {
+				int raw_ret = cpg_expression_get_error_start(Handle);
+				int ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_expression_get_as_string(IntPtr raw);
 
 		public string AsString { 
@@ -131,17 +142,6 @@ namespace Cpg {
 				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
 			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern unsafe bool cpg_expression_compile(IntPtr raw, IntPtr context, out IntPtr error);
-
-		public unsafe bool Compile(Cpg.CompileContext context) {
-			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cpg_expression_compile(Handle, context == null ? IntPtr.Zero : context.Handle, out error);
-			bool ret = raw_ret;
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]

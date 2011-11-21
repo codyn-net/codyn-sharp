@@ -824,6 +824,15 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_object_get_compile_context(IntPtr raw, IntPtr context);
+
+		public Cpg.CompileContext GetCompileContext(Cpg.CompileContext context) {
+			IntPtr raw_ret = cpg_object_get_compile_context(Handle, context == null ? IntPtr.Zero : context.Handle);
+			Cpg.CompileContext ret = GLib.Object.GetObject(raw_ret) as Cpg.CompileContext;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern void cpg_usable_use(IntPtr raw);
 
 		public void Use() {

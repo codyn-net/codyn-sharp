@@ -36,10 +36,20 @@
         <file>../libcpg-network/cpg-network/cpg-property-interface.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.c</file>
         <file>../libcpg-network/cpg-network/cpg-compile-error.h</file>
-        <file>../libcpg-network/cpg-network/cpg-operator.c</file>
-        <file>../libcpg-network/cpg-network/cpg-operator.h</file>
-        <file>../libcpg-network/cpg-network/cpg-operator-delayed.c</file>
-        <file>../libcpg-network/cpg-network/cpg-operator-delayed.h</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator.c</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator.h</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-delayed.c</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-delayed.h</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-diff.c</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-diff.h</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-pdiff.c</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-pdiff.h</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-df-dt.c</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-df-dt.h</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-linsolve.c</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-linsolve.h</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-simplify.c</file>
+        <file>../libcpg-network/cpg-network/operators/cpg-operator-simplify.h</file>
         <file>../libcpg-network/cpg-network/cpg-stack.c</file>
         <file>../libcpg-network/cpg-network/cpg-stack.h</file>
         <file>../libcpg-network/cpg-network/cpg-function.c</file>

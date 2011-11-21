@@ -258,31 +258,21 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern double cpg_property_get_update(IntPtr raw);
+		static extern IntPtr cpg_property_get_type();
 
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_property_set_update(IntPtr raw, double value);
-
-		public double Update { 
+		public static new GLib.GType GType { 
 			get {
-				double raw_ret = cpg_property_get_update(Handle);
-				double ret = raw_ret;
+				IntPtr raw_ret = cpg_property_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
-			}
-			set {
-				cpg_property_set_update(Handle, value);
 			}
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_property_set_name(IntPtr raw, IntPtr name);
+		static extern void cpg_property_reset(IntPtr raw);
 
-		public bool SetName(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cpg_property_set_name(Handle, native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
-			return ret;
+		public void Reset() {
+			cpg_property_reset(Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -313,11 +303,44 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_property_equal(IntPtr raw, IntPtr other);
+		static extern void cpg_property_add_flags(IntPtr raw, int flags);
 
-		public bool Equal(Cpg.Property other) {
-			bool raw_ret = cpg_property_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
-			bool ret = raw_ret;
+		public void AddFlags(Cpg.PropertyFlags flags) {
+			cpg_property_add_flags(Handle, (int) flags);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_get_derivative(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_property_set_derivative(IntPtr raw, IntPtr diffprop);
+
+		public Cpg.Property Derivative { 
+			get {
+				IntPtr raw_ret = cpg_property_get_derivative(Handle);
+				Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
+				return ret;
+			}
+			set {
+				cpg_property_set_derivative(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_flags_to_string(int add_flags, int remove_flags);
+
+		public static string FlagsToString(Cpg.PropertyFlags add_flags, Cpg.PropertyFlags remove_flags) {
+			IntPtr raw_ret = cpg_property_flags_to_string((int) add_flags, (int) remove_flags);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_copy(IntPtr raw);
+
+		public Cpg.Property Copy() {
+			IntPtr raw_ret = cpg_property_copy(Handle);
+			Cpg.Property ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Property;
 			return ret;
 		}
 
@@ -339,29 +362,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_property_add_flags(IntPtr raw, int flags);
-
-		public void AddFlags(Cpg.PropertyFlags flags) {
-			cpg_property_add_flags(Handle, (int) flags);
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_flags_to_string(int add_flags, int remove_flags);
-
-		public static string FlagsToString(Cpg.PropertyFlags add_flags, Cpg.PropertyFlags remove_flags) {
-			IntPtr raw_ret = cpg_property_flags_to_string((int) add_flags, (int) remove_flags);
-			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_property_reset(IntPtr raw);
-
-		public void Reset() {
-			cpg_property_reset(Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_property_get_full_name(IntPtr raw);
 
 		public string FullName { 
@@ -370,6 +370,54 @@ namespace Cpg {
 				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 				return ret;
 			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_property_equal(IntPtr raw, IntPtr other);
+
+		public bool Equal(Cpg.Property other) {
+			bool raw_ret = cpg_property_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern double cpg_property_get_update(IntPtr raw);
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_property_set_update(IntPtr raw, double value);
+
+		public double Update { 
+			get {
+				double raw_ret = cpg_property_get_update(Handle);
+				double ret = raw_ret;
+				return ret;
+			}
+			set {
+				cpg_property_set_update(Handle, value);
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_property_get_full_name_for_display(IntPtr raw);
+
+		public string FullNameForDisplay { 
+			get {
+				IntPtr raw_ret = cpg_property_get_full_name_for_display(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_property_set_name(IntPtr raw, IntPtr name);
+
+		public bool SetName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cpg_property_set_name(Handle, native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -390,34 +438,25 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_get_full_name_for_display(IntPtr raw);
+		static extern IntPtr cpg_property_get_actions(IntPtr raw);
 
-		public string FullNameForDisplay { 
+		public GLib.SList Actions { 
 			get {
-				IntPtr raw_ret = cpg_property_get_full_name_for_display(Handle);
-				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				IntPtr raw_ret = cpg_property_get_actions(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
 				return ret;
 			}
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_get_type();
+		static extern IntPtr cpg_property_get_integral(IntPtr raw);
 
-		public static new GLib.GType GType { 
+		public Cpg.Property Integral { 
 			get {
-				IntPtr raw_ret = cpg_property_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
+				IntPtr raw_ret = cpg_property_get_integral(Handle);
+				Cpg.Property ret = GLib.Object.GetObject(raw_ret) as Cpg.Property;
 				return ret;
 			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_property_copy(IntPtr raw);
-
-		public Cpg.Property Copy() {
-			IntPtr raw_ret = cpg_property_copy(Handle);
-			Cpg.Property ret = GLib.Object.GetObject(raw_ret, true) as Cpg.Property;
-			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]

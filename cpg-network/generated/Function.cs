@@ -17,16 +17,14 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_function_new(IntPtr name, IntPtr expression);
 
-		public Function (string name, string expression) : base (IntPtr.Zero)
+		public Function (string name, Cpg.Expression expression) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Function)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
-			Raw = cpg_function_new(native_name, native_expression);
+			Raw = cpg_function_new(native_name, expression == null ? IntPtr.Zero : expression.Handle);
 			GLib.Marshaller.Free (native_name);
-			GLib.Marshaller.Free (native_expression);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -211,6 +209,17 @@ namespace Cpg {
 			bool raw_ret = cpg_function_clear_arguments(Handle, out error);
 			bool ret = raw_ret;
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_function_get_argument(IntPtr raw, IntPtr name);
+
+		public Cpg.FunctionArgument GetArgument(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cpg_function_get_argument(Handle, native_name);
+			Cpg.FunctionArgument ret = GLib.Object.GetObject(raw_ret) as Cpg.FunctionArgument;
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 

@@ -113,33 +113,31 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_embedded_context_add_define(IntPtr raw, IntPtr name, IntPtr value);
+		static extern void cpg_embedded_context_add_define(IntPtr raw, IntPtr name, IntPtr expansion);
 
-		public void AddDefine(string name, string value) {
+		public void AddDefine(string name, Cpg.Expansion expansion) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
-			cpg_embedded_context_add_define(Handle, native_name, native_value);
+			cpg_embedded_context_add_define(Handle, native_name, expansion == null ? IntPtr.Zero : expansion.Handle);
 			GLib.Marshaller.Free (native_name);
-			GLib.Marshaller.Free (native_value);
 		}
 
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_embedded_context_get_define(IntPtr raw, IntPtr name);
 
-		public string GetDefine(string name) {
+		public Cpg.Expansion GetDefine(string name) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			IntPtr raw_ret = cpg_embedded_context_get_define(Handle, native_name);
-			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			Cpg.Expansion ret = GLib.Object.GetObject(raw_ret) as Cpg.Expansion;
 			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern int cpg_embedded_context_increment_define(IntPtr raw, IntPtr name, int num, bool retold);
+		static extern int cpg_embedded_context_increment_define(IntPtr raw, IntPtr name, int num);
 
-		public int IncrementDefine(string name, int num, bool retold) {
+		public int IncrementDefine(string name, int num) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			int raw_ret = cpg_embedded_context_increment_define(Handle, native_name, num, retold);
+			int raw_ret = cpg_embedded_context_increment_define(Handle, native_name, num);
 			int ret = raw_ret;
 			GLib.Marshaller.Free (native_name);
 			return ret;

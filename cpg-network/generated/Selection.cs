@@ -39,12 +39,10 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern void cpg_selection_add_define(IntPtr raw, IntPtr key, IntPtr value);
 
-		public void AddDefine(string key, string value) {
+		public void AddDefine(string key, Cpg.Expansion value) {
 			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (key);
-			IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
-			cpg_selection_add_define(Handle, native_key, native_value);
+			cpg_selection_add_define(Handle, native_key, value == null ? IntPtr.Zero : value.Handle);
 			GLib.Marshaller.Free (native_key);
-			GLib.Marshaller.Free (native_value);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -68,10 +66,10 @@ namespace Cpg {
 		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_selection_get_define(IntPtr raw, IntPtr key);
 
-		public string GetDefine(string key) {
+		public Cpg.Expansion GetDefine(string key) {
 			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (key);
 			IntPtr raw_ret = cpg_selection_get_define(Handle, native_key);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			Cpg.Expansion ret = GLib.Object.GetObject(raw_ret) as Cpg.Expansion;
 			GLib.Marshaller.Free (native_key);
 			return ret;
 		}

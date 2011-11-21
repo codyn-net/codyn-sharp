@@ -15,14 +15,25 @@ namespace Cpg {
 		public InstructionProperty(IntPtr raw) : base(raw) {}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_instruction_property_new(IntPtr property, int binding);
+		static extern IntPtr cpg_instruction_property_new(IntPtr property);
+
+		public InstructionProperty (Cpg.Property property) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (InstructionProperty)) {
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+			Raw = cpg_instruction_property_new(property == null ? IntPtr.Zero : property.Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_instruction_property_new_with_binding(IntPtr property, int binding);
 
 		public InstructionProperty (Cpg.Property property, Cpg.InstructionPropertyBinding binding) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (InstructionProperty)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
-			Raw = cpg_instruction_property_new(property == null ? IntPtr.Zero : property.Handle, (int) binding);
+			Raw = cpg_instruction_property_new_with_binding(property == null ? IntPtr.Zero : property.Handle, (int) binding);
 		}
 
 		[DllImport("cpg-network-2.0")]

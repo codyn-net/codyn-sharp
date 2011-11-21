@@ -18,6 +18,7 @@ namespace Cpg {
 		Import,
 		InputFile,
 		Interface,
+		Operator,
 	}
 #endregion
 }

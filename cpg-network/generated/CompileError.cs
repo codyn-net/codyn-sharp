@@ -100,10 +100,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_compile_error_set(IntPtr raw, IntPtr gerror, IntPtr objekt, IntPtr property, IntPtr action, int pos);
+		static extern void cpg_compile_error_set(IntPtr raw, IntPtr gerror, IntPtr objekt, IntPtr property, IntPtr action, IntPtr expression);
 
-		public void Set(IntPtr gerror, Cpg.Object objekt, Cpg.Property property, Cpg.LinkAction action, int pos) {
-			cpg_compile_error_set(Handle, gerror, objekt == null ? IntPtr.Zero : objekt.Handle, property == null ? IntPtr.Zero : property.Handle, action == null ? IntPtr.Zero : action.Handle, pos);
+		public void Set(IntPtr gerror, Cpg.Object objekt, Cpg.Property property, Cpg.LinkAction action, Cpg.Expression expression) {
+			cpg_compile_error_set(Handle, gerror, objekt == null ? IntPtr.Zero : objekt.Handle, property == null ? IntPtr.Zero : property.Handle, action == null ? IntPtr.Zero : action.Handle, expression == null ? IntPtr.Zero : expression.Handle);
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -138,23 +138,23 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_compile_error_get_expression(IntPtr raw);
+
+		public Cpg.Expression Expression { 
+			get {
+				IntPtr raw_ret = cpg_compile_error_get_expression(Handle);
+				Cpg.Expression ret = GLib.Object.GetObject(raw_ret) as Cpg.Expression;
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_compile_error_get_type();
 
 		public static new GLib.GType GType { 
 			get {
 				IntPtr raw_ret = cpg_compile_error_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern int cpg_compile_error_get_pos(IntPtr raw);
-
-		public int Pos { 
-			get {
-				int raw_ret = cpg_compile_error_get_pos(Handle);
-				int ret = raw_ret;
 				return ret;
 			}
 		}
