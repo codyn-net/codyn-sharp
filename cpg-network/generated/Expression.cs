@@ -80,17 +80,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_expression_get_operators(IntPtr raw);
-
-		public GLib.SList Operators { 
-			get {
-				IntPtr raw_ret = cpg_expression_get_operators(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
-				return ret;
-			}
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern double cpg_expression_evaluate(IntPtr raw);
 
 		public double Evaluate() {
@@ -116,13 +105,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_expression_reset_variadic(IntPtr raw);
-
-		public void ResetVariadic() {
-			cpg_expression_reset_variadic(Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern int cpg_expression_get_error_start(IntPtr raw);
 
 		public int ErrorStart { 
@@ -142,6 +124,15 @@ namespace Cpg {
 				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
 			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern bool cpg_expression_depends_on(IntPtr raw, IntPtr depends_on);
+
+		public bool DependsOn(Cpg.Expression depends_on) {
+			bool raw_ret = cpg_expression_depends_on(Handle, depends_on == null ? IntPtr.Zero : depends_on.Handle);
+			bool ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("cpg-network-2.0")]
@@ -173,6 +164,24 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_expression_get_depends_on_me(IntPtr raw);
+
+		public GLib.SList DependsOnMe { 
+			get {
+				IntPtr raw_ret = cpg_expression_get_depends_on_me(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern void cpg_expression_reset_cache(IntPtr raw);
+
+		public void ResetCache() {
+			cpg_expression_reset_cache(Handle);
+		}
+
+		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_expression_get_dependencies(IntPtr raw);
 
 		public Cpg.Property[] Dependencies { 
@@ -184,10 +193,14 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_expression_reset_cache(IntPtr raw);
+		static extern IntPtr cpg_expression_get_rand_instructions(IntPtr raw);
 
-		public void ResetCache() {
-			cpg_expression_reset_cache(Handle);
+		public GLib.SList RandInstructions { 
+			get {
+				IntPtr raw_ret = cpg_expression_get_rand_instructions(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
+				return ret;
+			}
 		}
 
 		[DllImport("cpg-network-2.0")]

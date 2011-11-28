@@ -65,13 +65,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern void cpg_operator_reset_variadic(IntPtr raw);
-
-		public void ResetVariadic() {
-			cpg_operator_reset_variadic(Handle);
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_operator_all_indices(IntPtr raw);
 
 		public GLib.SList AllIndices() {
@@ -184,13 +177,6 @@ namespace Cpg {
 			int raw_ret = cpg_operator_num_expressions(Handle);
 			int ret = raw_ret;
 			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern void cpg_operator_step_prepare(IntPtr raw, IntPtr integrator, double t, double timestep);
-
-		public void StepPrepare(Cpg.Integrator integrator, double t, double timestep) {
-			cpg_operator_step_prepare(Handle, integrator == null ? IntPtr.Zero : integrator.Handle, t, timestep);
 		}
 
 		[DllImport("cpg-network-2.0")]

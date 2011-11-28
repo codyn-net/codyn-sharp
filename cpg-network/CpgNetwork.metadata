@@ -96,6 +96,10 @@
 
   <attr path="/api/namespace/object[@cname='CpgExpression']/method[@cname='cpg_expression_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
 
+  <!-- CpgExpressionTreeIter -->
+  <attr path="/api/namespace/struct[@cname='CpgExpressionTreeIter']/method[@cname='cpg_expression_tree_iter_get_instruction']" name="hidden"/>
+  <attr path="/api/namespace/struct[@cname='CpgExpressionTreeIter']/method[@cname='cpg_expression_tree_iter_set_instruction']" name="hidden"/>
+
   <!-- CpgInstruction -->
   <attr path="/api/namespace/object[@cname='CpgInstruction']/method[@cname='cpg_instruction_get_dependencies']/return-type" name="element_type">CpgProperty*</attr>
   <attr path="/api/namespace/object[@cname='CpgInstruction']/virtual_method[@cname='get_dependencies']/return-type" name="element_type">CpgProperty*</attr>

@@ -17,6 +17,10 @@
       <member cname="CPG_COMPILE_ERROR_PROPERTY_RECURSE" name="PropertyRecurse" />
       <member cname="CPG_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
+    <enum name="EmbeddedStringError" cname="CpgEmbeddedStringError" type="enum">
+      <member cname="CPG_EMBEDDED_STRING_ERROR_BRACES" name="Braces" />
+      <member cname="CPG_EMBEDDED_STRING_ERROR_INVALID_EXPANSION" name="InvalidExpansion" />
+    </enum>
     <enum name="EmbeddedStringNodeType" cname="CpgEmbeddedStringNodeType" type="enum">
       <member cname="CPG_EMBEDDED_STRING_NODE_TEXT" name="Text" />
       <member cname="CPG_EMBEDDED_STRING_NODE_EQUATION" name="Equation" />
@@ -70,7 +74,6 @@
       <member cname="CPG_MATH_FUNCTION_TYPE_ROUND" name="Round" />
       <member cname="CPG_MATH_FUNCTION_TYPE_ABS" name="Abs" />
       <member cname="CPG_MATH_FUNCTION_TYPE_POW" name="Pow" />
-      <member cname="CPG_MATH_FUNCTION_TYPE_RAND" name="Rand" />
       <member cname="CPG_MATH_FUNCTION_TYPE_LN" name="Ln" />
       <member cname="CPG_MATH_FUNCTION_TYPE_LOG10" name="Log10" />
       <member cname="CPG_MATH_FUNCTION_TYPE_HYPOT" name="Hypot" />
@@ -218,6 +221,15 @@
       <member cname="CPG_SELECTOR_TYPE_FUNCTION" name="Function" value="1 &lt;&lt; 6" />
       <member cname="CPG_SELECTOR_TYPE_TEMPLATE" name="Template" value="1 &lt;&lt; 7" />
       <member cname="CPG_SELECTOR_TYPE_OBJECT" name="Object" value="State | Link | Group | Function" />
+    </enum>
+    <enum name="SymbolicDeriveFlags" cname="CpgSymbolicDeriveFlags" type="flags">
+      <member cname="CPG_SYMBOLIC_DERIVE_NONE" name="None" />
+      <member cname="CPG_SYMBOLIC_DERIVE_PARTIAL" name="Partial" value="1 &lt;&lt; 0" />
+      <member cname="CPG_SYMBOLIC_DERIVE_SIMPLIFY" name="Simplify" value="1 &lt;&lt; 1" />
+    </enum>
+    <enum name="SymbolicError" cname="CpgSymbolicError" type="enum">
+      <member cname="CPG_SYMBOLIC_ERROR_UNSUPPORTED" name="Unsupported" />
+      <member cname="CPG_SYMBOLIC_ERROR_INVALID" name="Invalid" />
     </enum>
     <callback name="ForeachExpressionFunc" cname="CpgForeachExpressionFunc">
       <return-type type="void" />
@@ -799,6 +811,9 @@
           <parameter type="gchar**" name="s" />
         </parameters>
       </method>
+      <method name="ErrorQuark" cname="cpg_embedded_string_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
       <method name="Escape" cname="cpg_embedded_string_escape" shared="true">
         <return-type type="gchar*" />
         <parameters>
@@ -960,6 +975,12 @@
       <method name="Copy" cname="cpg_expression_copy">
         <return-type type="CpgExpression*" owned="true" />
       </method>
+      <method name="DependsOn" cname="cpg_expression_depends_on">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgExpression*" name="depends_on" />
+        </parameters>
+      </method>
       <method name="Equal" cname="cpg_expression_equal">
         <return-type type="gboolean" />
         <parameters>
@@ -974,6 +995,9 @@
       </method>
       <method name="GetDependencies" cname="cpg_expression_get_dependencies">
         <return-type type="const-GSList*" element_type="CpgProperty*" />
+      </method>
+      <method name="GetDependsOnMe" cname="cpg_expression_get_depends_on_me">
+        <return-type type="const-GSList*" />
       </method>
       <method name="GetErrorAt" cname="cpg_expression_get_error_at">
         <return-type type="gint" />
@@ -990,7 +1014,7 @@
       <method name="GetOnce" cname="cpg_expression_get_once">
         <return-type type="gboolean" />
       </method>
-      <method name="GetOperators" cname="cpg_expression_get_operators">
+      <method name="GetRandInstructions" cname="cpg_expression_get_rand_instructions">
         <return-type type="const-GSList*" />
       </method>
       <method name="GetType" cname="cpg_expression_get_type" shared="true">
@@ -1006,9 +1030,6 @@
         <return-type type="void" />
       </method>
       <method name="ResetCache" cname="cpg_expression_reset_cache">
-        <return-type type="void" />
-      </method>
-      <method name="ResetVariadic" cname="cpg_expression_reset_variadic">
         <return-type type="void" />
       </method>
       <method name="SetFromString" cname="cpg_expression_set_from_string">
@@ -1812,19 +1833,17 @@
         </parameters>
       </method>
     </object>
-    <object name="InstructionVariadicFunction" cname="CpgInstructionVariadicFunction" parent="CpgInstructionFunction">
-      <field name="Priv" cname="priv" type="CpgInstructionVariadicFunctionPrivate*" />
-      <method name="GetType" cname="cpg_instruction_variadic_function_get_type" shared="true">
+    <object name="InstructionRand" cname="CpgInstructionRand" parent="CpgInstruction">
+      <field name="Priv" cname="priv" type="CpgInstructionRandPrivate*" />
+      <method name="GetType" cname="cpg_instruction_rand_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <constructor cname="cpg_instruction_variadic_function_new">
+      <constructor cname="cpg_instruction_rand_new">
         <parameters>
-          <parameter type="guint" name="id" />
-          <parameter type="const-gchar*" name="name" />
           <parameter type="gint" name="arguments" />
         </parameters>
       </constructor>
-      <method name="ResetCache" cname="cpg_instruction_variadic_function_reset_cache">
+      <method name="Next" cname="cpg_instruction_rand_next">
         <return-type type="void" />
       </method>
     </object>
@@ -1838,14 +1857,6 @@
           <parameter name="inst" type="CpgIntegrator*" />
           <parameter name="timestep" type="gdouble" />
           <parameter name="time" type="gdouble" />
-        </parameters>
-      </signal>
-      <signal name="StepPrepared" cname="step-prepare" when="LAST">
-        <return-type type="void" />
-        <parameters>
-          <parameter name="inst" type="CpgIntegrator*" />
-          <parameter name="p0" type="gdouble" />
-          <parameter name="p1" type="gdouble" />
         </parameters>
       </signal>
       <signal name="Begin" cname="begin" when="LAST">
@@ -1875,14 +1886,6 @@
       </virtual_method>
       <virtual_method name="Step" cname="step">
         <return-type type="gdouble" />
-        <parameters>
-          <parameter type="CpgIntegrator*" name="integrator" />
-          <parameter type="gdouble" name="t" />
-          <parameter type="gdouble" name="timestep" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="StepPrepare" cname="step_prepare">
-        <return-type type="gboolean" />
         <parameters>
           <parameter type="CpgIntegrator*" name="integrator" />
           <parameter type="gdouble" name="t" />
@@ -1968,6 +1971,9 @@
       <method name="Expressions" cname="cpg_integrator_state_expressions">
         <return-type type="const-GSList*" />
       </method>
+      <method name="Functions" cname="cpg_integrator_state_functions">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="GetObject" cname="cpg_integrator_state_get_object">
         <return-type type="CpgObject*" />
       </method>
@@ -1989,6 +1995,12 @@
         </parameters>
       </constructor>
       <method name="Operators" cname="cpg_integrator_state_operators">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="RandExpressions" cname="cpg_integrator_state_rand_expressions">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="RandInstructions" cname="cpg_integrator_state_rand_instructions">
         <return-type type="const-GSList*" />
       </method>
       <method name="Update" cname="cpg_integrator_state_update">
@@ -2110,12 +2122,6 @@
       </implements>
       <method name="Copy" cname="cpg_link_action_copy">
         <return-type type="CpgLinkAction*" owned="true" />
-      </method>
-      <method name="Depends" cname="cpg_link_action_depends">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CpgProperty*" name="property" />
-        </parameters>
       </method>
       <method name="Equal" cname="cpg_link_action_equal">
         <return-type type="gboolean" />
@@ -2754,12 +2760,6 @@
           <parameter type="CpgOperator*" name="op" />
         </parameters>
       </virtual_method>
-      <virtual_method name="ResetVariadic" cname="reset_variadic">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CpgOperator*" name="op" />
-        </parameters>
-      </virtual_method>
       <virtual_method name="Reset" cname="reset">
         <return-type type="void" />
         <parameters>
@@ -2770,7 +2770,7 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgOperator*" name="op" />
-          <parameter type="_CpgIntegrator*" name="integrator" />
+          <parameter type="CpgIntegratorForward*" name="integrator" />
           <parameter type="gdouble" name="t" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
@@ -2779,7 +2779,7 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgOperator*" name="op" />
-          <parameter type="_CpgIntegrator*" name="integrator" />
+          <parameter type="CpgIntegratorForward*" name="integrator" />
           <parameter type="gdouble" name="t" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
@@ -2788,7 +2788,7 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CpgOperator*" name="op" />
-          <parameter type="_CpgIntegrator*" name="integrator" />
+          <parameter type="CpgIntegratorForward*" name="integrator" />
           <parameter type="gdouble" name="t" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
@@ -2913,9 +2913,6 @@
       <method name="ResetCache" cname="cpg_operator_reset_cache">
         <return-type type="void" />
       </method>
-      <method name="ResetVariadic" cname="cpg_operator_reset_variadic">
-        <return-type type="void" />
-      </method>
       <method name="Step" cname="cpg_operator_step">
         <return-type type="void" />
         <parameters>
@@ -2935,7 +2932,7 @@
       <method name="StepPrepare" cname="cpg_operator_step_prepare">
         <return-type type="void" />
         <parameters>
-          <parameter type="CpgIntegrator*" name="integrator" />
+          <parameter type="CpgIntegratorForward*integrator" name="arg1" />
           <parameter type="gdouble" name="t" />
           <parameter type="gdouble" name="timestep" />
         </parameters>
@@ -4020,6 +4017,102 @@
         </parameters>
       </method>
     </object>
+    <struct name="ExpressionTreeIter" cname="CpgExpressionTreeIter" opaque="true">
+      <method name="Canonicalize" cname="cpg_expression_tree_iter_canonicalize">
+        <return-type type="CpgExpressionTreeIter*" />
+      </method>
+      <method name="Copy" cname="cpg_expression_tree_iter_copy">
+        <return-type type="CpgExpressionTreeIter*" owned="true" />
+      </method>
+      <method name="Equal" cname="cpg_expression_tree_iter_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CpgExpressionTreeIter*" name="other" />
+        </parameters>
+      </method>
+      <method name="Free" cname="cpg_expression_tree_iter_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetChild" cname="cpg_expression_tree_iter_get_child">
+        <return-type type="CpgExpressionTreeIter*" />
+        <parameters>
+          <parameter type="gint" name="nth" />
+        </parameters>
+      </method>
+      <method name="GetInstruction" cname="cpg_expression_tree_iter_get_instruction" hidden="">
+        <return-type type="CpgInstruction*" />
+      </method>
+      <constructor cname="cpg_expression_tree_iter_new">
+        <parameters>
+          <parameter type="CpgExpression*" name="expression" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_expression_tree_iter_new_from_instruction">
+        <parameters>
+          <parameter type="CpgInstruction*" name="instruction" />
+        </parameters>
+      </constructor>
+      <constructor cname="cpg_expression_tree_iter_new_from_instructions">
+        <parameters>
+          <parameter type="const-GSList*" name="instructions" />
+        </parameters>
+      </constructor>
+      <method name="NumChildren" cname="cpg_expression_tree_iter_num_children">
+        <return-type type="gint" />
+      </method>
+      <method name="SetChild" cname="cpg_expression_tree_iter_set_child">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="nth" />
+          <parameter type="CpgExpressionTreeIter*" name="child" />
+        </parameters>
+      </method>
+      <method name="SetInstruction" cname="cpg_expression_tree_iter_set_instruction" hidden="">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CpgInstruction*" name="instr" />
+        </parameters>
+      </method>
+      <method name="Simplify" cname="cpg_expression_tree_iter_simplify">
+        <return-type type="CpgExpressionTreeIter*" />
+      </method>
+      <method name="SolveFor" cname="cpg_expression_tree_iter_solve_for">
+        <return-type type="CpgExpressionTreeIter*" />
+        <parameters>
+          <parameter type="CpgProperty*" name="prop" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Substitute" cname="cpg_expression_tree_iter_substitute">
+        <return-type type="CpgExpressionTreeIter*" />
+        <parameters>
+          <parameter type="CpgProperty*" name="property" />
+          <parameter type="CpgExpressionTreeIter*" name="subst" />
+        </parameters>
+      </method>
+      <method name="SubstituteHash" cname="cpg_expression_tree_iter_substitute_hash">
+        <return-type type="CpgExpressionTreeIter*" />
+        <parameters>
+          <parameter type="GHashTable*" name="table" />
+        </parameters>
+      </method>
+      <method name="TakeChild" cname="cpg_expression_tree_iter_take_child">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="nth" />
+          <parameter type="CpgExpressionTreeIter*" name="child" />
+        </parameters>
+      </method>
+      <method name="ToInstructions" cname="cpg_expression_tree_iter_to_instructions">
+        <return-type type="GSList*" />
+      </method>
+      <method name="ToString" cname="cpg_expression_tree_iter_to_string">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="ToStringDbg" cname="cpg_expression_tree_iter_to_string_dbg">
+        <return-type type="const-gchar*" />
+      </method>
+    </struct>
     <struct name="Stack" cname="CpgStack" opaque="true">
       <method name="At" cname="cpg_stack_at">
         <return-type type="gdouble" />
@@ -4120,12 +4213,6 @@
           <parameter type="CpgMathFunctionType" name="type" />
         </parameters>
       </method>
-      <method name="FunctionIsConstant" cname="cpg_math_function_is_constant" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CpgMathFunctionType" name="type" />
-        </parameters>
-      </method>
       <method name="FunctionIsVariable" cname="cpg_math_function_is_variable" shared="true">
         <return-type type="gboolean" />
         <parameters>
@@ -4160,12 +4247,6 @@
           <parameter type="CpgMathOperatorType" name="type" />
         </parameters>
       </method>
-      <method name="OperatorIsConstant" cname="cpg_math_operator_is_constant" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CpgMathOperatorType" name="type" />
-        </parameters>
-      </method>
       <method name="OperatorIsVariable" cname="cpg_math_operator_is_variable" shared="true">
         <return-type type="gboolean" />
         <parameters>
@@ -4176,6 +4257,29 @@
         <return-type type="CpgMathOperatorType" />
         <parameters>
           <parameter type="CpgMathOperatorType" name="type" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Symbolic" cname="CpgSymbolic_">
+      <method name="Derive" cname="cpg_symbolic_derive" shared="true">
+        <return-type type="CpgExpression*" />
+        <parameters>
+          <parameter type="CpgExpression*" name="expression" />
+          <parameter type="GSList*" name="symbols" />
+          <parameter type="GHashTable*" name="property_map" />
+          <parameter type="GHashTable*" name="diff_map" />
+          <parameter type="gint" name="order" />
+          <parameter type="CpgSymbolicDeriveFlags" name="flags" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="ErrorQuark" cname="cpg_symbolic_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="Simplify" cname="cpg_symbolic_simplify" shared="true">
+        <return-type type="CpgExpression*" />
+        <parameters>
+          <parameter type="CpgExpression*" name="expression" />
         </parameters>
       </method>
     </class>

@@ -138,11 +138,11 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern IntPtr cpg_embedded_string_pop_brace(IntPtr raw);
+		static extern int cpg_embedded_string_error_quark();
 
-		public Cpg.EmbeddedString PopBrace() {
-			IntPtr raw_ret = cpg_embedded_string_pop_brace(Handle);
-			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
+		public static int ErrorQuark() {
+			int raw_ret = cpg_embedded_string_error_quark();
+			int ret = raw_ret;
 			return ret;
 		}
 
@@ -173,6 +173,15 @@ namespace Cpg {
 
 		public Cpg.EmbeddedString Pop() {
 			IntPtr raw_ret = cpg_embedded_string_pop(Handle);
+			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
+			return ret;
+		}
+
+		[DllImport("cpg-network-2.0")]
+		static extern IntPtr cpg_embedded_string_pop_brace(IntPtr raw);
+
+		public Cpg.EmbeddedString PopBrace() {
+			IntPtr raw_ret = cpg_embedded_string_pop_brace(Handle);
 			Cpg.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cpg.EmbeddedString;
 			return ret;
 		}

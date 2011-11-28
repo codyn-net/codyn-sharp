@@ -27,7 +27,6 @@ namespace Cpg {
 		Round,
 		Abs,
 		Pow,
-		Rand,
 		Ln,
 		Log10,
 		Hypot,

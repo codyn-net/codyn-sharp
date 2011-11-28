@@ -29,6 +29,7 @@ customs = \
 	FunctionPolynomialPiece.custom \
 	Integrator.custom \
 	Expression.custom \
+	ExpressionTreeIter.custom \
 	Group.custom \
 	LinkAction.custom \
 	Property.custom \

@@ -116,15 +116,6 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_link_action_depends(IntPtr raw, IntPtr property);
-
-		public bool Depends(Cpg.Property property) {
-			bool raw_ret = cpg_link_action_depends(Handle, property == null ? IntPtr.Zero : property.Handle);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern IntPtr cpg_link_action_get_type();
 
 		public static new GLib.GType GType { 

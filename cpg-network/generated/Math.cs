@@ -91,28 +91,10 @@ namespace Cpg {
 		}
 
 		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_math_operator_is_constant(int type);
-
-		public static bool OperatorIsConstant(Cpg.MathOperatorType type) {
-			bool raw_ret = cpg_math_operator_is_constant((int) type);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
 		static extern bool cpg_math_function_is_variable(int type);
 
 		public static bool FunctionIsVariable(Cpg.MathFunctionType type) {
 			bool raw_ret = cpg_math_function_is_variable((int) type);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("cpg-network-2.0")]
-		static extern bool cpg_math_function_is_constant(int type);
-
-		public static bool FunctionIsConstant(Cpg.MathFunctionType type) {
-			bool raw_ret = cpg_math_function_is_constant((int) type);
 			bool ret = raw_ret;
 			return ret;
 		}

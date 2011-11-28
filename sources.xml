@@ -62,18 +62,18 @@
         <file>../libcpg-network/cpg-network/cpg-function-polynomial-piece.h</file>
         <file>../libcpg-network/cpg-network/cpg-compile-context.c</file>
         <file>../libcpg-network/cpg-network/cpg-compile-context.h</file>
-        <file>../libcpg-network/cpg-network/cpg-integrator.c</file>
-        <file>../libcpg-network/cpg-network/cpg-integrator.h</file>
-        <file>../libcpg-network/cpg-network/cpg-integrator-euler.c</file>
-        <file>../libcpg-network/cpg-network/cpg-integrator-euler.h</file>
-        <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.c</file>
-        <file>../libcpg-network/cpg-network/cpg-integrator-runge-kutta.h</file>
+        <file>../libcpg-network/cpg-network/integrators/cpg-integrator.c</file>
+        <file>../libcpg-network/cpg-network/integrators/cpg-integrator.h</file>
+        <file>../libcpg-network/cpg-network/integrators/cpg-integrator-euler.c</file>
+        <file>../libcpg-network/cpg-network/integrators/cpg-integrator-euler.h</file>
+        <file>../libcpg-network/cpg-network/integrators/cpg-integrator-runge-kutta.c</file>
+        <file>../libcpg-network/cpg-network/integrators/cpg-integrator-runge-kutta.h</file>
         <file>../libcpg-network/cpg-network/cpg-integrators.c</file>
         <file>../libcpg-network/cpg-network/cpg-integrators.h</file>
         <file>../libcpg-network/cpg-network/cpg-group.c</file>
         <file>../libcpg-network/cpg-network/cpg-group.h</file>
-        <file>../libcpg-network/cpg-network/cpg-integrator-state.c</file>
-        <file>../libcpg-network/cpg-network/cpg-integrator-state.h</file>
+        <file>../libcpg-network/cpg-network/integrators/cpg-integrator-state.c</file>
+        <file>../libcpg-network/cpg-network/integrators/cpg-integrator-state.h</file>
         <file>../libcpg-network/cpg-network/cpg-usable.c</file>
         <file>../libcpg-network/cpg-network/cpg-usable.h</file>
         <file>../libcpg-network/cpg-network/cpg-modifiable.c</file>
@@ -106,6 +106,10 @@
         <file>../libcpg-network/cpg-network/cpg-parser-code.h</file>
         <file>../libcpg-network/cpg-network/cpg-statement.c</file>
         <file>../libcpg-network/cpg-network/cpg-statement.h</file>
+        <file>../libcpg-network/cpg-network/cpg-symbolic.c</file>
+        <file>../libcpg-network/cpg-network/cpg-symbolic.h</file>
+        <file>../libcpg-network/cpg-network/cpg-expression-tree-iter.c</file>
+        <file>../libcpg-network/cpg-network/cpg-expression-tree-iter.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction.c</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-custom-function.c</file>
@@ -120,8 +124,8 @@
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-operator.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-property.c</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-property.h</file>
-        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-variadic-function.c</file>
-        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-variadic-function.h</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-rand.c</file>
+        <file>../libcpg-network/cpg-network/instructions/cpg-instruction-rand.h</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-constant.c</file>
         <file>../libcpg-network/cpg-network/instructions/cpg-instruction-constant.h</file>
       </namespace>
