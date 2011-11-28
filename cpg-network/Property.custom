@@ -4,7 +4,7 @@
 		[DllImport ("libgobject-2.0")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
-		public Property (string name, string expression, Cpg.PropertyFlags flags) : base (IntPtr.Zero)
+		public Property (string name, Cpg.Expression expression, Cpg.PropertyFlags flags) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Property))
 			{
@@ -22,10 +22,9 @@
 			else
 			{
 				IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-				IntPtr native_expression = GLib.Marshaller.StringToPtrGStrdup (expression);
+				IntPtr native_expression = expression.Handle;
 				Raw = cpg_property_new(native_name, native_expression, (int) flags);
 				GLib.Marshaller.Free (native_name);
-				GLib.Marshaller.Free (native_expression);
 			}
 
 			if (Raw != IntPtr.Zero)

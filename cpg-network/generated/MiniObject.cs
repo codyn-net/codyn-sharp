@@ -130,7 +130,7 @@ namespace Cpg {
 			return info.Invoke(null, new object[] {raw}) as Cpg.MiniObject;
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgobject-2.0", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_type_parent (IntPtr type);
 
 		static Type GetTypeOrParent(IntPtr obj)
