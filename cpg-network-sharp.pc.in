@@ -1,9 +1,0 @@
-prefix=@prefix@
-libdir=${prefix}/lib
-Libraries=${libdir}/cpg-network-sharp-@CPG_NETWORK_SHARP_API_VERSION@/CpgNetwork.dll
-
-Name: CpgNetwork#
-Description: CpgNetwork# - Cpg Network .NET Binding
-Version: @VERSION@
-Requires: glib-sharp-2.0
-Libs: -r:${libdir}/cpg-network-sharp-@CPG_NETWORK_SHARP_API_VERSION@/CpgNetwork.dll

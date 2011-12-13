@@ -1,0 +1,3 @@
+		Node(string id) : this(id, null)
+		{
+		}

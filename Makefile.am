@@ -1,13 +1,13 @@
-SUBDIRS = cpg-network
+SUBDIRS = codyn
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = cpg-network-sharp-@CPG_NETWORK_SHARP_API_VERSION@.pc
+pkgconfig_DATA = codyn-sharp-@CODYN_SHARP_API_VERSION@.pc
 
-cpg-network-sharp-@CPG_NETWORK_SHARP_API_VERSION@.pc: cpg-network-sharp.pc
+codyn-sharp-@CODYN_SHARP_API_VERSION@.pc: codyn-sharp.pc
 	cp $? $@
 
 EXTRA_DIST = 			\
-	cpg-network-sharp.pc.in
+	codyn-sharp.pc.in
 
-CLEANFILES = cpg-network-sharp.pc cpg-network-sharp-@CPG_NETWORK_SHARP_API_VERSION@.pc 
+CLEANFILES = codyn-sharp.pc codyn-sharp-@CODYN_SHARP_API_VERSION@.pc
 

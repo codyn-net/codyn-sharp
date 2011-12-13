@@ -1,0 +1,9 @@
+prefix=@prefix@
+libdir=${prefix}/lib
+Libraries=${libdir}/codyn-sharp-@CODYN_SHARP_API_VERSION@/Codyn.dll
+
+Name: Codyn#
+Description: Codyn# - Codyn .NET Binding
+Version: @VERSION@
+Requires: glib-sharp-2.0
+Libs: -r:${libdir}/codyn-sharp-@CODYN_SHARP_API_VERSION@/Codyn.dll

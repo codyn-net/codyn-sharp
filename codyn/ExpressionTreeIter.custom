@@ -1,0 +1,19 @@
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_tree_iter_get_instruction(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_tree_iter_set_instruction(IntPtr raw, IntPtr instruction);
+
+		public Cdn.Instruction Instruction
+		{
+			get
+			{
+				IntPtr raw_ret = cdn_expression_tree_iter_get_instruction(Handle);
+
+				return (Cdn.Instruction)MiniObject.GetObject(raw_ret);
+			}
+			set
+			{
+				cdn_expression_tree_iter_set_instruction(Handle, value.Handle);
+			}
+		}

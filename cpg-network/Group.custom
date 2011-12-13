@@ -1,3 +1,0 @@
-		Group(string id) : this(id, null)
-		{
-		}

@@ -1,7 +1,7 @@
 AC_INIT(README)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(cpg-network-sharp, 2.1)
+AM_INIT_AUTOMAKE(codyn-sharp, 3.0)
 AM_MAINTAINER_MODE
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -15,12 +15,12 @@ if test "x$PKG_CONFIG" = "xno"; then
 fi
 
 # If you change these, update the error text below.
-PKG_CHECK_MODULES(CPG_NETWORK, \
-	cpg-network-2.0 >= 2.4
+PKG_CHECK_MODULES(CODYN, \
+	codyn-3.0 >= 3.0
 )
 
-AC_SUBST(CPG_NETWORK_LIBS)
-AC_SUBST(CPG_NETWORK_CFLAGS)
+AC_SUBST(CODYN_LIBS)
+AC_SUBST(CODYN_CFLAGS)
 
 PKG_CHECK_MODULES(MONO, mono >= 1.0.0)
 
@@ -35,11 +35,11 @@ if test "x$GACUTIL" = "xno"; then
 fi
 
 if test `uname -s` = "Darwin"; then
-        LIB_PREFIX=
-        LIB_SUFFIX=.dylib
+	LIB_PREFIX=
+	LIB_SUFFIX=.dylib
 else
-        LIB_PREFIX=.so
-        LIB_SUFFIX=
+	LIB_PREFIX=.so
+	LIB_SUFFIX=
 fi
 
 AC_SUBST(CSC)
@@ -53,8 +53,8 @@ AC_PATH_PROG(GAPI_FIXUP, gapi2-fixup, no)
 AM_CONDITIONAL(HAS_GAPI_CODEGEN, test "x$GAPI_CODEGEN" != "xno")
 AM_CONDITIONAL(HAS_GAPI_FIXUP, test "x$GAPI_FIXUP" != "xno")
 
-CPG_INCLUDEDIR=$includedir/cpg-network-2.0
-AC_SUBST(CPG_INCLUDEDIR)
+CODYN_INCLUDEDIR=$includedir/codyn-3.0
+AC_SUBST(CODYN_INCLUDEDIR)
 
 PKG_CHECK_MODULES(GLIB_SHARP, \
 	glib-sharp-2.0
@@ -62,16 +62,16 @@ PKG_CHECK_MODULES(GLIB_SHARP, \
 
 AC_SUBST(GLIB_SHARP_LIBS)
 
-CPG_NETWORK_SHARP_API_VERSION=2.0
-AC_SUBST(CPG_NETWORK_SHARP_API_VERSION)
+CODYN_SHARP_API_VERSION=3.0
+AC_SUBST(CODYN_SHARP_API_VERSION)
 
-API_VERSION=2.0.0.0
+API_VERSION=3.0.0.0
 AC_SUBST(API_VERSION)
 
 AC_OUTPUT([
-cpg-network/Makefile
-cpg-network/AssemblyInfo.cs
-cpg-network-sharp.pc
+codyn/Makefile
+codyn/AssemblyInfo.cs
+codyn-sharp.pc
 Makefile
 ])
 

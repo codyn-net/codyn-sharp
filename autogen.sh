@@ -9,7 +9,7 @@ test -z "$srcdir" && srcdir=.
 
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
   echo
-  echo "**Error**: You must have \`autoconf' installed to compile cpg-network#."
+  echo "**Error**: You must have \`autoconf' installed to compile codyn#."
   echo "Download the appropriate package for your distribution,"
   echo "or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
   DIE=1
@@ -18,7 +18,7 @@ test -z "$srcdir" && srcdir=.
 (grep "^AM_PROG_LIBTOOL" $srcdir/configure.ac >/dev/null) && {
   (libtool --version) < /dev/null > /dev/null 2>&1 || {
     echo
-    echo "**Error**: You must have \`libtool' installed to compile cpg-network#."
+    echo "**Error**: You must have \`libtool' installed to compile codyn#."
     echo "Get ftp://ftp.gnu.org/pub/gnu/libtool-1.2d.tar.gz"
     echo "(or a newer version if it is available)"
     DIE=1
@@ -27,7 +27,7 @@ test -z "$srcdir" && srcdir=.
 
 (automake --version) < /dev/null > /dev/null 2>&1 || {
   echo
-  echo "**Error**: You must have \`automake' installed to compile cpg-network#."
+  echo "**Error**: You must have \`automake' installed to compile codyn#."
   echo "Get ftp://ftp.gnu.org/pub/gnu/automake-1.3.tar.gz"
   echo "(or a newer version if it is available)"
   DIE=1

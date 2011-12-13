@@ -1,0 +1,38 @@
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_monitor_get_data_resampled(IntPtr raw, double[] sites, uint n_size, double[] data);
+
+		public double[] GetDataResampled(double[] sites) {
+			int len = sites != null ? sites.Length : 0;
+			
+			double[] data = new double[len];
+			
+			cdn_monitor_get_data_resampled(Handle, sites, (uint) (sites == null ? 0 : sites.Length), data);
+			
+			return data;
+		}
+		
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_monitor_get_data(IntPtr raw, out uint n_size);
+
+		public double[] GetData() {
+			uint n_size;
+			IntPtr ret = cdn_monitor_get_data (Handle, out n_size);
+			
+			double[] data = new double[n_size];
+			Marshal.Copy(ret, data, 0, (int)n_size);
+			
+			return data;
+		}
+		
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_monitor_get_sites(IntPtr raw, out uint n_size);
+
+		public double[] GetSites() {
+			uint n_size;
+			IntPtr ret = cdn_monitor_get_sites (Handle, out n_size);
+			
+			double[] data = new double[n_size];
+			Marshal.Copy(ret, data, 0, (int)n_size);
+			
+			return data;
+		}

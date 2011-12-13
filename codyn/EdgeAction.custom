@@ -1,0 +1,35 @@
+		[DllImport ("libgobject-2.0")]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_edge_action_new(IntPtr target, IntPtr equation);
+
+		public EdgeAction (string target, Cdn.Expression equation) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (EdgeAction))
+			{
+				ArrayList vals = new ArrayList();
+				ArrayList names = new ArrayList();
+				names.Add ("target");
+				vals.Add (new GLib.Value (target));
+
+				if (equation != null)
+				{
+					names.Add ("equation");
+					vals.Add (new GLib.Value (equation));
+				}
+
+				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+			}
+			else
+			{
+				IntPtr native_target = GLib.Marshaller.StringToPtrGStrdup (target);
+				Raw = cdn_edge_action_new(native_target, equation == null ? IntPtr.Zero : equation.Handle);
+				GLib.Marshaller.Free (native_target);
+			}
+
+			if (Raw != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
+			}
+		}
