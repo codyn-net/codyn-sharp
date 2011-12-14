@@ -145,15 +145,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_expression_evaluate_values(IntPtr raw, out int numr, out int numc);
-
-		public double EvaluateValues(out int numr, out int numc) {
-			double raw_ret = cdn_expression_evaluate_values(Handle, out numr, out numc);
-			double ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern bool cdn_expression_depends_on(IntPtr raw, IntPtr depends_on);
 
 		public bool DependsOn(Cdn.Expression depends_on) {
@@ -343,6 +334,34 @@ namespace Cdn {
 
 				cdn_expression_set_instructions(Handle, ptr.Handle);
 			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_evaluate_values(IntPtr raw, out int numr, out int numc);
+
+		public double[,] EvaluateValues()
+		{
+			int numr;
+			int numc;
+			double[] data;
+
+			IntPtr raw_ret = cdn_expression_evaluate_values(Handle, out numr, out numc);
+
+			data = new double[numr * numc];
+			Marshal.Copy(raw_ret, data, 0, numr * numc);
+
+			double[,] ret = new double[numr, numc];
+			int idx = 0;
+
+			for (int r = 0; r < numr; ++r)
+			{
+				for (int c = 0; c < numc; ++c)
+				{
+					ret[r, c] = data[idx++];
+				}
+			}
+
+			return ret;
 		}
 
 

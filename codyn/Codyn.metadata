@@ -102,6 +102,7 @@
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_instructions']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_set_instructions']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnExpression']/constructor" name="hidden">true</attr>
+  <remove-node path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_evaluate_values']"/>
 
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_dependencies']/return-type" name="element_type">CdnVariable*</attr>
 
@@ -218,6 +219,7 @@
   <!-- CdnVariable -->
   <attr path="/api/namespace/struct[@cname='CdnVariable']/method[@cname='cdn_variable_get_object']/return-type" name="type">CdnObject*</attr>
   <attr path="/api/namespace/struct[@cname='CdnVariable']/method[@cname='cdn_variable_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
+  <remove-node path="/api/namespace/struct[@cname='CdnVariable']/method[@cname='cdn_variable_get_values']"/>
 
   <!-- CdnVariableFlags -->
   <attr path="/api/namespace/enum[@cname='CdnVariableFlags']/member[@cname='CDN_VARIABLE_FLAG_INOUT']" name="value">In | Out</attr>

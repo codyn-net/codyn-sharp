@@ -11,12 +11,12 @@ namespace Cdn {
 	public class Variable : GLib.Opaque {
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_variable_get_values(IntPtr raw, out int numr, out int numc);
+		static extern void cdn_variable_set_values(IntPtr raw, out double values, int numr, int numc);
 
-		public double GetValues(out int numr, out int numc) {
-			double raw_ret = cdn_variable_get_values(Handle, out numr, out numc);
-			double ret = raw_ret;
-			return ret;
+		public double SetValues(int numr, int numc) {
+			double values;
+			cdn_variable_set_values(Handle, out values, numr, numc);
+			return values;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -303,15 +303,6 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_variable_set_values(IntPtr raw, out double values, int numr, int numc);
-
-		public double SetValues(int numr, int numc) {
-			double values;
-			cdn_variable_set_values(Handle, out values, numr, numc);
-			return values;
-		}
-
 		public Variable(IntPtr raw) : base(raw) {}
 
 		[DllImport("codyn-3.0")]
@@ -323,6 +314,41 @@ namespace Cdn {
 			Raw = cdn_variable_new(native_name, expression == null ? IntPtr.Zero : expression.Handle, (int) flags);
 			GLib.Marshaller.Free (native_name);
 		}
+
+#endregion
+#region Customized extensions
+#line 1 "Variable.custom"
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_variable_get_values(IntPtr raw, out int numr, out int numc);
+
+		public double[,] Values
+		{
+			get
+			{
+				int numr;
+				int numc;
+				double[] data;
+
+				IntPtr raw_ret = cdn_variable_get_values(Handle, out numr, out numc);
+
+				data = new double[numr * numc];
+				Marshal.Copy(raw_ret, data, 0, numr * numc);
+
+				double[,] ret = new double[numr, numc];
+				int idx = 0;
+
+				for (int r = 0; r < numr; ++r)
+				{
+					for (int c = 0; c < numc; ++c)
+					{
+						ret[r, c] = data[idx++];
+					}
+				}
+
+				return ret;
+			}
+		}
+
 
 #endregion
 	}

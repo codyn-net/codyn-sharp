@@ -1175,13 +1175,6 @@
       <method name="Evaluate" cname="cdn_expression_evaluate">
         <return-type type="gdouble" />
       </method>
-      <method name="EvaluateValues" cname="cdn_expression_evaluate_values">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="gint*" name="numr" />
-          <parameter type="gint*" name="numc" />
-        </parameters>
-      </method>
       <method name="GetAsString" cname="cdn_expression_get_as_string">
         <return-type type="const-gchar*" />
       </method>
@@ -4061,13 +4054,6 @@
       </method>
       <method name="GetValue" cname="cdn_variable_get_value">
         <return-type type="gdouble" />
-      </method>
-      <method name="GetValues" cname="cdn_variable_get_values">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="gint*" name="numr" />
-          <parameter type="gint*" name="numc" />
-        </parameters>
       </method>
       <constructor cname="cdn_variable_new">
         <parameters>
