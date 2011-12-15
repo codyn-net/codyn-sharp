@@ -256,10 +256,12 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_network_step(IntPtr raw, double timestep);
+		static extern double cdn_network_step(IntPtr raw, double timestep);
 
-		public void Step(double timestep) {
-			cdn_network_step(Handle, timestep);
+		public double Step(double timestep) {
+			double raw_ret = cdn_network_step(Handle, timestep);
+			double ret = raw_ret;
+			return ret;
 		}
 
 #endregion

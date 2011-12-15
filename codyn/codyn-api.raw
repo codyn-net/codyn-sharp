@@ -1267,7 +1267,7 @@
       <method name="SetValues" cname="cdn_expression_set_values">
         <return-type type="void" />
         <parameters>
-          <parameter type="gdouble*" name="values" />
+          <parameter type="const-gdouble*" name="values" />
           <parameter type="gint" name="numr" />
           <parameter type="gint" name="numc" />
         </parameters>
@@ -2339,7 +2339,7 @@
         </parameters>
       </method>
       <method name="Step" cname="cdn_network_step">
-        <return-type type="void" />
+        <return-type type="gdouble" />
         <parameters>
           <parameter type="gdouble" name="timestep" />
         </parameters>
@@ -4328,7 +4328,7 @@
       <method name="SetValues" cname="cdn_variable_set_values">
         <return-type type="void" />
         <parameters>
-          <parameter type="gdouble*" name="values" />
+          <parameter type="const-gdouble*" name="values" />
           <parameter type="gint" name="numr" />
           <parameter type="gint" name="numc" />
         </parameters>
