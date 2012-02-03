@@ -122,6 +122,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_embedded_context_set_copy_defines_on_write(IntPtr raw);
+
+		public void SetCopyDefinesOnWrite() {
+			cdn_embedded_context_set_copy_defines_on_write(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_embedded_context_get_define(IntPtr raw, IntPtr name);
 
 		public Cdn.Expansion GetDefine(string name) {

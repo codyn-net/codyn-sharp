@@ -1,5 +1,5 @@
-namespace Cdn {
-
+namespace Cdn
+{
 	using System;
 	using System.Collections;
 	using System.Runtime.InteropServices;
@@ -31,18 +31,12 @@ namespace Cdn {
 
 		public IntPtr Handle
 		{
-			get
-			{
-				return d_raw;
-			}
+			get { return d_raw; }
 		}
 
 		public IntPtr Raw
 		{
-			get
-			{
-				return d_raw;
-			}
+			get { return d_raw; }
 			set
 			{
 				if (d_raw != IntPtr.Zero)
@@ -85,7 +79,8 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_mini_object_copy(IntPtr raw);
 
-		public Cdn.MiniObject Copy() {
+		public Cdn.MiniObject Copy()
+		{
 			IntPtr cpraw = cdn_mini_object_copy(d_raw);
 
 			return GetObject(GetType(), cpraw);

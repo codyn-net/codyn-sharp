@@ -117,6 +117,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_tree_iter_get_type();
+
+		public static GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cdn_expression_tree_iter_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_expression_tree_iter_get_child(IntPtr raw, int nth);
 
 		public Cdn.ExpressionTreeIter GetChild(int nth) {

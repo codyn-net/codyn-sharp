@@ -49,15 +49,15 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void ChildAddedVMDelegate (IntPtr group, IntPtr objekt);
+		delegate void ChildAddedVMDelegate (IntPtr node, IntPtr objekt);
 
 		static ChildAddedVMDelegate ChildAddedVMCallback;
 
-		static void childadded_cb (IntPtr group, IntPtr objekt)
+		static void childadded_cb (IntPtr node, IntPtr objekt)
 		{
 			try {
-				Node group_managed = GLib.Object.GetObject (group, false) as Node;
-				group_managed.OnChildAdded (GLib.Object.GetObject(objekt) as Cdn.Object);
+				Node node_managed = GLib.Object.GetObject (node, false) as Node;
+				node_managed.OnChildAdded (GLib.Object.GetObject(objekt) as Cdn.Object);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -98,15 +98,15 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void ChildRemovedVMDelegate (IntPtr group, IntPtr objekt);
+		delegate void ChildRemovedVMDelegate (IntPtr node, IntPtr objekt);
 
 		static ChildRemovedVMDelegate ChildRemovedVMCallback;
 
-		static void childremoved_cb (IntPtr group, IntPtr objekt)
+		static void childremoved_cb (IntPtr node, IntPtr objekt)
 		{
 			try {
-				Node group_managed = GLib.Object.GetObject (group, false) as Node;
-				group_managed.OnChildRemoved (GLib.Object.GetObject(objekt) as Cdn.Object);
+				Node node_managed = GLib.Object.GetObject (node, false) as Node;
+				node_managed.OnChildRemoved (GLib.Object.GetObject(objekt) as Cdn.Object);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -277,11 +277,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_node_get_auto_templates_for_child(IntPtr raw, IntPtr child);
+		static extern IntPtr cdn_node_find_variables(IntPtr raw, IntPtr selector);
 
-		public GLib.SList GetAutoTemplatesForChild(Cdn.Object child) {
-			IntPtr raw_ret = cdn_node_get_auto_templates_for_child(Handle, child == null ? IntPtr.Zero : child.Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+		public Cdn.Variable[] FindVariables(string selector) {
+			IntPtr native_selector = GLib.Marshaller.StringToPtrGStrdup (selector);
+			IntPtr raw_ret = cdn_node_find_variables(Handle, native_selector);
+			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
+			GLib.Marshaller.Free (native_selector);
 			return ret;
 		}
 
@@ -313,9 +315,18 @@ namespace Cdn {
 		public Cdn.VariableInterface VariableInterface { 
 			get {
 				IntPtr raw_ret = cdn_node_get_variable_interface(Handle);
-				Cdn.VariableInterface ret = raw_ret == IntPtr.Zero ? null : (Cdn.VariableInterface) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.VariableInterface), false);
+				Cdn.VariableInterface ret = GLib.Object.GetObject(raw_ret) as Cdn.VariableInterface;
 				return ret;
 			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_node_get_auto_templates_for_child(IntPtr raw, IntPtr child);
+
+		public GLib.SList GetAutoTemplatesForChild(Cdn.Object child) {
+			IntPtr raw_ret = cdn_node_get_auto_templates_for_child(Handle, child == null ? IntPtr.Zero : child.Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -332,23 +343,12 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_node_get_edges(IntPtr raw);
 
-		public GLib.SList Edges { 
+		public Cdn.Edge[] Edges { 
 			get {
 				IntPtr raw_ret = cdn_node_get_edges(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cdn.Edge[] ret = (Cdn.Edge[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Edge));
 				return ret;
 			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_node_remove_variables(IntPtr raw, IntPtr selector);
-
-		public GLib.SList RemoveVariables(string selector) {
-			IntPtr native_selector = GLib.Marshaller.StringToPtrGStrdup (selector);
-			IntPtr raw_ret = cdn_node_remove_variables(Handle, native_selector);
-			GLib.SList ret = new GLib.SList(raw_ret);
-			GLib.Marshaller.Free (native_selector);
-			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -385,10 +385,10 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_node_get_actors(IntPtr raw);
 
-		public GLib.SList Actors { 
+		public Cdn.Variable[] Actors { 
 			get {
 				IntPtr raw_ret = cdn_node_get_actors(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
 				return ret;
 			}
 		}
@@ -432,7 +432,7 @@ namespace Cdn {
 		public Cdn.Variable FindVariable(string selector) {
 			IntPtr native_selector = GLib.Marshaller.StringToPtrGStrdup (selector);
 			IntPtr raw_ret = cdn_node_find_variable(Handle, native_selector);
-			Cdn.Variable ret = raw_ret == IntPtr.Zero ? null : (Cdn.Variable) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Variable), false);
+			Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
 			GLib.Marshaller.Free (native_selector);
 			return ret;
 		}

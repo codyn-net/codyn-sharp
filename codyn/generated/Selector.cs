@@ -240,14 +240,14 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern unsafe IntPtr cdn_selector_parse(IntPtr root, IntPtr ptr, out IntPtr error);
+		static extern unsafe IntPtr cdn_selector_parse(IntPtr root, IntPtr s, out IntPtr error);
 
-		public static unsafe Cdn.Selector Parse(Cdn.Object root, string ptr) {
-			IntPtr native_ptr = GLib.Marshaller.StringToPtrGStrdup (ptr);
+		public static unsafe Cdn.Selector Parse(Cdn.Object root, string s) {
+			IntPtr native_s = GLib.Marshaller.StringToPtrGStrdup (s);
 			IntPtr error = IntPtr.Zero;
-			IntPtr raw_ret = cdn_selector_parse(root == null ? IntPtr.Zero : root.Handle, native_ptr, out error);
+			IntPtr raw_ret = cdn_selector_parse(root == null ? IntPtr.Zero : root.Handle, native_s, out error);
 			Cdn.Selector ret = GLib.Object.GetObject(raw_ret) as Cdn.Selector;
-			GLib.Marshaller.Free (native_ptr);
+			GLib.Marshaller.Free (native_s);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}

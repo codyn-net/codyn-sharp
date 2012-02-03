@@ -14,9 +14,26 @@ namespace Cdn {
 		protected Monitor(GLib.GType gtype) : base(gtype) {}
 		public Monitor(IntPtr raw) : base(raw) {}
 
-		protected Monitor() : base(IntPtr.Zero)
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_monitor_new(IntPtr network, IntPtr property);
+
+		public Monitor (Cdn.Network network, Cdn.Variable property) : base (IntPtr.Zero)
 		{
-			CreateNativeObject (new string [0], new GLib.Value [0]);
+			if (GetType () != typeof (Monitor)) {
+				ArrayList vals = new ArrayList();
+				ArrayList names = new ArrayList();
+				if (network != null) {
+					names.Add ("network");
+					vals.Add (new GLib.Value (network));
+				}
+				if (property != null) {
+					names.Add ("property");
+					vals.Add (new GLib.Value (property));
+				}
+				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+				return;
+			}
+			Raw = cdn_monitor_new(network == null ? IntPtr.Zero : network.Handle, property == null ? IntPtr.Zero : property.Handle);
 		}
 
 		[GLib.Property ("property")]
@@ -56,7 +73,7 @@ namespace Cdn {
 		public Cdn.Variable Variable { 
 			get {
 				IntPtr raw_ret = cdn_monitor_get_variable(Handle);
-				Cdn.Variable ret = raw_ret == IntPtr.Zero ? null : (Cdn.Variable) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Variable), false);
+				Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
 				return ret;
 			}
 		}

@@ -19,6 +19,8 @@
   <remove-node path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_format_from_file']"/>
   <remove-node path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_format_from_stream']"/>
   <remove-node path="/api/namespace/object[@cname='CdnNetwork']/constructor[@cname='cdn_network_new_from_stream']"/>
+  <attr path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_get_import']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_get_import_from_path']/return-type" name="type">CdnImport*</attr>
 
   <!-- CdnInputFile -->
   <remove-node path="/api/namespace/object[@cname='CdnInputFile']/constructor[@cname='cdn_input_file_new']"/>
@@ -59,14 +61,11 @@
   <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_variables']/return-type" name="element_type">CdnVariable*</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/virtual_method[@cname='get_variables']/return-type" name="element_type">CdnVariable*</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_variable']" name="name">Variable</attr>
-  <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_compile']/parameters/parameter[@name='(CdnCompileError)*']" name="type">CdnCompileError*</attr>
-  <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_compile']/parameters/parameter[@name='(CdnCompileError)*']" name="name">error</attr>
+  <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_applied_templates']/return-type" name="element_type">CdnObject*</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_template_applies_to']/return-type" name="element_type">CdnObject*</attr>
-  <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_actors']/return-type" name="element_type">CdnVariable*</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_foreach_expression']/parameters/parameter[@name='func']" name="scope">call</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/signal[@name='VerifyRemoveVariable']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_edges']/return-type" name="element_type">CdnEdge*</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_parent']/return-type" name="type">CdnNode*</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_relative_id']/parameters/parameter[@name='parent']" name="type">CdnNode*</attr>
   <attr path="/api/namespace/object[@cname='CdnObject']/method[@cname='cdn_object_get_relative_id_for_display']/parameters/parameter[@name='parent']" name="type">CdnNode*</attr>
@@ -89,10 +88,11 @@
   <attr path="/api/namespace/object[@cname='CdnNode']/method[@cname='cdn_node_find_objects']/return-type" name="element_type">CdnObject*</attr>
   <attr path="/api/namespace/object[@cname='CdnNode']/method[@cname='cdn_node_find_variables']/return-type" name="element_type">CdnVariable*</attr>
   <attr path="/api/namespace/object[@cname='CdnNode']/method[@cname='cdn_node_get_self_edge']/return-type" name="type">CdnEdge*</attr>
+  <attr path="/api/namespace/object[@cname='CdnNode']/method[@cname='cdn_node_get_actors']/return-type" name="element_type">CdnVariable*</attr>
+  <attr path="/api/namespace/object[@cname='CdnNode']/method[@cname='cdn_node_get_edges']/return-type" name="element_type">CdnEdge*</attr>
 
   <!-- CdnMonitor -->
-  <attr path="/api/namespace/object[@cname='CdnMonitor']/constructor[@cname='cdn_monitor_new']/parameters/parameter[@name='(CdnNetwork)*']" name="type">CdnNetwork*</attr>
-  <attr path="/api/namespace/object[@cname='CdnMonitor']/constructor[@cname='cdn_monitor_new']/parameters/parameter[@name='(CdnNetwork)*']" name="name">network</attr>
+  <attr path="/api/namespace/object[@cname='CdnMonitor']/constructor[@cname='cdn_monitor_new']/parameters/parameter[@name='network']" name="type">CdnNetwork*</attr>
 
   <remove-node path="/api/namespace/object[@cname='CdnMonitor']/method[@cname='cdn_monitor_get_data_resampled']"/>
   <remove-node path="/api/namespace/object[@cname='CdnMonitor']/method[@cname='cdn_monitor_get_data']"/>
@@ -104,13 +104,14 @@
   <attr path="/api/namespace/object[@cname='CdnExpression']/constructor" name="hidden">true</attr>
   <remove-node path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_evaluate_values']"/>
 
-  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_dependencies']/return-type" name="element_type">CdnVariable*</attr>
+  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_dependencies']/return-type" name="element_type">CdnExpression*</attr>
+  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_variable_dependencies']/return-type" name="element_type">CdnVariable*</attr>
 
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
 
   <!-- CdnExpressionTreeIter -->
-  <attr path="/api/namespace/struct[@cname='CdnExpressionTreeIter']/method[@cname='cdn_expression_tree_iter_get_instruction']" name="hidden"/>
-  <attr path="/api/namespace/struct[@cname='CdnExpressionTreeIter']/method[@cname='cdn_expression_tree_iter_set_instruction']" name="hidden"/>
+  <attr path="/api/namespace/boxed[@cname='CdnExpressionTreeIter']/method[@cname='cdn_expression_tree_iter_get_instruction']" name="hidden"/>
+  <attr path="/api/namespace/boxed[@cname='CdnExpressionTreeIter']/method[@cname='cdn_expression_tree_iter_set_instruction']" name="hidden"/>
 
   <!-- CdnInstruction -->
   <attr path="/api/namespace/object[@cname='CdnInstruction']/method[@cname='cdn_instruction_get_dependencies']/return-type" name="element_type">CdnVariable*</attr>
@@ -118,11 +119,7 @@
 
   <!-- CdnOperator -->
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_get_expressions']/return-type" name="element_type">CdnExpression*</attr>
-  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_step']/parameters/parameter[@name='integrator']" name="type">CdnIntegrator*</attr>
-  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_step_prepare']/parameters/parameter[@name='integrator']" name="type">CdnIntegrator*</attr>
-  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_step_evaluate']/parameters/parameter[@name='integrator']" name="type">CdnIntegrator*</attr>
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_get_class_name']" name="hidden"/>
-  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_validate_num_arguments']" name="hidden"/>
 
   <!-- CdnFunction -->
   <remove-node path="/api/namespace/object[@cname='CdnFunction']/method[@cname='cdn_function_execute']"/>
@@ -156,14 +153,6 @@
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_lookup_variable']/return-type" name="type">CdnVariable*</attr>
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_lookup_function']/return-type" name="type">CdnFunction*</attr>
 
-  <add-node path="/api/namespace/object[@cname='CdnNetwork']">
-    <method name="GetImportFromPath" cname="cdn_network_get_import_from_path">
-      <return-type type="CdnImport*" />
-      <parameters>
-        <parameter type="const-gchar*" name="path" />
-      </parameters>
-    </method>
-  </add-node>
 
   <add-node path="/api/namespace/object[@cname='CdnCompileContext']">
     <method name="LookupFunction" cname="cdn_compile_context_lookup_function">
@@ -182,8 +171,6 @@
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p0']" name="name">from</attr>
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p1']" name="name">step</attr>
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p2']" name="name">to</attr>
-
-  <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='StepPrepare']" name="name">StepPrepared</attr>
 
   <!-- CdnIntegrators -->
   <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cdn_integrators_list']/return-type" name="element_type">GType</attr>
@@ -217,9 +204,9 @@
   <attr path="/api/namespace/object[@cname='CdnVariableInterface']/method[@cname='cdn_variable_interface_get_node']/return-type" name="type">CdnNode*</attr>
 
   <!-- CdnVariable -->
-  <attr path="/api/namespace/struct[@cname='CdnVariable']/method[@cname='cdn_variable_get_object']/return-type" name="type">CdnObject*</attr>
-  <attr path="/api/namespace/struct[@cname='CdnVariable']/method[@cname='cdn_variable_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
-  <remove-node path="/api/namespace/struct[@cname='CdnVariable']/method[@cname='cdn_variable_get_values']"/>
+  <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_object']/return-type" name="type">CdnObject*</attr>
+  <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
+  <remove-node path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_values']"/>
 
   <!-- CdnVariableFlags -->
   <attr path="/api/namespace/enum[@cname='CdnVariableFlags']/member[@cname='CDN_VARIABLE_FLAG_INOUT']" name="value">In | Out</attr>
@@ -244,13 +231,17 @@
   <remove-node path="/api/namespace/object[@cname='CdnParserContext']/method[@cname='cdn_parser_context_push_input']"/>
   <remove-node path="/api/namespace/object[@cname='CdnParserContext']/method[@cname='cdn_parser_context_get_file']"/>
   <attr path="/api/namespace/object[@cname='CdnParserContext']/signal[@cname='selector-item-pushed']/parameters/parameter[@name='p0']" name="type">CdnSelector*</attr>
+  <attr path="/api/namespace/object[@cname='CdnParserContext']/signal[@cname='file-used']" name="hidden">true</attr>
 
-  <!-- CdnExpansions -->
-  <remove-node path="/api/namespace/class[@name='Expansions']/method[@cname='cdn_expansions_expand']"/>
+  <!-- CdnForeachFunctionFunc -->
+  <attr path="/api/namespace/callback[@cname='CdnForeachFunctionFunc']/parameters/parameter[@name='func']" name="type">CdnFunction*</attr>
 
-  <remove-node path="/api/namespace/struct[@cname='CdnVariableClass']"/>
-  <remove-node path="/api/namespace/struct[@cname='CdnInstructionVariableClass']"/>
-  <remove-node path="/api/namespace/struct[@cname='CdnVariableInterfaceClass']"/>
+  <!-- CdnStack -->
+  <remove-node path="/api/namespace/boxed[@cname='CdnStack']/method[@cname='cdn_stack_output_ptr']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStack']/method[@cname='cdn_stack_set_output_ptr']"/>
+
+  <!-- CdnInstructionFunction -->
+  <attr path="/api/namespace/object[@cname='CdnInstructionFunction']/constructor[@cname='cdn_instruction_function_new']" name="hidden">true</attr>
 </metadata>
 
 <!-- vi:ts=2:et -->

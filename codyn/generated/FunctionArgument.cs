@@ -19,6 +19,36 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
+		[GLib.Property ("numc")]
+		public int Numc {
+			get {
+				GLib.Value val = GetProperty ("numc");
+				int ret = (int) val;
+				val.Dispose ();
+				return ret;
+			}
+			set {
+				GLib.Value val = new GLib.Value(value);
+				SetProperty("numc", val);
+				val.Dispose ();
+			}
+		}
+
+		[GLib.Property ("numr")]
+		public int Numr {
+			get {
+				GLib.Value val = GetProperty ("numr");
+				int ret = (int) val;
+				val.Dispose ();
+				return ret;
+			}
+			set {
+				GLib.Value val = new GLib.Value(value);
+				SetProperty("numr", val);
+				val.Dispose ();
+			}
+		}
+
 		[DllImport("codyn-3.0")]
 		static extern bool cdn_function_argument_get_explicit(IntPtr raw);
 
@@ -109,12 +139,30 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern bool cdn_function_argument_set_name(IntPtr raw, IntPtr name);
+
+		public bool SetName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cdn_function_argument_set_name(Handle, native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_function_argument_copy(IntPtr raw);
 
 		public Cdn.FunctionArgument Copy() {
 			IntPtr raw_ret = cdn_function_argument_copy(Handle);
 			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret, true) as Cdn.FunctionArgument;
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_function_argument_get_dimension(IntPtr raw, out int numr, out int numc);
+
+		public void GetDimension(out int numr, out int numc) {
+			cdn_function_argument_get_dimension(Handle, out numr, out numc);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -129,14 +177,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_function_argument_set_name(IntPtr raw, IntPtr name);
+		static extern void cdn_function_argument_set_dimension(IntPtr raw, int numr, int numc);
 
-		public bool SetName(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cdn_function_argument_set_name(Handle, native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
-			return ret;
+		public void SetDimension(int numr, int numc) {
+			cdn_function_argument_set_dimension(Handle, numr, numc);
 		}
 
 #endregion

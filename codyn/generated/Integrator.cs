@@ -283,13 +283,6 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_integrator_simulation_step_direct(IntPtr raw);
-
-		public void SimulationStepDirect() {
-			cdn_integrator_simulation_step_direct(Handle);
-		}
-
 #endregion
 #region Customized extensions
 #line 1 "Integrator.custom"

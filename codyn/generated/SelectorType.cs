@@ -15,6 +15,7 @@ namespace Cdn {
 		State = 1 << 1,
 		Edge = 1 << 2,
 		Node = 1 << 3,
+		Variable = 1 << 4,
 		Action = 1 << 5,
 		Function = 1 << 6,
 		Template = 1 << 7,

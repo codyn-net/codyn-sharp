@@ -8,12 +8,15 @@
 -->
   <namespace name="Cdn" library="codyn-3.0">
     <enum name="CompileErrorCode" cname="CdnCompileErrorCode" type="enum">
+      <member cname="CDN_COMPILE_ERROR_VARIABLE_NOT_FOUND" name="VariableNotFound" />
       <member cname="CDN_COMPILE_ERROR_FUNCTION_NOT_FOUND" name="FunctionNotFound" />
       <member cname="CDN_COMPILE_ERROR_OPERATOR_NOT_FOUND" name="OperatorNotFound" />
       <member cname="CDN_COMPILE_ERROR_INVALID_TOKEN" name="InvalidToken" />
       <member cname="CDN_COMPILE_ERROR_MAXARG" name="Maxarg" />
       <member cname="CDN_COMPILE_ERROR_INVALID_STACK" name="InvalidStack" />
+      <member cname="CDN_COMPILE_ERROR_VARIABLE_RECURSE" name="VariableRecurse" />
       <member cname="CDN_COMPILE_ERROR_INVALID_ARGUMENTS" name="InvalidArguments" />
+      <member cname="CDN_COMPILE_ERROR_INVALID_DIMENSION" name="InvalidDimension" />
       <member cname="CDN_COMPILE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
     <enum name="EmbeddedStringError" cname="CdnEmbeddedStringError" type="enum">
@@ -41,8 +44,10 @@
     <enum name="ImportError" cname="CdnImportError" type="enum">
       <member cname="CDN_IMPORT_ERROR_REMOVE" name="Remove" />
     </enum>
-    <enum name="InstructionVariableBinding" cname="CdnInstructionVariableBinding" type="enum">
-      <member cname="CDN_IMPORT_ERROR_REMOVE" name="Remove" />
+    <enum name="InstructionVariableBinding" cname="CdnInstructionVariableBinding" type="flags">
+      <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_NONE" name="None" />
+      <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_FROM" name="From" value="1 &lt;&lt; 0" />
+      <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_TO" name="To" value="1 &lt;&lt; 1" />
     </enum>
     <enum name="LayoutRelation" cname="CdnLayoutRelation" type="flags">
       <member cname="CDN_LAYOUT_RELATION_ABOVE" name="Above" value="1 &lt;&lt; 0" />
@@ -66,6 +71,7 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_GREATER_OR_EQUAL" name="GreaterOrEqual" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LESS_OR_EQUAL" name="LessOrEqual" />
       <member cname="CDN_MATH_FUNCTION_TYPE_EQUAL" name="Equal" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_NEQUAL" name="Nequal" />
       <member cname="CDN_MATH_FUNCTION_TYPE_OR" name="Or" />
       <member cname="CDN_MATH_FUNCTION_TYPE_AND" name="And" />
       <member cname="CDN_MATH_FUNCTION_TYPE_NEGATE" name="Negate" />
@@ -102,6 +108,7 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_CLIP" name="Clip" />
       <member cname="CDN_MATH_FUNCTION_TYPE_CYCLE" name="Cycle" />
       <member cname="CDN_MATH_FUNCTION_TYPE_INDEX" name="Index" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_LINDEX" name="Lindex" />
       <member cname="CDN_MATH_FUNCTION_TYPE_TRANSPOSE" name="Transpose" />
       <member cname="CDN_MATH_FUNCTION_TYPE_INVERSE" name="Inverse" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LINSOLVE" name="Linsolve" />
@@ -109,6 +116,9 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_PRODUCT" name="Product" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LENGTH" name="Length" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SIZE" name="Size" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_HCAT" name="Hcat" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_ZEROS" name="Zeros" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_EYE" name="Eye" />
       <member cname="CDN_MATH_FUNCTION_TYPE_NUM" name="Num" />
     </enum>
     <enum name="NetworkError" cname="CdnNetworkError" type="enum">
@@ -123,6 +133,7 @@
     <enum name="NetworkLoadError" cname="CdnNetworkLoadError" type="enum">
       <member cname="CDN_NETWORK_LOAD_ERROR_NONE" name="None" />
       <member cname="CDN_NETWORK_LOAD_ERROR_SYNTAX" name="Syntax" />
+      <member cname="CDN_NETWORK_LOAD_ERROR_VARIABLE" name="Variable" />
       <member cname="CDN_NETWORK_LOAD_ERROR_OBJECT" name="Object" />
       <member cname="CDN_NETWORK_LOAD_ERROR_EDGE" name="Edge" />
       <member cname="CDN_NETWORK_LOAD_ERROR_FUNCTION" name="Function" />
@@ -139,6 +150,11 @@
       <member cname="CDN_NODE_ERROR_NUM" name="Num" />
     </enum>
     <enum name="ObjectError" cname="CdnObjectError" type="enum">
+      <member cname="CDN_OBJECT_ERROR_VARIABLE_UNKNOWN" name="ErrorVariableUnknown" />
+      <member cname="CDN_OBJECT_ERROR_VARIABLE_NOT_FOUND" name="ErrorVariableNotFound" />
+      <member cname="CDN_OBJECT_ERROR_VARIABLE_IN_USE" name="ErrorVariableInUse" />
+      <member cname="CDN_OBJECT_ERROR_VARIABLE_FROM_TEMPLATE" name="ErrorVariableFromTemplate" />
+      <member cname="CDN_OBJECT_ERROR_INVALID_VARIABLE_NAME" name="ErrorInvalidVariableName" />
       <member cname="CDN_OBJECT_ERROR_TEMPLATE_ALREADY_APPLIED" name="ErrorTemplateAlreadyApplied" />
       <member cname="CDN_OBJECT_ERROR_TEMPLATE_NOT_FOUND" name="ErrorTemplateNotFound" />
       <member cname="CDN_OBJECT_NUM_ERRORS" name="NumErrors" />
@@ -151,6 +167,7 @@
       <member cname="CDN_PARSER_CONTEXT_SELECTOR_TYPE_OBJECT" name="Object" />
       <member cname="CDN_PARSER_CONTEXT_SELECTOR_TYPE_NODE" name="Node" />
       <member cname="CDN_PARSER_CONTEXT_SELECTOR_TYPE_EDGE" name="Edge" />
+      <member cname="CDN_PARSER_CONTEXT_SELECTOR_TYPE_VARIABLE" name="Variable" />
       <member cname="CDN_PARSER_CONTEXT_SELECTOR_TYPE_ACTION" name="Action" />
       <member cname="CDN_PARSER_CONTEXT_SELECTOR_TYPE_FUNCTION" name="Function" />
     </enum>
@@ -166,6 +183,7 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_EDGES" name="TypeEdges" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_NODES" name="TypeNodes" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_IMPORTS" name="TypeImports" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_VARIABLES" name="TypeVariables" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_ACTIONS" name="TypeActions" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_FUNCTIONS" name="TypeFunctions" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_OBJECTS" name="TypeObjects" />
@@ -191,6 +209,10 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_REVERSE" name="TypeReverse" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_SOURCE_NAME" name="TypeSourceName" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_SINK_NAME" name="TypeSinkName" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_RECURSE" name="TypeRecurse" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_SOURCED_BY" name="TypeSourcedBy" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_SINKED_BY" name="TypeSinkedBy" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_PASS" name="TypePass" />
       <member cname="CDN_SELECTOR_PSEUDO_NUM" name="Num" />
     </enum>
     <enum name="SelectorType" cname="CdnSelectorType" type="flags">
@@ -199,6 +221,7 @@
       <member cname="CDN_SELECTOR_TYPE_STATE" name="State" value="1 &lt;&lt; 1" />
       <member cname="CDN_SELECTOR_TYPE_EDGE" name="Edge" value="1 &lt;&lt; 2" />
       <member cname="CDN_SELECTOR_TYPE_NODE" name="Node" value="1 &lt;&lt; 3" />
+      <member cname="CDN_SELECTOR_TYPE_VARIABLE" name="Variable" value="1 &lt;&lt; 4" />
       <member cname="CDN_SELECTOR_TYPE_ACTION" name="Action" value="1 &lt;&lt; 5" />
       <member cname="CDN_SELECTOR_TYPE_FUNCTION" name="Function" value="1 &lt;&lt; 6" />
       <member cname="CDN_SELECTOR_TYPE_TEMPLATE" name="Template" value="1 &lt;&lt; 7" />
@@ -213,14 +236,33 @@
       <member cname="CDN_SYMBOLIC_ERROR_UNSUPPORTED" name="Unsupported" />
       <member cname="CDN_SYMBOLIC_ERROR_INVALID" name="Invalid" />
     </enum>
-    <enum name="VariableFlags" cname="CdnVariableFlags" type="enum">
-      <member cname="CDN_SYMBOLIC_ERROR_UNSUPPORTED" name="Unsupported" />
-      <member cname="CDN_SYMBOLIC_ERROR_INVALID" name="Invalid" />
+    <enum name="VariableFlags" cname="CdnVariableFlags" type="flags">
+      <member cname="CDN_VARIABLE_FLAG_NONE" name="None" />
+      <member cname="CDN_VARIABLE_FLAG_INTEGRATED" name="Integrated" value="1 &lt;&lt; 0" />
+      <member cname="CDN_VARIABLE_FLAG_IN" name="In" value="1 &lt;&lt; 1" />
+      <member cname="CDN_VARIABLE_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
+      <member cname="CDN_VARIABLE_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
+      <member cname="CDN_VARIABLE_FLAG_INOUT" name="InOut" value="In | Out" />
     </enum>
     <enum name="VariableInterfaceError" cname="CdnVariableInterfaceError" type="enum">
-      <member cname="CDN_SYMBOLIC_ERROR_UNSUPPORTED" name="Unsupported" />
-      <member cname="CDN_SYMBOLIC_ERROR_INVALID" name="Invalid" />
+      <member cname="CDN_VARIABLE_INTERFACE_ERROR_EXISTS" name="Exists" />
+      <member cname="CDN_VARIABLE_INTERFACE_ERROR_NOT_FOUND" name="NotFound" />
+      <member cname="CDN_VARIABLE_INTERFACE_ERROR_NUM_ERRORS" name="NumErrors" />
     </enum>
+    <callback name="ExpressionCacheNotify" cname="CdnExpressionCacheNotify">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="CdnExpression*" name="expression" />
+        <parameter type="gpointer" name="userdata" />
+      </parameters>
+    </callback>
+    <callback name="ExpressionEvaluateNotify" cname="CdnExpressionEvaluateNotify">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="CdnExpression*" name="expression" />
+        <parameter type="gpointer" name="userdata" />
+      </parameters>
+    </callback>
     <callback name="ForeachExpressionFunc" cname="CdnForeachExpressionFunc">
       <return-type type="void" />
       <parameters>
@@ -231,7 +273,7 @@
     <callback name="ForeachFunctionFunc" cname="CdnForeachFunctionFunc">
       <return-type type="void" />
       <parameters>
-        <parameter type="CdnFunctionForward*" name="func" />
+        <parameter type="CdnFunction*" name="func" />
         <parameter type="gpointer" name="userdata" />
       </parameters>
     </callback>
@@ -788,6 +830,13 @@
           <parameter type="gboolean" name="match_full" />
         </parameters>
       </method>
+      <method name="GetActionWithIndex" cname="cdn_edge_get_action_with_index">
+        <return-type type="CdnEdgeAction*" />
+        <parameters>
+          <parameter type="const-gchar*" name="target" />
+          <parameter type="CdnExpression*" name="index" />
+        </parameters>
+      </method>
       <method name="GetActions" cname="cdn_edge_get_actions">
         <return-type type="const-GSList*" element_type="CdnEdgeAction*" />
       </method>
@@ -820,6 +869,7 @@
       <property name="Target" cname="target" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Equation" cname="equation" type="CdnExpression" readable="true" writeable="true" construct="true" />
       <property name="TargetProperty" cname="target-property" type="CdnVariable" readable="true" />
+      <property name="Index" cname="index" type="CdnExpression" readable="true" writeable="true" />
       <implements>
         <interface cname="CdnModifiable" />
         <interface cname="CdnAnnotatable" />
@@ -841,6 +891,15 @@
       <method name="GetEquation" cname="cdn_edge_action_get_equation">
         <return-type type="CdnExpression*" />
       </method>
+      <method name="GetIndex" cname="cdn_edge_action_get_index">
+        <return-type type="CdnExpression*" />
+      </method>
+      <method name="GetIndices" cname="cdn_edge_action_get_indices">
+        <return-type type="const-gint*" />
+        <parameters>
+          <parameter type="gint*" name="num_indices" />
+        </parameters>
+      </method>
       <method name="GetTarget" cname="cdn_edge_action_get_target">
         <return-type type="const-gchar*" />
       </method>
@@ -860,6 +919,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CdnExpression*" name="equation" />
+        </parameters>
+      </method>
+      <method name="SetIndex" cname="cdn_edge_action_set_index">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpression*" name="expression" />
         </parameters>
       </method>
       <method name="SetTarget" cname="cdn_edge_action_set_target">
@@ -955,6 +1020,9 @@
         <parameters>
           <parameter type="gboolean" name="copy_defines" />
         </parameters>
+      </method>
+      <method name="SetCopyDefinesOnWrite" cname="cdn_embedded_context_set_copy_defines_on_write">
+        <return-type type="void" />
       </method>
       <method name="SetDefines" cname="cdn_embedded_context_set_defines">
         <return-type type="void" />
@@ -1175,11 +1243,14 @@
       <method name="Evaluate" cname="cdn_expression_evaluate">
         <return-type type="gdouble" />
       </method>
+      <method name="ForceResetCache" cname="cdn_expression_force_reset_cache">
+        <return-type type="void" />
+      </method>
       <method name="GetAsString" cname="cdn_expression_get_as_string">
         <return-type type="const-gchar*" />
       </method>
       <method name="GetDependencies" cname="cdn_expression_get_dependencies">
-        <return-type type="const-GSList*" element_type="CdnVariable*" />
+        <return-type type="const-GSList*" element_type="CdnExpression*" />
       </method>
       <method name="GetDependsOnMe" cname="cdn_expression_get_depends_on_me">
         <return-type type="const-GSList*" />
@@ -1212,6 +1283,9 @@
       <method name="GetType" cname="cdn_expression_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="GetVariableDependencies" cname="cdn_expression_get_variable_dependencies">
+        <return-type type="GSList*" element_type="CdnVariable*" />
+      </method>
       <constructor cname="cdn_expression_new" hidden="true">
         <parameters>
           <parameter type="const-gchar*" name="expression" />
@@ -1223,6 +1297,22 @@
       </method>
       <method name="ResetCache" cname="cdn_expression_reset_cache">
         <return-type type="void" />
+      </method>
+      <method name="SetCacheNotify" cname="cdn_expression_set_cache_notify">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpressionCacheNotify" name="notify" />
+          <parameter type="gpointer" name="userdata" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+        </parameters>
+      </method>
+      <method name="SetEvaluateNotify" cname="cdn_expression_set_evaluate_notify">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpressionEvaluateNotify" name="notify" />
+          <parameter type="gpointer" name="userdata" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+        </parameters>
       </method>
       <method name="SetFromString" cname="cdn_expression_set_from_string">
         <return-type type="void" />
@@ -1306,10 +1396,16 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CdnFunction*" name="function" />
-          <parameter type="gint" name="arguments" />
-          <parameter type="gint*" name="argdim" />
           <parameter type="gint*" name="numr" />
           <parameter type="gint*" name="numc" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ForDimension" cname="for_dimension">
+        <return-type type="CdnFunction*" />
+        <parameters>
+          <parameter type="CdnFunction*" name="function" />
+          <parameter type="gint" name="numargs" />
+          <parameter type="gint*" name="argdim" />
         </parameters>
       </virtual_method>
       <method name="AddArgument" cname="cdn_function_add_argument">
@@ -1327,6 +1423,13 @@
       <method name="ErrorQuark" cname="cdn_function_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
+      <method name="ForDimension" cname="cdn_function_for_dimension">
+        <return-type type="CdnFunction*" />
+        <parameters>
+          <parameter type="gint" name="numargs" />
+          <parameter type="gint*" name="argdim" />
+        </parameters>
+      </method>
       <method name="GetArgument" cname="cdn_function_get_argument">
         <return-type type="CdnFunctionArgument*" />
         <parameters>
@@ -1339,8 +1442,6 @@
       <method name="GetDimension" cname="cdn_function_get_dimension">
         <return-type type="void" />
         <parameters>
-          <parameter type="gint" name="arguments" />
-          <parameter type="gint*" name="argdim" />
           <parameter type="gint*" name="numr" />
           <parameter type="gint*" name="numc" />
         </parameters>
@@ -1391,8 +1492,17 @@
       </signal>
       <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Explicit" cname="explicit" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="Numr" cname="numr" type="gint" readable="true" writeable="true" construct="true" />
+      <property name="Numc" cname="numc" type="gint" readable="true" writeable="true" construct="true" />
       <method name="Copy" cname="cdn_function_argument_copy">
         <return-type type="CdnFunctionArgument*" owned="true" />
+      </method>
+      <method name="GetDimension" cname="cdn_function_argument_get_dimension">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint*" name="numr" />
+          <parameter type="gint*" name="numc" />
+        </parameters>
       </method>
       <method name="GetExplicit" cname="cdn_function_argument_get_explicit">
         <return-type type="gboolean" />
@@ -1409,6 +1519,13 @@
           <parameter type="gboolean" name="isexplicit" />
         </parameters>
       </constructor>
+      <method name="SetDimension" cname="cdn_function_argument_set_dimension">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="numr" />
+          <parameter type="gint" name="numc" />
+        </parameters>
+      </method>
       <method name="SetExplicit" cname="cdn_function_argument_set_explicit">
         <return-type type="void" />
         <parameters>
@@ -1753,7 +1870,7 @@
       <method name="GetType" cname="cdn_instruction_function_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <constructor cname="cdn_instruction_function_new">
+      <constructor cname="cdn_instruction_function_new" hidden="true">
         <parameters>
           <parameter type="guint" name="id" />
           <parameter type="const-gchar*" name="name" />
@@ -1809,11 +1926,47 @@
       </method>
       <constructor cname="cdn_instruction_rand_new">
         <parameters>
-          <parameter type="gint" name="arguments" />
+          <parameter type="gint" name="numargs" />
+          <parameter type="gint*" name="argdim" />
         </parameters>
       </constructor>
       <method name="Next" cname="cdn_instruction_rand_next">
         <return-type type="void" />
+      </method>
+    </object>
+    <object name="InstructionVariable" cname="CdnInstructionVariable" parent="CdnInstruction">
+      <field name="Priv" cname="priv" type="CdnInstructionVariablePrivate*" />
+      <method name="GetBinding" cname="cdn_instruction_variable_get_binding">
+        <return-type type="CdnInstructionVariableBinding" />
+      </method>
+      <method name="GetType" cname="cdn_instruction_variable_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetVariable" cname="cdn_instruction_variable_get_variable">
+        <return-type type="CdnVariable*" />
+      </method>
+      <constructor cname="cdn_instruction_variable_new">
+        <parameters>
+          <parameter type="CdnVariable*" name="property" />
+        </parameters>
+      </constructor>
+      <constructor cname="cdn_instruction_variable_new_with_binding">
+        <parameters>
+          <parameter type="CdnVariable*" name="property" />
+          <parameter type="CdnInstructionVariableBinding" name="binding" />
+        </parameters>
+      </constructor>
+      <method name="SetBinding" cname="cdn_instruction_variable_set_binding">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnInstructionVariableBinding" name="binding" />
+        </parameters>
+      </method>
+      <method name="SetVariable" cname="cdn_instruction_variable_set_variable">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariable*" name="property" />
+        </parameters>
       </method>
     </object>
     <object name="Integrator" cname="CdnIntegrator" parent="CdnObject">
@@ -1897,9 +2050,6 @@
         <parameters>
           <parameter type="gdouble" name="t" />
         </parameters>
-      </method>
-      <method name="SimulationStepDirect" cname="cdn_integrator_simulation_step_direct">
-        <return-type type="void" />
       </method>
       <method name="SimulationStepIntegrate" cname="cdn_integrator_simulation_step_integrate">
         <return-type type="void" />
@@ -2064,7 +2214,7 @@
       </method>
       <constructor cname="cdn_monitor_new">
         <parameters>
-          <parameter type="CdnNetworkForward*" name="network" />
+          <parameter type="CdnNetwork*" name="network" />
           <parameter type="CdnVariable*" name="property" />
         </parameters>
       </constructor>
@@ -2083,14 +2233,14 @@
       <method name="ErrorQuark" cname="cdn_network_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
-      <method name="GetImport" cname="cdn_network_get_import">
+      <method name="GetImport" cname="cdn_network_get_import" hidden="true">
         <return-type type="CdnImportForward*" />
         <parameters>
           <parameter type="GFile*" name="file" />
         </parameters>
       </method>
       <method name="GetImportFromPath" cname="cdn_network_get_import_from_path">
-        <return-type type="CdnImportForward*" />
+        <return-type type="CdnImport*" />
         <parameters>
           <parameter type="const-gchar*" name="path" />
         </parameters>
@@ -2177,12 +2327,6 @@
           <parameter type="gdouble" name="timestep" />
         </parameters>
       </method>
-      <method name="GetImportFromPath" cname="cdn_network_get_import_from_path">
-        <return-type type="CdnImport*" />
-        <parameters>
-          <parameter type="const-gchar*" name="path" />
-        </parameters>
-      </method>
     </object>
     <object name="NetworkDeserializer" cname="CdnNetworkDeserializer" parent="GObject">
       <field name="Priv" cname="priv" type="CdnNetworkDeserializerPrivate*" />
@@ -2238,21 +2382,21 @@
       <signal name="ChildAdded" cname="child-added" when="LAST" field_name="child_added">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnNode*" name="group" />
+          <parameter type="CdnNode*" name="node" />
           <parameter type="CdnObject*" name="object" />
         </parameters>
       </signal>
       <signal name="ChildRemoved" cname="child-removed" when="LAST" field_name="child_removed">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnNode*" name="group" />
+          <parameter type="CdnNode*" name="node" />
           <parameter type="CdnObject*" name="object" />
         </parameters>
       </signal>
       <signal name="VerifyRemoveChild" cname="verify-remove-child" when="LAST" manual="true" field_name="verify_remove_child" hidden="true">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="CdnNode*" name="group" />
+          <parameter type="CdnNode*" name="node" />
           <parameter type="CdnObject*" name="object" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2268,7 +2412,7 @@
       <virtual_method name="Add" cname="add">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="CdnNode*" name="group" />
+          <parameter type="CdnNode*" name="node" />
           <parameter type="CdnObject*" name="object" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2276,7 +2420,7 @@
       <virtual_method name="Remove" cname="remove">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="CdnNode*" name="group" />
+          <parameter type="CdnNode*" name="node" />
           <parameter type="CdnObject*" name="object" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2309,6 +2453,12 @@
           <parameter type="const-gchar*" name="selector" />
         </parameters>
       </method>
+      <method name="FindVariables" cname="cdn_node_find_variables">
+        <return-type type="GSList*" element_type="CdnVariable*" />
+        <parameters>
+          <parameter type="const-gchar*" name="selector" />
+        </parameters>
+      </method>
       <method name="Foreach" cname="cdn_node_foreach" hidden="true">
         <return-type type="void" />
         <parameters>
@@ -2317,7 +2467,7 @@
         </parameters>
       </method>
       <method name="GetActors" cname="cdn_node_get_actors">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CdnVariable*" />
       </method>
       <method name="GetAutoTemplatesForChild" cname="cdn_node_get_auto_templates_for_child">
         <return-type type="GSList*" />
@@ -2335,7 +2485,7 @@
         <return-type type="const-GSList*" element_type="CdnObject*" />
       </method>
       <method name="GetEdges" cname="cdn_node_get_edges">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CdnEdge*" />
       </method>
       <method name="GetProxy" cname="cdn_node_get_proxy">
         <return-type type="CdnObject*" />
@@ -2363,12 +2513,6 @@
         <parameters>
           <parameter type="CdnObject*" name="object" />
           <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="RemoveVariables" cname="cdn_node_remove_variables">
-        <return-type type="GSList*" />
-        <parameters>
-          <parameter type="const-gchar*" name="selector" />
         </parameters>
       </method>
       <method name="SetProxy" cname="cdn_node_set_proxy">
@@ -2560,7 +2704,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CdnObject*" name="first" />
-          <parameter type="CdnObject*" name="last" />
+          <parameter type="CdnObject*" name="second" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetCompileContext" cname="get_compile_context">
@@ -2785,7 +2929,7 @@
       <virtual_method name="Copy" cname="copy">
         <return-type type="CdnOperator*" owned="true" />
         <parameters>
-          <parameter type="CdnOperator*" name="src" />
+          <parameter type="CdnOperator*" name="op" />
         </parameters>
       </virtual_method>
       <method name="AllExpressions" cname="cdn_operator_all_expressions">
@@ -2969,7 +3113,7 @@
           <parameter name="p0" type="CdnSelector*" />
         </parameters>
       </signal>
-      <signal name="FileUsed" cname="file-used" when="LAST">
+      <signal name="FileUsed" cname="file-used" when="LAST" hidden="true">
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CdnParserContext*" />
@@ -3195,7 +3339,7 @@
         <return-type type="CdnEmbeddedString*" />
       </method>
       <method name="Pop" cname="cdn_parser_context_pop">
-        <return-type type="GSList*" />
+        <return-type type="void" />
       </method>
       <method name="PopEquationDepth" cname="cdn_parser_context_pop_equation_depth">
         <return-type type="gboolean" />
@@ -3277,6 +3421,7 @@
         <parameters>
           <parameter type="CdnEmbeddedString*" name="filename" />
           <parameter type="GSList*" name="attributes" />
+          <parameter type="gboolean" name="only_in_context" />
         </parameters>
       </method>
       <method name="PushInputFromString" cname="cdn_parser_context_push_input_from_string">
@@ -3284,6 +3429,7 @@
         <parameters>
           <parameter type="const-gchar*" name="s" />
           <parameter type="GSList*" name="attributes" />
+          <parameter type="gboolean" name="only_in_context" />
         </parameters>
       </method>
       <method name="PushIntegrator" cname="cdn_parser_context_push_integrator">
@@ -3336,6 +3482,9 @@
       </method>
       <method name="PushSelector" cname="cdn_parser_context_push_selector">
         <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="with" />
+        </parameters>
       </method>
       <method name="PushSelectorIdentifier" cname="cdn_parser_context_push_selector_identifier">
         <return-type type="void" />
@@ -3452,6 +3601,16 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="token" />
+        </parameters>
+      </method>
+      <method name="SetVariable" cname="cdn_parser_context_set_variable">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnSelector*" name="selector" />
+          <parameter type="CdnEmbeddedString*" name="expression" />
+          <parameter type="CdnVariableFlags" name="add_flags" />
+          <parameter type="CdnVariableFlags" name="remove_flags" />
+          <parameter type="GSList*" name="attributes" />
         </parameters>
       </method>
       <method name="StealStartToken" cname="cdn_parser_context_steal_start_token">
@@ -3615,7 +3774,7 @@
         <return-type type="CdnSelector*" />
         <parameters>
           <parameter type="CdnObject*" name="root" />
-          <parameter type="const-gchar*" name="ptr" />
+          <parameter type="const-gchar*" name="s" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -3649,6 +3808,308 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CdnSelection*" name="selection" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Variable" cname="CdnVariable" parent="GInitiallyUnowned">
+      <field name="Priv" cname="priv" type="CdnVariablePrivate*" />
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" />
+      <property name="Object" cname="object" type="CdnObject" readable="true" writeable="true" />
+      <property name="Flags" cname="flags" type="CdnVariableFlags" readable="true" writeable="true" />
+      <property name="Expression" cname="expression" type="CdnExpression" readable="true" writeable="true" />
+      <property name="Constraint" cname="constraint" type="CdnExpression" readable="true" writeable="true" />
+      <signal name="InvalidateName" cname="invalidate-name" when="LAST" field_name="invalidate_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnVariable*" name="property" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </signal>
+      <signal name="ExpressionChanged" cname="expression-changed" when="LAST" field_name="expression_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariable*" name="property" />
+          <parameter type="CdnExpression*" name="expression" />
+        </parameters>
+      </signal>
+      <signal name="FlagsChanged" cname="flags-changed" when="LAST" field_name="flags_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariable*" name="property" />
+          <parameter type="CdnVariableFlags" name="flags" />
+        </parameters>
+      </signal>
+      <implements>
+        <interface cname="CdnUsable" />
+        <interface cname="CdnModifiable" />
+        <interface cname="CdnAnnotatable" />
+        <interface cname="CdnTaggable" />
+      </implements>
+      <method name="AddFlags" cname="cdn_variable_add_flags">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariableFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="ApplyConstraint" cname="cdn_variable_apply_constraint">
+        <return-type type="void" />
+      </method>
+      <method name="ClearUpdate" cname="cdn_variable_clear_update">
+        <return-type type="void" />
+      </method>
+      <method name="Compile" cname="cdn_variable_compile">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnCompileError*" name="error" />
+        </parameters>
+      </method>
+      <method name="Copy" cname="cdn_variable_copy">
+        <return-type type="CdnVariable*" owned="true" />
+      </method>
+      <method name="Equal" cname="cdn_variable_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnVariable*" name="other" />
+        </parameters>
+      </method>
+      <method name="FlagsFromString" cname="cdn_variable_flags_from_string" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="flags" />
+          <parameter type="CdnVariableFlags*" name="add_flags" />
+          <parameter type="CdnVariableFlags*" name="remove_flags" />
+        </parameters>
+      </method>
+      <method name="FlagsToString" cname="cdn_variable_flags_to_string" shared="true">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="CdnVariableFlags" name="add_flags" />
+          <parameter type="CdnVariableFlags" name="remove_flags" />
+        </parameters>
+      </method>
+      <method name="GetActions" cname="cdn_variable_get_actions">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetConstraint" cname="cdn_variable_get_constraint">
+        <return-type type="CdnExpression*" />
+      </method>
+      <method name="GetDerivative" cname="cdn_variable_get_derivative">
+        <return-type type="CdnVariable*" />
+      </method>
+      <method name="GetExpression" cname="cdn_variable_get_expression">
+        <return-type type="CdnExpression*" />
+      </method>
+      <method name="GetFlags" cname="cdn_variable_get_flags">
+        <return-type type="CdnVariableFlags" />
+      </method>
+      <method name="GetFullName" cname="cdn_variable_get_full_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetFullNameForDisplay" cname="cdn_variable_get_full_name_for_display">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetIntegral" cname="cdn_variable_get_integral">
+        <return-type type="CdnVariable*" />
+      </method>
+      <method name="GetIntegrated" cname="cdn_variable_get_integrated">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetName" cname="cdn_variable_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetObject" cname="cdn_variable_get_object">
+        <return-type type="CdnObject*" />
+      </method>
+      <method name="GetType" cname="cdn_variable_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetUpdate" cname="cdn_variable_get_update">
+        <return-type type="gdouble*" />
+        <parameters>
+          <parameter type="gint*" name="numr" />
+          <parameter type="gint*" name="numc" />
+        </parameters>
+      </method>
+      <method name="GetValue" cname="cdn_variable_get_value">
+        <return-type type="gdouble" />
+      </method>
+      <constructor cname="cdn_variable_new" hidden="true">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="CdnExpression*" name="expression" />
+          <parameter type="CdnVariableFlags" name="flags" />
+        </parameters>
+      </constructor>
+      <method name="RemoveFlags" cname="cdn_variable_remove_flags">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariableFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="Reset" cname="cdn_variable_reset">
+        <return-type type="void" />
+      </method>
+      <method name="SetConstraint" cname="cdn_variable_set_constraint">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpression*" name="expression" />
+        </parameters>
+      </method>
+      <method name="SetDerivative" cname="cdn_variable_set_derivative">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariable*" name="diffprop" />
+        </parameters>
+      </method>
+      <method name="SetExpression" cname="cdn_variable_set_expression">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpression*" name="expression" />
+        </parameters>
+      </method>
+      <method name="SetFlags" cname="cdn_variable_set_flags">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariableFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="SetIntegrated" cname="cdn_variable_set_integrated">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="integrated" />
+        </parameters>
+      </method>
+      <method name="SetName" cname="cdn_variable_set_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="SetUpdate" cname="cdn_variable_set_update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gdouble*" name="values" />
+        </parameters>
+      </method>
+      <method name="SetUpdateValue" cname="cdn_variable_set_update_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+          <parameter type="gint" name="numr" />
+          <parameter type="gint" name="numc" />
+        </parameters>
+      </method>
+      <method name="SetValue" cname="cdn_variable_set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="SetValues" cname="cdn_variable_set_values">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gdouble*" name="values" />
+          <parameter type="gint" name="numr" />
+          <parameter type="gint" name="numc" />
+        </parameters>
+      </method>
+    </object>
+    <object name="VariableInterface" cname="CdnVariableInterface" parent="GObject">
+      <field name="Priv" cname="priv" type="CdnVariableInterfacePrivate*" />
+      <signal name="Added" cname="added" when="LAST" field_name="added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariableInterface*" name="iface" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
+        </parameters>
+      </signal>
+      <signal name="Removed" cname="removed" when="LAST" field_name="removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnVariableInterface*" name="iface" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
+        </parameters>
+      </signal>
+      <signal name="VerifyRemove" cname="verify-remove" when="LAST" manual="true" field_name="verify_remove" hidden="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnVariableInterface*" name="iface" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </signal>
+      <signal name="VerifyAdd" cname="verify-add" when="LAST" manual="true" field_name="verify_add" hidden="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnVariableInterface*" name="iface" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="property_name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </signal>
+      <property name="Node" cname="node" type="CdnNode" readable="true" writeable="true" construct-only="true" />
+      <method name="Add" cname="cdn_variable_interface_add">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="child_name" />
+          <parameter type="const-gchar*" name="variable_name" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="ErrorQuark" cname="cdn_variable_interface_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="GetNames" cname="cdn_variable_interface_get_names">
+        <return-type type="gchar**" null_term_array="" />
+      </method>
+      <method name="GetNode" cname="cdn_variable_interface_get_node">
+        <return-type type="CdnNode*" />
+      </method>
+      <method name="GetType" cname="cdn_variable_interface_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Implements" cname="cdn_variable_interface_implements">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="Lookup" cname="cdn_variable_interface_lookup">
+        <return-type type="CdnVariable*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="LookupChildName" cname="cdn_variable_interface_lookup_child_name">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="LookupVariableName" cname="cdn_variable_interface_lookup_variable_name">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <constructor cname="cdn_variable_interface_new">
+        <parameters>
+          <parameter type="CdnNode*" name="node" />
+        </parameters>
+      </constructor>
+      <method name="Remove" cname="cdn_variable_interface_remove">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
     </object>
@@ -3744,7 +4205,7 @@
         <return-type type="void" />
       </method>
     </boxed>
-    <struct name="ExpressionTreeIter" cname="CdnExpressionTreeIter" opaque="true">
+    <boxed name="ExpressionTreeIter" cname="CdnExpressionTreeIter" opaque="true">
       <method name="Canonicalize" cname="cdn_expression_tree_iter_canonicalize">
         <return-type type="CdnExpressionTreeIter*" />
       </method>
@@ -3768,6 +4229,9 @@
       </method>
       <method name="GetInstruction" cname="cdn_expression_tree_iter_get_instruction" hidden="">
         <return-type type="CdnInstruction*" />
+      </method>
+      <method name="GetType" cname="cdn_expression_tree_iter_get_type" shared="true">
+        <return-type type="GType" />
       </method>
       <constructor cname="cdn_expression_tree_iter_new">
         <parameters>
@@ -3839,7 +4303,7 @@
       <method name="ToStringDbg" cname="cdn_expression_tree_iter_to_string_dbg">
         <return-type type="const-gchar*" />
       </method>
-    </struct>
+    </boxed>
     <struct name="FunctionArgumentSpec" cname="CdnFunctionArgumentSpec" opaque="true">
       <method name="Free" cname="cdn_function_argument_spec_free">
         <return-type type="void" />
@@ -3851,48 +4315,15 @@
         </parameters>
       </constructor>
     </struct>
-    <struct name="InstructionVariable" cname="CdnInstructionVariable" opaque="true">
-      <field name="Parent" cname="parent" type="CdnInstruction" access="private" />
-      <field name="Priv" cname="priv" type="CdnInstructionVariablePrivate*" access="private" />
-      <method name="GetBinding" cname="cdn_instruction_variable_get_binding">
-        <return-type type="CdnInstructionVariableBinding" />
-      </method>
-      <method name="GetType" cname="cdn_instruction_variable_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <method name="GetVariable" cname="cdn_instruction_variable_get_variable">
-        <return-type type="CdnVariable*" />
-      </method>
-      <constructor cname="cdn_instruction_variable_new">
-        <parameters>
-          <parameter type="CdnVariable*" name="property" />
-        </parameters>
-      </constructor>
-      <constructor cname="cdn_instruction_variable_new_with_binding">
-        <parameters>
-          <parameter type="CdnVariable*" name="property" />
-          <parameter type="CdnInstructionVariableBinding" name="binding" />
-        </parameters>
-      </constructor>
-      <method name="SetBinding" cname="cdn_instruction_variable_set_binding">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnInstructionVariableBinding" name="binding" />
-        </parameters>
-      </method>
-      <method name="SetVariable" cname="cdn_instruction_variable_set_variable">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnVariable*" name="property" />
-        </parameters>
-      </method>
-    </struct>
-    <struct name="Stack" cname="CdnStack" opaque="true">
+    <boxed name="Stack" cname="CdnStack" opaque="true">
       <method name="At" cname="cdn_stack_at">
         <return-type type="gdouble" />
         <parameters>
           <parameter type="gint" name="idx" />
         </parameters>
+      </method>
+      <method name="Copy" cname="cdn_stack_copy">
+        <return-type type="CdnStack*" owned="true" />
       </method>
       <method name="Count" cname="cdn_stack_count">
         <return-type type="guint" />
@@ -3902,6 +4333,9 @@
       </method>
       <method name="Free" cname="cdn_stack_free">
         <return-type type="void" />
+      </method>
+      <method name="GetType" cname="cdn_stack_get_type" shared="true">
+        <return-type type="GType" />
       </method>
       <method name="Init" cname="cdn_stack_init">
         <return-type type="void" />
@@ -3914,9 +4348,6 @@
           <parameter type="guint" name="size" />
         </parameters>
       </constructor>
-      <method name="OutputPtr" cname="cdn_stack_output_ptr">
-        <return-type type="gdouble*" />
-      </method>
       <method name="Peek" cname="cdn_stack_peek">
         <return-type type="gdouble" />
       </method>
@@ -3963,241 +4394,17 @@
       <method name="Size" cname="cdn_stack_size">
         <return-type type="guint" />
       </method>
-    </struct>
-    <struct name="StackManipulation" cname="CdnStackManipulation">
+    </boxed>
+    <boxed name="StackManipulation" cname="CdnStackManipulation">
       <field name="NumPop" cname="num_pop" type="gint" />
       <field name="PopDims" cname="pop_dims" type="gint*" />
       <field name="NumPush" cname="num_push" type="gint" />
       <field name="PushDims" cname="push_dims" type="gint*" />
       <field name="ExtraSpace" cname="extra_space" type="gint" />
-    </struct>
-    <struct name="Variable" cname="CdnVariable" opaque="true">
-      <field name="Parent" cname="parent" type="GInitiallyUnowned" access="private" />
-      <field name="Priv" cname="priv" type="CdnVariablePrivate*" access="private" />
-      <method name="AddFlags" cname="cdn_variable_add_flags">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnVariableFlags" name="flags" />
-        </parameters>
-      </method>
-      <method name="ApplyConstraint" cname="cdn_variable_apply_constraint">
-        <return-type type="void" />
-      </method>
-      <method name="Compile" cname="cdn_variable_compile">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CdnCompileError*" name="error" />
-        </parameters>
-      </method>
-      <method name="Copy" cname="cdn_variable_copy">
-        <return-type type="CdnVariable*" owned="true" />
-      </method>
-      <method name="Equal" cname="cdn_variable_equal">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CdnVariable*" name="other" />
-        </parameters>
-      </method>
-      <method name="FlagsFromString" cname="cdn_variable_flags_from_string" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="flags" />
-          <parameter type="CdnVariableFlags*" name="add_flags" />
-          <parameter type="CdnVariableFlags*" name="remove_flags" />
-        </parameters>
-      </method>
-      <method name="FlagsToString" cname="cdn_variable_flags_to_string" shared="true">
-        <return-type type="gchar*" />
-        <parameters>
-          <parameter type="CdnVariableFlags" name="add_flags" />
-          <parameter type="CdnVariableFlags" name="remove_flags" />
-        </parameters>
-      </method>
-      <method name="GetActions" cname="cdn_variable_get_actions">
-        <return-type type="GSList*" />
-      </method>
-      <method name="GetConstraint" cname="cdn_variable_get_constraint">
-        <return-type type="CdnExpression*" />
-      </method>
-      <method name="GetDerivative" cname="cdn_variable_get_derivative">
-        <return-type type="CdnVariable*" />
-      </method>
-      <method name="GetExpression" cname="cdn_variable_get_expression">
-        <return-type type="CdnExpression*" />
-      </method>
-      <method name="GetFlags" cname="cdn_variable_get_flags">
-        <return-type type="CdnVariableFlags" />
-      </method>
-      <method name="GetFullName" cname="cdn_variable_get_full_name">
-        <return-type type="gchar*" />
-      </method>
-      <method name="GetFullNameForDisplay" cname="cdn_variable_get_full_name_for_display">
-        <return-type type="gchar*" />
-      </method>
-      <method name="GetIntegral" cname="cdn_variable_get_integral">
-        <return-type type="CdnVariable*" />
-      </method>
-      <method name="GetIntegrated" cname="cdn_variable_get_integrated">
-        <return-type type="gboolean" />
-      </method>
-      <method name="GetName" cname="cdn_variable_get_name">
-        <return-type type="const-gchar*" />
-      </method>
-      <method name="GetObject" cname="cdn_variable_get_object">
-        <return-type type="CdnObject*" />
-      </method>
-      <method name="GetType" cname="cdn_variable_get_type" shared="true">
+      <method name="GetType" cname="cdn_stack_manipulation_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="GetUpdate" cname="cdn_variable_get_update">
-        <return-type type="gdouble" />
-      </method>
-      <method name="GetValue" cname="cdn_variable_get_value">
-        <return-type type="gdouble" />
-      </method>
-      <constructor cname="cdn_variable_new">
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="CdnExpression*" name="expression" />
-          <parameter type="CdnVariableFlags" name="flags" />
-        </parameters>
-      </constructor>
-      <method name="RemoveFlags" cname="cdn_variable_remove_flags">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnVariableFlags" name="flags" />
-        </parameters>
-      </method>
-      <method name="Reset" cname="cdn_variable_reset">
-        <return-type type="void" />
-      </method>
-      <method name="SetConstraint" cname="cdn_variable_set_constraint">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnExpression*" name="expression" />
-        </parameters>
-      </method>
-      <method name="SetDerivative" cname="cdn_variable_set_derivative">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnVariable*" name="diffprop" />
-        </parameters>
-      </method>
-      <method name="SetExpression" cname="cdn_variable_set_expression">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnExpression*" name="expression" />
-        </parameters>
-      </method>
-      <method name="SetFlags" cname="cdn_variable_set_flags">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnVariableFlags" name="flags" />
-        </parameters>
-      </method>
-      <method name="SetIntegrated" cname="cdn_variable_set_integrated">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="integrated" />
-        </parameters>
-      </method>
-      <method name="SetName" cname="cdn_variable_set_name">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="SetUpdate" cname="cdn_variable_set_update">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gdouble" name="value" />
-        </parameters>
-      </method>
-      <method name="SetValue" cname="cdn_variable_set_value">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gdouble" name="value" />
-        </parameters>
-      </method>
-      <method name="SetValues" cname="cdn_variable_set_values">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gdouble*" name="values" />
-          <parameter type="gint" name="numr" />
-          <parameter type="gint" name="numc" />
-        </parameters>
-      </method>
-    </struct>
-    <struct name="VariableInterface" cname="CdnVariableInterface" opaque="true">
-      <field name="Parent" cname="parent" type="GObject" access="private" />
-      <field name="Priv" cname="priv" type="CdnVariableInterfacePrivate*" access="private" />
-      <method name="Add" cname="cdn_variable_interface_add">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="const-gchar*" name="child_name" />
-          <parameter type="const-gchar*" name="property_name" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="ErrorQuark" cname="cdn_variable_interface_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-      <method name="GetNames" cname="cdn_variable_interface_get_names">
-        <return-type type="gchar**" />
-      </method>
-      <method name="GetNode" cname="cdn_variable_interface_get_node">
-        <return-type type="CdnNodeForward*" />
-      </method>
-      <method name="GetType" cname="cdn_variable_interface_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <method name="Implements" cname="cdn_variable_interface_implements">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="Lookup" cname="cdn_variable_interface_lookup">
-        <return-type type="CdnVariable*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="LookupChildName" cname="cdn_variable_interface_lookup_child_name">
-        <return-type type="const-gchar*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="LookupVariableName" cname="cdn_variable_interface_lookup_variable_name">
-        <return-type type="const-gchar*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <constructor cname="cdn_variable_interface_new">
-        <parameters>
-          <parameter type="CdnNodeForward*" name="group" />
-        </parameters>
-      </constructor>
-      <method name="Remove" cname="cdn_variable_interface_remove">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-    </struct>
-    <class name="Expansions" cname="CdnExpansions_">
-      <method name="AnnotateIndices" cname="cdn_expansions_annotate_indices" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GSList*" name="expansions" />
-          <parameter type="gint" name="start" />
-        </parameters>
-      </method>
-    </class>
+    </boxed>
     <class name="Integrators" cname="CdnIntegrators_">
       <method name="Create" cname="cdn_integrators_create" shared="true">
         <return-type type="GSList*" element_type="CdnIntegrator*" />

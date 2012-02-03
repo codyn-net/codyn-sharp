@@ -14,17 +14,9 @@ namespace Cdn {
 		protected InstructionFunction(GLib.GType gtype) : base(gtype) {}
 		public InstructionFunction(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_instruction_function_new(uint id, IntPtr name, int arguments, out int argdim);
-
-		public InstructionFunction (uint id, string name, int arguments, out int argdim) : base (IntPtr.Zero)
+		protected InstructionFunction() : base(IntPtr.Zero)
 		{
-			if (GetType () != typeof (InstructionFunction)) {
-				throw new InvalidOperationException ("Can't override this constructor.");
-			}
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			Raw = cdn_instruction_function_new(id, native_name, arguments, out argdim);
-			GLib.Marshaller.Free (native_name);
+			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -77,6 +69,54 @@ namespace Cdn {
 				uint ret = raw_ret;
 				return ret;
 			}
+		}
+
+#endregion
+#region Customized extensions
+#line 1 "InstructionFunction.custom"
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_instruction_function_new(uint id, IntPtr name, int arguments, int[] argdim);
+
+		public InstructionFunction (uint id, string name, int numargs) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (InstructionFunction))
+			{
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+
+			Raw = cdn_instruction_function_new(id, native_name, numargs, null);
+
+			GLib.Marshaller.Free (native_name);
+		}
+
+		public InstructionFunction (uint id, string name, int[,] argdim) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (InstructionFunction))
+			{
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+
+			if (argdim.GetUpperBound(1) != 2)
+			{
+				throw new InvalidOperationException("Second dimension of argdim must be 2");
+			}
+
+			int numargs = argdim.GetUpperBound(0);
+
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			int[] nargdim = new int[numargs * 2];
+
+			for (int i = 0; i < numargs; ++i)
+			{
+				nargdim[i * 2] = argdim[i, 0];
+				nargdim[i * 2 + 1] = argdim[i, 1];
+			}
+
+			Raw = cdn_instruction_function_new(id, native_name, numargs, nargdim);
+
+			GLib.Marshaller.Free (native_name);
 		}
 
 #endregion

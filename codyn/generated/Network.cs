@@ -141,17 +141,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_network_get_import_from_path(IntPtr raw, IntPtr path);
-
-		public Cdn.Import GetImportFromPath(string path) {
-			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
-			IntPtr raw_ret = cdn_network_get_import_from_path(Handle, native_path);
-			Cdn.Import ret = GLib.Object.GetObject(raw_ret) as Cdn.Import;
-			GLib.Marshaller.Free (native_path);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_network_load_from_string(IntPtr raw, IntPtr s, out IntPtr error);
 
 		public unsafe bool LoadFromString(string s) {
@@ -241,6 +230,17 @@ namespace Cdn {
 			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_path);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_network_get_import_from_path(IntPtr raw, IntPtr path);
+
+		public Cdn.Import GetImportFromPath(string path) {
+			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
+			IntPtr raw_ret = cdn_network_get_import_from_path(Handle, native_path);
+			Cdn.Import ret = GLib.Object.GetObject(raw_ret) as Cdn.Import;
+			GLib.Marshaller.Free (native_path);
 			return ret;
 		}
 

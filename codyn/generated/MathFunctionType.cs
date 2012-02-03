@@ -24,6 +24,7 @@ namespace Cdn {
 		GreaterOrEqual,
 		LessOrEqual,
 		Equal,
+		Nequal,
 		Or,
 		And,
 		Negate,
@@ -60,6 +61,7 @@ namespace Cdn {
 		Clip,
 		Cycle,
 		Index,
+		Lindex,
 		Transpose,
 		Inverse,
 		Linsolve,
@@ -67,6 +69,9 @@ namespace Cdn {
 		Product,
 		Length,
 		Size,
+		Hcat,
+		Zeros,
+		Eye,
 		Num,
 	}
 #endregion

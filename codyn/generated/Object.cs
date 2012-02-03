@@ -185,7 +185,7 @@ namespace Cdn {
 		{
 			try {
 				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
-				objekt_managed.OnVariableRemoved (variable == IntPtr.Zero ? null : (Cdn.Variable) GLib.Opaque.GetOpaque (variable, typeof (Cdn.Variable), false));
+				objekt_managed.OnVariableRemoved (GLib.Object.GetObject(variable) as Cdn.Variable);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -332,7 +332,7 @@ namespace Cdn {
 		{
 			try {
 				Object objekt_managed = GLib.Object.GetObject (objekt, false) as Object;
-				objekt_managed.OnVariableAdded (variable == IntPtr.Zero ? null : (Cdn.Variable) GLib.Opaque.GetOpaque (variable, typeof (Cdn.Variable), false));
+				objekt_managed.OnVariableAdded (GLib.Object.GetObject(variable) as Cdn.Variable);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -543,7 +543,7 @@ namespace Cdn {
 		public Cdn.Variable Variable(string name) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			IntPtr raw_ret = cdn_object_get_variable(Handle, native_name);
-			Cdn.Variable ret = raw_ret == IntPtr.Zero ? null : (Cdn.Variable) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Variable), false);
+			Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
 			GLib.Marshaller.Free (native_name);
 			return ret;
 		}

@@ -11,15 +11,6 @@ namespace Cdn {
 	public class Stack : GLib.Opaque {
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_stack_output_ptr(IntPtr raw);
-
-		public double OutputPtr() {
-			double raw_ret = cdn_stack_output_ptr(Handle);
-			double ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern void cdn_stack_set_at(IntPtr raw, int idx, double value);
 
 		public void SetAt(int idx, double value) {
@@ -47,6 +38,13 @@ namespace Cdn {
 
 		public void Reset() {
 			cdn_stack_reset(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_stack_init(IntPtr raw, uint size);
+
+		public void Init(uint size) {
+			cdn_stack_init(Handle, size);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -116,6 +114,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_stack_get_type();
+
+		public static GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cdn_stack_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern uint cdn_stack_count(IntPtr raw);
 
 		public uint Count() {
@@ -125,10 +134,12 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_stack_init(IntPtr raw, uint size);
+		static extern IntPtr cdn_stack_copy(IntPtr raw);
 
-		public void Init(uint size) {
-			cdn_stack_init(Handle, size);
+		public Cdn.Stack Copy() {
+			IntPtr raw_ret = cdn_stack_copy(Handle);
+			Cdn.Stack ret = raw_ret == IntPtr.Zero ? null : (Cdn.Stack) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Stack), true);
+			return ret;
 		}
 
 		public Stack(IntPtr raw) : base(raw) {}

@@ -112,7 +112,7 @@ namespace Cdn {
 		public Cdn.Variable LookupVariable(string name) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			IntPtr raw_ret = cdn_compile_context_lookup_variable(Handle, native_name);
-			Cdn.Variable ret = raw_ret == IntPtr.Zero ? null : (Cdn.Variable) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Variable), false);
+			Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
 			GLib.Marshaller.Free (native_name);
 			return ret;
 		}

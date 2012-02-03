@@ -12,6 +12,7 @@ namespace Cdn {
 		Object,
 		Node,
 		Edge,
+		Variable,
 		Action,
 		Function,
 	}

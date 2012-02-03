@@ -89,6 +89,36 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_get_variable_dependencies(IntPtr raw);
+
+		public Cdn.Variable[] VariableDependencies { 
+			get {
+				IntPtr raw_ret = cdn_expression_get_variable_dependencies(Handle);
+				Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_set_cache_notify(IntPtr raw, CdnSharp.ExpressionCacheNotifyNative notify, IntPtr userdata, GLib.DestroyNotify destroy_notify);
+
+		public Cdn.ExpressionCacheNotify CacheNotify { 
+			set {
+				CdnSharp.ExpressionCacheNotifyWrapper value_wrapper = new CdnSharp.ExpressionCacheNotifyWrapper (value);
+				IntPtr userdata;
+				GLib.DestroyNotify destroy_notify;
+				if (value == null) {
+					userdata = IntPtr.Zero;
+					destroy_notify = null;
+				} else {
+					userdata = (IntPtr) GCHandle.Alloc (value_wrapper);
+					destroy_notify = GLib.DestroyHelper.NotifyHandler;
+				}
+				cdn_expression_set_cache_notify(Handle, value_wrapper.NativeDelegate, userdata, destroy_notify);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern bool cdn_expression_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cdn.Expression other) {
@@ -111,6 +141,13 @@ namespace Cdn {
 			double values;
 			cdn_expression_set_values(Handle, out values, numr, numc);
 			return values;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_force_reset_cache(IntPtr raw);
+
+		public void ForceResetCache() {
+			cdn_expression_force_reset_cache(Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -171,6 +208,25 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_set_evaluate_notify(IntPtr raw, CdnSharp.ExpressionEvaluateNotifyNative notify, IntPtr userdata, GLib.DestroyNotify destroy_notify);
+
+		public Cdn.ExpressionEvaluateNotify EvaluateNotify { 
+			set {
+				CdnSharp.ExpressionEvaluateNotifyWrapper value_wrapper = new CdnSharp.ExpressionEvaluateNotifyWrapper (value);
+				IntPtr userdata;
+				GLib.DestroyNotify destroy_notify;
+				if (value == null) {
+					userdata = IntPtr.Zero;
+					destroy_notify = null;
+				} else {
+					userdata = (IntPtr) GCHandle.Alloc (value_wrapper);
+					destroy_notify = GLib.DestroyHelper.NotifyHandler;
+				}
+				cdn_expression_set_evaluate_notify(Handle, value_wrapper.NativeDelegate, userdata, destroy_notify);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_expression_set_from_string(IntPtr raw, IntPtr value);
 
 		public string FromString { 
@@ -211,10 +267,10 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_expression_get_dependencies(IntPtr raw);
 
-		public Cdn.Variable[] Dependencies { 
+		public Cdn.Expression[] Dependencies { 
 			get {
 				IntPtr raw_ret = cdn_expression_get_dependencies(Handle);
-				Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
+				Cdn.Expression[] ret = (Cdn.Expression[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Expression));
 				return ret;
 			}
 		}

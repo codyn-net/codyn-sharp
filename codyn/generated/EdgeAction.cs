@@ -20,6 +20,24 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_edge_action_get_index(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_edge_action_set_index(IntPtr raw, IntPtr expression);
+
+		[GLib.Property ("index")]
+		public Cdn.Expression Index {
+			get  {
+				IntPtr raw_ret = cdn_edge_action_get_index(Handle);
+				Cdn.Expression ret = GLib.Object.GetObject(raw_ret) as Cdn.Expression;
+				return ret;
+			}
+			set  {
+				cdn_edge_action_set_index(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_edge_action_get_target(IntPtr raw);
 
 		[DllImport("codyn-3.0")]
@@ -98,12 +116,21 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern int cdn_edge_action_get_indices(IntPtr raw, out int num_indices);
+
+		public int GetIndices(out int num_indices) {
+			int raw_ret = cdn_edge_action_get_indices(Handle, out num_indices);
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_edge_action_get_target_variable(IntPtr raw);
 
 		public Cdn.Variable TargetVariable { 
 			get {
 				IntPtr raw_ret = cdn_edge_action_get_target_variable(Handle);
-				Cdn.Variable ret = raw_ret == IntPtr.Zero ? null : (Cdn.Variable) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Variable), false);
+				Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
 				return ret;
 			}
 		}

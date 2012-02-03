@@ -11,6 +11,7 @@ namespace Cdn {
 
 		None,
 		Syntax,
+		Variable,
 		Object,
 		Edge,
 		Function,

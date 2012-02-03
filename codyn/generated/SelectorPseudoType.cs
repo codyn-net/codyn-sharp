@@ -20,6 +20,7 @@ namespace Cdn {
 		TypeEdges,
 		TypeNodes,
 		TypeImports,
+		TypeVariables,
 		TypeActions,
 		TypeFunctions,
 		TypeObjects,
@@ -45,6 +46,10 @@ namespace Cdn {
 		TypeReverse,
 		TypeSourceName,
 		TypeSinkName,
+		TypeRecurse,
+		TypeSourcedBy,
+		TypeSinkedBy,
+		TypePass,
 		Num,
 	}
 #endregion

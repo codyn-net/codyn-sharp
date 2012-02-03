@@ -25,8 +25,35 @@ namespace Cdn {
 			return (Cdn.StackManipulation) Marshal.PtrToStructure (raw, typeof (Cdn.StackManipulation));
 		}
 
-		private static GLib.GType GType {
-			get { return GLib.GType.Pointer; }
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_stack_manipulation_get_type();
+
+		public static GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cdn_stack_manipulation_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("glibsharpglue-2")]
+		static extern IntPtr glibsharp_value_get_boxed (ref GLib.Value val);
+
+		[DllImport("glibsharpglue-2")]
+		static extern void glibsharp_value_set_boxed (ref GLib.Value val, ref Cdn.StackManipulation boxed);
+
+		public static explicit operator GLib.Value (Cdn.StackManipulation boxed)
+		{
+			GLib.Value val = GLib.Value.Empty;
+			val.Init (Cdn.StackManipulation.GType);
+			glibsharp_value_set_boxed (ref val, ref boxed);
+			return val;
+		}
+
+		public static explicit operator Cdn.StackManipulation (GLib.Value val)
+		{
+			IntPtr boxed_ptr = glibsharp_value_get_boxed (ref val);
+			return New (boxed_ptr);
 		}
 #endregion
 	}

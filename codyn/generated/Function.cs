@@ -202,10 +202,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_function_get_dimension(IntPtr raw, int arguments, out int argdim, out int numr, out int numc);
+		static extern void cdn_function_get_dimension(IntPtr raw, out int numr, out int numc);
 
-		public void GetDimension(int arguments, out int argdim, out int numr, out int numc) {
-			cdn_function_get_dimension(Handle, arguments, out argdim, out numr, out numc);
+		public void GetDimension(out int numr, out int numc) {
+			cdn_function_get_dimension(Handle, out numr, out numc);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -276,6 +276,15 @@ namespace Cdn {
 		public static new int ErrorQuark() {
 			int raw_ret = cdn_function_error_quark();
 			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_for_dimension(IntPtr raw, int numargs, out int argdim);
+
+		public Cdn.Function ForDimension(int numargs, out int argdim) {
+			IntPtr raw_ret = cdn_function_for_dimension(Handle, numargs, out argdim);
+			Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
 			return ret;
 		}
 

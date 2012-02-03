@@ -20,6 +20,14 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_operator_foreach_function(IntPtr raw, CdnSharp.ForeachFunctionFuncNative func, IntPtr userdata);
+
+		public void ForeachFunction(Cdn.ForeachFunctionFunc func) {
+			CdnSharp.ForeachFunctionFuncWrapper func_wrapper = new CdnSharp.ForeachFunctionFuncWrapper (func);
+			cdn_operator_foreach_function(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_operator_get_name(IntPtr raw);
 
 		public string Name { 

@@ -143,7 +143,7 @@ namespace Cdn {
 		public Cdn.Variable Variable { 
 			get {
 				IntPtr raw_ret = cdn_compile_error_get_variable(Handle);
-				Cdn.Variable ret = raw_ret == IntPtr.Zero ? null : (Cdn.Variable) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Variable), false);
+				Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
 				return ret;
 			}
 		}

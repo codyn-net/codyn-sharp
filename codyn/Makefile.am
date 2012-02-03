@@ -35,7 +35,8 @@ customs = \
 	Property.custom \
 	FunctionArgument.custom \
 	InputFile.custom \
-	Variable.custom
+	Variable.custom \
+	InstructionFunction.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 
