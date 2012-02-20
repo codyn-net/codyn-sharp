@@ -53,6 +53,24 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern double cdn_integrator_get_real_time(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_integrator_set_real_time(IntPtr raw, double real_time);
+
+		[GLib.Property ("real-time")]
+		public double RealTime {
+			get  {
+				double raw_ret = cdn_integrator_get_real_time(Handle);
+				double ret = raw_ret;
+				return ret;
+			}
+			set  {
+				cdn_integrator_set_real_time(Handle, value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern double cdn_integrator_get_time(IntPtr raw);
 
 		[DllImport("codyn-3.0")]
@@ -139,29 +157,29 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void EndVMDelegate (IntPtr inst);
+		delegate void EndedVMDelegate (IntPtr inst);
 
-		static EndVMDelegate EndVMCallback;
+		static EndedVMDelegate EndedVMCallback;
 
-		static void end_cb (IntPtr inst)
+		static void ended_cb (IntPtr inst)
 		{
 			try {
 				Integrator inst_managed = GLib.Object.GetObject (inst, false) as Integrator;
-				inst_managed.OnEnd ();
+				inst_managed.OnEnded ();
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
 		}
 
-		private static void OverrideEnd (GLib.GType gtype)
+		private static void OverrideEnded (GLib.GType gtype)
 		{
-			if (EndVMCallback == null)
-				EndVMCallback = new EndVMDelegate (end_cb);
-			OverrideVirtualMethod (gtype, "end", EndVMCallback);
+			if (EndedVMCallback == null)
+				EndedVMCallback = new EndedVMDelegate (ended_cb);
+			OverrideVirtualMethod (gtype, "end", EndedVMCallback);
 		}
 
-		[GLib.DefaultSignalHandler(Type=typeof(Cdn.Integrator), ConnectionMethod="OverrideEnd")]
-		protected virtual void OnEnd ()
+		[GLib.DefaultSignalHandler(Type=typeof(Cdn.Integrator), ConnectionMethod="OverrideEnded")]
+		protected virtual void OnEnded ()
 		{
 			GLib.Value ret = GLib.Value.Empty;
 			GLib.ValueArray inst_and_params = new GLib.ValueArray (1);
@@ -174,7 +192,7 @@ namespace Cdn {
 		}
 
 		[GLib.Signal("end")]
-		public event System.EventHandler End {
+		public event System.EventHandler Ended {
 			add {
 				GLib.Signal sig = GLib.Signal.Lookup (this, "end");
 				sig.AddDelegate (value);
@@ -186,63 +204,63 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void BeginVMDelegate (IntPtr inst, double from, double step, double to);
+		delegate void BegunVMDelegate (IntPtr inst, double from);
 
-		static BeginVMDelegate BeginVMCallback;
+		static BegunVMDelegate BegunVMCallback;
 
-		static void begin_cb (IntPtr inst, double from, double step, double to)
+		static void begun_cb (IntPtr inst, double from)
 		{
 			try {
 				Integrator inst_managed = GLib.Object.GetObject (inst, false) as Integrator;
-				inst_managed.OnBegin (from, step, to);
+				inst_managed.OnBegun (from);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
 		}
 
-		private static void OverrideBegin (GLib.GType gtype)
+		private static void OverrideBegun (GLib.GType gtype)
 		{
-			if (BeginVMCallback == null)
-				BeginVMCallback = new BeginVMDelegate (begin_cb);
-			OverrideVirtualMethod (gtype, "begin", BeginVMCallback);
+			if (BegunVMCallback == null)
+				BegunVMCallback = new BegunVMDelegate (begun_cb);
+			OverrideVirtualMethod (gtype, "begin", BegunVMCallback);
 		}
 
-		[GLib.DefaultSignalHandler(Type=typeof(Cdn.Integrator), ConnectionMethod="OverrideBegin")]
-		protected virtual void OnBegin (double from, double step, double to)
+		[GLib.DefaultSignalHandler(Type=typeof(Cdn.Integrator), ConnectionMethod="OverrideBegun")]
+		protected virtual void OnBegun (double from)
 		{
 			GLib.Value ret = GLib.Value.Empty;
-			GLib.ValueArray inst_and_params = new GLib.ValueArray (4);
-			GLib.Value[] vals = new GLib.Value [4];
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
 			vals [0] = new GLib.Value (this);
 			inst_and_params.Append (vals [0]);
 			vals [1] = new GLib.Value (from);
 			inst_and_params.Append (vals [1]);
-			vals [2] = new GLib.Value (step);
-			inst_and_params.Append (vals [2]);
-			vals [3] = new GLib.Value (to);
-			inst_and_params.Append (vals [3]);
 			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
 			foreach (GLib.Value v in vals)
 				v.Dispose ();
 		}
 
 		[GLib.Signal("begin")]
-		public event Cdn.BeginHandler Begin {
+		public event Cdn.BegunHandler Begun {
 			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "begin", typeof (Cdn.BeginArgs));
+				GLib.Signal sig = GLib.Signal.Lookup (this, "begin", typeof (Cdn.BegunArgs));
 				sig.AddDelegate (value);
 			}
 			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "begin", typeof (Cdn.BeginArgs));
+				GLib.Signal sig = GLib.Signal.Lookup (this, "begin", typeof (Cdn.BegunArgs));
 				sig.RemoveDelegate (value);
 			}
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_integrator_simulation_step_integrate(IntPtr raw, IntPtr actions);
+		static extern unsafe bool cdn_integrator_end(IntPtr raw, out IntPtr error);
 
-		public void SimulationStepIntegrate(GLib.SList actions) {
-			cdn_integrator_simulation_step_integrate(Handle, actions == null ? IntPtr.Zero : actions.Handle);
+		public unsafe bool End() {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cdn_integrator_end(Handle, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -257,10 +275,21 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_integrator_reset(IntPtr raw);
+		static extern void cdn_integrator_simulation_step_integrate(IntPtr raw, IntPtr actions);
 
-		public new void Reset() {
-			cdn_integrator_reset(Handle);
+		public void SimulationStepIntegrate(GLib.SList actions) {
+			cdn_integrator_simulation_step_integrate(Handle, actions == null ? IntPtr.Zero : actions.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern unsafe bool cdn_integrator_begin(IntPtr raw, double start, out IntPtr error);
+
+		public unsafe bool Begin(double start) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cdn_integrator_begin(Handle, start, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -273,6 +302,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_integrator_reset(IntPtr raw);
+
+		public new void Reset() {
+			cdn_integrator_reset(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_get_type();
 
 		public static new GLib.GType GType { 
@@ -281,38 +317,6 @@ namespace Cdn {
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
-		}
-
-#endregion
-#region Customized extensions
-#line 1 "Integrator.custom"
-		[DllImport("codyn-3.0")]
-		static extern void cdn_integrator_evaluate(IntPtr raw, IntPtr state, double t, double timestep);
-
-		public void Evaluate(Cdn.IntegratorState[] state, double t, double timestep)
-		{
-			GLib.SList slist = state == null ? null : new GLib.SList(state, typeof(Cdn.IntegratorState), true, false);
-			cdn_integrator_evaluate(Handle, slist == null ? IntPtr.Zero : slist.Handle, t, timestep);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_integrator_run(IntPtr raw, IntPtr state, double from, double timestep, double to);
-
-		public void Run(Cdn.IntegratorState[] state, double from, double timestep, double to)
-		{
-			GLib.SList slist = state == null ? null : new GLib.SList(state, typeof(Cdn.IntegratorState), true, false);
-			cdn_integrator_run(Handle, slist == null ? IntPtr.Zero : slist.Handle, from, timestep, to);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern double cdn_integrator_step(IntPtr raw, IntPtr state, double t, double timestep);
-
-		public double Step(Cdn.IntegratorState[] state, double t, double timestep)
-		{
-			GLib.SList slist = state == null ? null : new GLib.SList(state, typeof(Cdn.IntegratorState), true, false);
-			double raw_ret = cdn_integrator_step(Handle, slist == null ? IntPtr.Zero : slist.Handle, t, timestep);
-			double ret = raw_ret;
-			return ret;
 		}
 
 #endregion

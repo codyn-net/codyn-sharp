@@ -27,7 +27,6 @@ overrides_sources = $(addprefix $(srcdir)/, $(overrides))
 customs = \
 	Monitor.custom \
 	FunctionPolynomialPiece.custom \
-	Integrator.custom \
 	Expression.custom \
 	ExpressionTreeIter.custom \
 	Node.custom \

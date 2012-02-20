@@ -18,10 +18,6 @@
         <file>../codyn/codyn/cdn-monitor.h</file>
         <file>../codyn/codyn/cdn-network.c</file>
         <file>../codyn/codyn/cdn-network.h</file>
-        <file>../codyn/codyn/cdn-input.c</file>
-        <file>../codyn/codyn/cdn-input.h</file>
-        <file>../codyn/codyn/cdn-input-file.c</file>
-        <file>../codyn/codyn/cdn-input-file.h</file>
         <file>../codyn/codyn/cdn-import.c</file>
         <file>../codyn/codyn/cdn-import.h</file>
         <file>../codyn/codyn/cdn-import-alias.c</file>

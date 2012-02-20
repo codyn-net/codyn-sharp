@@ -11,8 +11,8 @@ namespace Cdn {
 	public enum InstructionVariableBinding {
 
 		None,
-		From = 1 << 0,
-		To = 1 << 1,
+		Input = 1 << 0,
+		Output = 1 << 1,
 	}
 #endregion
 }

@@ -249,17 +249,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern uint cdn_function_get_n_optional(IntPtr raw);
-
-		public uint NOptional { 
-			get {
-				uint raw_ret = cdn_function_get_n_optional(Handle);
-				uint ret = raw_ret;
-				return ret;
-			}
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern uint cdn_function_get_n_arguments(IntPtr raw);
 
 		public uint NArguments { 

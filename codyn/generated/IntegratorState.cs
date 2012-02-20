@@ -112,15 +112,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_integrator_state_inputs(IntPtr raw);
-
-		public Cdn.Input[] Inputs() {
-			IntPtr raw_ret = cdn_integrator_state_inputs(Handle);
-			Cdn.Input[] ret = (Cdn.Input[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Input));
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_operators(IntPtr raw);
 
 		public GLib.SList Operators() {
@@ -152,6 +143,15 @@ namespace Cdn {
 
 		public GLib.SList PhaseIntegratedEdgeActions() {
 			IntPtr raw_ret = cdn_integrator_state_phase_integrated_edge_actions(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_integrator_state_io(IntPtr raw);
+
+		public GLib.SList Io() {
+			IntPtr raw_ret = cdn_integrator_state_io(Handle);
 			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}

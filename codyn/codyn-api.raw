@@ -46,8 +46,8 @@
     </enum>
     <enum name="InstructionVariableBinding" cname="CdnInstructionVariableBinding" type="flags">
       <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_NONE" name="None" />
-      <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_FROM" name="From" value="1 &lt;&lt; 0" />
-      <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_TO" name="To" value="1 &lt;&lt; 1" />
+      <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_INPUT" name="Input" value="1 &lt;&lt; 0" />
+      <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_OUTPUT" name="Output" value="1 &lt;&lt; 1" />
     </enum>
     <enum name="LayoutRelation" cname="CdnLayoutRelation" type="flags">
       <member cname="CDN_LAYOUT_RELATION_ABOVE" name="Above" value="1 &lt;&lt; 0" />
@@ -138,7 +138,7 @@
       <member cname="CDN_NETWORK_LOAD_ERROR_EDGE" name="Edge" />
       <member cname="CDN_NETWORK_LOAD_ERROR_FUNCTION" name="Function" />
       <member cname="CDN_NETWORK_LOAD_ERROR_IMPORT" name="Import" />
-      <member cname="CDN_NETWORK_LOAD_ERROR_INPUT_FILE" name="InputFile" />
+      <member cname="CDN_NETWORK_LOAD_ERROR_IO" name="Io" />
       <member cname="CDN_NETWORK_LOAD_ERROR_INTERFACE" name="Interface" />
       <member cname="CDN_NETWORK_LOAD_ERROR_OPERATOR" name="Operator" />
     </enum>
@@ -190,8 +190,12 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_SIBLINGS" name="TypeSiblings" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_TEMPLATES" name="TypeTemplates" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_COUNT" name="TypeCount" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_FROM" name="TypeFrom" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_TO" name="TypeTo" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_INPUT" name="TypeInput" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_OUTPUT" name="TypeOutput" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_INPUTS" name="TypeInputs" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_OUTPUTS" name="TypeOutputs" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_INPUT_NAME" name="TypeInputName" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_OUTPUT_NAME" name="TypeOutputName" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_SELF" name="TypeSelf" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_DEBUG" name="TypeDebug" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_NAME" name="TypeName" />
@@ -199,20 +203,14 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_ANCESTORS" name="TypeAncestors" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_UNIQUE" name="TypeUnique" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_IF" name="TypeIf" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_IS_EMPTY" name="TypeIsEmpty" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_REMOVE" name="TypeRemove" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_NOT" name="TypeNot" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_FROM_SET" name="TypeFromSet" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_TYPE" name="TypeType" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_HAS_FLAG" name="TypeHasFlag" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_HAS_TEMPLATE" name="TypeHasTemplate" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_HAS_TAG" name="TypeHasTag" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_REVERSE" name="TypeReverse" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_SOURCE_NAME" name="TypeSourceName" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_SINK_NAME" name="TypeSinkName" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_RECURSE" name="TypeRecurse" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_SOURCED_BY" name="TypeSourcedBy" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_SINKED_BY" name="TypeSinkedBy" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_PASS" name="TypePass" />
       <member cname="CDN_SELECTOR_PSEUDO_NUM" name="Num" />
     </enum>
     <enum name="SelectorType" cname="CdnSelectorType" type="flags">
@@ -801,8 +799,8 @@
           <parameter type="CdnEdgeAction*" name="action" />
         </parameters>
       </signal>
-      <property name="From" cname="from" type="CdnObject" readable="true" writeable="true" construct="true" />
-      <property name="To" cname="to" type="CdnObject" readable="true" writeable="true" construct="true" />
+      <property name="Input" cname="input" type="CdnObject" readable="true" writeable="true" construct="true" />
+      <property name="Output" cname="output" type="CdnObject" readable="true" writeable="true" construct="true" />
       <implements>
         <interface cname="CdnLayoutable" />
         <interface cname="CdnPhaseable" />
@@ -816,8 +814,8 @@
       <method name="Attach" cname="cdn_edge_attach">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnNode*" name="from" />
-          <parameter type="CdnNode*" name="to" />
+          <parameter type="CdnNode*" name="input" />
+          <parameter type="CdnNode*" name="output" />
         </parameters>
       </method>
       <method name="GetAction" cname="cdn_edge_get_action">
@@ -843,10 +841,10 @@
       <method name="GetActions" cname="cdn_edge_get_actions">
         <return-type type="const-GSList*" />
       </method>
-      <method name="GetFrom" cname="cdn_edge_get_from">
+      <method name="GetInput" cname="cdn_edge_get_input">
         <return-type type="CdnNode*" />
       </method>
-      <method name="GetTo" cname="cdn_edge_get_to">
+      <method name="GetOutput" cname="cdn_edge_get_output">
         <return-type type="CdnNode*" />
       </method>
       <method name="GetType" cname="cdn_edge_get_type" shared="true">
@@ -855,8 +853,8 @@
       <constructor cname="cdn_edge_new">
         <parameters>
           <parameter type="const-gchar*" name="id" />
-          <parameter type="CdnNode*" name="from" />
-          <parameter type="CdnNode*" name="to" />
+          <parameter type="CdnNode*" name="input" />
+          <parameter type="CdnNode*" name="output" />
         </parameters>
       </constructor>
       <method name="RemoveAction" cname="cdn_edge_remove_action">
@@ -1259,6 +1257,13 @@
       <method name="GetAsString" cname="cdn_expression_get_as_string">
         <return-type type="const-gchar*" />
       </method>
+      <method name="GetCache" cname="cdn_expression_get_cache">
+        <return-type type="gdouble*" />
+        <parameters>
+          <parameter type="gint*" name="numr" />
+          <parameter type="gint*" name="numc" />
+        </parameters>
+      </method>
       <method name="GetDependencies" cname="cdn_expression_get_dependencies">
         <return-type type="const-GSList*" />
       </method>
@@ -1289,6 +1294,9 @@
       </method>
       <method name="GetRandInstructions" cname="cdn_expression_get_rand_instructions">
         <return-type type="const-GSList*" />
+      </method>
+      <method name="GetStackSize" cname="cdn_expression_get_stack_size">
+        <return-type type="guint" />
       </method>
       <method name="GetType" cname="cdn_expression_get_type" shared="true">
         <return-type type="GType" />
@@ -1471,9 +1479,6 @@
         <return-type type="guint" />
       </method>
       <method name="GetNImplicit" cname="cdn_function_get_n_implicit">
-        <return-type type="guint" />
-      </method>
-      <method name="GetNOptional" cname="cdn_function_get_n_optional">
         <return-type type="guint" />
       </method>
       <method name="GetType" cname="cdn_function_get_type" shared="true">
@@ -1743,100 +1748,6 @@
         </parameters>
       </constructor>
     </object>
-    <object name="Input" cname="CdnInput" parent="CdnObject">
-      <field name="Priv" cname="priv" type="CdnInputPrivate*" />
-      <virtual_method name="Update" cname="update">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnInput*" name="input" />
-          <parameter type="CdnIntegrator*" name="integrator" />
-        </parameters>
-      </virtual_method>
-      <method name="GetType" cname="cdn_input_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <method name="Update" cname="cdn_input_update">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnIntegrator*" name="integrator" />
-        </parameters>
-      </method>
-    </object>
-    <object name="InputFile" cname="CdnInputFile" parent="CdnInput">
-      <field name="Priv" cname="priv" type="CdnInputFilePrivate*" />
-      <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct="true" />
-      <property name="Repeat" cname="repeat" type="gboolean" readable="true" writeable="true" />
-      <property name="TimeColumn" cname="time-column" type="gint" readable="true" writeable="true" />
-      <method name="Ensure" cname="cdn_input_file_ensure">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="GetColumns" cname="cdn_input_file_get_columns">
-        <return-type type="gchar**" />
-      </method>
-      <method name="GetFile" cname="cdn_input_file_get_file">
-        <return-type type="GFile*" />
-      </method>
-      <method name="GetFilePath" cname="cdn_input_file_get_file_path">
-        <return-type type="gchar*" />
-      </method>
-      <method name="GetRepeat" cname="cdn_input_file_get_repeat">
-        <return-type type="gboolean" />
-      </method>
-      <method name="GetTimeColumn" cname="cdn_input_file_get_time_column">
-        <return-type type="gint" />
-        <parameters>
-          <parameter type="gboolean*" name="isset" />
-        </parameters>
-      </method>
-      <method name="GetType" cname="cdn_input_file_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cdn_input_file_new">
-        <parameters>
-          <parameter type="const-gchar*" name="id" />
-          <parameter type="GFile*" name="file" />
-        </parameters>
-      </constructor>
-      <constructor cname="cdn_input_file_new_for_path">
-        <parameters>
-          <parameter type="const-gchar*" name="id" />
-          <parameter type="const-gchar*" name="filename" />
-        </parameters>
-      </constructor>
-      <method name="SetColumns" cname="cdn_input_file_set_columns">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gchar" name="const-const*" />
-        </parameters>
-      </method>
-      <method name="SetFile" cname="cdn_input_file_set_file">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
-      </method>
-      <method name="SetFilePath" cname="cdn_input_file_set_file_path">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="path" />
-        </parameters>
-      </method>
-      <method name="SetRepeat" cname="cdn_input_file_set_repeat">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="repeat" />
-        </parameters>
-      </method>
-      <method name="SetTimeColumn" cname="cdn_input_file_set_time_column">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="column" />
-        </parameters>
-      </method>
-    </object>
     <object name="Instruction" cname="CdnInstruction" parent="CdnMiniObject">
       <field name="Priv" cname="priv" type="CdnInstructionPrivate*" />
       <virtual_method name="ToString" cname="to_string">
@@ -2062,8 +1973,6 @@
         <parameters>
           <parameter name="inst" type="CdnIntegrator*" />
           <parameter name="p0" type="gdouble" />
-          <parameter name="p1" type="gdouble" />
-          <parameter name="p2" type="gdouble" />
         </parameters>
       </signal>
       <signal name="End" cname="end" when="LAST">
@@ -2074,6 +1983,7 @@
       </signal>
       <property name="State" cname="state" type="CdnIntegratorState" readable="true" />
       <property name="InitialPhase" cname="initial-phase" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="RealTime" cname="real-time" type="gdouble" readable="true" writeable="true" construct="true" />
       <virtual_method name="Run" cname="run">
         <return-type type="void" />
         <parameters>
@@ -2097,6 +2007,19 @@
           <parameter type="CdnIntegrator*" name="integrator" />
         </parameters>
       </virtual_method>
+      <method name="Begin" cname="cdn_integrator_begin">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gdouble" name="start" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="End" cname="cdn_integrator_end">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="Evaluate" cname="cdn_integrator_evaluate">
         <return-type type="void" />
         <parameters>
@@ -2109,6 +2032,9 @@
       </method>
       <method name="GetObject" cname="cdn_integrator_get_object">
         <return-type type="CdnObject*" />
+      </method>
+      <method name="GetRealTime" cname="cdn_integrator_get_real_time">
+        <return-type type="gdouble" />
       </method>
       <method name="GetState" cname="cdn_integrator_get_state">
         <return-type type="CdnIntegratorState*" />
@@ -2123,11 +2049,18 @@
         <return-type type="void" />
       </method>
       <method name="Run" cname="cdn_integrator_run">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="gdouble" name="from" />
           <parameter type="gdouble" name="timestep" />
           <parameter type="gdouble" name="to" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SetRealTime" cname="cdn_integrator_set_real_time">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="real_time" />
         </parameters>
       </method>
       <method name="SetState" cname="cdn_integrator_set_state">
@@ -2214,13 +2147,13 @@
       <method name="GetType" cname="cdn_integrator_state_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="Inputs" cname="cdn_integrator_state_inputs">
-        <return-type type="const-GSList*" />
-      </method>
       <method name="IntegratedEdgeActions" cname="cdn_integrator_state_integrated_edge_actions">
         <return-type type="const-GSList*" />
       </method>
       <method name="IntegratedProperties" cname="cdn_integrator_state_integrated_properties">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="Io" cname="cdn_integrator_state_io">
         <return-type type="const-GSList*" />
       </method>
       <constructor cname="cdn_integrator_state_new">
@@ -2349,6 +2282,19 @@
       <property name="Integrator" cname="integrator" type="CdnIntegrator" readable="true" writeable="true" />
       <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct="true" />
       <property name="Filename" cname="filename" type="gchar*" readable="true" />
+      <method name="Begin" cname="cdn_network_begin">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gdouble" name="start" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="End" cname="cdn_network_end">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="ErrorQuark" cname="cdn_network_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
@@ -2475,11 +2421,12 @@
         </parameters>
       </constructor>
       <method name="Run" cname="cdn_network_run">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="gdouble" name="from" />
           <parameter type="gdouble" name="timestep" />
           <parameter type="gdouble" name="to" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="SetIntegrator" cname="cdn_network_set_integrator">
@@ -3118,6 +3065,27 @@
           <parameter type="CdnOperator*" name="op" />
         </parameters>
       </virtual_method>
+      <virtual_method name="Reset" cname="reset">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnOperator*" name="op" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Step" cname="step">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnOperator*" name="op" />
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="InitializeIntegrate" cname="initialize_integrate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnOperator*" name="op" />
+          <parameter type="CdnIntegrator*" name="integrator" />
+        </parameters>
+      </virtual_method>
       <method name="AllExpressions" cname="cdn_operator_all_expressions">
         <return-type type="const-GSList**" />
       </method>
@@ -3204,21 +3172,33 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
+      <method name="InitializeIntegrate" cname="cdn_operator_initialize_integrate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnIntegrator*" name="integrator" />
+        </parameters>
+      </method>
       <method name="NumExpressions" cname="cdn_operator_num_expressions">
         <return-type type="gint" />
       </method>
       <method name="NumIndices" cname="cdn_operator_num_indices">
         <return-type type="gint" />
       </method>
+      <method name="Reset" cname="cdn_operator_reset">
+        <return-type type="void" />
+      </method>
+      <method name="Step" cname="cdn_operator_step">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="t" />
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
+      </method>
     </object>
     <object name="OperatorDelayed" cname="CdnOperatorDelayed" parent="CdnOperator">
       <field name="Priv" cname="priv" type="CdnOperatorDelayedPrivate*" />
       <property name="Expression" cname="expression" type="CdnExpression" readable="true" />
       <property name="InitialValue" cname="initial-value" type="CdnExpression" readable="true" />
-      <property name="Delay" cname="delay" type="gdouble" readable="true" />
-      <method name="GetDelay" cname="cdn_operator_delayed_get_delay">
-        <return-type type="gdouble" />
-      </method>
       <method name="GetExpression" cname="cdn_operator_delayed_get_expression">
         <return-type type="CdnExpression*" />
       </method>
@@ -3610,14 +3590,6 @@
           <parameter type="GSList*" name="attributes" />
         </parameters>
       </method>
-      <method name="PushInputFile" cname="cdn_parser_context_push_input_file">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnEmbeddedString*" name="id" />
-          <parameter type="CdnEmbeddedString*" name="path" />
-          <parameter type="GSList*" name="attributes" />
-        </parameters>
-      </method>
       <method name="PushInputFromPath" cname="cdn_parser_context_push_input_from_path">
         <return-type type="void" />
         <parameters>
@@ -3637,6 +3609,15 @@
       <method name="PushIntegrator" cname="cdn_parser_context_push_integrator">
         <return-type type="void" />
         <parameters>
+          <parameter type="GSList*" name="attributes" />
+        </parameters>
+      </method>
+      <method name="PushIoType" cname="cdn_parser_context_push_io_type">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnIoMode" name="mode" />
+          <parameter type="CdnEmbeddedString*" name="id" />
+          <parameter type="CdnEmbeddedString*" name="type" />
           <parameter type="GSList*" name="attributes" />
         </parameters>
       </method>
@@ -3767,16 +3748,16 @@
           <parameter type="gboolean" name="firsteof" />
         </parameters>
       </method>
-      <method name="SetInputFileSetting" cname="cdn_parser_context_set_input_file_setting">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnEmbeddedString*" name="name" />
-          <parameter type="CdnEmbeddedString*" name="value" />
-        </parameters>
-      </method>
       <method name="SetIntegrator" cname="cdn_parser_context_set_integrator">
         <return-type type="void" />
         <parameters>
+          <parameter type="CdnEmbeddedString*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetIoSetting" cname="cdn_parser_context_set_io_setting">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnEmbeddedString*" name="name" />
           <parameter type="CdnEmbeddedString*" name="value" />
         </parameters>
       </method>
@@ -4579,6 +4560,20 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="Pushn" cname="cdn_stack_pushn">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gdouble*" name="values" />
+          <parameter type="gint" name="num" />
+        </parameters>
+      </method>
+      <method name="Pushni" cname="cdn_stack_pushni">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+          <parameter type="gint" name="num" />
         </parameters>
       </method>
       <method name="Reset" cname="cdn_stack_reset">

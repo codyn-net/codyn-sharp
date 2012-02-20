@@ -27,6 +27,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_stack_pushn(IntPtr raw, out double values, int num);
+
+		public double Pushn(int num) {
+			double values;
+			cdn_stack_pushn(Handle, out values, num);
+			return values;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_stack_push(IntPtr raw, double value);
 
 		public void Push(double value) {
@@ -38,6 +47,13 @@ namespace Cdn {
 
 		public void Reset() {
 			cdn_stack_reset(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_stack_pushni(IntPtr raw, double value, int num);
+
+		public void Pushni(double value, int num) {
+			cdn_stack_pushni(Handle, value, num);
 		}
 
 		[DllImport("codyn-3.0")]

@@ -27,18 +27,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_operator_delayed_get_delay(IntPtr raw);
-
-		[GLib.Property ("delay")]
-		public double Delay {
-			get  {
-				double raw_ret = cdn_operator_delayed_get_delay(Handle);
-				double ret = raw_ret;
-				return ret;
-			}
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_operator_delayed_get_expression(IntPtr raw);
 
 		[GLib.Property ("expression")]

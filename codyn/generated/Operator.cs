@@ -20,6 +20,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_operator_step(IntPtr raw, double t, double timestep);
+
+		public void Step(double t, double timestep) {
+			cdn_operator_step(Handle, t, timestep);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_operator_foreach_function(IntPtr raw, CdnSharp.ForeachFunctionFuncNative func, IntPtr userdata);
 
 		public void ForeachFunction(Cdn.ForeachFunctionFunc func) {
@@ -70,6 +77,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_operator_reset(IntPtr raw);
+
+		public void Reset() {
+			cdn_operator_reset(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_operator_all_indices(IntPtr raw);
 
 		public GLib.SList AllIndices() {
@@ -112,6 +126,13 @@ namespace Cdn {
 			IntPtr raw_ret = cdn_operator_get_indices(Handle, idx);
 			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_operator_initialize_integrate(IntPtr raw, IntPtr integrator);
+
+		public void InitializeIntegrate(Cdn.Integrator integrator) {
+			cdn_operator_initialize_integrate(Handle, integrator == null ? IntPtr.Zero : integrator.Handle);
 		}
 
 		[DllImport("codyn-3.0")]

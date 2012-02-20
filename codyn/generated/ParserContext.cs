@@ -448,13 +448,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_input_file(IntPtr raw, IntPtr id, IntPtr path, IntPtr attributes);
-
-		public void PushInputFile(Cdn.EmbeddedString id, Cdn.EmbeddedString path, GLib.SList attributes) {
-			cdn_parser_context_push_input_file(Handle, id == null ? IntPtr.Zero : id.Handle, path == null ? IntPtr.Zero : path.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern void cdn_parser_context_add_action(IntPtr raw, IntPtr target, IntPtr expression, IntPtr attributes, IntPtr phases);
 
 		public void AddAction(Cdn.EmbeddedString target, Cdn.EmbeddedString expression, GLib.SList attributes, Cdn.EmbeddedString phases) {
@@ -547,13 +540,6 @@ namespace Cdn {
 			set {
 				cdn_parser_context_set_embedded(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_input_file_setting(IntPtr raw, IntPtr name, IntPtr value);
-
-		public void SetInputFileSetting(Cdn.EmbeddedString name, Cdn.EmbeddedString value) {
-			cdn_parser_context_set_input_file_setting(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -789,6 +775,13 @@ namespace Cdn {
 
 		public void PushEquation() {
 			cdn_parser_context_push_equation(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_set_io_setting(IntPtr raw, IntPtr name, IntPtr value);
+
+		public void SetIoSetting(Cdn.EmbeddedString name, Cdn.EmbeddedString value) {
+			cdn_parser_context_set_io_setting(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle);
 		}
 
 		[DllImport("codyn-3.0")]

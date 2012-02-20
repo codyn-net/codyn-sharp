@@ -17,7 +17,7 @@ namespace Cdn
 			}
 			else
 			{
-				d_raw = raw;
+				d_raw = IntPtr.Zero;
 			}
 		}
 

@@ -16,7 +16,7 @@ namespace Cdn {
 		Edge,
 		Function,
 		Import,
-		InputFile,
+		Io,
 		Interface,
 		Operator,
 	}

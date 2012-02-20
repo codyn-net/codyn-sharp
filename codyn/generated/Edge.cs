@@ -15,57 +15,61 @@ namespace Cdn {
 		public Edge(IntPtr raw) : base(raw) {}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_edge_new(IntPtr id, IntPtr from, IntPtr to);
+		static extern IntPtr cdn_edge_new(IntPtr id, IntPtr input, IntPtr output);
 
-		public Edge (string id, Cdn.Node from, Cdn.Node to) : base (IntPtr.Zero)
+		public Edge (string id, Cdn.Node input, Cdn.Node output) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Edge)) {
 				ArrayList vals = new ArrayList();
 				ArrayList names = new ArrayList();
 				names.Add ("id");
 				vals.Add (new GLib.Value (id));
-				if (from != null) {
-					names.Add ("from");
-					vals.Add (new GLib.Value (from));
+				if (input != null) {
+					names.Add ("input");
+					vals.Add (new GLib.Value (input));
 				}
-				if (to != null) {
-					names.Add ("to");
-					vals.Add (new GLib.Value (to));
+				if (output != null) {
+					names.Add ("output");
+					vals.Add (new GLib.Value (output));
 				}
 				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
 				return;
 			}
 			IntPtr native_id = GLib.Marshaller.StringToPtrGStrdup (id);
-			Raw = cdn_edge_new(native_id, from == null ? IntPtr.Zero : from.Handle, to == null ? IntPtr.Zero : to.Handle);
+			Raw = cdn_edge_new(native_id, input == null ? IntPtr.Zero : input.Handle, output == null ? IntPtr.Zero : output.Handle);
 			GLib.Marshaller.Free (native_id);
 		}
 
-		[GLib.Property ("from")]
-		public Cdn.Object From {
-			get {
-				GLib.Value val = GetProperty ("from");
-				Cdn.Object ret = (Cdn.Object) val;
-				val.Dispose ();
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_edge_get_input(IntPtr raw);
+
+		[GLib.Property ("input")]
+		public Cdn.Node Input {
+			get  {
+				IntPtr raw_ret = cdn_edge_get_input(Handle);
+				Cdn.Node ret = GLib.Object.GetObject(raw_ret) as Cdn.Node;
 				return ret;
 			}
 			set {
 				GLib.Value val = new GLib.Value(value);
-				SetProperty("from", val);
+				SetProperty("input", val);
 				val.Dispose ();
 			}
 		}
 
-		[GLib.Property ("to")]
-		public Cdn.Object To {
-			get {
-				GLib.Value val = GetProperty ("to");
-				Cdn.Object ret = (Cdn.Object) val;
-				val.Dispose ();
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_edge_get_output(IntPtr raw);
+
+		[GLib.Property ("output")]
+		public Cdn.Node Output {
+			get  {
+				IntPtr raw_ret = cdn_edge_get_output(Handle);
+				Cdn.Node ret = GLib.Object.GetObject(raw_ret) as Cdn.Node;
 				return ret;
 			}
 			set {
 				GLib.Value val = new GLib.Value(value);
-				SetProperty("to", val);
+				SetProperty("output", val);
 				val.Dispose ();
 			}
 		}
@@ -169,30 +173,14 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_edge_attach(IntPtr raw, IntPtr from, IntPtr to);
+		static extern IntPtr cdn_edge_get_action_with_index(IntPtr raw, IntPtr target, IntPtr index);
 
-		public void Attach(Cdn.Node from, Cdn.Node to) {
-			cdn_edge_attach(Handle, from == null ? IntPtr.Zero : from.Handle, to == null ? IntPtr.Zero : to.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern bool cdn_edge_remove_action(IntPtr raw, IntPtr action);
-
-		public bool RemoveAction(Cdn.EdgeAction action) {
-			bool raw_ret = cdn_edge_remove_action(Handle, action == null ? IntPtr.Zero : action.Handle);
-			bool ret = raw_ret;
+		public Cdn.EdgeAction GetActionWithIndex(string target, Cdn.Expression index) {
+			IntPtr native_target = GLib.Marshaller.StringToPtrGStrdup (target);
+			IntPtr raw_ret = cdn_edge_get_action_with_index(Handle, native_target, index == null ? IntPtr.Zero : index.Handle);
+			Cdn.EdgeAction ret = GLib.Object.GetObject(raw_ret) as Cdn.EdgeAction;
+			GLib.Marshaller.Free (native_target);
 			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_edge_get_type();
-
-		public static new GLib.GType GType { 
-			get {
-				IntPtr raw_ret = cdn_edge_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
 		}
 
 		[DllImport("codyn-3.0")]
@@ -201,17 +189,6 @@ namespace Cdn {
 		public bool AddAction(Cdn.EdgeAction action) {
 			bool raw_ret = cdn_edge_add_action(Handle, action == null ? IntPtr.Zero : action.Handle);
 			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_edge_get_action_with_index(IntPtr raw, IntPtr target, IntPtr index);
-
-		public Cdn.EdgeAction GetActionWithIndex(string target, Cdn.Expression index) {
-			IntPtr native_target = GLib.Marshaller.StringToPtrGStrdup (target);
-			IntPtr raw_ret = cdn_edge_get_action_with_index(Handle, native_target, index == null ? IntPtr.Zero : index.Handle);
-			Cdn.EdgeAction ret = GLib.Object.GetObject(raw_ret) as Cdn.EdgeAction;
-			GLib.Marshaller.Free (native_target);
 			return ret;
 		}
 
@@ -227,12 +204,19 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_edge_get_action_template(IntPtr raw, IntPtr action, bool match_full);
+		static extern bool cdn_edge_remove_action(IntPtr raw, IntPtr action);
 
-		public Cdn.Edge GetActionTemplate(Cdn.EdgeAction action, bool match_full) {
-			IntPtr raw_ret = cdn_edge_get_action_template(Handle, action == null ? IntPtr.Zero : action.Handle, match_full);
-			Cdn.Edge ret = GLib.Object.GetObject(raw_ret) as Cdn.Edge;
+		public bool RemoveAction(Cdn.EdgeAction action) {
+			bool raw_ret = cdn_edge_remove_action(Handle, action == null ? IntPtr.Zero : action.Handle);
+			bool ret = raw_ret;
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_edge_attach(IntPtr raw, IntPtr input, IntPtr output);
+
+		public void Attach(Cdn.Node input, Cdn.Node output) {
+			cdn_edge_attach(Handle, input == null ? IntPtr.Zero : input.Handle, output == null ? IntPtr.Zero : output.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -242,6 +226,26 @@ namespace Cdn {
 			get {
 				IntPtr raw_ret = cdn_edge_get_actions(Handle);
 				Cdn.EdgeAction[] ret = (Cdn.EdgeAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.EdgeAction));
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_edge_get_action_template(IntPtr raw, IntPtr action, bool match_full);
+
+		public Cdn.Edge GetActionTemplate(Cdn.EdgeAction action, bool match_full) {
+			IntPtr raw_ret = cdn_edge_get_action_template(Handle, action == null ? IntPtr.Zero : action.Handle, match_full);
+			Cdn.Edge ret = GLib.Object.GetObject(raw_ret) as Cdn.Edge;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_edge_get_type();
+
+		public static new GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cdn_edge_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
 		}

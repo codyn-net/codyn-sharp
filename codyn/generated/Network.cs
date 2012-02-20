@@ -132,11 +132,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern int cdn_network_load_error_quark();
+		static extern unsafe bool cdn_network_end(IntPtr raw, out IntPtr error);
 
-		public static int LoadErrorQuark() {
-			int raw_ret = cdn_network_load_error_quark();
-			int ret = raw_ret;
+		public unsafe bool End() {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cdn_network_end(Handle, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 
@@ -154,6 +156,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern unsafe bool cdn_network_begin(IntPtr raw, double start, out IntPtr error);
+
+		public unsafe bool Begin(double start) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cdn_network_begin(Handle, start, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_network_get_path(IntPtr raw);
 
 		public string Path { 
@@ -165,17 +178,23 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_network_merge(IntPtr raw, IntPtr other);
+		static extern int cdn_network_load_error_quark();
 
-		public void Merge(Cdn.Network other) {
-			cdn_network_merge(Handle, other == null ? IntPtr.Zero : other.Handle);
+		public static int LoadErrorQuark() {
+			int raw_ret = cdn_network_load_error_quark();
+			int ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_network_run(IntPtr raw, double from, double timestep, double to);
+		static extern unsafe bool cdn_network_run(IntPtr raw, double from, double timestep, double to, out IntPtr error);
 
-		public void Run(double from, double timestep, double to) {
-			cdn_network_run(Handle, from, timestep, to);
+		public unsafe bool Run(double from, double timestep, double to) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cdn_network_run(Handle, from, timestep, to, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -198,6 +217,13 @@ namespace Cdn {
 			cdn_network_merge_from_string(Handle, native_s, out error);
 			GLib.Marshaller.Free (native_s);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_network_merge(IntPtr raw, IntPtr other);
+
+		public void Merge(Cdn.Network other) {
+			cdn_network_merge(Handle, other == null ? IntPtr.Zero : other.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
