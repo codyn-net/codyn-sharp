@@ -29,10 +29,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_expression_tree_iter_equal(IntPtr raw, IntPtr other);
+		static extern bool cdn_expression_tree_iter_equal(IntPtr raw, IntPtr other, bool asstring);
 
-		public bool Equal(Cdn.ExpressionTreeIter other) {
-			bool raw_ret = cdn_expression_tree_iter_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+		public bool Equal(Cdn.ExpressionTreeIter other, bool asstring) {
+			bool raw_ret = cdn_expression_tree_iter_equal(Handle, other == null ? IntPtr.Zero : other.Handle, asstring);
 			bool ret = raw_ret;
 			return ret;
 		}

@@ -80,10 +80,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_instruction_equal(IntPtr raw, IntPtr i2);
+		static extern bool cdn_instruction_equal(IntPtr raw, IntPtr i2, bool asstring);
 
-		public bool Equal(Cdn.Instruction i2) {
-			bool raw_ret = cdn_instruction_equal(Handle, i2 == null ? IntPtr.Zero : i2.Handle);
+		public bool Equal(Cdn.Instruction i2, bool asstring) {
+			bool raw_ret = cdn_instruction_equal(Handle, i2 == null ? IntPtr.Zero : i2.Handle, asstring);
 			bool ret = raw_ret;
 			return ret;
 		}

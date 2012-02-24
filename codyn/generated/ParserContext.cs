@@ -722,10 +722,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_event(IntPtr raw, IntPtr from_phase, IntPtr to_phase, IntPtr condition, int direction, IntPtr templates, IntPtr attributes);
+		static extern void cdn_parser_context_push_event(IntPtr raw, IntPtr from_phase, IntPtr to_phase, IntPtr condition, bool terminal, IntPtr approximation, IntPtr templates, IntPtr attributes);
 
-		public void PushEvent(Cdn.EmbeddedString from_phase, Cdn.EmbeddedString to_phase, Cdn.EmbeddedString condition, Cdn.EventDirection direction, GLib.SList templates, GLib.SList attributes) {
-			cdn_parser_context_push_event(Handle, from_phase == null ? IntPtr.Zero : from_phase.Handle, to_phase == null ? IntPtr.Zero : to_phase.Handle, condition == null ? IntPtr.Zero : condition.Handle, (int) direction, templates == null ? IntPtr.Zero : templates.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public void PushEvent(Cdn.EmbeddedString from_phase, Cdn.EmbeddedString to_phase, Cdn.EmbeddedString condition, bool terminal, Cdn.EmbeddedString approximation, GLib.SList templates, GLib.SList attributes) {
+			cdn_parser_context_push_event(Handle, from_phase == null ? IntPtr.Zero : from_phase.Handle, to_phase == null ? IntPtr.Zero : to_phase.Handle, condition == null ? IntPtr.Zero : condition.Handle, terminal, approximation == null ? IntPtr.Zero : approximation.Handle, templates == null ? IntPtr.Zero : templates.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("codyn-3.0")]

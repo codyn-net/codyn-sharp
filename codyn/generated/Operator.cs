@@ -68,10 +68,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_operator_equal(IntPtr raw, IntPtr other);
+		static extern bool cdn_operator_equal(IntPtr raw, IntPtr other, bool asstring);
 
-		public bool Equal(Cdn.Operator other) {
-			bool raw_ret = cdn_operator_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+		public bool Equal(Cdn.Operator other, bool asstring) {
+			bool raw_ret = cdn_operator_equal(Handle, other == null ? IntPtr.Zero : other.Handle, asstring);
 			bool ret = raw_ret;
 			return ret;
 		}
@@ -81,15 +81,6 @@ namespace Cdn {
 
 		public void Reset() {
 			cdn_operator_reset(Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_operator_all_indices(IntPtr raw);
-
-		public GLib.SList AllIndices() {
-			IntPtr raw_ret = cdn_operator_all_indices(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
-			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -108,15 +99,6 @@ namespace Cdn {
 
 		public void Execute(Cdn.Stack stack) {
 			cdn_operator_execute(Handle, stack == null ? IntPtr.Zero : stack.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_operator_all_expressions(IntPtr raw);
-
-		public GLib.SList AllExpressions() {
-			IntPtr raw_ret = cdn_operator_all_expressions(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
-			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -219,6 +201,71 @@ namespace Cdn {
 		public Cdn.Operator Copy() {
 			IntPtr raw_ret = cdn_operator_copy(Handle);
 			Cdn.Operator ret = GLib.Object.GetObject(raw_ret, true) as Cdn.Operator;
+			return ret;
+		}
+
+#endregion
+#region Customized extensions
+#line 1 "Operator.custom"
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_operator_all_expressions(IntPtr raw);
+
+		public Cdn.Expression[][] AllExpressions() {
+			int num = cdn_operator_num_expressions(Handle);
+
+			if (num == 0)
+			{
+				return new Cdn.Expression[0][];
+			}
+
+			IntPtr rawret = cdn_operator_all_expressions(Handle);
+			Cdn.Expression[][] ret;
+
+			IntPtr[] data = new IntPtr[num];
+			Marshal.Copy(rawret, data, 0, (int)num);
+
+			ret = new Cdn.Expression[num][];
+
+			for (int i = 0; i < num; ++i)
+			{
+				ret[i] = (Cdn.Expression[]) GLib.Marshaller.ListPtrToArray (data[i],
+				                                                           typeof(GLib.SList),
+				                                                           false,
+				                                                           false,
+				                                                           typeof(Cdn.Expression));
+			}
+
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_operator_all_indices(IntPtr raw);
+
+		public Cdn.Expression[][] AllIndices() {
+			int num = cdn_operator_num_indices(Handle);
+
+			if (num == 0)
+			{
+				return new Cdn.Expression[0][];
+			}
+
+			IntPtr rawret = cdn_operator_all_indices(Handle);
+			Cdn.Expression[][] ret;
+
+			IntPtr[] data = new IntPtr[num];
+			Marshal.Copy(rawret, data, 0, (int)num);
+
+			ret = new Cdn.Expression[num][];
+
+			for (int i = 0; i < num; ++i)
+			{
+				ret[i] = (Cdn.Expression[]) GLib.Marshaller.ListPtrToArray (data[i],
+				                                                           typeof(GLib.SList),
+				                                                           false,
+				                                                           false,
+				                                                           typeof(Cdn.Expression));
+			}
+
 			return ret;
 		}
 

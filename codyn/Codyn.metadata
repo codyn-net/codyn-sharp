@@ -99,6 +99,8 @@
 
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
 
+  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_rand_instructions']/return-type" name="element_type">CdnInstructionRand*</attr>
+
   <!-- CdnExpressionTreeIter -->
   <attr path="/api/namespace/boxed[@cname='CdnExpressionTreeIter']/method[@cname='cdn_expression_tree_iter_get_instruction']" name="hidden"/>
   <attr path="/api/namespace/boxed[@cname='CdnExpressionTreeIter']/method[@cname='cdn_expression_tree_iter_set_instruction']" name="hidden"/>
@@ -110,6 +112,10 @@
   <!-- CdnOperator -->
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_get_expressions']/return-type" name="element_type">CdnExpression*</attr>
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_get_class_name']" name="hidden"/>
+  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_all_expressions']" name="hidden"/>
+  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_all_indices']" name="hidden"/>
+  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='get_expressions']/return-type" name="element_type">CdnExpression*</attr>
+  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='get_indices']/return-type" name="element_type">CdnExpression*</attr>
 
   <!-- CdnFunction -->
   <remove-node path="/api/namespace/object[@cname='CdnFunction']/method[@cname='cdn_function_execute']"/>

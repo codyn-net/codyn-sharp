@@ -218,10 +218,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_expression_equal(IntPtr raw, IntPtr other);
+		static extern bool cdn_expression_equal(IntPtr raw, IntPtr other, bool asstring);
 
-		public bool Equal(Cdn.Expression other) {
-			bool raw_ret = cdn_expression_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+		public bool Equal(Cdn.Expression other, bool asstring) {
+			bool raw_ret = cdn_expression_equal(Handle, other == null ? IntPtr.Zero : other.Handle, asstring);
 			bool ret = raw_ret;
 			return ret;
 		}
@@ -262,10 +262,10 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_expression_get_rand_instructions(IntPtr raw);
 
-		public GLib.SList RandInstructions { 
+		public Cdn.InstructionRand[] RandInstructions { 
 			get {
 				IntPtr raw_ret = cdn_expression_get_rand_instructions(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cdn.InstructionRand[] ret = (Cdn.InstructionRand[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.InstructionRand));
 				return ret;
 			}
 		}

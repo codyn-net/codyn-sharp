@@ -121,11 +121,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_integrator_state_all_properties(IntPtr raw);
+		static extern IntPtr cdn_integrator_state_io(IntPtr raw);
 
-		public Cdn.Variable[] AllProperties() {
-			IntPtr raw_ret = cdn_integrator_state_all_properties(Handle);
-			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
+		public GLib.SList Io() {
+			IntPtr raw_ret = cdn_integrator_state_io(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 
@@ -134,24 +134,6 @@ namespace Cdn {
 
 		public GLib.SList RandExpressions() {
 			IntPtr raw_ret = cdn_integrator_state_rand_expressions(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_integrator_state_phase_integrated_edge_actions(IntPtr raw);
-
-		public GLib.SList PhaseIntegratedEdgeActions() {
-			IntPtr raw_ret = cdn_integrator_state_phase_integrated_edge_actions(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_integrator_state_io(IntPtr raw);
-
-		public GLib.SList Io() {
-			IntPtr raw_ret = cdn_integrator_state_io(Handle);
 			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
@@ -175,6 +157,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_integrator_state_integrated_variables(IntPtr raw);
+
+		public GLib.SList IntegratedVariables() {
+			IntPtr raw_ret = cdn_integrator_state_integrated_variables(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_phase_events(IntPtr raw);
 
 		public GLib.SList PhaseEvents() {
@@ -193,6 +184,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_integrator_state_all_variables(IntPtr raw);
+
+		public GLib.SList AllVariables() {
+			IntPtr raw_ret = cdn_integrator_state_all_variables(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_expressions(IntPtr raw);
 
 		public GLib.SList Expressions() {
@@ -202,11 +202,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_integrator_state_integrated_properties(IntPtr raw);
+		static extern IntPtr cdn_integrator_state_direct_variables(IntPtr raw);
 
-		public Cdn.Variable[] IntegratedProperties() {
-			IntPtr raw_ret = cdn_integrator_state_integrated_properties(Handle);
-			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
+		public GLib.SList DirectVariables() {
+			IntPtr raw_ret = cdn_integrator_state_direct_variables(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 
@@ -236,11 +236,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_integrator_state_direct_properties(IntPtr raw);
+		static extern IntPtr cdn_integrator_state_phase_integrated_edge_actions(IntPtr raw);
 
-		public Cdn.Variable[] DirectProperties() {
-			IntPtr raw_ret = cdn_integrator_state_direct_properties(Handle);
-			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
+		public GLib.SList PhaseIntegratedEdgeActions() {
+			IntPtr raw_ret = cdn_integrator_state_phase_integrated_edge_actions(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 

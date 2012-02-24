@@ -31,11 +31,6 @@
       <member cname="CDN_EMBEDDED_STRING_NODE_MAP" name="Map" />
       <member cname="CDN_EMBEDDED_STRING_NODE_CONDITION" name="Condition" />
     </enum>
-    <enum name="EventDirection" cname="CdnEventDirection" type="flags">
-      <member cname="CDN_EVENT_DIRECTION_POSITIVE" name="Positive" value="1 &lt;&lt; 0" />
-      <member cname="CDN_EVENT_DIRECTION_NEGATIVE" name="Negative" value="1 &lt;&lt; 1" />
-      <member cname="CDN_EVENT_DIRECTION_ZERO" name="Zero" value="1 &lt;&lt; 2" />
-    </enum>
     <enum name="FunctionError" cname="CdnFunctionError" type="enum">
       <member cname="CDN_FUNCTION_ERROR_UNKNOWN" name="ErrorUnknown" />
       <member cname="CDN_FUNCTION_ERROR_ARGUMENT_NOT_FOUND" name="ErrorArgumentNotFound" />
@@ -1146,8 +1141,9 @@
     <object name="Event" cname="CdnEvent" parent="CdnNode">
       <field name="Priv" cname="priv" type="CdnEventPrivate*" />
       <property name="Condition" cname="condition" type="CdnExpression" readable="true" writeable="true" construct="true" />
-      <property name="Direction" cname="direction" type="CdnEventDirection" readable="true" writeable="true" construct="true" />
+      <property name="Approximation" cname="approximation" type="gdouble" readable="true" writeable="true" construct="true" />
       <property name="GotoPhase" cname="goto-phase" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="Terminal" cname="terminal" type="gboolean" readable="true" writeable="true" construct="true" />
       <implements>
         <interface cname="CdnPhaseable" />
       </implements>
@@ -1161,14 +1157,17 @@
       <method name="Execute" cname="cdn_event_execute">
         <return-type type="void" />
       </method>
+      <method name="GetApproximation" cname="cdn_event_get_approximation">
+        <return-type type="gdouble" />
+      </method>
       <method name="GetCondition" cname="cdn_event_get_condition">
         <return-type type="CdnExpression*" />
       </method>
-      <method name="GetDirection" cname="cdn_event_get_direction">
-        <return-type type="CdnEventDirection" />
-      </method>
       <method name="GetGotoPhase" cname="cdn_event_get_goto_phase">
         <return-type type="const-gchar*" />
+      </method>
+      <method name="GetTerminal" cname="cdn_event_get_terminal">
+        <return-type type="gboolean" />
       </method>
       <method name="GetType" cname="cdn_event_get_type" shared="true">
         <return-type type="GType" />
@@ -1183,25 +1182,31 @@
         <parameters>
           <parameter type="const-gchar*" name="id" />
           <parameter type="CdnExpression*" name="condition" />
-          <parameter type="CdnEventDirection" name="direction" />
+          <parameter type="gdouble" name="approximation" />
         </parameters>
       </constructor>
+      <method name="SetApproximation" cname="cdn_event_set_approximation">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="approximation" />
+        </parameters>
+      </method>
       <method name="SetCondition" cname="cdn_event_set_condition">
         <return-type type="void" />
         <parameters>
           <parameter type="CdnExpression*" name="condition" />
         </parameters>
       </method>
-      <method name="SetDirection" cname="cdn_event_set_direction">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnEventDirection" name="direction" />
-        </parameters>
-      </method>
       <method name="SetGotoPhase" cname="cdn_event_set_goto_phase">
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="phase" />
+        </parameters>
+      </method>
+      <method name="SetTerminal" cname="cdn_event_set_terminal">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="terminal" />
         </parameters>
       </method>
       <method name="Update" cname="cdn_event_update">
@@ -1236,6 +1241,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CdnExpression*" name="other" />
+          <parameter type="gboolean" name="asstring" />
         </parameters>
       </method>
       <method name="Evaluate" cname="cdn_expression_evaluate">
@@ -1283,7 +1289,7 @@
         <return-type type="gboolean" />
       </method>
       <method name="GetRandInstructions" cname="cdn_expression_get_rand_instructions">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CdnInstructionRand*" />
       </method>
       <method name="GetStackSize" cname="cdn_expression_get_stack_size">
         <return-type type="guint" />
@@ -1720,12 +1726,14 @@
         <parameters>
           <parameter type="CdnInstruction*" name="i1" />
           <parameter type="CdnInstruction*" name="i2" />
+          <parameter type="gboolean" name="asstring" />
         </parameters>
       </virtual_method>
       <method name="Equal" cname="cdn_instruction_equal">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CdnInstruction*" name="i2" />
+          <parameter type="gboolean" name="asstring" />
         </parameters>
       </method>
       <method name="Execute" cname="cdn_instruction_execute">
@@ -2037,14 +2045,14 @@
       </signal>
       <property name="Object" cname="object" type="CdnObject" readable="true" writeable="true" construct-only="true" />
       <property name="Phase" cname="phase" type="gchar*" readable="true" writeable="true" construct="true" />
-      <method name="AllProperties" cname="cdn_integrator_state_all_properties">
-        <return-type type="const-GSList*" element_type="CdnVariable*" />
+      <method name="AllVariables" cname="cdn_integrator_state_all_variables">
+        <return-type type="const-GSList*" />
       </method>
       <method name="DirectEdgeActions" cname="cdn_integrator_state_direct_edge_actions">
         <return-type type="const-GSList*" element_type="CdnEdgeAction*" />
       </method>
-      <method name="DirectProperties" cname="cdn_integrator_state_direct_properties">
-        <return-type type="const-GSList*" element_type="CdnVariable*" />
+      <method name="DirectVariables" cname="cdn_integrator_state_direct_variables">
+        <return-type type="const-GSList*" />
       </method>
       <method name="Events" cname="cdn_integrator_state_events">
         <return-type type="const-GSList*" />
@@ -2067,8 +2075,8 @@
       <method name="IntegratedEdgeActions" cname="cdn_integrator_state_integrated_edge_actions">
         <return-type type="const-GSList*" element_type="CdnEdgeAction*" />
       </method>
-      <method name="IntegratedProperties" cname="cdn_integrator_state_integrated_properties">
-        <return-type type="const-GSList*" element_type="CdnVariable*" />
+      <method name="IntegratedVariables" cname="cdn_integrator_state_integrated_variables">
+        <return-type type="const-GSList*" />
       </method>
       <method name="Io" cname="cdn_integrator_state_io">
         <return-type type="const-GSList*" />
@@ -2870,6 +2878,7 @@
         <parameters>
           <parameter type="CdnOperator*" name="op" />
           <parameter type="CdnOperator*" name="other" />
+          <parameter type="gboolean" name="asstring" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetFunction" cname="get_function">
@@ -2915,10 +2924,10 @@
           <parameter type="CdnIntegrator*" name="integrator" />
         </parameters>
       </virtual_method>
-      <method name="AllExpressions" cname="cdn_operator_all_expressions">
+      <method name="AllExpressions" cname="cdn_operator_all_expressions" hidden="">
         <return-type type="const-GSList**" />
       </method>
-      <method name="AllIndices" cname="cdn_operator_all_indices">
+      <method name="AllIndices" cname="cdn_operator_all_indices" hidden="">
         <return-type type="const-GSList**" />
       </method>
       <method name="Copy" cname="cdn_operator_copy">
@@ -2928,6 +2937,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CdnOperator*" name="other" />
+          <parameter type="gboolean" name="asstring" />
         </parameters>
       </method>
       <method name="ErrorQuark" cname="cdn_operator_error_quark" shared="true">
@@ -3388,7 +3398,8 @@
           <parameter type="CdnEmbeddedString*" name="from_phase" />
           <parameter type="CdnEmbeddedString*" name="to_phase" />
           <parameter type="CdnEmbeddedString*" name="condition" />
-          <parameter type="CdnEventDirection" name="direction" />
+          <parameter type="gboolean" name="terminal" />
+          <parameter type="CdnEmbeddedString*" name="approximation" />
           <parameter type="GSList*" name="templates" />
           <parameter type="GSList*" name="attributes" />
         </parameters>
@@ -3866,6 +3877,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CdnVariable*" name="other" />
+          <parameter type="gboolean" name="asstring" />
         </parameters>
       </method>
       <method name="FlagsFromString" cname="cdn_variable_flags_from_string" shared="true">
@@ -4212,6 +4224,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CdnExpressionTreeIter*" name="other" />
+          <parameter type="gboolean" name="asstring" />
         </parameters>
       </method>
       <method name="Free" cname="cdn_expression_tree_iter_free">

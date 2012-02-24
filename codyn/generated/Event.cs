@@ -15,9 +15,9 @@ namespace Cdn {
 		public Event(IntPtr raw) : base(raw) {}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_event_new(IntPtr id, IntPtr condition, int direction);
+		static extern IntPtr cdn_event_new(IntPtr id, IntPtr condition, double approximation);
 
-		public Event (string id, Cdn.Expression condition, Cdn.EventDirection direction) : base (IntPtr.Zero)
+		public Event (string id, Cdn.Expression condition, double approximation) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Event)) {
 				ArrayList vals = new ArrayList();
@@ -28,13 +28,13 @@ namespace Cdn {
 					names.Add ("condition");
 					vals.Add (new GLib.Value (condition));
 				}
-				names.Add ("direction");
-				vals.Add (new GLib.Value (direction));
+				names.Add ("approximation");
+				vals.Add (new GLib.Value (approximation));
 				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
 				return;
 			}
 			IntPtr native_id = GLib.Marshaller.StringToPtrGStrdup (id);
-			Raw = cdn_event_new(native_id, condition == null ? IntPtr.Zero : condition.Handle, (int) direction);
+			Raw = cdn_event_new(native_id, condition == null ? IntPtr.Zero : condition.Handle, approximation);
 			GLib.Marshaller.Free (native_id);
 		}
 
@@ -57,20 +57,38 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern int cdn_event_get_direction(IntPtr raw);
+		static extern double cdn_event_get_approximation(IntPtr raw);
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_event_set_direction(IntPtr raw, int direction);
+		static extern void cdn_event_set_approximation(IntPtr raw, double approximation);
 
-		[GLib.Property ("direction")]
-		public Cdn.EventDirection Direction {
+		[GLib.Property ("approximation")]
+		public double Approximation {
 			get  {
-				int raw_ret = cdn_event_get_direction(Handle);
-				Cdn.EventDirection ret = (Cdn.EventDirection) raw_ret;
+				double raw_ret = cdn_event_get_approximation(Handle);
+				double ret = raw_ret;
 				return ret;
 			}
 			set  {
-				cdn_event_set_direction(Handle, (int) value);
+				cdn_event_set_approximation(Handle, value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_event_get_terminal(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_event_set_terminal(IntPtr raw, bool terminal);
+
+		[GLib.Property ("terminal")]
+		public bool Terminal {
+			get  {
+				bool raw_ret = cdn_event_get_terminal(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set  {
+				cdn_event_set_terminal(Handle, value);
 			}
 		}
 

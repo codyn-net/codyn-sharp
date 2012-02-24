@@ -391,10 +391,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_variable_equal(IntPtr raw, IntPtr other);
+		static extern bool cdn_variable_equal(IntPtr raw, IntPtr other, bool asstring);
 
-		public bool Equal(Cdn.Variable other) {
-			bool raw_ret = cdn_variable_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+		public bool Equal(Cdn.Variable other, bool asstring) {
+			bool raw_ret = cdn_variable_equal(Handle, other == null ? IntPtr.Zero : other.Handle, asstring);
 			bool ret = raw_ret;
 			return ret;
 		}
@@ -641,6 +641,38 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "Variable.custom"
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_variable_new(IntPtr name, IntPtr expression, int flags);
+
+		[DllImport ("libgobject-2.0")]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
+		public Variable (string name, Cdn.Expression expression, Cdn.VariableFlags flags) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Variable)) {
+				ArrayList vals = new ArrayList();
+				ArrayList names = new ArrayList();
+				names.Add ("name");
+				vals.Add (new GLib.Value (name));
+				if (expression != null) {
+					names.Add ("expression");
+					vals.Add (new GLib.Value (expression));
+				}
+				names.Add ("flags");
+				vals.Add (new GLib.Value (flags));
+				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+				return;
+			}
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			Raw = cdn_variable_new(native_name, expression == null ? IntPtr.Zero : expression.Handle, (int) flags);
+			GLib.Marshaller.Free (native_name);
+
+			if (Raw != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
+			}
+		}
+
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_variable_get_values(IntPtr raw, out int numr, out int numc);
 
