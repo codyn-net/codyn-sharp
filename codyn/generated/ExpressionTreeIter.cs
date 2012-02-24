@@ -20,11 +20,28 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_expression_tree_iter_to_string(IntPtr raw);
+		static extern int cdn_expression_tree_iter_get_num_children(IntPtr raw);
 
-		public override string ToString() {
-			IntPtr raw_ret = cdn_expression_tree_iter_to_string(Handle);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_tree_iter_set_num_children(IntPtr raw, int i);
+
+		public int NumChildren { 
+			get {
+				int raw_ret = cdn_expression_tree_iter_get_num_children(Handle);
+				int ret = raw_ret;
+				return ret;
+			}
+			set {
+				cdn_expression_tree_iter_set_num_children(Handle, value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_tree_iter_to_expression(IntPtr raw);
+
+		public Cdn.Expression ToExpression() {
+			IntPtr raw_ret = cdn_expression_tree_iter_to_expression(Handle);
+			Cdn.Expression ret = GLib.Object.GetObject(raw_ret) as Cdn.Expression;
 			return ret;
 		}
 
@@ -38,11 +55,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern int cdn_expression_tree_iter_num_children(IntPtr raw);
+		static extern IntPtr cdn_expression_tree_iter_to_string_dbg(IntPtr raw);
 
-		public int NumChildren() {
-			int raw_ret = cdn_expression_tree_iter_num_children(Handle);
-			int ret = raw_ret;
+		public string ToStringDbg() {
+			IntPtr raw_ret = cdn_expression_tree_iter_to_string_dbg(Handle);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 			return ret;
 		}
 
@@ -81,15 +98,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_expression_tree_iter_to_string_dbg(IntPtr raw);
-
-		public string ToStringDbg() {
-			IntPtr raw_ret = cdn_expression_tree_iter_to_string_dbg(Handle);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern void cdn_expression_tree_iter_take_child(IntPtr raw, int nth, IntPtr child);
 
 		public void TakeChild(int nth, Cdn.ExpressionTreeIter child) {
@@ -104,6 +112,15 @@ namespace Cdn {
 			IntPtr raw_ret = cdn_expression_tree_iter_solve_for(Handle, prop == null ? IntPtr.Zero : prop.Handle, out error);
 			Cdn.ExpressionTreeIter ret = raw_ret == IntPtr.Zero ? null : (Cdn.ExpressionTreeIter) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.ExpressionTreeIter), false);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_tree_iter_to_string(IntPtr raw);
+
+		public override string ToString() {
+			IntPtr raw_ret = cdn_expression_tree_iter_to_string(Handle);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 			return ret;
 		}
 

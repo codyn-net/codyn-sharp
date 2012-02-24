@@ -10,19 +10,19 @@ namespace Cdn {
 	public class AddedArgs : GLib.SignalArgs {
 		public string Name{
 			get {
-				return (string) Args[0];
+				return (string) Args [0];
 			}
 		}
 
 		public string ChildName{
 			get {
-				return (string) Args[1];
+				return (string) Args [1];
 			}
 		}
 
 		public string PropertyName{
 			get {
-				return (string) Args[2];
+				return (string) Args [2];
 			}
 		}
 

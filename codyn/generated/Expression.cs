@@ -413,6 +413,21 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_set_instructions_take(IntPtr raw, IntPtr instructions);
+
+		public void SetInstructionsTake(Cdn.Instruction[] instructions)
+		{
+			GLib.SList ptr = new GLib.SList(typeof(IntPtr));
+
+			for (int i = 0; i < instructions.Length; ++i)
+			{
+				ptr.Append(instructions[i].Handle);
+			}
+
+			cdn_expression_set_instructions_take(Handle, ptr.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_expression_evaluate_values(IntPtr raw, out int numr, out int numc);
 
 		public double[,] EvaluateValues()

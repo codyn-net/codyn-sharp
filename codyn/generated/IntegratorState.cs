@@ -159,9 +159,9 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_integrated_variables(IntPtr raw);
 
-		public GLib.SList IntegratedVariables() {
+		public Cdn.Variable[] IntegratedVariables() {
 			IntPtr raw_ret = cdn_integrator_state_integrated_variables(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
 			return ret;
 		}
 
@@ -186,9 +186,9 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_all_variables(IntPtr raw);
 
-		public GLib.SList AllVariables() {
+		public Cdn.Variable[] AllVariables() {
 			IntPtr raw_ret = cdn_integrator_state_all_variables(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
 			return ret;
 		}
 
@@ -204,9 +204,9 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_direct_variables(IntPtr raw);
 
-		public GLib.SList DirectVariables() {
+		public Cdn.Variable[] DirectVariables() {
 			IntPtr raw_ret = cdn_integrator_state_direct_variables(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
 			return ret;
 		}
 

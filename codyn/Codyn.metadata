@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <metadata>
   <!-- CdnEdge -->
-  <attr path="/api/namespace/object[@cname='CdnEdge']/method[@cname='cdn_edge_get_from']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='CdnEdge']/method[@cname='cdn_edge_get_to']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnEdge']/method[@cname='cdn_edge_get_input']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnEdge']/method[@cname='cdn_edge_get_output']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CdnEdge']/method[@cname='cdn_edge_get_actions']/return-type" name="element_type">CdnEdgeAction*</attr>
 
   <!-- CdnEdgeAction -->
@@ -91,6 +91,7 @@
   <!-- CdnExpression -->
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_instructions']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_set_instructions']" name="hidden"/>
+  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_set_instructions_take']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnExpression']/constructor" name="hidden">true</attr>
   <remove-node path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_evaluate_values']"/>
 
@@ -114,8 +115,7 @@
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_get_class_name']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_all_expressions']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_all_indices']" name="hidden"/>
-  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='get_expressions']/return-type" name="element_type">CdnExpression*</attr>
-  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='get_indices']/return-type" name="element_type">CdnExpression*</attr>
+  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_get_indices']/return-type" name="element_type">CdnExpression*</attr>
 
   <!-- CdnFunction -->
   <remove-node path="/api/namespace/object[@cname='CdnFunction']/method[@cname='cdn_function_execute']"/>
@@ -164,10 +164,6 @@
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Step']/parameters/parameter[@name='p1']" name="name">time</attr>
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Step']" name="name">Stepped</attr>
 
-  <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p0']" name="name">from</attr>
-  <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p1']" name="name">step</attr>
-  <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p2']" name="name">to</attr>
-
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']" name="name">Begun</attr>
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='End']" name="name">Ended</attr>
 
@@ -178,10 +174,10 @@
   <!-- CdnIntegratorState -->
   <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_direct_edge_actions']/return-type" name="element_type">CdnEdgeAction*</attr>
   <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_integrated_edge_actions']/return-type" name="element_type">CdnEdgeAction*</attr>
-  <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_direct_properties']/return-type" name="element_type">CdnVariable*</attr>
-  <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_integrated_properties']/return-type" name="element_type">CdnVariable*</attr>
-  <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_all_properties']/return-type" name="element_type">CdnVariable*</attr>
-  <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_inputs']/return-type" name="element_type">CdnInput*</attr>
+  <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_direct_variables']/return-type" name="element_type">CdnVariable*</attr>
+  <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_integrated_variables']/return-type" name="element_type">CdnVariable*</attr>
+  <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_all_variables']/return-type" name="element_type">CdnVariable*</attr>
+  <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_io']/return-type" name="element_type">CdnIo*</attr>
 
   <!-- CdnNetworkSerializer -->
   <remove-node path="/api/namespace/object[@cname='CdnNetworkSerializer']/method[@cname='cdn_network_serializer_serialize']"/>

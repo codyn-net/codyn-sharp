@@ -104,9 +104,9 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_operator_get_indices(IntPtr raw, int idx);
 
-		public GLib.SList GetIndices(int idx) {
+		public Cdn.Expression[] GetIndices(int idx) {
 			IntPtr raw_ret = cdn_operator_get_indices(Handle, idx);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cdn.Expression[] ret = (Cdn.Expression[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Expression));
 			return ret;
 		}
 

@@ -833,10 +833,10 @@
       <method name="GetActions" cname="cdn_edge_get_actions">
         <return-type type="const-GSList*" element_type="CdnEdgeAction*" />
       </method>
-      <method name="GetInput" cname="cdn_edge_get_input">
+      <method name="GetInput" cname="cdn_edge_get_input" hidden="true">
         <return-type type="CdnNode*" />
       </method>
-      <method name="GetOutput" cname="cdn_edge_get_output">
+      <method name="GetOutput" cname="cdn_edge_get_output" hidden="true">
         <return-type type="CdnNode*" />
       </method>
       <method name="GetType" cname="cdn_edge_get_type" shared="true">
@@ -1344,6 +1344,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-GSList*" name="instructions" />
+        </parameters>
+      </method>
+      <method name="SetInstructionsTake" cname="cdn_expression_set_instructions_take" hidden="">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="instructions" />
         </parameters>
       </method>
       <method name="SetOnce" cname="cdn_expression_set_once">
@@ -1920,7 +1926,7 @@
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CdnIntegrator*" />
-          <parameter name="from" type="gdouble" />
+          <parameter name="p0" type="gdouble" />
         </parameters>
       </signal>
       <signal name="Ended" cname="end" when="LAST">
@@ -2046,13 +2052,13 @@
       <property name="Object" cname="object" type="CdnObject" readable="true" writeable="true" construct-only="true" />
       <property name="Phase" cname="phase" type="gchar*" readable="true" writeable="true" construct="true" />
       <method name="AllVariables" cname="cdn_integrator_state_all_variables">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CdnVariable*" />
       </method>
       <method name="DirectEdgeActions" cname="cdn_integrator_state_direct_edge_actions">
         <return-type type="const-GSList*" element_type="CdnEdgeAction*" />
       </method>
       <method name="DirectVariables" cname="cdn_integrator_state_direct_variables">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CdnVariable*" />
       </method>
       <method name="Events" cname="cdn_integrator_state_events">
         <return-type type="const-GSList*" />
@@ -2076,10 +2082,10 @@
         <return-type type="const-GSList*" element_type="CdnEdgeAction*" />
       </method>
       <method name="IntegratedVariables" cname="cdn_integrator_state_integrated_variables">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CdnVariable*" />
       </method>
       <method name="Io" cname="cdn_integrator_state_io">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CdnIo*" />
       </method>
       <constructor cname="cdn_integrator_state_new">
         <parameters>
@@ -2143,11 +2149,12 @@
       </method>
     </object>
     <object name="MiniObject" cname="CdnMiniObject" parent="GTypeInstance">
-      <method name="Copy" cname="cdn_mini_object_copy">
-        <return-type type="CdnMiniObject*" owned="true" />
-      </method>
-      <method name="Free" cname="cdn_mini_object_free">
-        <return-type type="void" />
+      <field name="RefCount" cname="ref_count" type="gint" />
+      <method name="Copy" cname="cdn_mini_object_copy" shared="true">
+        <return-type type="gpointer" />
+        <parameters>
+          <parameter type="gpointer" name="obj" />
+        </parameters>
       </method>
       <method name="GetType" cname="cdn_mini_object_get_type" shared="true">
         <return-type type="GType" />
@@ -2157,6 +2164,18 @@
           <parameter type="GType" name="type" />
         </parameters>
       </constructor>
+      <method name="Ref" cname="cdn_mini_object_ref" shared="true">
+        <return-type type="gpointer" />
+        <parameters>
+          <parameter type="gpointer" name="obj" />
+        </parameters>
+      </method>
+      <method name="Unref" cname="cdn_mini_object_unref" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gpointer" name="obj" />
+        </parameters>
+      </method>
     </object>
     <object name="Monitor" cname="CdnMonitor" parent="GObject">
       <field name="Priv" cname="priv" type="CdnMonitorPrivate*" />
@@ -2979,7 +2998,7 @@
         </parameters>
       </method>
       <method name="GetIndices" cname="cdn_operator_get_indices">
-        <return-type type="const-GSList*" />
+        <return-type type="const-GSList*" element_type="CdnExpression*" />
         <parameters>
           <parameter type="gint" name="idx" />
         </parameters>
@@ -4239,6 +4258,9 @@
       <method name="GetInstruction" cname="cdn_expression_tree_iter_get_instruction" hidden="">
         <return-type type="CdnInstruction*" />
       </method>
+      <method name="GetNumChildren" cname="cdn_expression_tree_iter_get_num_children">
+        <return-type type="gint" />
+      </method>
       <method name="GetType" cname="cdn_expression_tree_iter_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -4257,9 +4279,6 @@
           <parameter type="const-GSList*" name="instructions" />
         </parameters>
       </constructor>
-      <method name="NumChildren" cname="cdn_expression_tree_iter_num_children">
-        <return-type type="gint" />
-      </method>
       <method name="SetChild" cname="cdn_expression_tree_iter_set_child">
         <return-type type="void" />
         <parameters>
@@ -4271,6 +4290,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CdnInstruction*" name="instr" />
+        </parameters>
+      </method>
+      <method name="SetNumChildren" cname="cdn_expression_tree_iter_set_num_children">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="i" />
         </parameters>
       </method>
       <method name="Simplify" cname="cdn_expression_tree_iter_simplify">
@@ -4302,6 +4327,9 @@
           <parameter type="gint" name="nth" />
           <parameter type="CdnExpressionTreeIter*" name="child" />
         </parameters>
+      </method>
+      <method name="ToExpression" cname="cdn_expression_tree_iter_to_expression">
+        <return-type type="CdnExpression*" />
       </method>
       <method name="ToInstructions" cname="cdn_expression_tree_iter_to_instructions">
         <return-type type="GSList*" />

@@ -10,7 +10,7 @@ namespace Cdn {
 	public class SelectedArgs : GLib.SignalArgs {
 		public uint P0{
 			get {
-				return (uint) Args[0];
+				return (uint) Args [0];
 			}
 		}
 

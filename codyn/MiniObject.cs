@@ -9,11 +9,14 @@ namespace Cdn
 	{
 		private IntPtr d_raw;
 
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_mini_object_ref(IntPtr raw);
+
 		public MiniObject(IntPtr raw)
 		{
 			if (raw != IntPtr.Zero)
 			{
-				d_raw = cdn_mini_object_copy (raw);
+				d_raw = cdn_mini_object_ref (raw);
 			}
 			else
 			{
@@ -41,10 +44,10 @@ namespace Cdn
 			{
 				if (d_raw != IntPtr.Zero)
 				{
-					cdn_mini_object_free(d_raw);
+					cdn_mini_object_unref (d_raw);
 				}
 
-				d_raw = cdn_mini_object_copy (value);
+				d_raw = cdn_mini_object_ref (value);
 			}
 		}
 
@@ -54,7 +57,7 @@ namespace Cdn
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_mini_object_free(IntPtr raw);
+		static extern void cdn_mini_object_unref(IntPtr raw);
 
 		public void Dispose()
 		{
@@ -71,7 +74,7 @@ namespace Cdn
 
 			if (d_raw != IntPtr.Zero)
 			{
-				cdn_mini_object_free(d_raw);
+				cdn_mini_object_unref(d_raw);
 				d_raw = IntPtr.Zero;
 			}
 		}

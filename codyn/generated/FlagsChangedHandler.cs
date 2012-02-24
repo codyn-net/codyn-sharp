@@ -10,7 +10,7 @@ namespace Cdn {
 	public class FlagsChangedArgs : GLib.SignalArgs {
 		public Cdn.VariableFlags Flags{
 			get {
-				return (Cdn.VariableFlags) Args[0];
+				return (Cdn.VariableFlags) Args [0];
 			}
 		}
 
