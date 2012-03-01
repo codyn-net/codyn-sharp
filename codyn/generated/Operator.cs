@@ -57,11 +57,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern unsafe bool cdn_operator_initialize(IntPtr raw, IntPtr expressions, int num_expressions, IntPtr indices, int num_indices, int num_arguments, out int argdim, out IntPtr error);
+		static extern unsafe bool cdn_operator_initialize(IntPtr raw, IntPtr expressions, int num_expressions, IntPtr indices, int num_indices, int num_arguments, out int argdim, IntPtr context, out IntPtr error);
 
-		public unsafe bool Initialize(GLib.SList expressions, int num_expressions, GLib.SList indices, int num_indices, int num_arguments, out int argdim) {
+		public unsafe bool Initialize(GLib.SList expressions, int num_expressions, GLib.SList indices, int num_indices, int num_arguments, out int argdim, Cdn.CompileContext context) {
 			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cdn_operator_initialize(Handle, expressions == null ? IntPtr.Zero : expressions.Handle, num_expressions, indices == null ? IntPtr.Zero : indices.Handle, num_indices, num_arguments, out argdim, out error);
+			bool raw_ret = cdn_operator_initialize(Handle, expressions == null ? IntPtr.Zero : expressions.Handle, num_expressions, indices == null ? IntPtr.Zero : indices.Handle, num_indices, num_arguments, out argdim, context == null ? IntPtr.Zero : context.Handle, out error);
 			bool ret = raw_ret;
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;

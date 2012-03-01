@@ -10,7 +10,7 @@ namespace Cdn {
 	public class ChildRemovedArgs : GLib.SignalArgs {
 		public Cdn.Object Object{
 			get {
-				return (Cdn.Object) Args [0];
+				return (Cdn.Object) Args[0];
 			}
 		}
 

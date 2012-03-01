@@ -36,6 +36,33 @@ namespace Cdn {
 			}
 		}
 
+		[DllImport("codyn-3.0")]
+		static extern void cdn_stack_manipulation_get_push_dimension(IntPtr raw, int n, out int numr, out int numc);
+
+		public void GetPushDimension(int n, out int numr, out int numc) {
+			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));
+			System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);
+			cdn_stack_manipulation_get_push_dimension(this_as_native, n, out numr, out numc);
+			ReadNative (this_as_native, ref this);
+			System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_stack_manipulation_get_pop_dimension(IntPtr raw, int n, out int numr, out int numc);
+
+		public void GetPopDimension(int n, out int numr, out int numc) {
+			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));
+			System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);
+			cdn_stack_manipulation_get_pop_dimension(this_as_native, n, out numr, out numc);
+			ReadNative (this_as_native, ref this);
+			System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);
+		}
+
+		static void ReadNative (IntPtr native, ref Cdn.StackManipulation target)
+		{
+			target = New (native);
+		}
+
 		[DllImport("glibsharpglue-2")]
 		static extern IntPtr glibsharp_value_get_boxed (ref GLib.Value val);
 

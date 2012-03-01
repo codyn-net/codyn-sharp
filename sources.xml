@@ -40,8 +40,8 @@
         <file>../codyn/codyn/operators/cdn-operator-diff.h</file>
         <file>../codyn/codyn/operators/cdn-operator-pdiff.c</file>
         <file>../codyn/codyn/operators/cdn-operator-pdiff.h</file>
-        <file>../codyn/codyn/operators/cdn-operator-df-dt.c</file>
-        <file>../codyn/codyn/operators/cdn-operator-df-dt.h</file>
+        <file>../codyn/codyn/operators/cdn-operator-dt.c</file>
+        <file>../codyn/codyn/operators/cdn-operator-dt.h</file>
         <file>../codyn/codyn/operators/cdn-operator-linsolve.c</file>
         <file>../codyn/codyn/operators/cdn-operator-linsolve.h</file>
         <file>../codyn/codyn/operators/cdn-operator-simplify.c</file>

@@ -56,6 +56,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern double cdn_function_polynomial_piece_evaluate(IntPtr raw, double t);
+
+		public double Evaluate(double t) {
+			double raw_ret = cdn_function_polynomial_piece_evaluate(Handle, t);
+			double ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_function_polynomial_piece_copy(IntPtr raw);
 
 		public Cdn.FunctionPolynomialPiece Copy() {
@@ -73,6 +82,15 @@ namespace Cdn {
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_polynomial_piece_get_derivative(IntPtr raw, int order);
+
+		public Cdn.FunctionPolynomialPiece GetDerivative(int order) {
+			IntPtr raw_ret = cdn_function_polynomial_piece_get_derivative(Handle, order);
+			Cdn.FunctionPolynomialPiece ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionPolynomialPiece;
+			return ret;
 		}
 
 #endregion

@@ -50,6 +50,18 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern bool cdn_function_argument_get_optional(IntPtr raw);
+
+		[GLib.Property ("optional")]
+		public bool Optional {
+			get  {
+				bool raw_ret = cdn_function_argument_get_optional(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern bool cdn_function_argument_get_explicit(IntPtr raw);
 
 		[DllImport("codyn-3.0")]
@@ -64,6 +76,24 @@ namespace Cdn {
 			}
 			set  {
 				cdn_function_argument_set_explicit(Handle, value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_argument_get_default_value(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_function_argument_set_default_value(IntPtr raw, IntPtr value);
+
+		[GLib.Property ("default-value")]
+		public Cdn.Expression DefaultValue {
+			get  {
+				IntPtr raw_ret = cdn_function_argument_get_default_value(Handle);
+				Cdn.Expression ret = GLib.Object.GetObject(raw_ret) as Cdn.Expression;
+				return ret;
+			}
+			set  {
+				cdn_function_argument_set_default_value(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
 		}
 
@@ -139,6 +169,20 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_function_argument_get_dimension(IntPtr raw, out int numr, out int numc);
+
+		public void GetDimension(out int numr, out int numc) {
+			cdn_function_argument_get_dimension(Handle, out numr, out numc);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_function_argument_set_dimension(IntPtr raw, int numr, int numc);
+
+		public void SetDimension(int numr, int numc) {
+			cdn_function_argument_set_dimension(Handle, numr, numc);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern bool cdn_function_argument_set_name(IntPtr raw, IntPtr name);
 
 		public bool SetName(string name) {
@@ -147,22 +191,6 @@ namespace Cdn {
 			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_name);
 			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_function_argument_copy(IntPtr raw);
-
-		public Cdn.FunctionArgument Copy() {
-			IntPtr raw_ret = cdn_function_argument_copy(Handle);
-			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret, true) as Cdn.FunctionArgument;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_function_argument_get_dimension(IntPtr raw, out int numr, out int numc);
-
-		public void GetDimension(out int numr, out int numc) {
-			cdn_function_argument_get_dimension(Handle, out numr, out numc);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -177,10 +205,12 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_function_argument_set_dimension(IntPtr raw, int numr, int numc);
+		static extern IntPtr cdn_function_argument_copy(IntPtr raw);
 
-		public void SetDimension(int numr, int numc) {
-			cdn_function_argument_set_dimension(Handle, numr, numc);
+		public Cdn.FunctionArgument Copy() {
+			IntPtr raw_ret = cdn_function_argument_copy(Handle);
+			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret, true) as Cdn.FunctionArgument;
+			return ret;
 		}
 
 #endregion

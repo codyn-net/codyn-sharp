@@ -287,13 +287,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_variable_apply_constraint(IntPtr raw);
-
-		public void ApplyConstraint() {
-			cdn_variable_apply_constraint(Handle);
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern void cdn_variable_flags_from_string(IntPtr flags, out int add_flags, out int remove_flags);
 
 		public static void FlagsFromString(string flags, out Cdn.VariableFlags add_flags, out Cdn.VariableFlags remove_flags) {

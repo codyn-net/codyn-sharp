@@ -10,7 +10,7 @@ namespace Cdn {
 	public class PieceRemovedArgs : GLib.SignalArgs {
 		public Cdn.FunctionPolynomialPiece Piece{
 			get {
-				return (Cdn.FunctionPolynomialPiece) Args [0];
+				return (Cdn.FunctionPolynomialPiece) Args[0];
 			}
 		}
 

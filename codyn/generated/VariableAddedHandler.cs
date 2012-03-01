@@ -10,7 +10,7 @@ namespace Cdn {
 	public class VariableAddedArgs : GLib.SignalArgs {
 		public Cdn.Variable Variable{
 			get {
-				return (Cdn.Variable) Args [0];
+				return (Cdn.Variable) Args[0];
 			}
 		}
 

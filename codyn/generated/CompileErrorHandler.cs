@@ -10,7 +10,7 @@ namespace Cdn {
 	public class CompileErrorArgs : GLib.SignalArgs {
 		public Cdn.CompileError Error{
 			get {
-				return (Cdn.CompileError) Args [0];
+				return (Cdn.CompileError) Args[0];
 			}
 		}
 

@@ -10,7 +10,7 @@ namespace Cdn {
 	public class ActionRemovedArgs : GLib.SignalArgs {
 		public Cdn.EdgeAction Action{
 			get {
-				return (Cdn.EdgeAction) Args [0];
+				return (Cdn.EdgeAction) Args[0];
 			}
 		}
 

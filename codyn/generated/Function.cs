@@ -191,6 +191,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_get_derivative(IntPtr raw, int order, IntPtr towards);
+
+		public Cdn.Function GetDerivative(int order, GLib.List towards) {
+			IntPtr raw_ret = cdn_function_get_derivative(Handle, order, towards == null ? IntPtr.Zero : towards.Handle);
+			Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern uint cdn_function_get_n_implicit(IntPtr raw);
 
 		public uint NImplicit { 
@@ -220,17 +229,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_function_get_argument(IntPtr raw, IntPtr name);
-
-		public Cdn.FunctionArgument GetArgument(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cdn_function_get_argument(Handle, native_name);
-			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionArgument;
-			GLib.Marshaller.Free (native_name);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_function_remove_argument(IntPtr raw, IntPtr argument, out IntPtr error);
 
 		public unsafe bool RemoveArgument(Cdn.FunctionArgument argument) {
@@ -246,6 +244,17 @@ namespace Cdn {
 
 		public void AddArgument(Cdn.FunctionArgument argument) {
 			cdn_function_add_argument(Handle, argument == null ? IntPtr.Zero : argument.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern uint cdn_function_get_n_optional(IntPtr raw);
+
+		public uint NOptional { 
+			get {
+				uint raw_ret = cdn_function_get_n_optional(Handle);
+				uint ret = raw_ret;
+				return ret;
+			}
 		}
 
 		[DllImport("codyn-3.0")]
@@ -265,6 +274,17 @@ namespace Cdn {
 		public static new int ErrorQuark() {
 			int raw_ret = cdn_function_error_quark();
 			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_get_argument(IntPtr raw, IntPtr name);
+
+		public Cdn.FunctionArgument GetArgument(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cdn_function_get_argument(Handle, native_name);
+			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionArgument;
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 

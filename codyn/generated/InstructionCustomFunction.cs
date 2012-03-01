@@ -28,11 +28,17 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_instruction_custom_function_get_function(IntPtr raw);
 
+		[DllImport("codyn-3.0")]
+		static extern void cdn_instruction_custom_function_set_function(IntPtr raw, IntPtr f);
+
 		public Cdn.Function Function { 
 			get {
 				IntPtr raw_ret = cdn_instruction_custom_function_get_function(Handle);
 				Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
 				return ret;
+			}
+			set {
+				cdn_instruction_custom_function_set_function(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
 		}
 

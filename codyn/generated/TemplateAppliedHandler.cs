@@ -10,7 +10,7 @@ namespace Cdn {
 	public class TemplateAppliedArgs : GLib.SignalArgs {
 		public Cdn.Object Templ{
 			get {
-				return (Cdn.Object) Args [0];
+				return (Cdn.Object) Args[0];
 			}
 		}
 

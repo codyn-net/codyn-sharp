@@ -20,33 +20,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_instruction_to_string(IntPtr raw);
-
-		public override string ToString() {
-			IntPtr raw_ret = cdn_instruction_to_string(Handle);
-			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_instruction_get_type();
-
-		public static new GLib.GType GType { 
-			get {
-				IntPtr raw_ret = cdn_instruction_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_instruction_execute(IntPtr raw, IntPtr stack);
-
-		public void Execute(Cdn.Stack stack) {
-			cdn_instruction_execute(Handle, stack == null ? IntPtr.Zero : stack.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern unsafe IntPtr cdn_instruction_get_stack_manipulation(IntPtr raw, out IntPtr error);
 
 		public unsafe Cdn.StackManipulation GetStackManipulation() {
@@ -54,6 +27,15 @@ namespace Cdn {
 			IntPtr raw_ret = cdn_instruction_get_stack_manipulation(Handle, out error);
 			Cdn.StackManipulation ret = Cdn.StackManipulation.New (raw_ret);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_instruction_to_string(IntPtr raw);
+
+		public override string ToString() {
+			IntPtr raw_ret = cdn_instruction_to_string(Handle);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 			return ret;
 		}
 
@@ -69,6 +51,29 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_instruction_execute(IntPtr raw, IntPtr stack);
+
+		public void Execute(Cdn.Stack stack) {
+			cdn_instruction_execute(Handle, stack == null ? IntPtr.Zero : stack.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_instruction_set_location(IntPtr raw, int start, int end);
+
+		public void SetLocation(int start, int end) {
+			cdn_instruction_set_location(Handle, start, end);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_instruction_equal(IntPtr raw, IntPtr i2, bool asstring);
+
+		public bool Equal(Cdn.Instruction i2, bool asstring) {
+			bool raw_ret = cdn_instruction_equal(Handle, i2 == null ? IntPtr.Zero : i2.Handle, asstring);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_instruction_get_dependencies(IntPtr raw);
 
 		public Cdn.Variable[] Dependencies { 
@@ -80,12 +85,21 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_instruction_equal(IntPtr raw, IntPtr i2, bool asstring);
+		static extern void cdn_instruction_get_location(IntPtr raw, out int start, out int end);
 
-		public bool Equal(Cdn.Instruction i2, bool asstring) {
-			bool raw_ret = cdn_instruction_equal(Handle, i2 == null ? IntPtr.Zero : i2.Handle, asstring);
-			bool ret = raw_ret;
-			return ret;
+		public void GetLocation(out int start, out int end) {
+			cdn_instruction_get_location(Handle, out start, out end);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_instruction_get_type();
+
+		public static new GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cdn_instruction_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
 		}
 
 #endregion
