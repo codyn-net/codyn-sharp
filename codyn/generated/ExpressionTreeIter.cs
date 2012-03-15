@@ -71,6 +71,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_tree_iter_to_instructions(IntPtr raw);
+
+		public GLib.SList ToInstructions() {
+			IntPtr raw_ret = cdn_expression_tree_iter_to_instructions(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_expression_tree_iter_canonicalize(IntPtr raw);
 
 		public Cdn.ExpressionTreeIter Canonicalize() {
@@ -80,11 +89,20 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_expression_tree_iter_to_instructions(IntPtr raw);
+		static extern IntPtr cdn_expression_tree_iter_get_child(IntPtr raw, int nth);
 
-		public GLib.SList ToInstructions() {
-			IntPtr raw_ret = cdn_expression_tree_iter_to_instructions(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+		public Cdn.ExpressionTreeIter GetChild(int nth) {
+			IntPtr raw_ret = cdn_expression_tree_iter_get_child(Handle, nth);
+			Cdn.ExpressionTreeIter ret = raw_ret == IntPtr.Zero ? null : (Cdn.ExpressionTreeIter) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.ExpressionTreeIter), false);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern int cdn_expression_tree_iter_derive_error_quark();
+
+		public static int DeriveErrorQuark() {
+			int raw_ret = cdn_expression_tree_iter_derive_error_quark();
+			int ret = raw_ret;
 			return ret;
 		}
 
@@ -113,6 +131,13 @@ namespace Cdn {
 			Cdn.ExpressionTreeIter ret = raw_ret == IntPtr.Zero ? null : (Cdn.ExpressionTreeIter) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.ExpressionTreeIter), false);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_tree_iter_initialize_stack(IntPtr raw, IntPtr stack);
+
+		public void InitializeStack(Cdn.Stack stack) {
+			cdn_expression_tree_iter_initialize_stack(Handle, stack == null ? IntPtr.Zero : stack.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -145,11 +170,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_expression_tree_iter_get_child(IntPtr raw, int nth);
+		static extern unsafe IntPtr cdn_expression_tree_iter_derive(IntPtr raw, IntPtr symbols, System.IntPtr towards, int order, int flags, out IntPtr error);
 
-		public Cdn.ExpressionTreeIter GetChild(int nth) {
-			IntPtr raw_ret = cdn_expression_tree_iter_get_child(Handle, nth);
+		public unsafe Cdn.ExpressionTreeIter Derive(GLib.SList symbols, System.IntPtr towards, int order, Cdn.ExpressionTreeIterDeriveFlags flags) {
+			IntPtr error = IntPtr.Zero;
+			IntPtr raw_ret = cdn_expression_tree_iter_derive(Handle, symbols == null ? IntPtr.Zero : symbols.Handle, towards, order, (int) flags, out error);
 			Cdn.ExpressionTreeIter ret = raw_ret == IntPtr.Zero ? null : (Cdn.ExpressionTreeIter) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.ExpressionTreeIter), false);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 
@@ -178,6 +205,15 @@ namespace Cdn {
 		public ExpressionTreeIter (Cdn.Instruction instruction) 
 		{
 			Raw = cdn_expression_tree_iter_new_from_instruction(instruction == null ? IntPtr.Zero : instruction.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_tree_iter_new_from_instruction_take(IntPtr instruction);
+
+		public static ExpressionTreeIter NewFromInstructionTake(Cdn.Instruction instruction)
+		{
+			ExpressionTreeIter result = new ExpressionTreeIter (cdn_expression_tree_iter_new_from_instruction_take(instruction == null ? IntPtr.Zero : instruction.Handle));
+			return result;
 		}
 
 		[DllImport("codyn-3.0")]

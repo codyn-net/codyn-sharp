@@ -18,7 +18,6 @@ namespace Cdn {
 		Divide,
 		Modulo,
 		Power,
-		Tilde,
 		Greater,
 		Less,
 		GreaterOrEqual,
@@ -65,6 +64,7 @@ namespace Cdn {
 		Transpose,
 		Inverse,
 		Linsolve,
+		Slinsolve,
 		Sum,
 		Product,
 		Length,
@@ -72,6 +72,7 @@ namespace Cdn {
 		Hcat,
 		Zeros,
 		Eye,
+		Block,
 		Num,
 	}
 #endregion

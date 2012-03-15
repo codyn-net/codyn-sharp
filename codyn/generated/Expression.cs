@@ -249,6 +249,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern double cdn_expression_evaluate_values_flat(IntPtr raw, out int num);
+
+		public double EvaluateValuesFlat(out int num) {
+			double raw_ret = cdn_expression_evaluate_values_flat(Handle, out num);
+			double ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_expression_get_depends_on_me(IntPtr raw);
 
 		public GLib.SList DependsOnMe { 

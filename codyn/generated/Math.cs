@@ -30,10 +30,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_math_function_is_commutative(int type);
+		static extern bool cdn_math_function_is_commutative(int type, int numargs, out int argdim);
 
-		public static bool FunctionIsCommutative(Cdn.MathFunctionType type) {
-			bool raw_ret = cdn_math_function_is_commutative((int) type);
+		public static bool FunctionIsCommutative(Cdn.MathFunctionType type, int numargs, out int argdim) {
+			bool raw_ret = cdn_math_function_is_commutative((int) type, numargs, out argdim);
 			bool ret = raw_ret;
 			return ret;
 		}
@@ -44,6 +44,28 @@ namespace Cdn {
 		public static string FunctionLookupById(Cdn.MathFunctionType type, out int arguments) {
 			IntPtr raw_ret = cdn_math_function_lookup_by_id((int) type, out arguments);
 			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern uint cdn_math_register_builtin_function(IntPtr name, int numargs, CdnSharp.MathFunctionEvaluateFuncNative evaluate, CdnSharp.MathStackManipulationFuncNative smanipcb, IntPtr userdata, GLib.DestroyNotify destroy_notify);
+
+		public static uint RegisterBuiltinFunction(string name, int numargs, Cdn.MathFunctionEvaluateFunc evaluate, Cdn.MathStackManipulationFunc smanipcb) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			CdnSharp.MathFunctionEvaluateFuncWrapper evaluate_wrapper = new CdnSharp.MathFunctionEvaluateFuncWrapper (evaluate);
+			CdnSharp.MathStackManipulationFuncWrapper smanipcb_wrapper = new CdnSharp.MathStackManipulationFuncWrapper (smanipcb);
+			IntPtr userdata;
+			GLib.DestroyNotify destroy_notify;
+			if (smanipcb == null) {
+				userdata = IntPtr.Zero;
+				destroy_notify = null;
+			} else {
+				userdata = (IntPtr) GCHandle.Alloc (smanipcb_wrapper);
+				destroy_notify = GLib.DestroyHelper.NotifyHandler;
+			}
+			uint raw_ret = cdn_math_register_builtin_function(native_name, numargs, evaluate_wrapper.NativeDelegate, smanipcb_wrapper.NativeDelegate, userdata, destroy_notify);
+			uint ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 

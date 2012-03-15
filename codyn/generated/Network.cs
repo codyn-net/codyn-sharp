@@ -220,6 +220,19 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern unsafe bool cdn_network_link_library(IntPtr raw, IntPtr path, out IntPtr error);
+
+		public unsafe bool LinkLibrary(string path) {
+			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cdn_network_link_library(Handle, native_path, out error);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_path);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_network_merge(IntPtr raw, IntPtr other);
 
 		public void Merge(Cdn.Network other) {

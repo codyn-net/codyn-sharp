@@ -108,15 +108,15 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void ExpressionChangedVMDelegate (IntPtr property, IntPtr expression);
+		delegate void ExpressionChangedVMDelegate (IntPtr variable, IntPtr expression);
 
 		static ExpressionChangedVMDelegate ExpressionChangedVMCallback;
 
-		static void expressionchanged_cb (IntPtr property, IntPtr expression)
+		static void expressionchanged_cb (IntPtr variable, IntPtr expression)
 		{
 			try {
-				Variable property_managed = GLib.Object.GetObject (property, false) as Variable;
-				property_managed.OnExpressionChanged (GLib.Object.GetObject(expression) as Cdn.Expression);
+				Variable variable_managed = GLib.Object.GetObject (variable, false) as Variable;
+				variable_managed.OnExpressionChanged (GLib.Object.GetObject(expression) as Cdn.Expression);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -157,15 +157,15 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate bool InvalidateNameVMDelegate (IntPtr property, IntPtr name);
+		delegate bool InvalidateNameVMDelegate (IntPtr variable, IntPtr name);
 
 		static InvalidateNameVMDelegate InvalidateNameVMCallback;
 
-		static bool invalidatename_cb (IntPtr property, IntPtr name)
+		static bool invalidatename_cb (IntPtr variable, IntPtr name)
 		{
 			try {
-				Variable property_managed = GLib.Object.GetObject (property, false) as Variable;
-				return property_managed.OnInvalidateName (GLib.Marshaller.Utf8PtrToString (name));
+				Variable variable_managed = GLib.Object.GetObject (variable, false) as Variable;
+				return variable_managed.OnInvalidateName (GLib.Marshaller.Utf8PtrToString (name));
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, true);
 				// NOTREACHED: above call doesn't return
@@ -211,15 +211,15 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void FlagsChangedVMDelegate (IntPtr property, int flags);
+		delegate void FlagsChangedVMDelegate (IntPtr variable, int flags);
 
 		static FlagsChangedVMDelegate FlagsChangedVMCallback;
 
-		static void flagschanged_cb (IntPtr property, int flags)
+		static void flagschanged_cb (IntPtr variable, int flags)
 		{
 			try {
-				Variable property_managed = GLib.Object.GetObject (property, false) as Variable;
-				property_managed.OnFlagsChanged ((Cdn.VariableFlags) flags);
+				Variable variable_managed = GLib.Object.GetObject (variable, false) as Variable;
+				variable_managed.OnFlagsChanged ((Cdn.VariableFlags) flags);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -284,6 +284,22 @@ namespace Cdn {
 
 		public void ClearUpdate() {
 			cdn_variable_clear_update(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_variable_get_dimension(IntPtr raw, out int numr, out int numc);
+
+		public void GetDimension(out int numr, out int numc) {
+			cdn_variable_get_dimension(Handle, out numr, out numc);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern double cdn_variable_get_values_flat(IntPtr raw, out int num);
+
+		public double GetValuesFlat(out int num) {
+			double raw_ret = cdn_variable_get_values_flat(Handle, out num);
+			double ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]

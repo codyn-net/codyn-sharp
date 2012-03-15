@@ -102,8 +102,6 @@
         <file>../codyn/codyn/cdn-event.h</file>
         <file>../codyn/codyn/cdn-statement.c</file>
         <file>../codyn/codyn/cdn-statement.h</file>
-        <file>../codyn/codyn/cdn-symbolic.c</file>
-        <file>../codyn/codyn/cdn-symbolic.h</file>
         <file>../codyn/codyn/cdn-phaseable.c</file>
         <file>../codyn/codyn/cdn-phaseable.h</file>
         <file>../codyn/codyn/cdn-expression-tree-iter.c</file>

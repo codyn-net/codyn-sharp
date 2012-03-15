@@ -19,6 +19,7 @@ namespace Cdn {
 		Io,
 		Interface,
 		Operator,
+		LinkLibrary,
 	}
 #endregion
 }

@@ -31,6 +31,17 @@
       <member cname="CDN_EMBEDDED_STRING_NODE_MAP" name="Map" />
       <member cname="CDN_EMBEDDED_STRING_NODE_CONDITION" name="Condition" />
     </enum>
+    <enum name="ExpressionTreeIterDeriveError" cname="CdnExpressionTreeIterDeriveError" type="enum">
+      <member cname="CDN_EXPRESSION_TREE_ITER_DERIVE_ERROR_UNSUPPORTED" name="Unsupported" />
+      <member cname="CDN_EXPRESSION_TREE_ITER_DERIVE_ERROR_INVALID" name="Invalid" />
+      <member cname="CDN_EXPRESSION_TREE_ITER_DERIVE_ERROR_FUNCTION" name="Function" />
+    </enum>
+    <enum name="ExpressionTreeIterDeriveFlags" cname="CdnExpressionTreeIterDeriveFlags" type="flags">
+      <member cname="CDN_EXPRESSION_TREE_ITER_DERIVE_NONE" name="None" />
+      <member cname="CDN_EXPRESSION_TREE_ITER_DERIVE_PARTIAL" name="Partial" value="1 &lt;&lt; 0" />
+      <member cname="CDN_EXPRESSION_TREE_ITER_DERIVE_TIME" name="Time" value="1 &lt;&lt; 1" />
+      <member cname="CDN_EXPRESSION_TREE_ITER_DERIVE_SIMPLIFY" name="Simplify" value="1 &lt;&lt; 2" />
+    </enum>
     <enum name="FunctionError" cname="CdnFunctionError" type="enum">
       <member cname="CDN_FUNCTION_ERROR_UNKNOWN" name="ErrorUnknown" />
       <member cname="CDN_FUNCTION_ERROR_ARGUMENT_NOT_FOUND" name="ErrorArgumentNotFound" />
@@ -60,7 +71,6 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_DIVIDE" name="Divide" />
       <member cname="CDN_MATH_FUNCTION_TYPE_MODULO" name="Modulo" />
       <member cname="CDN_MATH_FUNCTION_TYPE_POWER" name="Power" />
-      <member cname="CDN_MATH_FUNCTION_TYPE_TILDE" name="Tilde" />
       <member cname="CDN_MATH_FUNCTION_TYPE_GREATER" name="Greater" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LESS" name="Less" />
       <member cname="CDN_MATH_FUNCTION_TYPE_GREATER_OR_EQUAL" name="GreaterOrEqual" />
@@ -107,6 +117,7 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_TRANSPOSE" name="Transpose" />
       <member cname="CDN_MATH_FUNCTION_TYPE_INVERSE" name="Inverse" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LINSOLVE" name="Linsolve" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_SLINSOLVE" name="Slinsolve" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SUM" name="Sum" />
       <member cname="CDN_MATH_FUNCTION_TYPE_PRODUCT" name="Product" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LENGTH" name="Length" />
@@ -114,6 +125,7 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_HCAT" name="Hcat" />
       <member cname="CDN_MATH_FUNCTION_TYPE_ZEROS" name="Zeros" />
       <member cname="CDN_MATH_FUNCTION_TYPE_EYE" name="Eye" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_BLOCK" name="Block" />
       <member cname="CDN_MATH_FUNCTION_TYPE_NUM" name="Num" />
     </enum>
     <enum name="NetworkError" cname="CdnNetworkError" type="enum">
@@ -136,6 +148,7 @@
       <member cname="CDN_NETWORK_LOAD_ERROR_IO" name="Io" />
       <member cname="CDN_NETWORK_LOAD_ERROR_INTERFACE" name="Interface" />
       <member cname="CDN_NETWORK_LOAD_ERROR_OPERATOR" name="Operator" />
+      <member cname="CDN_NETWORK_LOAD_ERROR_LINK_LIBRARY" name="LinkLibrary" />
     </enum>
     <enum name="NodeError" cname="CdnNodeError" type="enum">
       <member cname="CDN_NODE_ERROR_CHILD_ALREADY_EXISTS" name="ChildAlreadyExists" />
@@ -199,6 +212,8 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_UNIQUE" name="TypeUnique" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_IF" name="TypeIf" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_NOT" name="TypeNot" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_IFSTR" name="TypeIfstr" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_NOTSTR" name="TypeNotstr" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_FROM_SET" name="TypeFromSet" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_TYPE" name="TypeType" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_HAS_FLAG" name="TypeHasFlag" />
@@ -206,6 +221,7 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_HAS_TAG" name="TypeHasTag" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_REVERSE" name="TypeReverse" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_RECURSE" name="TypeRecurse" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_APPEND_CONTEXT" name="TypeAppendContext" />
       <member cname="CDN_SELECTOR_PSEUDO_NUM" name="Num" />
     </enum>
     <enum name="SelectorType" cname="CdnSelectorType" type="flags">
@@ -219,15 +235,6 @@
       <member cname="CDN_SELECTOR_TYPE_FUNCTION" name="Function" value="1 &lt;&lt; 6" />
       <member cname="CDN_SELECTOR_TYPE_TEMPLATE" name="Template" value="1 &lt;&lt; 7" />
       <member cname="CDN_SELECTOR_TYPE_OBJECT" name="Object" value="State | Edge | Node | Function" />
-    </enum>
-    <enum name="SymbolicDeriveFlags" cname="CdnSymbolicDeriveFlags" type="flags">
-      <member cname="CDN_SYMBOLIC_DERIVE_NONE" name="None" />
-      <member cname="CDN_SYMBOLIC_DERIVE_PARTIAL" name="Partial" value="1 &lt;&lt; 0" />
-      <member cname="CDN_SYMBOLIC_DERIVE_SIMPLIFY" name="Simplify" value="1 &lt;&lt; 1" />
-    </enum>
-    <enum name="SymbolicError" cname="CdnSymbolicError" type="enum">
-      <member cname="CDN_SYMBOLIC_ERROR_UNSUPPORTED" name="Unsupported" />
-      <member cname="CDN_SYMBOLIC_ERROR_INVALID" name="Invalid" />
     </enum>
     <enum name="VariableFlags" cname="CdnVariableFlags" type="flags">
       <member cname="CDN_VARIABLE_FLAG_NONE" name="None" />
@@ -268,6 +275,25 @@
       <parameters>
         <parameter type="CdnFunction*" name="func" />
         <parameter type="gpointer" name="userdata" />
+      </parameters>
+    </callback>
+    <callback name="MathFunctionEvaluateFunc" cname="CdnMathFunctionEvaluateFunc">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="CdnStack*" name="stack" />
+        <parameter type="gint" name="numargs" />
+        <parameter type="gint*" name="argdim" />
+        <parameter type="gpointer" name="userdata" />
+      </parameters>
+    </callback>
+    <callback name="MathStackManipulationFunc" cname="CdnMathStackManipulationFunc">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="gint" name="arguments" />
+        <parameter type="gint*" name="argdim" />
+        <parameter type="gint*" name="outargdim" />
+        <parameter type="gint*" name="extraspace" />
+        <parameter type="GError**" name="error" />
       </parameters>
     </callback>
     <callback name="MiniObjectCopyFunction" cname="CdnMiniObjectCopyFunction">
@@ -1260,6 +1286,12 @@
       <method name="Evaluate" cname="cdn_expression_evaluate">
         <return-type type="gdouble" />
       </method>
+      <method name="EvaluateValuesFlat" cname="cdn_expression_evaluate_values_flat">
+        <return-type type="const-gdouble*" />
+        <parameters>
+          <parameter type="gint*" name="num" />
+        </parameters>
+      </method>
       <method name="ForceResetCache" cname="cdn_expression_force_reset_cache">
         <return-type type="void" />
       </method>
@@ -1445,8 +1477,10 @@
         <return-type type="CdnFunction*" />
         <parameters>
           <parameter type="CdnFunction*" name="function" />
+          <parameter type="GSList*" name="towards" />
           <parameter type="gint" name="order" />
-          <parameter type="GList*" name="towards" />
+          <parameter type="CdnExpressionTreeIterDeriveFlags" name="flags" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
       <method name="AddArgument" cname="cdn_function_add_argument">
@@ -1483,8 +1517,10 @@
       <method name="GetDerivative" cname="cdn_function_get_derivative">
         <return-type type="CdnFunction*" />
         <parameters>
+          <parameter type="GSList*" name="towards" />
           <parameter type="gint" name="order" />
-          <parameter type="GList*" name="towards" />
+          <parameter type="CdnExpressionTreeIterDeriveFlags" name="flags" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="GetDimension" cname="cdn_function_get_dimension">
@@ -2323,6 +2359,13 @@
       <method name="GetType" cname="cdn_network_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="LinkLibrary" cname="cdn_network_link_library">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="LoadErrorQuark" cname="cdn_network_load_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
@@ -2971,6 +3014,12 @@
       <virtual_method name="GetName" cname="get_name">
         <return-type type="gchar*" />
       </virtual_method>
+      <virtual_method name="RespondsTo" cname="responds_to">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </virtual_method>
       <virtual_method name="Equal" cname="equal">
         <return-type type="gboolean" />
         <parameters>
@@ -3124,6 +3173,13 @@
       </method>
       <method name="Reset" cname="cdn_operator_reset">
         <return-type type="void" />
+      </method>
+      <method name="RespondsTo" cname="cdn_operator_responds_to" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnOperatorClass*" name="klass" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
       </method>
       <method name="Step" cname="cdn_operator_step">
         <return-type type="void" />
@@ -3411,6 +3467,12 @@
         <parameters>
           <parameter type="CdnEmbeddedString*" name="filename" />
           <parameter type="GSList*" name="attributes" />
+        </parameters>
+      </method>
+      <method name="LinkLibrary" cname="cdn_parser_context_link_library">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnEmbeddedString*" name="filename" />
         </parameters>
       </method>
       <constructor cname="cdn_parser_context_new">
@@ -3919,21 +3981,21 @@
       <signal name="InvalidateName" cname="invalidate-name" when="LAST" field_name="invalidate_name">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="CdnVariable*" name="property" />
+          <parameter type="CdnVariable*" name="variable" />
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </signal>
       <signal name="ExpressionChanged" cname="expression-changed" when="LAST" field_name="expression_changed">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnVariable*" name="property" />
+          <parameter type="CdnVariable*" name="variable" />
           <parameter type="CdnExpression*" name="expression" />
         </parameters>
       </signal>
       <signal name="FlagsChanged" cname="flags-changed" when="LAST" field_name="flags_changed">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnVariable*" name="property" />
+          <parameter type="CdnVariable*" name="variable" />
           <parameter type="CdnVariableFlags" name="flags" />
         </parameters>
       </signal>
@@ -3992,6 +4054,13 @@
       <method name="GetDerivative" cname="cdn_variable_get_derivative">
         <return-type type="CdnVariable*" />
       </method>
+      <method name="GetDimension" cname="cdn_variable_get_dimension">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint*" name="numr" />
+          <parameter type="gint*" name="numc" />
+        </parameters>
+      </method>
       <method name="GetExpression" cname="cdn_variable_get_expression">
         <return-type type="CdnExpression*" />
       </method>
@@ -4028,6 +4097,12 @@
       </method>
       <method name="GetValue" cname="cdn_variable_get_value">
         <return-type type="gdouble" />
+      </method>
+      <method name="GetValuesFlat" cname="cdn_variable_get_values_flat">
+        <return-type type="const-gdouble*" />
+        <parameters>
+          <parameter type="gint*" name="num" />
+        </parameters>
       </method>
       <constructor cname="cdn_variable_new" hidden="true">
         <parameters>
@@ -4308,6 +4383,19 @@
       <method name="Copy" cname="cdn_expression_tree_iter_copy">
         <return-type type="CdnExpressionTreeIter*" owned="true" />
       </method>
+      <method name="Derive" cname="cdn_expression_tree_iter_derive">
+        <return-type type="CdnExpressionTreeIter*" />
+        <parameters>
+          <parameter type="GSList*" name="symbols" />
+          <parameter type="GHashTable*" name="towards" />
+          <parameter type="gint" name="order" />
+          <parameter type="CdnExpressionTreeIterDeriveFlags" name="flags" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="DeriveErrorQuark" cname="cdn_expression_tree_iter_derive_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
       <method name="Equal" cname="cdn_expression_tree_iter_equal">
         <return-type type="gboolean" />
         <parameters>
@@ -4333,12 +4421,23 @@
       <method name="GetType" cname="cdn_expression_tree_iter_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="InitializeStack" cname="cdn_expression_tree_iter_initialize_stack">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnStack*" name="stack" />
+        </parameters>
+      </method>
       <constructor cname="cdn_expression_tree_iter_new">
         <parameters>
           <parameter type="CdnExpression*" name="expression" />
         </parameters>
       </constructor>
       <constructor cname="cdn_expression_tree_iter_new_from_instruction">
+        <parameters>
+          <parameter type="CdnInstruction*" name="instruction" />
+        </parameters>
+      </constructor>
+      <constructor cname="cdn_expression_tree_iter_new_from_instruction_take">
         <parameters>
           <parameter type="CdnInstruction*" name="instruction" />
         </parameters>
@@ -4600,6 +4699,8 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="CdnMathFunctionType" name="type" />
+          <parameter type="gint" name="numargs" />
+          <parameter type="gint*" name="argdim" />
         </parameters>
       </method>
       <method name="FunctionIsVariable" cname="cdn_math_function_is_variable" shared="true">
@@ -4622,27 +4723,15 @@
           <parameter type="gint*" name="arguments" />
         </parameters>
       </method>
-    </class>
-    <class name="Symbolic" cname="CdnSymbolic_">
-      <method name="Derive" cname="cdn_symbolic_derive" shared="true">
-        <return-type type="CdnExpression*" />
+      <method name="RegisterBuiltinFunction" cname="cdn_math_register_builtin_function" shared="true">
+        <return-type type="guint" />
         <parameters>
-          <parameter type="CdnExpression*" name="expression" />
-          <parameter type="GSList*" name="symbols" />
-          <parameter type="GHashTable*" name="property_map" />
-          <parameter type="GHashTable*" name="diff_map" />
-          <parameter type="gint" name="order" />
-          <parameter type="CdnSymbolicDeriveFlags" name="flags" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="ErrorQuark" cname="cdn_symbolic_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-      <method name="Simplify" cname="cdn_symbolic_simplify" shared="true">
-        <return-type type="CdnExpression*" />
-        <parameters>
-          <parameter type="CdnExpression*" name="expression" />
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="numargs" />
+          <parameter type="CdnMathFunctionEvaluateFunc" name="evaluate" />
+          <parameter type="CdnMathStackManipulationFunc" name="smanipcb" />
+          <parameter type="gpointer" name="userdata" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
         </parameters>
       </method>
     </class>

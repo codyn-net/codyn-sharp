@@ -191,11 +191,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_function_get_derivative(IntPtr raw, int order, IntPtr towards);
+		static extern unsafe IntPtr cdn_function_get_derivative(IntPtr raw, IntPtr towards, int order, int flags, out IntPtr error);
 
-		public Cdn.Function GetDerivative(int order, GLib.List towards) {
-			IntPtr raw_ret = cdn_function_get_derivative(Handle, order, towards == null ? IntPtr.Zero : towards.Handle);
+		public unsafe Cdn.Function GetDerivative(GLib.SList towards, int order, Cdn.ExpressionTreeIterDeriveFlags flags) {
+			IntPtr error = IntPtr.Zero;
+			IntPtr raw_ret = cdn_function_get_derivative(Handle, towards == null ? IntPtr.Zero : towards.Handle, order, (int) flags, out error);
 			Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
 

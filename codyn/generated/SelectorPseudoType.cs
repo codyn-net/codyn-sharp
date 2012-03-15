@@ -41,6 +41,8 @@ namespace Cdn {
 		TypeUnique,
 		TypeIf,
 		TypeNot,
+		TypeIfstr,
+		TypeNotstr,
 		TypeFromSet,
 		TypeType,
 		TypeHasFlag,
@@ -48,6 +50,7 @@ namespace Cdn {
 		TypeHasTag,
 		TypeReverse,
 		TypeRecurse,
+		TypeAppendContext,
 		Num,
 	}
 #endregion
