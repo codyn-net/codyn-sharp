@@ -139,6 +139,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_selector_select_set(IntPtr raw, IntPtr parents, int type);
+
+		public GLib.SList SelectSet(GLib.SList parents, Cdn.SelectorType type) {
+			IntPtr raw_ret = cdn_selector_select_set(Handle, parents == null ? IntPtr.Zero : parents.Handle, (int) type);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_selector_get_in_context(IntPtr raw, uint id);
 
 		public GLib.SList GetInContext(uint id) {
@@ -150,7 +159,7 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_selector_select(IntPtr raw, IntPtr parent, int type, IntPtr context);
 
-		public Cdn.Selection[] Select(GLib.Object parent, Cdn.SelectorType type, Cdn.EmbeddedContext context) {
+		public Cdn.Selection[] Select(GLib.Object parent, Cdn.SelectorType type, Cdn.ExpansionContext context) {
 			IntPtr raw_ret = cdn_selector_select(Handle, parent == null ? IntPtr.Zero : parent.Handle, (int) type, context == null ? IntPtr.Zero : context.Handle);
 			Cdn.Selection[] ret = (Cdn.Selection[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Selection));
 			return ret;

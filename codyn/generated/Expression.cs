@@ -189,6 +189,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_set_values_flat(IntPtr raw, out double values, int numvals, int numr, int numc);
+
+		public double SetValuesFlat(int numvals, int numr, int numc) {
+			double values;
+			cdn_expression_set_values_flat(Handle, out values, numvals, numr, numc);
+			return values;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern uint cdn_expression_get_stack_size(IntPtr raw);
 
 		public uint StackSize { 

@@ -16,12 +16,14 @@ namespace Cdn {
 			public IntPtr itype;
 
 			public GetTagTableDelegate get_tag_table;
+			public SetTagTableDelegate set_tag_table;
 		}
 
 		static TaggableAdapter ()
 		{
 			GLib.GType.Register (_gtype, typeof(TaggableAdapter));
 			iface.get_tag_table = new GetTagTableDelegate (GetTagTableCallback);
+			iface.set_tag_table = new SetTagTableDelegate (SetTagTableCallback);
 		}
 
 
@@ -40,10 +42,24 @@ namespace Cdn {
 				throw e;
 			}
 		}
+
+		[GLib.CDeclCallback]
+		delegate void SetTagTableDelegate (IntPtr taggable, System.IntPtr table);
+
+		static void SetTagTableCallback (IntPtr taggable, System.IntPtr table)
+		{
+			try {
+				Cdn.TaggableImplementor __obj = GLib.Object.GetObject (taggable, false) as Cdn.TaggableImplementor;
+				__obj.TagTable = table;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
 		static void Initialize (IntPtr ifaceptr, IntPtr data)
 		{
 			TaggableIface native_iface = (TaggableIface) Marshal.PtrToStructure (ifaceptr, typeof (TaggableIface));
 			native_iface.get_tag_table = iface.get_tag_table;
+			native_iface.set_tag_table = iface.set_tag_table;
 			Marshal.StructureToPtr (native_iface, ifaceptr, false);
 			GCHandle gch = (GCHandle) data;
 			gch.Free ();
@@ -135,28 +151,25 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern System.IntPtr cdn_taggable_get_tag_table(IntPtr raw);
 
+		[DllImport("codyn-3.0")]
+		static extern void cdn_taggable_set_tag_table(IntPtr raw, System.IntPtr table);
+
 		public System.IntPtr TagTable { 
 			get {
 				System.IntPtr raw_ret = cdn_taggable_get_tag_table(Handle);
 				System.IntPtr ret = raw_ret;
 				return ret;
 			}
+			set {
+				cdn_taggable_set_tag_table(Handle, value);
+			}
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern System.IntPtr cdn_taggable_create_table();
+		static extern void cdn_taggable_copy_to(IntPtr raw, IntPtr other);
 
-		public static System.IntPtr CreateTable() {
-			System.IntPtr raw_ret = cdn_taggable_create_table();
-			System.IntPtr ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_taggable_copy_to(IntPtr raw, System.IntPtr tags);
-
-		public void CopyTo(System.IntPtr tags) {
-			cdn_taggable_copy_to(Handle, tags);
+		public void CopyTo(Cdn.Taggable other) {
+			cdn_taggable_copy_to(Handle, other == null ? IntPtr.Zero : other.Handle);
 		}
 
 		[DllImport("codyn-3.0")]

@@ -76,6 +76,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_compile_context_lookup_variable_last(IntPtr raw, IntPtr name);
+
+		public Cdn.Variable LookupVariableLast(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cdn_compile_context_lookup_variable_last(Handle, native_name);
+			Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern bool cdn_compile_context_get_function_ref_priority(IntPtr raw);
 
 		[DllImport("codyn-3.0")]

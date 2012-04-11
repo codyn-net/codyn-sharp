@@ -100,7 +100,7 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern unsafe IntPtr cdn_embedded_string_expand(IntPtr raw, IntPtr ctx, out IntPtr error);
 
-		public unsafe string Expand(Cdn.EmbeddedContext ctx) {
+		public unsafe string Expand(Cdn.ExpansionContext ctx) {
 			IntPtr error = IntPtr.Zero;
 			IntPtr raw_ret = cdn_embedded_string_expand(Handle, ctx == null ? IntPtr.Zero : ctx.Handle, out error);
 			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
@@ -149,7 +149,7 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern unsafe IntPtr cdn_embedded_string_expand_escape(IntPtr raw, IntPtr ctx, out IntPtr error);
 
-		public unsafe string ExpandEscape(Cdn.EmbeddedContext ctx) {
+		public unsafe string ExpandEscape(Cdn.ExpansionContext ctx) {
 			IntPtr error = IntPtr.Zero;
 			IntPtr raw_ret = cdn_embedded_string_expand_escape(Handle, ctx == null ? IntPtr.Zero : ctx.Handle, out error);
 			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
@@ -160,7 +160,7 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern unsafe IntPtr cdn_embedded_string_expand_multiple(IntPtr raw, IntPtr ctx, out IntPtr error);
 
-		public unsafe GLib.SList ExpandMultiple(Cdn.EmbeddedContext ctx) {
+		public unsafe GLib.SList ExpandMultiple(Cdn.ExpansionContext ctx) {
 			IntPtr error = IntPtr.Zero;
 			IntPtr raw_ret = cdn_embedded_string_expand_multiple(Handle, ctx == null ? IntPtr.Zero : ctx.Handle, out error);
 			GLib.SList ret = new GLib.SList(raw_ret);

@@ -16,7 +16,6 @@ namespace Cdn {
 		TypeFirst,
 		TypeLast,
 		TypeSubset,
-		TypeStates,
 		TypeEdges,
 		TypeNodes,
 		TypeImports,
@@ -36,8 +35,6 @@ namespace Cdn {
 		TypeSelf,
 		TypeDebug,
 		TypeName,
-		TypeDescendants,
-		TypeAncestors,
 		TypeUnique,
 		TypeIf,
 		TypeNot,
@@ -51,6 +48,8 @@ namespace Cdn {
 		TypeReverse,
 		TypeRecurse,
 		TypeAppendContext,
+		TypeAppliedTemplates,
+		TypeReduce,
 		Num,
 	}
 #endregion

@@ -90,8 +90,8 @@
         <file>../codyn/codyn/cdn-expansion.h</file>
         <file>../codyn/codyn/cdn-embedded-string.c</file>
         <file>../codyn/codyn/cdn-embedded-string.h</file>
-        <file>../codyn/codyn/cdn-embedded-context.c</file>
-        <file>../codyn/codyn/cdn-embedded-context.h</file>
+        <file>../codyn/codyn/cdn-expansion-context.c</file>
+        <file>../codyn/codyn/cdn-expansion-context.h</file>
         <file>../codyn/codyn/cdn-parser-context.c</file>
         <file>../codyn/codyn/cdn-parser-context.h</file>
         <file>../codyn/codyn/cdn-attribute.c</file>

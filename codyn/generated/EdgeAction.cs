@@ -105,6 +105,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern bool cdn_edge_action_compile(IntPtr raw, IntPtr context, IntPtr error);
+
+		public bool Compile(Cdn.CompileContext context, Cdn.CompileError error) {
+			bool raw_ret = cdn_edge_action_compile(Handle, context == null ? IntPtr.Zero : context.Handle, error == null ? IntPtr.Zero : error.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_edge_action_get_edge(IntPtr raw);
 
 		public Cdn.Edge Edge { 
@@ -225,19 +234,25 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern System.IntPtr cdn_taggable_get_tag_table(IntPtr raw);
 
+		[DllImport("codyn-3.0")]
+		static extern void cdn_taggable_set_tag_table(IntPtr raw, System.IntPtr table);
+
 		public System.IntPtr TagTable { 
 			get {
 				System.IntPtr raw_ret = cdn_taggable_get_tag_table(Handle);
 				System.IntPtr ret = raw_ret;
 				return ret;
 			}
+			set {
+				cdn_taggable_set_tag_table(Handle, value);
+			}
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_taggable_copy_to(IntPtr raw, System.IntPtr tags);
+		static extern void cdn_taggable_copy_to(IntPtr raw, IntPtr other);
 
-		public void CopyTo(System.IntPtr tags) {
-			cdn_taggable_copy_to(Handle, tags);
+		public void CopyTo(Cdn.Taggable other) {
+			cdn_taggable_copy_to(Handle, other == null ? IntPtr.Zero : other.Handle);
 		}
 
 		[DllImport("codyn-3.0")]

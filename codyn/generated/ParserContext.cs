@@ -441,13 +441,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_variable(IntPtr raw, IntPtr selector, IntPtr expression, int add_flags, int remove_flags, IntPtr attributes);
-
-		public void SetVariable(Cdn.Selector selector, Cdn.EmbeddedString expression, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags, GLib.SList attributes) {
-			cdn_parser_context_set_variable(Handle, selector == null ? IntPtr.Zero : selector.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern void cdn_parser_context_import(IntPtr raw, IntPtr id, IntPtr path, IntPtr attributes);
 
 		public void Import(Cdn.EmbeddedString id, Cdn.EmbeddedString path, GLib.SList attributes) {
@@ -526,27 +519,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_interface(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr property_name, bool is_optional, IntPtr attributes);
+		static extern void cdn_parser_context_set_variable(IntPtr raw, IntPtr selector, IntPtr expression, int add_flags, int remove_flags, IntPtr attributes);
 
-		public void AddInterface(Cdn.EmbeddedString name, Cdn.EmbeddedString child_name, Cdn.EmbeddedString property_name, bool is_optional, GLib.SList attributes) {
-			cdn_parser_context_add_interface(Handle, name == null ? IntPtr.Zero : name.Handle, child_name == null ? IntPtr.Zero : child_name.Handle, property_name == null ? IntPtr.Zero : property_name.Handle, is_optional, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_get_embedded(IntPtr raw);
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_embedded(IntPtr raw, IntPtr embedded);
-
-		public Cdn.EmbeddedContext Embedded { 
-			get {
-				IntPtr raw_ret = cdn_parser_context_get_embedded(Handle);
-				Cdn.EmbeddedContext ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedContext;
-				return ret;
-			}
-			set {
-				cdn_parser_context_set_embedded(Handle, value == null ? IntPtr.Zero : value.Handle);
-			}
+		public void SetVariable(Cdn.Selector selector, Cdn.EmbeddedString expression, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags, GLib.SList attributes) {
+			cdn_parser_context_set_variable(Handle, selector == null ? IntPtr.Zero : selector.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -729,6 +705,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_selector_pseudo(IntPtr raw, int type, IntPtr arguments);
+
+		public void PushSelectorPseudo(Cdn.SelectorPseudoType type, GLib.SList arguments) {
+			cdn_parser_context_push_selector_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_parser_context_push_event(IntPtr raw, IntPtr from_phase, IntPtr to_phase, IntPtr condition, bool terminal, IntPtr approximation, IntPtr templates, IntPtr attributes);
 
 		public void PushEvent(Cdn.EmbeddedString from_phase, Cdn.EmbeddedString to_phase, Cdn.EmbeddedString condition, bool terminal, Cdn.EmbeddedString approximation, GLib.SList templates, GLib.SList attributes) {
@@ -771,10 +754,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_selector_pseudo(IntPtr raw, int type, IntPtr arguments);
+		static extern void cdn_parser_context_add_interface(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr property_name, bool is_optional, IntPtr attributes);
 
-		public void PushSelectorPseudo(Cdn.SelectorPseudoType type, GLib.SList arguments) {
-			cdn_parser_context_push_selector_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
+		public void AddInterface(Cdn.EmbeddedString name, Cdn.EmbeddedString child_name, Cdn.EmbeddedString property_name, bool is_optional, GLib.SList attributes) {
+			cdn_parser_context_add_interface(Handle, name == null ? IntPtr.Zero : name.Handle, child_name == null ? IntPtr.Zero : child_name.Handle, property_name == null ? IntPtr.Zero : property_name.Handle, is_optional, attributes == null ? IntPtr.Zero : attributes.Handle);
 		}
 
 		[DllImport("codyn-3.0")]

@@ -187,7 +187,6 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_FIRST" name="TypeFirst" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_LAST" name="TypeLast" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_SUBSET" name="TypeSubset" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_STATES" name="TypeStates" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_EDGES" name="TypeEdges" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_NODES" name="TypeNodes" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_IMPORTS" name="TypeImports" />
@@ -207,8 +206,6 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_SELF" name="TypeSelf" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_DEBUG" name="TypeDebug" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_NAME" name="TypeName" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_DESCENDANTS" name="TypeDescendants" />
-      <member cname="CDN_SELECTOR_PSEUDO_TYPE_ANCESTORS" name="TypeAncestors" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_UNIQUE" name="TypeUnique" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_IF" name="TypeIf" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_NOT" name="TypeNot" />
@@ -222,6 +219,8 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_REVERSE" name="TypeReverse" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_RECURSE" name="TypeRecurse" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_APPEND_CONTEXT" name="TypeAppendContext" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_APPLIED_TEMPLATES" name="TypeAppliedTemplates" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_REDUCE" name="TypeReduce" />
       <member cname="CDN_SELECTOR_PSEUDO_NUM" name="Num" />
     </enum>
     <enum name="SelectorType" cname="CdnSelectorType" type="flags">
@@ -552,6 +551,13 @@
           <parameter type="CdnTaggable*" name="taggable" />
         </parameters>
       </virtual_method>
+      <virtual_method name="SetTagTable" cname="set_tag_table">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnTaggable*" name="taggable" />
+          <parameter type="GHashTable*" name="table" />
+        </parameters>
+      </virtual_method>
       <method name="AddTag" cname="cdn_taggable_add_tag">
         <return-type type="void" />
         <parameters>
@@ -562,11 +568,8 @@
       <method name="CopyTo" cname="cdn_taggable_copy_to">
         <return-type type="void" />
         <parameters>
-          <parameter type="GHashTable*" name="tags" />
+          <parameter type="CdnTaggable*" name="other" />
         </parameters>
-      </method>
-      <method name="CreateTable" cname="cdn_taggable_create_table" shared="true">
-        <return-type type="GHashTable*" />
       </method>
       <method name="Foreach" cname="cdn_taggable_foreach">
         <return-type type="void" />
@@ -597,6 +600,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="tag" />
+        </parameters>
+      </method>
+      <method name="SetTagTable" cname="cdn_taggable_set_tag_table">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GHashTable*" name="table" />
         </parameters>
       </method>
       <method name="TryGetTag" cname="cdn_taggable_try_get_tag">
@@ -969,116 +978,6 @@
         </parameters>
       </method>
     </object>
-    <object name="EmbeddedContext" cname="CdnEmbeddedContext" parent="GObject">
-      <field name="Priv" cname="priv" type="CdnEmbeddedContextPrivate*" />
-      <method name="AddDefine" cname="cdn_embedded_context_add_define">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="CdnExpansion*" name="expansion" />
-        </parameters>
-      </method>
-      <method name="AddDefines" cname="cdn_embedded_context_add_defines">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GHashTable*" name="defines" />
-        </parameters>
-      </method>
-      <method name="AddExpansion" cname="cdn_embedded_context_add_expansion">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnExpansion*" name="expansion" />
-        </parameters>
-      </method>
-      <method name="AddExpansions" cname="cdn_embedded_context_add_expansions">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GSList*" name="expansions" />
-        </parameters>
-      </method>
-      <method name="AddSelection" cname="cdn_embedded_context_add_selection">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnSelection*" name="selection" />
-        </parameters>
-      </method>
-      <method name="Calculate" cname="cdn_embedded_context_calculate">
-        <return-type type="gchar*" />
-        <parameters>
-          <parameter type="const-gchar*" name="equation" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="CopyTop" cname="cdn_embedded_context_copy_top">
-        <return-type type="CdnEmbeddedContext*" />
-      </method>
-      <method name="GetDefine" cname="cdn_embedded_context_get_define">
-        <return-type type="CdnExpansion*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="GetDefines" cname="cdn_embedded_context_get_defines">
-        <return-type type="GHashTable*" />
-      </method>
-      <method name="GetExpansion" cname="cdn_embedded_context_get_expansion">
-        <return-type type="CdnExpansion*" />
-        <parameters>
-          <parameter type="gint" name="depth" />
-        </parameters>
-      </method>
-      <method name="GetExpansions" cname="cdn_embedded_context_get_expansions">
-        <return-type type="GSList*" />
-      </method>
-      <method name="GetMarker" cname="cdn_embedded_context_get_marker">
-        <return-type type="gulong" />
-      </method>
-      <method name="GetType" cname="cdn_embedded_context_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <method name="IncrementDefine" cname="cdn_embedded_context_increment_define">
-        <return-type type="gint" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="gint" name="num" />
-        </parameters>
-      </method>
-      <constructor cname="cdn_embedded_context_new" />
-      <method name="Restore" cname="cdn_embedded_context_restore">
-        <return-type type="void" />
-      </method>
-      <method name="Save" cname="cdn_embedded_context_save">
-        <return-type type="void" />
-      </method>
-      <method name="SaveDefines" cname="cdn_embedded_context_save_defines">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="copy_defines" />
-        </parameters>
-      </method>
-      <method name="SetCopyDefinesOnWrite" cname="cdn_embedded_context_set_copy_defines_on_write">
-        <return-type type="void" />
-      </method>
-      <method name="SetDefines" cname="cdn_embedded_context_set_defines">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GHashTable*" name="defines" />
-          <parameter type="gboolean" name="inherit" />
-        </parameters>
-      </method>
-      <method name="SetExpansions" cname="cdn_embedded_context_set_expansions">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GSList*" name="expansions" />
-        </parameters>
-      </method>
-      <method name="SetSelection" cname="cdn_embedded_context_set_selection">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnSelection*" name="selection" />
-        </parameters>
-      </method>
-    </object>
     <object name="EmbeddedString" cname="CdnEmbeddedString" parent="GObject">
       <field name="Priv" cname="priv" type="CdnEmbeddedStringPrivate*" />
       <implements>
@@ -1120,21 +1019,21 @@
       <method name="Expand" cname="cdn_embedded_string_expand">
         <return-type type="const-gchar*" />
         <parameters>
-          <parameter type="CdnEmbeddedContext*" name="ctx" />
+          <parameter type="CdnExpansionContext*" name="ctx" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="ExpandEscape" cname="cdn_embedded_string_expand_escape">
         <return-type type="gchar*" />
         <parameters>
-          <parameter type="CdnEmbeddedContext*" name="ctx" />
+          <parameter type="CdnExpansionContext*" name="ctx" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="ExpandMultiple" cname="cdn_embedded_string_expand_multiple">
         <return-type type="GSList*" />
         <parameters>
-          <parameter type="CdnEmbeddedContext*" name="ctx" />
+          <parameter type="CdnExpansionContext*" name="ctx" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -1423,6 +1322,15 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gdouble*" name="values" />
+          <parameter type="gint" name="numr" />
+          <parameter type="gint" name="numc" />
+        </parameters>
+      </method>
+      <method name="SetValuesFlat" cname="cdn_expression_set_values_flat">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gdouble*" name="values" />
+          <parameter type="gint" name="numvals" />
           <parameter type="gint" name="numr" />
           <parameter type="gint" name="numc" />
         </parameters>
@@ -1730,12 +1638,6 @@
       </method>
       <method name="GetEnd" cname="cdn_function_polynomial_piece_get_end">
         <return-type type="gdouble" />
-      </method>
-      <method name="GetNormalization" cname="cdn_function_polynomial_piece_get_normalization">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="guint*" name="num" />
-        </parameters>
       </method>
       <method name="GetType" cname="cdn_function_polynomial_piece_get_type" shared="true">
         <return-type type="GType" />
@@ -3570,9 +3472,6 @@
           <parameter type="gint*" name="end" />
         </parameters>
       </method>
-      <method name="GetEmbedded" cname="cdn_parser_context_get_embedded">
-        <return-type type="CdnEmbeddedContext*" />
-      </method>
       <method name="GetError" cname="cdn_parser_context_get_error">
         <return-type type="GError*" />
       </method>
@@ -3887,12 +3786,6 @@
           <parameter type="gint" name="end" />
         </parameters>
       </method>
-      <method name="SetEmbedded" cname="cdn_parser_context_set_embedded">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnEmbeddedContext*" name="embedded" />
-        </parameters>
-      </method>
       <method name="SetEmit" cname="cdn_parser_context_set_emit">
         <return-type type="void" />
         <parameters>
@@ -3967,67 +3860,6 @@
         <parameters>
           <parameter type="CdnSelector*" name="templates" />
           <parameter type="CdnSelector*" name="targets" />
-        </parameters>
-      </method>
-    </object>
-    <object name="Selection" cname="CdnSelection" parent="GObject">
-      <field name="Priv" cname="priv" type="CdnSelectionPrivate*" />
-      <implements>
-        <interface cname="CdnTaggable" />
-      </implements>
-      <method name="AddDefine" cname="cdn_selection_add_define">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="key" />
-          <parameter type="CdnExpansion*" name="value" />
-        </parameters>
-      </method>
-      <method name="Copy" cname="cdn_selection_copy">
-        <return-type type="CdnSelection*" owned="true" />
-      </method>
-      <method name="CopyDefines" cname="cdn_selection_copy_defines">
-        <return-type type="CdnSelection*" />
-        <parameters>
-          <parameter type="gboolean" name="copy_defines" />
-        </parameters>
-      </method>
-      <method name="GetDefine" cname="cdn_selection_get_define">
-        <return-type type="CdnExpansion*" />
-        <parameters>
-          <parameter type="const-gchar*" name="key" />
-        </parameters>
-      </method>
-      <method name="GetDefines" cname="cdn_selection_get_defines">
-        <return-type type="GHashTable*" />
-      </method>
-      <method name="GetExpansions" cname="cdn_selection_get_expansions">
-        <return-type type="GSList*" />
-      </method>
-      <method name="GetObject" cname="cdn_selection_get_object">
-        <return-type type="gpointer" />
-      </method>
-      <method name="GetType" cname="cdn_selection_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="cdn_selection_new">
-        <parameters>
-          <parameter type="gpointer" name="object" />
-          <parameter type="GSList*" name="expansions" />
-          <parameter type="GHashTable*" name="defines" />
-        </parameters>
-      </constructor>
-      <constructor cname="cdn_selection_new_defines">
-        <parameters>
-          <parameter type="gpointer" name="object" />
-          <parameter type="GSList*" name="expansions" />
-          <parameter type="GHashTable*" name="defines" />
-          <parameter type="gboolean" name="copy_defines" />
-        </parameters>
-      </constructor>
-      <method name="SetObject" cname="cdn_selection_set_object">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gpointer" name="object" />
         </parameters>
       </method>
     </object>
@@ -4129,7 +3961,14 @@
         <parameters>
           <parameter type="GObject*" name="parent" />
           <parameter type="CdnSelectorType" name="type" />
-          <parameter type="CdnEmbeddedContext*" name="context" />
+          <parameter type="CdnExpansionContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="SelectSet" cname="cdn_selector_select_set">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="GSList*" name="parents" />
+          <parameter type="CdnSelectorType" name="type" />
         </parameters>
       </method>
       <method name="SetFromSet" cname="cdn_selector_set_from_set">
@@ -4377,6 +4216,15 @@
           <parameter type="gint" name="numc" />
         </parameters>
       </method>
+      <method name="SetValuesFlat" cname="cdn_variable_set_values_flat">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gdouble*" name="values" />
+          <parameter type="gint" name="numvals" />
+          <parameter type="gint" name="numr" />
+          <parameter type="gint" name="numc" />
+        </parameters>
+      </method>
     </object>
     <object name="VariableInterface" cname="CdnVariableInterface" parent="GObject">
       <field name="Priv" cname="priv" type="CdnVariableInterfacePrivate*" />
@@ -4494,6 +4342,12 @@
       <method name="Copy" cname="cdn_expansion_copy">
         <return-type type="CdnExpansion*" owned="true" />
       </method>
+      <method name="DebugPrint" cname="cdn_expansion_debug_print">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="FILE*" name="file" />
+        </parameters>
+      </method>
       <method name="Get" cname="cdn_expansion_get">
         <return-type type="const-gchar*" />
         <parameters>
@@ -4566,6 +4420,131 @@
         </parameters>
       </method>
       <method name="Unref" cname="cdn_expansion_unref">
+        <return-type type="void" />
+      </method>
+    </boxed>
+    <boxed name="ExpansionContext" cname="CdnExpansionContext" opaque="true">
+      <method name="AddDefine" cname="cdn_expansion_context_add_define">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="CdnExpansion*" name="expansion" />
+        </parameters>
+      </method>
+      <method name="AddDefines" cname="cdn_expansion_context_add_defines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GHashTable*" name="defines" />
+        </parameters>
+      </method>
+      <method name="AddExpansion" cname="cdn_expansion_context_add_expansion">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpansion*" name="expansion" />
+        </parameters>
+      </method>
+      <method name="AddExpansions" cname="cdn_expansion_context_add_expansions">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GSList*" name="expansions" />
+        </parameters>
+      </method>
+      <method name="Calculate" cname="cdn_expansion_context_calculate">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="equation" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="DebugPrint" cname="cdn_expansion_context_debug_print">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="FILE*" name="file" />
+        </parameters>
+      </method>
+      <method name="ForeachDefine" cname="cdn_expansion_context_foreach_define">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GHFunc" name="hfunc" />
+          <parameter type="gpointer" name="userdata" />
+        </parameters>
+      </method>
+      <method name="GetDefine" cname="cdn_expansion_context_get_define">
+        <return-type type="CdnExpansion*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="GetExpansion" cname="cdn_expansion_context_get_expansion">
+        <return-type type="CdnExpansion*" />
+        <parameters>
+          <parameter type="gint" name="depth" />
+        </parameters>
+      </method>
+      <method name="GetExpansions" cname="cdn_expansion_context_get_expansions">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetLocalDefines" cname="cdn_expansion_context_get_local_defines">
+        <return-type type="GHashTable*" />
+      </method>
+      <method name="GetLocalExpansions" cname="cdn_expansion_context_get_local_expansions">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetMarker" cname="cdn_expansion_context_get_marker">
+        <return-type type="gulong" />
+      </method>
+      <method name="GetParent" cname="cdn_expansion_context_get_parent">
+        <return-type type="CdnExpansionContext*" />
+      </method>
+      <method name="GetType" cname="cdn_expansion_context_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="IncrementDefine" cname="cdn_expansion_context_increment_define">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="exidx" />
+          <parameter type="gint" name="num" />
+        </parameters>
+      </method>
+      <method name="Merge" cname="cdn_expansion_context_merge">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpansionContext*" name="other" />
+        </parameters>
+      </method>
+      <constructor cname="cdn_expansion_context_new">
+        <parameters>
+          <parameter type="CdnExpansionContext*" name="context" />
+        </parameters>
+      </constructor>
+      <constructor cname="cdn_expansion_context_new_unreffed">
+        <parameters>
+          <parameter type="CdnExpansionContext*" name="context" />
+        </parameters>
+      </constructor>
+      <method name="Ref" cname="cdn_expansion_context_ref">
+        <return-type type="CdnExpansionContext*" />
+      </method>
+      <method name="RemoveExpansion" cname="cdn_expansion_context_remove_expansion">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpansion*" name="expansion" />
+        </parameters>
+      </method>
+      <method name="SharedDefines" cname="cdn_expansion_context_shared_defines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpansionContext*" name="from" />
+        </parameters>
+      </method>
+      <method name="Truncate" cname="cdn_expansion_context_truncate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpansionContext*" name="parent" />
+        </parameters>
+      </method>
+      <method name="Unref" cname="cdn_expansion_context_unref">
         <return-type type="void" />
       </method>
     </boxed>
@@ -4714,6 +4693,44 @@
         </parameters>
       </constructor>
     </struct>
+    <boxed name="Selection" cname="CdnSelection" opaque="true">
+      <method name="Copy" cname="cdn_selection_copy">
+        <return-type type="CdnSelection*" owned="true" />
+      </method>
+      <method name="GetContext" cname="cdn_selection_get_context">
+        <return-type type="CdnExpansionContext*" />
+      </method>
+      <method name="GetObject" cname="cdn_selection_get_object">
+        <return-type type="gpointer" />
+      </method>
+      <method name="GetType" cname="cdn_selection_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cdn_selection_new">
+        <parameters>
+          <parameter type="gpointer" name="object" />
+          <parameter type="CdnExpansionContext*" name="context" />
+        </parameters>
+      </constructor>
+      <method name="Ref" cname="cdn_selection_ref">
+        <return-type type="CdnSelection*" />
+      </method>
+      <method name="SetContext" cname="cdn_selection_set_context">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnExpansionContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="SetObject" cname="cdn_selection_set_object">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gpointer" name="object" />
+        </parameters>
+      </method>
+      <method name="Unref" cname="cdn_selection_unref">
+        <return-type type="void" />
+      </method>
+    </boxed>
     <boxed name="Stack" cname="CdnStack" opaque="true">
       <method name="At" cname="cdn_stack_at">
         <return-type type="gdouble" />

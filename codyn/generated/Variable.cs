@@ -337,6 +337,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_variable_set_values_flat(IntPtr raw, out double values, int numvals, int numr, int numc);
+
+		public double SetValuesFlat(int numvals, int numr, int numc) {
+			double values;
+			cdn_variable_set_values_flat(Handle, out values, numvals, numr, numc);
+			return values;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_variable_get_derivative(IntPtr raw);
 
 		[DllImport("codyn-3.0")]
@@ -589,19 +598,25 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern System.IntPtr cdn_taggable_get_tag_table(IntPtr raw);
 
+		[DllImport("codyn-3.0")]
+		static extern void cdn_taggable_set_tag_table(IntPtr raw, System.IntPtr table);
+
 		public System.IntPtr TagTable { 
 			get {
 				System.IntPtr raw_ret = cdn_taggable_get_tag_table(Handle);
 				System.IntPtr ret = raw_ret;
 				return ret;
 			}
+			set {
+				cdn_taggable_set_tag_table(Handle, value);
+			}
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_taggable_copy_to(IntPtr raw, System.IntPtr tags);
+		static extern void cdn_taggable_copy_to(IntPtr raw, IntPtr other);
 
-		public void CopyTo(System.IntPtr tags) {
-			cdn_taggable_copy_to(Handle, tags);
+		public void CopyTo(Cdn.Taggable other) {
+			cdn_taggable_copy_to(Handle, other == null ? IntPtr.Zero : other.Handle);
 		}
 
 		[DllImport("codyn-3.0")]

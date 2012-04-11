@@ -8,6 +8,7 @@
   <!-- CdnEdgeAction -->
   <attr path="/api/namespace/object[@cname='CdnEdgeAction']/constructor" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CdnEdgeAction']/method[@cname='cdn_edge_action_get_edge']/return-type" name="type">CdnEdge*</attr>
+  <attr path="/api/namespace/object[@cname='CdnEdgeAction']/method[@cname='cdn_edge_action_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
 
   <!-- CdnNetwork -->
   <remove-node path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_merge_from_file']"/>
@@ -29,16 +30,10 @@
   <attr path="/api/namespace/boxed[@cname='CdnExpansion']/constructor[@cname='cdn_expansion_new_sized']/parameters/parameter[@type='gchar']" name="name">items</attr>
   <attr path="/api/namespace/boxed[@cname='CdnExpansion']/constructor[@cname='cdn_expansion_new_sized']/parameters/parameter[@type='gchar']" name="type">const-gchar**</attr>
 
-  <!-- CdnSelection -->
-  <attr path="/api/namespace/object[@cname='CdnSelection']/method[@cname='cdn_selection_get_expansions']/return-type" name="element_type">CdnExpansion*</attr>
-
-  <!-- CdnSelection -->
-  <attr path="/api/namespace/object[@cname='CdnSelection']/method[@cname='cdn_selection_get_expansions']/return-type" name="element_type">CdnExpansion*</attr>
-
-  <!-- CdnEmbeddedContext -->
-  <attr path="/api/namespace/object[@cname='CdnEmbeddedContext']/method[@cname='cdn_embedded_context_add_expansions']/parameters/parameter[@name='expansions']" name="element_type">CdnExpansion*</attr>
-  <attr path="/api/namespace/object[@cname='CdnEmbeddedContext']/method[@cname='cdn_embedded_context_set_expansions']/parameters/parameter[@name='expansions']" name="element_type">CdnExpansion*</attr>
-  <attr path="/api/namespace/object[@cname='CdnEmbeddedContext']/method[@cname='cdn_embedded_context_get_expansions']/return-type" name="element_type">CdnExpansion*</attr>
+  <!-- CdnExpansionContext -->
+  <attr path="/api/namespace/boxed[@cname='CdnExpansionContext']/method[@cname='cdn_expansion_context_add_expansions']/parameters/parameter[@name='expansions']" name="element_type">CdnExpansion*</attr>
+  <attr path="/api/namespace/boxed[@cname='CdnExpansionContext']/method[@cname='cdn_expansion_context_get_expansions']/return-type" name="element_type">CdnExpansion*</attr>
+  <attr path="/api/namespace/boxed[@cname='CdnExpansionContext']/method[@cname='cdn_expansion_context_get_local_expansions']/return-type" name="element_type">CdnExpansion*</attr>
 
   <!-- CdnImport -->
   <remove-node path="/api/namespace/object[@cname='CdnImport']/constructor[@cname='cdn_import_new']"/>
@@ -132,10 +127,8 @@
   <remove-node path="/api/namespace/object[@cname='CdnFunctionPolynomialPiece']/method[@cname='cdn_function_polynomial_piece_get_coefficients']"/>
   <remove-node path="/api/namespace/object[@cname='CdnFunctionPolynomialPiece']/method[@cname='cdn_function_polynomial_piece_set_coefficients']"/>
   <remove-node path="/api/namespace/object[@cname='CdnFunctionPolynomialPiece']/constructor"/>
-  <remove-node path="/api/namespace/object[@cname='CdnFunctionPolynomialPiece']/method[@cname='cdn_function_polynomial_piece_get_normalization']"/>
 
   <remove-node path="/api/namespace/object[@cname='CdnFunctionPolynomialPiece']/property[@cname='coefficients']"/>
-  <remove-node path="/api/namespace/object[@cname='CdnFunctionPolynomialPiece']/property[@cname='normalization']"/>
 
   <!-- CdnCompileContext -->
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_append_object']/parameters/parameter[@name='object']" name="type">CdnObject*</attr>
@@ -147,6 +140,7 @@
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_prepend_function']/parameters/parameter[@name='function']" name="type">CdnFunction*</attr>
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_append_function']/parameters/parameter[@name='function']" name="type">CdnFunction*</attr>
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_lookup_variable']/return-type" name="type">CdnVariable*</attr>
+  <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_lookup_variable_last']/return-type" name="type">CdnVariable*</attr>
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_lookup_function']/return-type" name="type">CdnFunction*</attr>
 
 

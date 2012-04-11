@@ -11,9 +11,9 @@ namespace Cdn {
 		void RemoveTag(string tag);
 		void AddTag(string tag, string value);
 		System.IntPtr TagTable { 
-			get;
+			get; set;
 		}
-		void CopyTo(System.IntPtr tags);
+		void CopyTo(Cdn.Taggable other);
 		bool TryGetTag(string tag, string value);
 		bool HasTag(string tag);
 		string GetTag(string tag);
@@ -23,7 +23,7 @@ namespace Cdn {
 	[GLib.GInterface (typeof (TaggableAdapter))]
 	public interface TaggableImplementor : GLib.IWrapper {
 
-		System.IntPtr TagTable { get; }
+		System.IntPtr TagTable { get; set; }
 	}
 #endregion
 }
