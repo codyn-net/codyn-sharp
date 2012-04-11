@@ -625,6 +625,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_io_type(IntPtr raw, int mode, IntPtr id, IntPtr type, IntPtr attributes);
+
+		public void PushIoType(Cdn.IoMode mode, Cdn.EmbeddedString id, Cdn.EmbeddedString type, GLib.SList attributes) {
+			cdn_parser_context_push_io_type(Handle, (int) mode, id == null ? IntPtr.Zero : id.Handle, type == null ? IntPtr.Zero : type.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_parser_context_push_scope(IntPtr raw, IntPtr attributes);
 
 		public void PushScope(GLib.SList attributes) {

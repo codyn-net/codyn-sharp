@@ -20,6 +20,10 @@
         <file>../codyn/codyn/cdn-network.h</file>
         <file>../codyn/codyn/cdn-import.c</file>
         <file>../codyn/codyn/cdn-import.h</file>
+        <file>../codyn/codyn/cdn-io.c</file>
+        <file>../codyn/codyn/cdn-io.h</file>
+        <file>../codyn/codyn/cdn-io-method.c</file>
+        <file>../codyn/codyn/cdn-io-method.h</file>
         <file>../codyn/codyn/cdn-import-alias.c</file>
         <file>../codyn/codyn/cdn-import-alias.h</file>
         <file>../codyn/codyn/cdn-network-serializer.c</file>

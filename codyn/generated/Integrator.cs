@@ -204,15 +204,15 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void BegunVMDelegate (IntPtr inst, double p0);
+		delegate void BegunVMDelegate (IntPtr inst, double from);
 
 		static BegunVMDelegate BegunVMCallback;
 
-		static void begun_cb (IntPtr inst, double p0)
+		static void begun_cb (IntPtr inst, double from)
 		{
 			try {
 				Integrator inst_managed = GLib.Object.GetObject (inst, false) as Integrator;
-				inst_managed.OnBegun (p0);
+				inst_managed.OnBegun (from);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -226,14 +226,14 @@ namespace Cdn {
 		}
 
 		[GLib.DefaultSignalHandler(Type=typeof(Cdn.Integrator), ConnectionMethod="OverrideBegun")]
-		protected virtual void OnBegun (double p0)
+		protected virtual void OnBegun (double from)
 		{
 			GLib.Value ret = GLib.Value.Empty;
 			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
 			GLib.Value[] vals = new GLib.Value [2];
 			vals [0] = new GLib.Value (this);
 			inst_and_params.Append (vals [0]);
-			vals [1] = new GLib.Value (p0);
+			vals [1] = new GLib.Value (from);
 			inst_and_params.Append (vals [1]);
 			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
 			foreach (GLib.Value v in vals)

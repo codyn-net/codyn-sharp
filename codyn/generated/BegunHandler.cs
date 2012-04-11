@@ -8,7 +8,7 @@ namespace Cdn {
 	public delegate void BegunHandler(object o, BegunArgs args);
 
 	public class BegunArgs : GLib.SignalArgs {
-		public double P0{
+		public double From{
 			get {
 				return (double) Args[0];
 			}

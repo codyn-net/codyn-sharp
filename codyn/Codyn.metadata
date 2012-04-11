@@ -158,6 +158,7 @@
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Step']/parameters/parameter[@name='p1']" name="name">time</attr>
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Step']" name="name">Stepped</attr>
 
+  <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']/parameters/parameter[@name='p0']" name="name">from</attr>
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='Begin']" name="name">Begun</attr>
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='End']" name="name">Ended</attr>
 

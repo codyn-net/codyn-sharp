@@ -55,6 +55,11 @@
       <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_INPUT" name="Input" value="1 &lt;&lt; 0" />
       <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_OUTPUT" name="Output" value="1 &lt;&lt; 1" />
     </enum>
+    <enum name="IoMode" cname="CdnIoMode" type="flags">
+      <member cname="CDN_IO_MODE_INPUT" name="Input" value="1 &lt;&lt; 0" />
+      <member cname="CDN_IO_MODE_OUTPUT" name="Output" value="1 &lt;&lt; 1" />
+      <member cname="CDN_IO_MODE_INPUT_OUTPUT" name="InputOutput" value="1 &lt;&lt; 0 | 1 &lt;&lt; 1" />
+    </enum>
     <enum name="LayoutRelation" cname="CdnLayoutRelation" type="flags">
       <member cname="CDN_LAYOUT_RELATION_ABOVE" name="Above" value="1 &lt;&lt; 0" />
       <member cname="CDN_LAYOUT_RELATION_BELOW" name="Below" value="1 &lt;&lt; 1" />
@@ -276,6 +281,12 @@
         <parameter type="gpointer" name="userdata" />
       </parameters>
     </callback>
+    <callback name="IoMethodRegisterTypesFunc" cname="CdnIoMethodRegisterTypesFunc">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="GTypeModule*" name="module" />
+      </parameters>
+    </callback>
     <callback name="MathFunctionEvaluateFunc" cname="CdnMathFunctionEvaluateFunc">
       <return-type type="void" />
       <parameters>
@@ -357,6 +368,105 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="annotation" />
+        </parameters>
+      </method>
+    </interface>
+    <interface name="Io" cname="CdnIo">
+      <virtual_method name="Initialize" cname="initialize">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnIo*" name="io" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="InitializeAsync" cname="initialize_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnIo*" name="io" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Finalize" cname="finalize">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnIo*" name="io" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="FinalizeAsync" cname="finalize_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnIo*" name="io" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Update" cname="update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnIo*" name="io" />
+          <parameter type="CdnIntegrator*" name="integrator" />
+        </parameters>
+      </virtual_method>
+      <method name="Finalize" cname="cdn_io_finalize">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="FinalizeAsync" cname="cdn_io_finalize_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="FinalizeFinish" cname="cdn_io_finalize_finish">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetMode" cname="cdn_io_get_mode">
+        <return-type type="CdnIoMode" />
+      </method>
+      <method name="GetType" cname="cdn_io_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Initialize" cname="cdn_io_initialize">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="InitializeAsync" cname="cdn_io_initialize_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="InitializeFinish" cname="cdn_io_initialize_finish">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Update" cname="cdn_io_update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnIntegrator*" name="integrator" />
         </parameters>
       </method>
     </interface>
@@ -1948,7 +2058,7 @@
         <return-type type="void" />
         <parameters>
           <parameter name="inst" type="CdnIntegrator*" />
-          <parameter name="p0" type="gdouble" />
+          <parameter name="from" type="gdouble" />
         </parameters>
       </signal>
       <signal name="Ended" cname="end" when="LAST">
@@ -2141,6 +2251,28 @@
       <method name="Update" cname="cdn_integrator_state_update">
         <return-type type="void" />
       </method>
+    </object>
+    <object name="IoMethod" cname="CdnIoMethod" parent="GTypeModule">
+      <field name="Priv" cname="priv" type="CdnIoMethodPrivate*" />
+      <property name="Path" cname="path" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <method name="Find" cname="cdn_io_method_find" shared="true">
+        <return-type type="GType" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="CdnIoMode" name="mode" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cdn_io_method_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Initialize" cname="cdn_io_method_initialize" shared="true">
+        <return-type type="void" />
+      </method>
+      <constructor cname="cdn_io_method_new">
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </constructor>
     </object>
     <object name="Layout" cname="CdnLayout" parent="GObject">
       <field name="Priv" cname="priv" type="CdnLayoutPrivate*" />
@@ -2732,6 +2864,12 @@
           <parameter type="CdnCompileContext*" name="context" />
         </parameters>
       </virtual_method>
+      <implements>
+        <interface cname="CdnUsable" />
+        <interface cname="CdnAnnotatable" />
+        <interface cname="CdnLayoutable" />
+        <interface cname="CdnTaggable" />
+      </implements>
       <method name="AddVariable" cname="cdn_object_add_variable">
         <return-type type="gboolean" />
         <parameters>

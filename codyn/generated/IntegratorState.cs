@@ -123,9 +123,9 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_io(IntPtr raw);
 
-		public GLib.SList Io() {
+		public Cdn.Io[] Io() {
 			IntPtr raw_ret = cdn_integrator_state_io(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
+			Cdn.Io[] ret = (Cdn.Io[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Io));
 			return ret;
 		}
 
