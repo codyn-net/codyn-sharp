@@ -64,7 +64,7 @@ namespace Cdn {
 #region Customized extensions
 #line 1 "InstructionFunction.custom"
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_instruction_function_new(uint id, IntPtr name, Cdn.StackArgs argdim);
+		static extern IntPtr cdn_instruction_function_new(uint id, IntPtr name, IntPtr argdim);
 
 		public InstructionFunction (uint id, string name, int numargs) : base (IntPtr.Zero)
 		{
@@ -75,7 +75,8 @@ namespace Cdn {
 
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 
-			Raw = cdn_instruction_function_new(id, native_name, new Cdn.StackArgs(numargs));
+			var argdim = new Cdn.StackArgs(numargs);
+			Raw = cdn_instruction_function_new(id, native_name, argdim.Handle);
 
 			GLib.Marshaller.Free (native_name);
 		}
