@@ -112,11 +112,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_selector_copy_with(IntPtr raw);
+		static extern IntPtr cdn_selector_get_out_context(IntPtr raw, uint id);
 
-		public Cdn.Selector CopyWith() {
-			IntPtr raw_ret = cdn_selector_copy_with(Handle);
-			Cdn.Selector ret = GLib.Object.GetObject(raw_ret) as Cdn.Selector;
+		public GLib.SList GetOutContext(uint id) {
+			IntPtr raw_ret = cdn_selector_get_out_context(Handle, id);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 
@@ -130,15 +130,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_selector_get_out_context(IntPtr raw, uint id);
-
-		public GLib.SList GetOutContext(uint id) {
-			IntPtr raw_ret = cdn_selector_get_out_context(Handle, id);
-			GLib.SList ret = new GLib.SList(raw_ret);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_selector_select_set(IntPtr raw, IntPtr parents, int type);
 
 		public GLib.SList SelectSet(GLib.SList parents, Cdn.SelectorType type) {
@@ -148,11 +139,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_selector_get_in_context(IntPtr raw, uint id);
+		static extern bool cdn_selector_is_pseudo_name(IntPtr name);
 
-		public GLib.SList GetInContext(uint id) {
-			IntPtr raw_ret = cdn_selector_get_in_context(Handle, id);
-			GLib.SList ret = new GLib.SList(raw_ret);
+		public static bool IsPseudoName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cdn_selector_is_pseudo_name(native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 
@@ -175,6 +168,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_selector_set_define_context(IntPtr raw, IntPtr id);
+
+		public string DefineContext { 
+			set {
+				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+				cdn_selector_set_define_context(Handle, native_value);
+				GLib.Marshaller.Free (native_value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_selector_set_self(IntPtr raw, IntPtr selection);
 
 		public Cdn.Selection Self { 
@@ -193,11 +197,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern uint cdn_selector_append_regex(IntPtr raw, IntPtr regex);
+		static extern IntPtr cdn_selector_get_in_context(IntPtr raw, uint id);
 
-		public uint AppendRegex(Cdn.EmbeddedString regex) {
-			uint raw_ret = cdn_selector_append_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
-			uint ret = raw_ret;
+		public GLib.SList GetInContext(uint id) {
+			IntPtr raw_ret = cdn_selector_get_in_context(Handle, id);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 
@@ -220,13 +224,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_selector_is_pseudo_name(IntPtr name);
+		static extern uint cdn_selector_append_regex(IntPtr raw, IntPtr regex);
 
-		public static bool IsPseudoName(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cdn_selector_is_pseudo_name(native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
+		public uint AppendRegex(Cdn.EmbeddedString regex) {
+			uint raw_ret = cdn_selector_append_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+			uint ret = raw_ret;
 			return ret;
 		}
 

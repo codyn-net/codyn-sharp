@@ -33,9 +33,9 @@ customs = \
 	EdgeAction.custom \
 	Property.custom \
 	FunctionArgument.custom \
+	InstructionFunction.custom \
 	InputFile.custom \
 	Variable.custom \
-	InstructionFunction.custom \
 	Operator.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))

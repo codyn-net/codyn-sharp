@@ -56,6 +56,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_polynomial_piece_get_derivative(IntPtr raw, int order);
+
+		public Cdn.FunctionPolynomialPiece GetDerivative(int order) {
+			IntPtr raw_ret = cdn_function_polynomial_piece_get_derivative(Handle, order);
+			Cdn.FunctionPolynomialPiece ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionPolynomialPiece;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern double cdn_function_polynomial_piece_evaluate(IntPtr raw, double t);
 
 		public double Evaluate(double t) {
@@ -65,11 +74,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_function_polynomial_piece_copy(IntPtr raw);
+		static extern bool cdn_function_polynomial_piece_equal(IntPtr raw, IntPtr b);
 
-		public Cdn.FunctionPolynomialPiece Copy() {
-			IntPtr raw_ret = cdn_function_polynomial_piece_copy(Handle);
-			Cdn.FunctionPolynomialPiece ret = GLib.Object.GetObject(raw_ret, true) as Cdn.FunctionPolynomialPiece;
+		public bool Equal(Cdn.FunctionPolynomialPiece b) {
+			bool raw_ret = cdn_function_polynomial_piece_equal(Handle, b == null ? IntPtr.Zero : b.Handle);
+			bool ret = raw_ret;
 			return ret;
 		}
 
@@ -85,11 +94,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_function_polynomial_piece_get_derivative(IntPtr raw, int order);
+		static extern IntPtr cdn_function_polynomial_piece_copy(IntPtr raw);
 
-		public Cdn.FunctionPolynomialPiece GetDerivative(int order) {
-			IntPtr raw_ret = cdn_function_polynomial_piece_get_derivative(Handle, order);
-			Cdn.FunctionPolynomialPiece ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionPolynomialPiece;
+		public Cdn.FunctionPolynomialPiece Copy() {
+			IntPtr raw_ret = cdn_function_polynomial_piece_copy(Handle);
+			Cdn.FunctionPolynomialPiece ret = GLib.Object.GetObject(raw_ret, true) as Cdn.FunctionPolynomialPiece;
 			return ret;
 		}
 

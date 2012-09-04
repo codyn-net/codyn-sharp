@@ -10,13 +10,13 @@ namespace Cdn {
 	public class VerifyAddChildArgs : GLib.SignalArgs {
 		public Cdn.Object P0{
 			get {
-				return (Cdn.Object) Args[0];
+				return (Cdn.Object) Args [0];
 			}
 		}
 
 		public IntPtr P1{
 			get {
-				return (IntPtr) Args[1];
+				return (IntPtr) Args [1];
 			}
 		}
 

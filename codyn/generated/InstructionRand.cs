@@ -15,14 +15,14 @@ namespace Cdn {
 		public InstructionRand(IntPtr raw) : base(raw) {}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_instruction_rand_new(int numargs, out int argdim);
+		static extern IntPtr cdn_instruction_rand_new(IntPtr argdim);
 
-		public InstructionRand (int numargs, out int argdim) : base (IntPtr.Zero)
+		public InstructionRand (Cdn.StackArgs argdim) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (InstructionRand)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
-			Raw = cdn_instruction_rand_new(numargs, out argdim);
+			Raw = cdn_instruction_rand_new(argdim == null ? IntPtr.Zero : argdim.Handle);
 		}
 
 		[DllImport("codyn-3.0")]

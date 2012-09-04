@@ -57,11 +57,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern unsafe bool cdn_operator_initialize(IntPtr raw, IntPtr expressions, int num_expressions, IntPtr indices, int num_indices, int num_arguments, out int argdim, IntPtr context, out IntPtr error);
+		static extern unsafe bool cdn_operator_initialize(IntPtr raw, IntPtr expressions, int num_expressions, IntPtr indices, int num_indices, IntPtr argdim, IntPtr context, out IntPtr error);
 
-		public unsafe bool Initialize(GLib.SList expressions, int num_expressions, GLib.SList indices, int num_indices, int num_arguments, out int argdim, Cdn.CompileContext context) {
+		public unsafe bool Initialize(GLib.SList expressions, int num_expressions, GLib.SList indices, int num_indices, Cdn.StackArgs argdim, Cdn.CompileContext context) {
 			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cdn_operator_initialize(Handle, expressions == null ? IntPtr.Zero : expressions.Handle, num_expressions, indices == null ? IntPtr.Zero : indices.Handle, num_indices, num_arguments, out argdim, context == null ? IntPtr.Zero : context.Handle, out error);
+			bool raw_ret = cdn_operator_initialize(Handle, expressions == null ? IntPtr.Zero : expressions.Handle, num_expressions, indices == null ? IntPtr.Zero : indices.Handle, num_indices, argdim == null ? IntPtr.Zero : argdim.Handle, context == null ? IntPtr.Zero : context.Handle, out error);
 			bool ret = raw_ret;
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
@@ -81,17 +81,6 @@ namespace Cdn {
 
 		public void Reset() {
 			cdn_operator_reset(Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern int cdn_operator_get_num_arguments(IntPtr raw);
-
-		public int NumArguments { 
-			get {
-				int raw_ret = cdn_operator_get_num_arguments(Handle);
-				int ret = raw_ret;
-				return ret;
-			}
 		}
 
 		[DllImport("codyn-3.0")]
@@ -179,18 +168,18 @@ namespace Cdn {
 		public Cdn.StackManipulation StackManipulation { 
 			get {
 				IntPtr raw_ret = cdn_operator_get_stack_manipulation(Handle);
-				Cdn.StackManipulation ret = Cdn.StackManipulation.New (raw_ret);
+				Cdn.StackManipulation ret = raw_ret == IntPtr.Zero ? null : (Cdn.StackManipulation) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.StackManipulation), false);
 				return ret;
 			}
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern int cdn_operator_get_arguments_dimension(IntPtr raw);
+		static extern IntPtr cdn_operator_get_arguments_dimension(IntPtr raw);
 
-		public int ArgumentsDimension { 
+		public Cdn.StackArgs ArgumentsDimension { 
 			get {
-				int raw_ret = cdn_operator_get_arguments_dimension(Handle);
-				int ret = raw_ret;
+				IntPtr raw_ret = cdn_operator_get_arguments_dimension(Handle);
+				Cdn.StackArgs ret = raw_ret == IntPtr.Zero ? null : (Cdn.StackArgs) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.StackArgs), false);
 				return ret;
 			}
 		}

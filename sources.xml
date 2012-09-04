@@ -100,8 +100,6 @@
         <file>../codyn/codyn/cdn-parser-context.h</file>
         <file>../codyn/codyn/cdn-attribute.c</file>
         <file>../codyn/codyn/cdn-attribute.h</file>
-        <file>../codyn/codyn/cdn-taggable.c</file>
-        <file>../codyn/codyn/cdn-taggable.h</file>
         <file>../codyn/codyn/cdn-event.c</file>
         <file>../codyn/codyn/cdn-event.h</file>
         <file>../codyn/codyn/cdn-statement.c</file>

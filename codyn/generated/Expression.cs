@@ -88,11 +88,14 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_expression_set_values(IntPtr raw, out double values, int numr, int numc);
+		static extern void cdn_expression_set_values(IntPtr raw, out double values, IntPtr dim);
 
-		public double SetValues(int numr, int numc) {
+		public double SetValues(Cdn.Dimension dim) {
 			double values;
-			cdn_expression_set_values(Handle, out values, numr, numc);
+			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
+			cdn_expression_set_values(Handle, out values, native_dim);
+			dim = Cdn.Dimension.New (native_dim);
+			Marshal.FreeHGlobal (native_dim);
 			return values;
 		}
 
@@ -119,11 +122,25 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_expression_get_dimension(IntPtr raw, out int numr, out int numc);
+		static extern uint cdn_expression_get_stack_size(IntPtr raw);
 
-		public bool GetDimension(out int numr, out int numc) {
-			bool raw_ret = cdn_expression_get_dimension(Handle, out numr, out numc);
+		public uint StackSize { 
+			get {
+				uint raw_ret = cdn_expression_get_stack_size(Handle);
+				uint ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_expression_get_dimension(IntPtr raw, IntPtr dimension);
+
+		public bool GetDimension(Cdn.Dimension dimension) {
+			IntPtr native_dimension = GLib.Marshaller.StructureToPtrAlloc (dimension);
+			bool raw_ret = cdn_expression_get_dimension(Handle, native_dimension);
 			bool ret = raw_ret;
+			dimension = Cdn.Dimension.New (native_dimension);
+			Marshal.FreeHGlobal (native_dimension);
 			return ret;
 		}
 
@@ -144,11 +161,14 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_expression_get_cache(IntPtr raw, out int numr, out int numc);
+		static extern double cdn_expression_get_cache(IntPtr raw, IntPtr dim);
 
-		public double GetCache(out int numr, out int numc) {
-			double raw_ret = cdn_expression_get_cache(Handle, out numr, out numc);
+		public double GetCache(Cdn.Dimension dim) {
+			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
+			double raw_ret = cdn_expression_get_cache(Handle, native_dim);
 			double ret = raw_ret;
+			dim = Cdn.Dimension.New (native_dim);
+			Marshal.FreeHGlobal (native_dim);
 			return ret;
 		}
 
@@ -189,22 +209,31 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_expression_set_values_flat(IntPtr raw, out double values, int numvals, int numr, int numc);
+		static extern void cdn_expression_set_values_flat(IntPtr raw, out double values, int numvals, IntPtr dim);
 
-		public double SetValuesFlat(int numvals, int numr, int numc) {
+		public double SetValuesFlat(int numvals, Cdn.Dimension dim) {
 			double values;
-			cdn_expression_set_values_flat(Handle, out values, numvals, numr, numc);
+			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
+			cdn_expression_set_values_flat(Handle, out values, numvals, native_dim);
+			dim = Cdn.Dimension.New (native_dim);
+			Marshal.FreeHGlobal (native_dim);
 			return values;
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern uint cdn_expression_get_stack_size(IntPtr raw);
+		static extern bool cdn_expression_get_pinned_sparsity(IntPtr raw);
 
-		public uint StackSize { 
+		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_set_pinned_sparsity(IntPtr raw, bool pinned);
+
+		public bool PinnedSparsity { 
 			get {
-				uint raw_ret = cdn_expression_get_stack_size(Handle);
-				uint ret = raw_ret;
+				bool raw_ret = cdn_expression_get_pinned_sparsity(Handle);
+				bool ret = raw_ret;
 				return ret;
+			}
+			set {
+				cdn_expression_set_pinned_sparsity(Handle, value);
 			}
 		}
 
@@ -215,6 +244,13 @@ namespace Cdn {
 			IntPtr raw_ret = cdn_expression_copy(Handle);
 			Cdn.Expression ret = GLib.Object.GetObject(raw_ret, true) as Cdn.Expression;
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_recalculate_sparsity(IntPtr raw);
+
+		public void RecalculateSparsity() {
+			cdn_expression_recalculate_sparsity(Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -254,6 +290,17 @@ namespace Cdn {
 				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
 				cdn_expression_set_from_string(Handle, native_value);
 				GLib.Marshaller.Free (native_value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_expression_is_cached(IntPtr raw);
+
+		public bool IsCached { 
+			get {
+				bool raw_ret = cdn_expression_is_cached(Handle);
+				bool ret = raw_ret;
+				return ret;
 			}
 		}
 
@@ -313,6 +360,17 @@ namespace Cdn {
 			}
 			set {
 				cdn_expression_set_once(Handle, value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_get_stack_arg(IntPtr raw);
+
+		public Cdn.StackArg StackArg { 
+			get {
+				IntPtr raw_ret = cdn_expression_get_stack_arg(Handle);
+				Cdn.StackArg ret = Cdn.StackArg.New (raw_ret);
+				return ret;
 			}
 		}
 

@@ -10,7 +10,7 @@ namespace Cdn {
 	public class BegunArgs : GLib.SignalArgs {
 		public double From{
 			get {
-				return (double) Args[0];
+				return (double) Args [0];
 			}
 		}
 

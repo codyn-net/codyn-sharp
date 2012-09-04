@@ -44,7 +44,6 @@ namespace Cdn {
 		TypeType,
 		TypeHasFlag,
 		TypeHasTemplate,
-		TypeHasTag,
 		TypeReverse,
 		TypeRecurse,
 		TypeAppendContext,

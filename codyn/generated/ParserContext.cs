@@ -186,24 +186,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_edge(IntPtr raw, IntPtr id, IntPtr templates, IntPtr attributes, IntPtr fromto, IntPtr phase);
+		static extern void cdn_parser_context_get_error_location(IntPtr raw, out int lstart, out int lend, out int cstart, out int cend);
 
-		public void PushEdge(Cdn.EmbeddedString id, GLib.SList templates, GLib.SList attributes, GLib.SList fromto, Cdn.EmbeddedString phase) {
-			cdn_parser_context_push_edge(Handle, id == null ? IntPtr.Zero : id.Handle, templates == null ? IntPtr.Zero : templates.Handle, attributes == null ? IntPtr.Zero : attributes.Handle, fromto == null ? IntPtr.Zero : fromto.Handle, phase == null ? IntPtr.Zero : phase.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_get_column(IntPtr raw, out int start, out int end);
-
-		public void GetColumn(out int start, out int end) {
-			cdn_parser_context_get_column(Handle, out start, out end);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_function(IntPtr raw, IntPtr id, IntPtr args, IntPtr expression, bool optional, IntPtr attributes);
-
-		public void PushFunction(Cdn.EmbeddedString id, GLib.SList args, Cdn.EmbeddedString expression, bool optional, GLib.SList attributes) {
-			cdn_parser_context_push_function(Handle, id == null ? IntPtr.Zero : id.Handle, args == null ? IntPtr.Zero : args.Handle, expression == null ? IntPtr.Zero : expression.Handle, optional, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public void GetErrorLocation(out int lstart, out int lend, out int cstart, out int cend) {
+			cdn_parser_context_get_error_location(Handle, out lstart, out lend, out cstart, out cend);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -216,56 +202,12 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_debug_string(IntPtr raw, IntPtr s);
+		static extern void cdn_parser_context_set_line(IntPtr raw, IntPtr line, int lineno);
 
-		public void DebugString(Cdn.EmbeddedString s) {
-			cdn_parser_context_debug_string(Handle, s == null ? IntPtr.Zero : s.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_selector_regex(IntPtr raw, IntPtr regex);
-
-		public void PushSelectorRegex(Cdn.EmbeddedString regex) {
-			cdn_parser_context_push_selector_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_remove(IntPtr raw, IntPtr selectors);
-
-		public void Remove(GLib.SList selectors) {
-			cdn_parser_context_remove(Handle, selectors == null ? IntPtr.Zero : selectors.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_integrator(IntPtr raw, IntPtr value);
-
-		public Cdn.EmbeddedString Integrator { 
-			set {
-				cdn_parser_context_set_integrator(Handle, value == null ? IntPtr.Zero : value.Handle);
-			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_get_last_selector_item_line(IntPtr raw, out int line_start, out int line_end);
-
-		public void GetLastSelectorItemLine(out int line_start, out int line_end) {
-			cdn_parser_context_get_last_selector_item_line(Handle, out line_start, out line_end);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_define(IntPtr raw, IntPtr attributes);
-
-		public void PushDefine(GLib.SList attributes) {
-			cdn_parser_context_push_define(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_get_line(IntPtr raw, out int lineno);
-
-		public string GetLine(out int lineno) {
-			IntPtr raw_ret = cdn_parser_context_get_line(Handle, out lineno);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
-			return ret;
+		public void SetLine(string line, int lineno) {
+			IntPtr native_line = GLib.Marshaller.StringToPtrGStrdup (line);
+			cdn_parser_context_set_line(Handle, native_line, lineno);
+			GLib.Marshaller.Free (native_line);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -280,120 +222,160 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_debug_context(IntPtr raw);
+		static extern void cdn_parser_context_push_equation_depth(IntPtr raw);
 
-		public void DebugContext() {
-			cdn_parser_context_debug_context(Handle);
+		public void PushEquationDepth() {
+			cdn_parser_context_push_equation_depth(Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_input_from_string(IntPtr raw, IntPtr s, IntPtr attributes, bool only_in_context);
+		static extern void cdn_parser_context_add_layout(IntPtr raw, int relation, IntPtr left, IntPtr right);
 
-		public void PushInputFromString(string s, GLib.SList attributes, bool only_in_context) {
-			IntPtr native_s = GLib.Marshaller.StringToPtrGStrdup (s);
-			cdn_parser_context_push_input_from_string(Handle, native_s, attributes == null ? IntPtr.Zero : attributes.Handle, only_in_context);
-			GLib.Marshaller.Free (native_s);
+		public void AddLayout(Cdn.LayoutRelation relation, Cdn.Selector left, Cdn.Selector right) {
+			cdn_parser_context_add_layout(Handle, (int) relation, left == null ? IntPtr.Zero : left.Handle, right == null ? IntPtr.Zero : right.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_network(IntPtr raw, IntPtr attributes);
+		static extern void cdn_parser_context_set_io_setting(IntPtr raw, IntPtr name, IntPtr value);
 
-		public void PushNetwork(GLib.SList attributes) {
-			cdn_parser_context_push_network(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public void SetIoSetting(Cdn.EmbeddedString name, Cdn.EmbeddedString value) {
+			cdn_parser_context_set_io_setting(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_begin_selector_item(IntPtr raw);
+		static extern IntPtr cdn_parser_context_get_line_at(IntPtr raw, int lineno);
 
-		public void BeginSelectorItem() {
-			cdn_parser_context_begin_selector_item(Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_emit(IntPtr raw, bool emit);
-
-		public bool Emit { 
-			set {
-				cdn_parser_context_set_emit(Handle, value);
-			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_peek_selector(IntPtr raw);
-
-		public Cdn.Selector PeekSelector() {
-			IntPtr raw_ret = cdn_parser_context_peek_selector(Handle);
-			Cdn.Selector ret = GLib.Object.GetObject(raw_ret) as Cdn.Selector;
+		public string GetLineAt(int lineno) {
+			IntPtr raw_ret = cdn_parser_context_get_line_at(Handle, lineno);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_peek_string(IntPtr raw);
+		static extern void cdn_parser_context_get_column(IntPtr raw, out int start, out int end);
 
-		public Cdn.EmbeddedString PeekString() {
-			IntPtr raw_ret = cdn_parser_context_peek_string(Handle);
-			Cdn.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedString;
-			return ret;
+		public void GetColumn(out int start, out int end) {
+			cdn_parser_context_get_column(Handle, out start, out end);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_pop_string(IntPtr raw);
+		static extern void cdn_parser_context_push_input_from_path(IntPtr raw, IntPtr filename, bool only_in_context, bool isonce);
 
-		public Cdn.EmbeddedString PopString() {
-			IntPtr raw_ret = cdn_parser_context_pop_string(Handle);
-			Cdn.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedString;
-			return ret;
+		public void PushInputFromPath(Cdn.EmbeddedString filename, bool only_in_context, bool isonce) {
+			cdn_parser_context_push_input_from_path(Handle, filename == null ? IntPtr.Zero : filename.Handle, only_in_context, isonce);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern unsafe bool cdn_parser_context_parse(IntPtr raw, bool push_network, out IntPtr error);
+		static extern void cdn_parser_context_push_function(IntPtr raw, IntPtr id, IntPtr args, IntPtr expression, bool optional);
 
-		public unsafe bool Parse(bool push_network) {
-			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cdn_parser_context_parse(Handle, push_network, out error);
-			bool ret = raw_ret;
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-			return ret;
+		public void PushFunction(Cdn.EmbeddedString id, GLib.SList args, Cdn.EmbeddedString expression, bool optional) {
+			cdn_parser_context_push_function(Handle, id == null ? IntPtr.Zero : id.Handle, args == null ? IntPtr.Zero : args.Handle, expression == null ? IntPtr.Zero : expression.Handle, optional);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_remove_record(IntPtr raw, int len, int offset);
+		static extern void cdn_parser_context_add_layout_position(IntPtr raw, IntPtr selector, IntPtr x, IntPtr y, IntPtr of, bool cartesian);
 
-		public void RemoveRecord(int len, int offset) {
-			cdn_parser_context_remove_record(Handle, len, offset);
+		public void AddLayoutPosition(Cdn.Selector selector, Cdn.EmbeddedString x, Cdn.EmbeddedString y, Cdn.Selector of, bool cartesian) {
+			cdn_parser_context_add_layout_position(Handle, selector == null ? IntPtr.Zero : selector.Handle, x == null ? IntPtr.Zero : x.Handle, y == null ? IntPtr.Zero : y.Handle, of == null ? IntPtr.Zero : of.Handle, cartesian);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern int cdn_parser_context_get_start_token(IntPtr raw);
+		static extern IntPtr cdn_parser_context_get_error(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_start_token(IntPtr raw, int token);
-
-		public int StartToken { 
+		public IntPtr Error { 
 			get {
-				int raw_ret = cdn_parser_context_get_start_token(Handle);
-				int ret = raw_ret;
+				IntPtr raw_ret = cdn_parser_context_get_error(Handle);
+				IntPtr ret = raw_ret;
 				return ret;
 			}
-			set {
-				cdn_parser_context_set_start_token(Handle, value);
-			}
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_line(IntPtr raw, IntPtr line, int lineno);
+		static extern void cdn_parser_context_apply_template(IntPtr raw, IntPtr templates, IntPtr targets);
 
-		public void SetLine(string line, int lineno) {
-			IntPtr native_line = GLib.Marshaller.StringToPtrGStrdup (line);
-			cdn_parser_context_set_line(Handle, native_line, lineno);
-			GLib.Marshaller.Free (native_line);
+		public void ApplyTemplate(Cdn.Selector templates, Cdn.Selector targets) {
+			cdn_parser_context_apply_template(Handle, templates == null ? IntPtr.Zero : templates.Handle, targets == null ? IntPtr.Zero : targets.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_get_last_selector_item_column(IntPtr raw, out int start, out int end);
+		static extern void cdn_parser_context_define(IntPtr raw, IntPtr name, IntPtr value, bool optional);
 
-		public void GetLastSelectorItemColumn(out int start, out int end) {
-			cdn_parser_context_get_last_selector_item_column(Handle, out start, out end);
+		public void Define(Cdn.EmbeddedString name, GLib.Object value, bool optional) {
+			cdn_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle, optional);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_parser_context_previous_selections(IntPtr raw);
+
+		public GLib.SList PreviousSelections() {
+			IntPtr raw_ret = cdn_parser_context_previous_selections(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_pop(IntPtr raw);
+
+		public void Pop() {
+			cdn_parser_context_pop(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_selector_identifier(IntPtr raw, IntPtr identifier);
+
+		public void PushSelectorIdentifier(Cdn.EmbeddedString identifier) {
+			cdn_parser_context_push_selector_identifier(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_objects(IntPtr raw, IntPtr objects);
+
+		public void PushObjects(GLib.SList objects) {
+			cdn_parser_context_push_objects(Handle, objects == null ? IntPtr.Zero : objects.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_delete_selector(IntPtr raw, IntPtr selector);
+
+		public void DeleteSelector(Cdn.Selector selector) {
+			cdn_parser_context_delete_selector(Handle, selector == null ? IntPtr.Zero : selector.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_parser_context_pop_equation_depth(IntPtr raw);
+
+		public bool PopEquationDepth() {
+			bool raw_ret = cdn_parser_context_pop_equation_depth(Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_node(IntPtr raw, IntPtr id, IntPtr templates);
+
+		public void PushNode(Cdn.EmbeddedString id, GLib.SList templates) {
+			cdn_parser_context_push_node(Handle, id == null ? IntPtr.Zero : id.Handle, templates == null ? IntPtr.Zero : templates.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_add_action(IntPtr raw, IntPtr target, IntPtr expression, IntPtr phases);
+
+		public void AddAction(GLib.PtrArray target, GLib.PtrArray expression, Cdn.EmbeddedString phases) {
+			cdn_parser_context_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, expression == null ? IntPtr.Zero : expression.Handle, phases == null ? IntPtr.Zero : phases.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_selector_define_context(IntPtr raw, IntPtr id);
+
+		public void PushSelectorDefineContext(string id) {
+			cdn_parser_context_push_selector_define_context(Handle, GLib.Marshaller.StringToPtrGStrdup(id));
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_add_interface(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr property_name, bool is_optional);
+
+		public void AddInterface(Cdn.EmbeddedString name, Cdn.EmbeddedString child_name, Cdn.EmbeddedString property_name, bool is_optional) {
+			cdn_parser_context_add_interface(Handle, name == null ? IntPtr.Zero : name.Handle, child_name == null ? IntPtr.Zero : child_name.Handle, property_name == null ? IntPtr.Zero : property_name.Handle, is_optional);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -414,154 +396,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_get_error_lines(IntPtr raw);
+		static extern void cdn_parser_context_push_network(IntPtr raw);
 
-		public string ErrorLines { 
-			get {
-				IntPtr raw_ret = cdn_parser_context_get_error_lines(Handle);
-				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-				return ret;
-			}
+		public void PushNetwork() {
+			cdn_parser_context_push_network(Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_push_string(IntPtr raw);
+		static extern void cdn_parser_context_add_event_set_variable(IntPtr raw, IntPtr selector, IntPtr value);
 
-		public Cdn.EmbeddedString PushString() {
-			IntPtr raw_ret = cdn_parser_context_push_string(Handle);
-			Cdn.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedString;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_selector_identifier(IntPtr raw, IntPtr identifier);
-
-		public void PushSelectorIdentifier(Cdn.EmbeddedString identifier) {
-			cdn_parser_context_push_selector_identifier(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_import(IntPtr raw, IntPtr id, IntPtr path, IntPtr attributes);
-
-		public void Import(Cdn.EmbeddedString id, Cdn.EmbeddedString path, GLib.SList attributes) {
-			cdn_parser_context_import(Handle, id == null ? IntPtr.Zero : id.Handle, path == null ? IntPtr.Zero : path.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_action(IntPtr raw, IntPtr target, IntPtr expression, IntPtr attributes, IntPtr phases);
-
-		public void AddAction(Cdn.EmbeddedString target, Cdn.EmbeddedString expression, GLib.SList attributes, Cdn.EmbeddedString phases) {
-			cdn_parser_context_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, expression == null ? IntPtr.Zero : expression.Handle, attributes == null ? IntPtr.Zero : attributes.Handle, phases == null ? IntPtr.Zero : phases.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_proxy(IntPtr raw, IntPtr objects);
-
-		public GLib.SList Proxy { 
-			set {
-				cdn_parser_context_set_proxy(Handle, value == null ? IntPtr.Zero : value.Handle);
-			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_get_scanner(IntPtr raw);
-
-		public IntPtr Scanner { 
-			get {
-				IntPtr raw_ret = cdn_parser_context_get_scanner(Handle);
-				IntPtr ret = raw_ret;
-				return ret;
-			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_pop_layout(IntPtr raw);
-
-		public void PopLayout() {
-			cdn_parser_context_pop_layout(Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_debug_selector(IntPtr raw, IntPtr selector);
-
-		public void DebugSelector(Cdn.Selector selector) {
-			cdn_parser_context_debug_selector(Handle, selector == null ? IntPtr.Zero : selector.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_pop_selector(IntPtr raw);
-
-		public Cdn.Selector PopSelector() {
-			IntPtr raw_ret = cdn_parser_context_pop_selector(Handle);
-			Cdn.Selector ret = GLib.Object.GetObject(raw_ret) as Cdn.Selector;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_polynomial(IntPtr raw, IntPtr name, IntPtr pieces, IntPtr attributes);
-
-		public void AddPolynomial(Cdn.EmbeddedString name, GLib.SList pieces, GLib.SList attributes) {
-			cdn_parser_context_add_polynomial(Handle, name == null ? IntPtr.Zero : name.Handle, pieces == null ? IntPtr.Zero : pieces.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_pop(IntPtr raw);
-
-		public void Pop() {
-			cdn_parser_context_pop(Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_input_from_path(IntPtr raw, IntPtr filename, IntPtr attributes, bool only_in_context);
-
-		public void PushInputFromPath(Cdn.EmbeddedString filename, GLib.SList attributes, bool only_in_context) {
-			cdn_parser_context_push_input_from_path(Handle, filename == null ? IntPtr.Zero : filename.Handle, attributes == null ? IntPtr.Zero : attributes.Handle, only_in_context);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_variable(IntPtr raw, IntPtr selector, IntPtr expression, int add_flags, int remove_flags, IntPtr attributes);
-
-		public void SetVariable(Cdn.Selector selector, Cdn.EmbeddedString expression, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags, GLib.SList attributes) {
-			cdn_parser_context_set_variable(Handle, selector == null ? IntPtr.Zero : selector.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_layout(IntPtr raw, IntPtr attributes);
-
-		public void PushLayout(GLib.SList attributes) {
-			cdn_parser_context_push_layout(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_selection(IntPtr raw, IntPtr selector, int type, IntPtr templates, IntPtr attributes);
-
-		public void PushSelection(Cdn.Selector selector, Cdn.SelectorType type, GLib.SList templates, GLib.SList attributes) {
-			cdn_parser_context_push_selection(Handle, selector == null ? IntPtr.Zero : selector.Handle, (int) type, templates == null ? IntPtr.Zero : templates.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_unapply_template(IntPtr raw, IntPtr templates, IntPtr targets);
-
-		public void UnapplyTemplate(Cdn.Selector templates, Cdn.Selector targets) {
-			cdn_parser_context_unapply_template(Handle, templates == null ? IntPtr.Zero : templates.Handle, targets == null ? IntPtr.Zero : targets.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_get_error(IntPtr raw);
-
-		public IntPtr Error { 
-			get {
-				IntPtr raw_ret = cdn_parser_context_get_error(Handle);
-				IntPtr ret = raw_ret;
-				return ret;
-			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_delete_selector(IntPtr raw, IntPtr selector);
-
-		public void DeleteSelector(Cdn.Selector selector) {
-			cdn_parser_context_delete_selector(Handle, selector == null ? IntPtr.Zero : selector.Handle);
+		public void AddEventSetVariable(Cdn.Selector selector, Cdn.EmbeddedString value) {
+			cdn_parser_context_add_event_set_variable(Handle, selector == null ? IntPtr.Zero : selector.Handle, value == null ? IntPtr.Zero : value.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -574,10 +419,49 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_variable(IntPtr raw, IntPtr name, IntPtr count_name, IntPtr expression, int add_flags, int remove_flags, IntPtr attributes, bool assign_optional, IntPtr constraint);
+		static extern void cdn_parser_context_add_polynomial(IntPtr raw, IntPtr name, IntPtr pieces);
 
-		public void AddVariable(Cdn.EmbeddedString name, Cdn.EmbeddedString count_name, Cdn.EmbeddedString expression, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags, GLib.SList attributes, bool assign_optional, Cdn.EmbeddedString constraint) {
-			cdn_parser_context_add_variable(Handle, name == null ? IntPtr.Zero : name.Handle, count_name == null ? IntPtr.Zero : count_name.Handle, expression == null ? IntPtr.Zero : expression.Handle, (int) add_flags, (int) remove_flags, attributes == null ? IntPtr.Zero : attributes.Handle, assign_optional, constraint == null ? IntPtr.Zero : constraint.Handle);
+		public void AddPolynomial(Cdn.EmbeddedString name, GLib.SList pieces) {
+			cdn_parser_context_add_polynomial(Handle, name == null ? IntPtr.Zero : name.Handle, pieces == null ? IntPtr.Zero : pieces.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_link_library(IntPtr raw, IntPtr filename);
+
+		public void LinkLibrary(Cdn.EmbeddedString filename) {
+			cdn_parser_context_link_library(Handle, filename == null ? IntPtr.Zero : filename.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_set_error(IntPtr raw, IntPtr message);
+
+		public void SetError(string message) {
+			IntPtr native_message = GLib.Marshaller.StringToPtrGStrdup (message);
+			cdn_parser_context_set_error(Handle, native_message);
+			GLib.Marshaller.Free (native_message);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_selector_regex(IntPtr raw, IntPtr regex);
+
+		public void PushSelectorRegex(Cdn.EmbeddedString regex) {
+			cdn_parser_context_push_selector_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern int cdn_parser_context_peek_equation_depth(IntPtr raw);
+
+		public int PeekEquationDepth() {
+			int raw_ret = cdn_parser_context_peek_equation_depth(Handle);
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_get_last_selector_item_line(IntPtr raw, out int line_start, out int line_end);
+
+		public void GetLastSelectorItemLine(out int line_start, out int line_end) {
+			cdn_parser_context_get_last_selector_item_line(Handle, out line_start, out line_end);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -595,47 +479,89 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_annotation(IntPtr raw, IntPtr annotation);
+		static extern IntPtr cdn_parser_context_push_string(IntPtr raw);
 
-		public void PushAnnotation(Cdn.EmbeddedString annotation) {
-			cdn_parser_context_push_annotation(Handle, annotation == null ? IntPtr.Zero : annotation.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern int cdn_parser_context_steal_start_token(IntPtr raw);
-
-		public int StealStartToken() {
-			int raw_ret = cdn_parser_context_steal_start_token(Handle);
-			int ret = raw_ret;
+		public Cdn.EmbeddedString PushString() {
+			IntPtr raw_ret = cdn_parser_context_push_string(Handle);
+			Cdn.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedString;
 			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_include(IntPtr raw, IntPtr filename, IntPtr attributes);
+		static extern IntPtr cdn_parser_context_peek_string(IntPtr raw);
 
-		public void Include(Cdn.EmbeddedString filename, GLib.SList attributes) {
-			cdn_parser_context_include(Handle, filename == null ? IntPtr.Zero : filename.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public Cdn.EmbeddedString PeekString() {
+			IntPtr raw_ret = cdn_parser_context_peek_string(Handle);
+			Cdn.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedString;
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_equation_depth(IntPtr raw);
+		static extern void cdn_parser_context_push_layout(IntPtr raw);
 
-		public void PushEquationDepth() {
-			cdn_parser_context_push_equation_depth(Handle);
+		public void PushLayout() {
+			cdn_parser_context_push_layout(Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_io_type(IntPtr raw, int mode, IntPtr id, IntPtr type, IntPtr attributes);
+		static extern void cdn_parser_context_push_input_from_string(IntPtr raw, IntPtr s, bool only_in_context);
 
-		public void PushIoType(Cdn.IoMode mode, Cdn.EmbeddedString id, Cdn.EmbeddedString type, GLib.SList attributes) {
-			cdn_parser_context_push_io_type(Handle, (int) mode, id == null ? IntPtr.Zero : id.Handle, type == null ? IntPtr.Zero : type.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public void PushInputFromString(string s, bool only_in_context) {
+			IntPtr native_s = GLib.Marshaller.StringToPtrGStrdup (s);
+			cdn_parser_context_push_input_from_string(Handle, native_s, only_in_context);
+			GLib.Marshaller.Free (native_s);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_scope(IntPtr raw, IntPtr attributes);
+		static extern void cdn_parser_context_push_io_type(IntPtr raw, int mode, IntPtr id, IntPtr type);
 
-		public void PushScope(GLib.SList attributes) {
-			cdn_parser_context_push_scope(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public void PushIoType(Cdn.IoMode mode, Cdn.EmbeddedString id, Cdn.EmbeddedString type) {
+			cdn_parser_context_push_io_type(Handle, (int) mode, id == null ? IntPtr.Zero : id.Handle, type == null ? IntPtr.Zero : type.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_parser_context_get_scanner(IntPtr raw);
+
+		public IntPtr Scanner { 
+			get {
+				IntPtr raw_ret = cdn_parser_context_get_scanner(Handle);
+				IntPtr ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern unsafe bool cdn_parser_context_parse(IntPtr raw, bool push_network, out IntPtr error);
+
+		public unsafe bool Parse(bool push_network) {
+			IntPtr error = IntPtr.Zero;
+			bool raw_ret = cdn_parser_context_parse(Handle, push_network, out error);
+			bool ret = raw_ret;
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_set_emit(IntPtr raw, bool emit);
+
+		public bool Emit { 
+			set {
+				cdn_parser_context_set_emit(Handle, value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_selection(IntPtr raw, IntPtr selector, int type, IntPtr templates);
+
+		public void PushSelection(Cdn.Selector selector, Cdn.SelectorType type, GLib.SList templates) {
+			cdn_parser_context_push_selection(Handle, selector == null ? IntPtr.Zero : selector.Handle, (int) type, templates == null ? IntPtr.Zero : templates.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_remove_record(IntPtr raw, int len, int offset);
+
+		public void RemoveRecord(int len, int offset) {
+			cdn_parser_context_remove_record(Handle, len, offset);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -646,69 +572,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern int cdn_parser_context_peek_equation_depth(IntPtr raw);
+		static extern void cdn_parser_context_push_edge(IntPtr raw, IntPtr id, IntPtr templates, IntPtr attributes, IntPtr fromto, IntPtr phase);
 
-		public int PeekEquationDepth() {
-			int raw_ret = cdn_parser_context_peek_equation_depth(Handle);
-			int ret = raw_ret;
-			return ret;
+		public void PushEdge(Cdn.EmbeddedString id, GLib.SList templates, GLib.SList attributes, GLib.SList fromto, Cdn.EmbeddedString phase) {
+			cdn_parser_context_push_edge(Handle, id == null ? IntPtr.Zero : id.Handle, templates == null ? IntPtr.Zero : templates.Handle, attributes == null ? IntPtr.Zero : attributes.Handle, fromto == null ? IntPtr.Zero : fromto.Handle, phase == null ? IntPtr.Zero : phase.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_apply_template(IntPtr raw, IntPtr templates, IntPtr targets);
+		static extern void cdn_parser_context_pop_layout(IntPtr raw);
 
-		public void ApplyTemplate(Cdn.Selector templates, Cdn.Selector targets) {
-			cdn_parser_context_apply_template(Handle, templates == null ? IntPtr.Zero : templates.Handle, targets == null ? IntPtr.Zero : targets.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern bool cdn_parser_context_pop_equation_depth(IntPtr raw);
-
-		public bool PopEquationDepth() {
-			bool raw_ret = cdn_parser_context_pop_equation_depth(Handle);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_previous_selections(IntPtr raw);
-
-		public GLib.SList PreviousSelections() {
-			IntPtr raw_ret = cdn_parser_context_previous_selections(Handle);
-			GLib.SList ret = new GLib.SList(raw_ret);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_error(IntPtr raw, IntPtr message);
-
-		public void SetError(string message) {
-			IntPtr native_message = GLib.Marshaller.StringToPtrGStrdup (message);
-			cdn_parser_context_set_error(Handle, native_message);
-			GLib.Marshaller.Free (native_message);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_objects(IntPtr raw, IntPtr objects, IntPtr attributes);
-
-		public void PushObjects(GLib.SList objects, GLib.SList attributes) {
-			cdn_parser_context_push_objects(Handle, objects == null ? IntPtr.Zero : objects.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_get_line_at(IntPtr raw, int lineno);
-
-		public string GetLineAt(int lineno) {
-			IntPtr raw_ret = cdn_parser_context_get_line_at(Handle, lineno);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_link_library(IntPtr raw, IntPtr filename);
-
-		public void LinkLibrary(Cdn.EmbeddedString filename) {
-			cdn_parser_context_link_library(Handle, filename == null ? IntPtr.Zero : filename.Handle);
+		public void PopLayout() {
+			cdn_parser_context_pop_layout(Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -716,69 +590,6 @@ namespace Cdn {
 
 		public void PushSelectorPseudo(Cdn.SelectorPseudoType type, GLib.SList arguments) {
 			cdn_parser_context_push_selector_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_event(IntPtr raw, IntPtr from_phase, IntPtr to_phase, IntPtr condition, bool terminal, IntPtr approximation, IntPtr templates, IntPtr attributes);
-
-		public void PushEvent(Cdn.EmbeddedString from_phase, Cdn.EmbeddedString to_phase, Cdn.EmbeddedString condition, bool terminal, Cdn.EmbeddedString approximation, GLib.SList templates, GLib.SList attributes) {
-			cdn_parser_context_push_event(Handle, from_phase == null ? IntPtr.Zero : from_phase.Handle, to_phase == null ? IntPtr.Zero : to_phase.Handle, condition == null ? IntPtr.Zero : condition.Handle, terminal, approximation == null ? IntPtr.Zero : approximation.Handle, templates == null ? IntPtr.Zero : templates.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_templates(IntPtr raw, IntPtr attributes);
-
-		public void PushTemplates(GLib.SList attributes) {
-			cdn_parser_context_push_templates(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_selector(IntPtr raw, bool with);
-
-		public void PushSelector(bool with) {
-			cdn_parser_context_push_selector(Handle, with);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_event_set_variable(IntPtr raw, IntPtr selector, IntPtr value);
-
-		public void AddEventSetVariable(Cdn.Selector selector, Cdn.EmbeddedString value) {
-			cdn_parser_context_add_event_set_variable(Handle, selector == null ? IntPtr.Zero : selector.Handle, value == null ? IntPtr.Zero : value.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_layout(IntPtr raw, int relation, IntPtr left, IntPtr right);
-
-		public void AddLayout(Cdn.LayoutRelation relation, Cdn.Selector left, Cdn.Selector right) {
-			cdn_parser_context_add_layout(Handle, (int) relation, left == null ? IntPtr.Zero : left.Handle, right == null ? IntPtr.Zero : right.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_layout_position(IntPtr raw, IntPtr selector, IntPtr x, IntPtr y, IntPtr of, bool cartesian);
-
-		public void AddLayoutPosition(Cdn.Selector selector, Cdn.EmbeddedString x, Cdn.EmbeddedString y, Cdn.Selector of, bool cartesian) {
-			cdn_parser_context_add_layout_position(Handle, selector == null ? IntPtr.Zero : selector.Handle, x == null ? IntPtr.Zero : x.Handle, y == null ? IntPtr.Zero : y.Handle, of == null ? IntPtr.Zero : of.Handle, cartesian);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_interface(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr property_name, bool is_optional, IntPtr attributes);
-
-		public void AddInterface(Cdn.EmbeddedString name, Cdn.EmbeddedString child_name, Cdn.EmbeddedString property_name, bool is_optional, GLib.SList attributes) {
-			cdn_parser_context_add_interface(Handle, name == null ? IntPtr.Zero : name.Handle, child_name == null ? IntPtr.Zero : child_name.Handle, property_name == null ? IntPtr.Zero : property_name.Handle, is_optional, attributes == null ? IntPtr.Zero : attributes.Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_equation(IntPtr raw);
-
-		public void PushEquation() {
-			cdn_parser_context_push_equation(Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_io_setting(IntPtr raw, IntPtr name, IntPtr value);
-
-		public void SetIoSetting(Cdn.EmbeddedString name, Cdn.EmbeddedString value) {
-			cdn_parser_context_set_io_setting(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -801,31 +612,211 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_node(IntPtr raw, IntPtr id, IntPtr templates, IntPtr attributes);
+		static extern IntPtr cdn_parser_context_pop_string(IntPtr raw);
 
-		public void PushNode(Cdn.EmbeddedString id, GLib.SList templates, GLib.SList attributes) {
-			cdn_parser_context_push_node(Handle, id == null ? IntPtr.Zero : id.Handle, templates == null ? IntPtr.Zero : templates.Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public Cdn.EmbeddedString PopString() {
+			IntPtr raw_ret = cdn_parser_context_pop_string(Handle);
+			Cdn.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedString;
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_get_error_location(IntPtr raw, out int lstart, out int lend, out int cstart, out int cend);
+		static extern void cdn_parser_context_include(IntPtr raw, IntPtr filename, bool isonce);
 
-		public void GetErrorLocation(out int lstart, out int lend, out int cstart, out int cend) {
-			cdn_parser_context_get_error_location(Handle, out lstart, out lend, out cstart, out cend);
+		public void Include(Cdn.EmbeddedString filename, bool isonce) {
+			cdn_parser_context_include(Handle, filename == null ? IntPtr.Zero : filename.Handle, isonce);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_define(IntPtr raw, IntPtr name, IntPtr value, bool optional, IntPtr count_name);
+		static extern void cdn_parser_context_push_annotation(IntPtr raw, IntPtr annotation);
 
-		public void Define(Cdn.EmbeddedString name, GLib.Object value, bool optional, Cdn.EmbeddedString count_name) {
-			cdn_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle, optional, count_name == null ? IntPtr.Zero : count_name.Handle);
+		public void PushAnnotation(Cdn.EmbeddedString annotation) {
+			cdn_parser_context_push_annotation(Handle, annotation == null ? IntPtr.Zero : annotation.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_push_integrator(IntPtr raw, IntPtr attributes);
+		static extern void cdn_parser_context_push_integrator(IntPtr raw);
 
-		public void PushIntegrator(GLib.SList attributes) {
-			cdn_parser_context_push_integrator(Handle, attributes == null ? IntPtr.Zero : attributes.Handle);
+		public void PushIntegrator() {
+			cdn_parser_context_push_integrator(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_event(IntPtr raw, IntPtr from_phase, IntPtr to_phase, IntPtr condition, bool terminal, IntPtr approximation, IntPtr templates);
+
+		public void PushEvent(Cdn.EmbeddedString from_phase, Cdn.EmbeddedString to_phase, Cdn.EmbeddedString condition, bool terminal, Cdn.EmbeddedString approximation, GLib.SList templates) {
+			cdn_parser_context_push_event(Handle, from_phase == null ? IntPtr.Zero : from_phase.Handle, to_phase == null ? IntPtr.Zero : to_phase.Handle, condition == null ? IntPtr.Zero : condition.Handle, terminal, approximation == null ? IntPtr.Zero : approximation.Handle, templates == null ? IntPtr.Zero : templates.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_debug_context(IntPtr raw);
+
+		public void DebugContext() {
+			cdn_parser_context_debug_context(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_define(IntPtr raw);
+
+		public void PushDefine() {
+			cdn_parser_context_push_define(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_scope(IntPtr raw);
+
+		public void PushScope() {
+			cdn_parser_context_push_scope(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_get_last_selector_item_column(IntPtr raw, out int start, out int end);
+
+		public void GetLastSelectorItemColumn(out int start, out int end) {
+			cdn_parser_context_get_last_selector_item_column(Handle, out start, out end);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_parser_context_pop_selector(IntPtr raw);
+
+		public Cdn.Selector PopSelector() {
+			IntPtr raw_ret = cdn_parser_context_pop_selector(Handle);
+			Cdn.Selector ret = GLib.Object.GetObject(raw_ret) as Cdn.Selector;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_import(IntPtr raw, IntPtr id, IntPtr path);
+
+		public void Import(Cdn.EmbeddedString id, Cdn.EmbeddedString path) {
+			cdn_parser_context_import(Handle, id == null ? IntPtr.Zero : id.Handle, path == null ? IntPtr.Zero : path.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_templates(IntPtr raw);
+
+		public void PushTemplates() {
+			cdn_parser_context_push_templates(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_add_variable(IntPtr raw, IntPtr nameptr, IntPtr expressionptr, int add_flags, int remove_flags, bool assign_optional, IntPtr constraint);
+
+		public void AddVariable(GLib.PtrArray nameptr, GLib.PtrArray expressionptr, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags, bool assign_optional, Cdn.EmbeddedString constraint) {
+			cdn_parser_context_add_variable(Handle, nameptr == null ? IntPtr.Zero : nameptr.Handle, expressionptr == null ? IntPtr.Zero : expressionptr.Handle, (int) add_flags, (int) remove_flags, assign_optional, constraint == null ? IntPtr.Zero : constraint.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_unapply_template(IntPtr raw, IntPtr templates, IntPtr targets);
+
+		public void UnapplyTemplate(Cdn.Selector templates, Cdn.Selector targets) {
+			cdn_parser_context_unapply_template(Handle, templates == null ? IntPtr.Zero : templates.Handle, targets == null ? IntPtr.Zero : targets.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_parser_context_get_error_lines(IntPtr raw);
+
+		public string ErrorLines { 
+			get {
+				IntPtr raw_ret = cdn_parser_context_get_error_lines(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern int cdn_parser_context_steal_start_token(IntPtr raw);
+
+		public int StealStartToken() {
+			int raw_ret = cdn_parser_context_steal_start_token(Handle);
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_equation(IntPtr raw);
+
+		public void PushEquation() {
+			cdn_parser_context_push_equation(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern int cdn_parser_context_get_start_token(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_set_start_token(IntPtr raw, int token);
+
+		public int StartToken { 
+			get {
+				int raw_ret = cdn_parser_context_get_start_token(Handle);
+				int ret = raw_ret;
+				return ret;
+			}
+			set {
+				cdn_parser_context_set_start_token(Handle, value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_debug_selector(IntPtr raw, IntPtr selector);
+
+		public void DebugSelector(Cdn.Selector selector) {
+			cdn_parser_context_debug_selector(Handle, selector == null ? IntPtr.Zero : selector.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_parser_context_get_line(IntPtr raw, out int lineno);
+
+		public string GetLine(out int lineno) {
+			IntPtr raw_ret = cdn_parser_context_get_line(Handle, out lineno);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_begin_selector_item(IntPtr raw);
+
+		public void BeginSelectorItem() {
+			cdn_parser_context_begin_selector_item(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_push_selector(IntPtr raw, bool with);
+
+		public void PushSelector(bool with) {
+			cdn_parser_context_push_selector(Handle, with);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_parser_context_peek_selector(IntPtr raw);
+
+		public Cdn.Selector PeekSelector() {
+			IntPtr raw_ret = cdn_parser_context_peek_selector(Handle);
+			Cdn.Selector ret = GLib.Object.GetObject(raw_ret) as Cdn.Selector;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_debug_string(IntPtr raw, IntPtr s);
+
+		public void DebugString(Cdn.EmbeddedString s) {
+			cdn_parser_context_debug_string(Handle, s == null ? IntPtr.Zero : s.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_set_integrator(IntPtr raw, IntPtr value);
+
+		public Cdn.EmbeddedString Integrator { 
+			set {
+				cdn_parser_context_set_integrator(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_set_variable(IntPtr raw, IntPtr selectorptr, IntPtr expressionptr, int add_flags, int remove_flags);
+
+		public void SetVariable(GLib.PtrArray selectorptr, GLib.PtrArray expressionptr, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags) {
+			cdn_parser_context_set_variable(Handle, selectorptr == null ? IntPtr.Zero : selectorptr.Handle, expressionptr == null ? IntPtr.Zero : expressionptr.Handle, (int) add_flags, (int) remove_flags);
 		}
 
 #endregion

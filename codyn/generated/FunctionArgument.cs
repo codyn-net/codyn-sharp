@@ -19,36 +19,6 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[GLib.Property ("numc")]
-		public int Numc {
-			get {
-				GLib.Value val = GetProperty ("numc");
-				int ret = (int) val;
-				val.Dispose ();
-				return ret;
-			}
-			set {
-				GLib.Value val = new GLib.Value(value);
-				SetProperty("numc", val);
-				val.Dispose ();
-			}
-		}
-
-		[GLib.Property ("numr")]
-		public int Numr {
-			get {
-				GLib.Value val = GetProperty ("numr");
-				int ret = (int) val;
-				val.Dispose ();
-				return ret;
-			}
-			set {
-				GLib.Value val = new GLib.Value(value);
-				SetProperty("numr", val);
-				val.Dispose ();
-			}
-		}
-
 		[DllImport("codyn-3.0")]
 		static extern bool cdn_function_argument_get_optional(IntPtr raw);
 
@@ -169,17 +139,40 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_function_argument_get_dimension(IntPtr raw, out int numr, out int numc);
+		static extern void cdn_function_argument_get_dimension(IntPtr raw, IntPtr dimension);
 
-		public void GetDimension(out int numr, out int numc) {
-			cdn_function_argument_get_dimension(Handle, out numr, out numc);
+		public void GetDimension(Cdn.Dimension dimension) {
+			IntPtr native_dimension = GLib.Marshaller.StructureToPtrAlloc (dimension);
+			cdn_function_argument_get_dimension(Handle, native_dimension);
+			dimension = Cdn.Dimension.New (native_dimension);
+			Marshal.FreeHGlobal (native_dimension);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_function_argument_set_dimension(IntPtr raw, int numr, int numc);
+		static extern void cdn_function_argument_set_dimension(IntPtr raw, IntPtr dimension);
 
-		public void SetDimension(int numr, int numc) {
-			cdn_function_argument_set_dimension(Handle, numr, numc);
+		public void SetDimension(Cdn.Dimension dimension) {
+			IntPtr native_dimension = GLib.Marshaller.StructureToPtrAlloc (dimension);
+			cdn_function_argument_set_dimension(Handle, native_dimension);
+			dimension = Cdn.Dimension.New (native_dimension);
+			Marshal.FreeHGlobal (native_dimension);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_function_argument_get_unused(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_function_argument_set_unused(IntPtr raw, bool unused);
+
+		public bool Unused { 
+			get {
+				bool raw_ret = cdn_function_argument_get_unused(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set {
+				cdn_function_argument_set_unused(Handle, value);
+			}
 		}
 
 		[DllImport("codyn-3.0")]

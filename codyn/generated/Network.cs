@@ -209,6 +209,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_network_simplify(IntPtr raw);
+
+		public void Simplify() {
+			cdn_network_simplify(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern unsafe void cdn_network_merge_from_string(IntPtr raw, IntPtr s, out IntPtr error);
 
 		public unsafe void MergeFromString(string s) {

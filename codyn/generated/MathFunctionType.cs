@@ -41,6 +41,7 @@ namespace Cdn {
 		Min,
 		Max,
 		Exp,
+		Erf,
 		Floor,
 		Ceil,
 		Round,

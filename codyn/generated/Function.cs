@@ -213,13 +213,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_function_get_dimension(IntPtr raw, out int numr, out int numc);
-
-		public void GetDimension(out int numr, out int numc) {
-			cdn_function_get_dimension(Handle, out numr, out numc);
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_function_clear_arguments(IntPtr raw, out IntPtr error);
 
 		public unsafe bool ClearArguments() {
@@ -227,6 +220,17 @@ namespace Cdn {
 			bool raw_ret = cdn_function_clear_arguments(Handle, out error);
 			bool ret = raw_ret;
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_get_argument(IntPtr raw, IntPtr name);
+
+		public Cdn.FunctionArgument GetArgument(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cdn_function_get_argument(Handle, native_name);
+			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionArgument;
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 
@@ -280,21 +284,21 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_function_get_argument(IntPtr raw, IntPtr name);
+		static extern IntPtr cdn_function_get_stack_manipulation(IntPtr raw);
 
-		public Cdn.FunctionArgument GetArgument(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cdn_function_get_argument(Handle, native_name);
-			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionArgument;
-			GLib.Marshaller.Free (native_name);
-			return ret;
+		public Cdn.StackManipulation StackManipulation { 
+			get {
+				IntPtr raw_ret = cdn_function_get_stack_manipulation(Handle);
+				Cdn.StackManipulation ret = raw_ret == IntPtr.Zero ? null : (Cdn.StackManipulation) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.StackManipulation), false);
+				return ret;
+			}
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_function_for_dimension(IntPtr raw, int numargs, out int argdim);
+		static extern IntPtr cdn_function_for_dimension(IntPtr raw, IntPtr argdim);
 
-		public Cdn.Function ForDimension(int numargs, out int argdim) {
-			IntPtr raw_ret = cdn_function_for_dimension(Handle, numargs, out argdim);
+		public Cdn.Function ForDimension(Cdn.StackArgs argdim) {
+			IntPtr raw_ret = cdn_function_for_dimension(Handle, argdim == null ? IntPtr.Zero : argdim.Handle);
 			Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
 			return ret;
 		}

@@ -10,7 +10,7 @@ namespace Cdn {
 	public class CopiedArgs : GLib.SignalArgs {
 		public Cdn.Object Copy{
 			get {
-				return (Cdn.Object) Args[0];
+				return (Cdn.Object) Args [0];
 			}
 		}
 

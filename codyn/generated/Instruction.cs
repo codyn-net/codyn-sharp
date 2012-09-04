@@ -25,7 +25,7 @@ namespace Cdn {
 		public unsafe Cdn.StackManipulation GetStackManipulation() {
 			IntPtr error = IntPtr.Zero;
 			IntPtr raw_ret = cdn_instruction_get_stack_manipulation(Handle, out error);
-			Cdn.StackManipulation ret = Cdn.StackManipulation.New (raw_ret);
+			Cdn.StackManipulation ret = raw_ret == IntPtr.Zero ? null : (Cdn.StackManipulation) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.StackManipulation), false);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
@@ -62,6 +62,13 @@ namespace Cdn {
 
 		public void SetLocation(int start, int end) {
 			cdn_instruction_set_location(Handle, start, end);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_instruction_recalculate_sparsity(IntPtr raw);
+
+		public void RecalculateSparsity() {
+			cdn_instruction_recalculate_sparsity(Handle);
 		}
 
 		[DllImport("codyn-3.0")]

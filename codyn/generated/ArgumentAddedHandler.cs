@@ -10,7 +10,7 @@ namespace Cdn {
 	public class ArgumentAddedArgs : GLib.SignalArgs {
 		public Cdn.FunctionArgument Argument{
 			get {
-				return (Cdn.FunctionArgument) Args[0];
+				return (Cdn.FunctionArgument) Args [0];
 			}
 		}
 

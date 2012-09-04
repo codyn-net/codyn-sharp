@@ -10,7 +10,7 @@ namespace Cdn {
 	public class SelectorItemPushedArgs : GLib.SignalArgs {
 		public Cdn.Selector P0{
 			get {
-				return (Cdn.Selector) Args[0];
+				return (Cdn.Selector) Args [0];
 			}
 		}
 

@@ -5,6 +5,6 @@ namespace Cdn {
 
 	using System;
 
-	public delegate bool MathStackManipulationFunc(int arguments, out int argdim, out int outargdim, out int extraspace);
+	public delegate bool MathStackManipulationFunc(Cdn.StackArgs inargs, Cdn.StackArg outarg, out int extraspace);
 
 }

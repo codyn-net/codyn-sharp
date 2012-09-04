@@ -229,6 +229,8 @@
   <!-- CdnStack -->
   <remove-node path="/api/namespace/boxed[@cname='CdnStack']/method[@cname='cdn_stack_output_ptr']"/>
   <remove-node path="/api/namespace/boxed[@cname='CdnStack']/method[@cname='cdn_stack_set_output_ptr']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@cname='pop']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackArgs']/field[@cname='num']"/>
 
   <!-- CdnInstructionFunction -->
   <attr path="/api/namespace/object[@cname='CdnInstructionFunction']/constructor[@cname='cdn_instruction_function_new']" name="hidden">true</attr>

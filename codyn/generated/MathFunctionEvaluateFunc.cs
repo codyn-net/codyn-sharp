@@ -5,6 +5,6 @@ namespace Cdn {
 
 	using System;
 
-	public delegate void MathFunctionEvaluateFunc(Cdn.Stack stack, int numargs, out int argdim);
+	public delegate void MathFunctionEvaluateFunc(Cdn.Stack stack, Cdn.StackArgs argdim);
 
 }
