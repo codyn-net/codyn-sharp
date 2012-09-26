@@ -159,7 +159,6 @@
     <enum name="NodeError" cname="CdnNodeError" type="enum">
       <member cname="CDN_NODE_ERROR_CHILD_ALREADY_EXISTS" name="ChildAlreadyExists" />
       <member cname="CDN_NODE_ERROR_CHILD_DOES_NOT_EXIST" name="ChildDoesNotExist" />
-      <member cname="CDN_NODE_ERROR_INTERFACE_IS_PROXY" name="InterfaceIsProxy" />
       <member cname="CDN_NODE_ERROR_CHILD_IN_USE" name="ChildInUse" />
       <member cname="CDN_NODE_ERROR_NUM" name="Num" />
     </enum>
@@ -2487,7 +2486,6 @@
     </object>
     <object name="Node" cname="CdnNode" parent="CdnObject">
       <field name="Priv" cname="priv" type="CdnNodePrivate*" />
-      <property name="Proxy" cname="proxy" type="CdnObject" readable="true" writeable="true" construct-only="true" />
       <signal name="ChildAdded" cname="child-added" when="LAST" field_name="child_added">
         <return-type type="void" />
         <parameters>
@@ -2596,9 +2594,6 @@
       <method name="GetEdges" cname="cdn_node_get_edges">
         <return-type type="const-GSList*" element_type="CdnEdge*" />
       </method>
-      <method name="GetProxy" cname="cdn_node_get_proxy">
-        <return-type type="CdnObject*" />
-      </method>
       <method name="GetSelfEdge" cname="cdn_node_get_self_edge">
         <return-type type="CdnEdge*" />
       </method>
@@ -2614,7 +2609,6 @@
       <constructor cname="cdn_node_new">
         <parameters>
           <parameter type="const-gchar*" name="id" />
-          <parameter type="CdnObject*" name="proxy" />
         </parameters>
       </constructor>
       <method name="Remove" cname="cdn_node_remove">
@@ -2622,18 +2616,6 @@
         <parameters>
           <parameter type="CdnObject*" name="object" />
           <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="SetProxy" cname="cdn_node_set_proxy">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="CdnObject*" name="proxy" />
-        </parameters>
-      </method>
-      <method name="VariableIsProxy" cname="cdn_node_variable_is_proxy">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
       <method name="VerifyRemoveChild" cname="cdn_node_verify_remove_child">
@@ -3373,6 +3355,7 @@
           <parameter type="CdnEmbeddedString*" name="name" />
           <parameter type="GObject*" name="value" />
           <parameter type="gboolean" name="optional" />
+          <parameter type="gboolean" name="fromenv" />
         </parameters>
       </method>
       <method name="DeleteSelector" cname="cdn_parser_context_delete_selector">

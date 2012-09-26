@@ -298,10 +298,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_define(IntPtr raw, IntPtr name, IntPtr value, bool optional);
+		static extern void cdn_parser_context_define(IntPtr raw, IntPtr name, IntPtr value, bool optional, bool fromenv);
 
-		public void Define(Cdn.EmbeddedString name, GLib.Object value, bool optional) {
-			cdn_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle, optional);
+		public void Define(Cdn.EmbeddedString name, GLib.Object value, bool optional, bool fromenv) {
+			cdn_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle, optional, fromenv);
 		}
 
 		[DllImport("codyn-3.0")]

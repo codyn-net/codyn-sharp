@@ -29,7 +29,6 @@ customs = \
 	FunctionPolynomialPiece.custom \
 	Expression.custom \
 	ExpressionTreeIter.custom \
-	Node.custom \
 	EdgeAction.custom \
 	Property.custom \
 	FunctionArgument.custom \

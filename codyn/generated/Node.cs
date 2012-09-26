@@ -15,37 +15,21 @@ namespace Cdn {
 		public Node(IntPtr raw) : base(raw) {}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_node_new(IntPtr id, IntPtr proxy);
+		static extern IntPtr cdn_node_new(IntPtr id);
 
-		public Node (string id, Cdn.Object proxy) : base (IntPtr.Zero)
+		public Node (string id) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Node)) {
 				ArrayList vals = new ArrayList();
 				ArrayList names = new ArrayList();
 				names.Add ("id");
 				vals.Add (new GLib.Value (id));
-				if (proxy != null) {
-					names.Add ("proxy");
-					vals.Add (new GLib.Value (proxy));
-				}
 				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
 				return;
 			}
 			IntPtr native_id = GLib.Marshaller.StringToPtrGStrdup (id);
-			Raw = cdn_node_new(native_id, proxy == null ? IntPtr.Zero : proxy.Handle);
+			Raw = cdn_node_new(native_id);
 			GLib.Marshaller.Free (native_id);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_node_get_proxy(IntPtr raw);
-
-		[GLib.Property ("proxy")]
-		public Cdn.Object Proxy {
-			get  {
-				IntPtr raw_ret = cdn_node_get_proxy(Handle);
-				Cdn.Object ret = GLib.Object.GetObject(raw_ret) as Cdn.Object;
-				return ret;
-			}
 		}
 
 		[GLib.CDeclCallback]
@@ -257,15 +241,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_node_set_proxy(IntPtr raw, IntPtr proxy);
-
-		public bool SetProxy(Cdn.Object proxy) {
-			bool raw_ret = cdn_node_set_proxy(Handle, proxy == null ? IntPtr.Zero : proxy.Handle);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_node_remove(IntPtr raw, IntPtr objekt, out IntPtr error);
 
 		public unsafe bool Remove(Cdn.Object objekt) {
@@ -295,17 +270,6 @@ namespace Cdn {
 			IntPtr raw_ret = cdn_node_find_object(Handle, native_selector);
 			Cdn.Object ret = GLib.Object.GetObject(raw_ret) as Cdn.Object;
 			GLib.Marshaller.Free (native_selector);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern bool cdn_node_variable_is_proxy(IntPtr raw, IntPtr name);
-
-		public bool VariableIsProxy(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cdn_node_variable_is_proxy(Handle, native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 
@@ -435,13 +399,6 @@ namespace Cdn {
 			Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
 			GLib.Marshaller.Free (native_selector);
 			return ret;
-		}
-
-#endregion
-#region Customized extensions
-#line 1 "Node.custom"
-		Node(string id) : this(id, null)
-		{
 		}
 
 #endregion

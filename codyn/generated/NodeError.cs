@@ -11,7 +11,6 @@ namespace Cdn {
 
 		ChildAlreadyExists,
 		ChildDoesNotExist,
-		InterfaceIsProxy,
 		ChildInUse,
 		Num,
 	}
