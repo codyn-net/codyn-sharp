@@ -24,11 +24,7 @@ AC_SUBST(CODYN_CFLAGS)
 
 PKG_CHECK_MODULES(MONO, mono >= 1.0.0)
 
-AC_PATH_PROG(CSC, dmcs, no)
-
-if test "x$CSC" = "xno"; then
-	AC_PATH_PROG(CSC, gmcs, no)
-fi
+AC_PATH_PROGS(CSC, dmcs gmcs, no)
 
 if test "x$CSC" = "xno"; then
 	AC_MSG_ERROR([Your mono installation doesn't expose dmcs or gmcs])
