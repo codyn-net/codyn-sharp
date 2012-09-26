@@ -1,7 +1,7 @@
-AC_INIT(README)
+AC_INIT([codyn-sharp], [3.0])
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(codyn-sharp, 3.0)
+AM_INIT_AUTOMAKE([1.11 tar-ustar dist-xz no-dist-gzip -Wno-portability])
 AM_MAINTAINER_MODE
 
 AC_CONFIG_MACRO_DIR([m4])
