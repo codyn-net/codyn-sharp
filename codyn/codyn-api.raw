@@ -60,12 +60,6 @@
       <member cname="CDN_IO_MODE_OUTPUT" name="Output" value="1 &lt;&lt; 1" />
       <member cname="CDN_IO_MODE_INPUT_OUTPUT" name="InputOutput" value="1 &lt;&lt; 0 | 1 &lt;&lt; 1" />
     </enum>
-    <enum name="LayoutRelation" cname="CdnLayoutRelation" type="flags">
-      <member cname="CDN_LAYOUT_RELATION_ABOVE" name="Above" value="1 &lt;&lt; 0" />
-      <member cname="CDN_LAYOUT_RELATION_BELOW" name="Below" value="1 &lt;&lt; 1" />
-      <member cname="CDN_LAYOUT_RELATION_LEFT_OF" name="LeftOf" value="1 &lt;&lt; 2" />
-      <member cname="CDN_LAYOUT_RELATION_RIGHT_OF" name="RightOf" value="1 &lt;&lt; 3" />
-    </enum>
     <enum name="MathFunctionType" cname="CdnMathFunctionType" type="enum">
       <member cname="CDN_MATH_FUNCTION_TYPE_NONE" name="None" />
       <member cname="CDN_MATH_FUNCTION_TYPE_UNARY_MINUS" name="UnaryMinus" />
@@ -132,6 +126,7 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_ZEROS" name="Zeros" />
       <member cname="CDN_MATH_FUNCTION_TYPE_EYE" name="Eye" />
       <member cname="CDN_MATH_FUNCTION_TYPE_BLOCK" name="Block" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_SCALE" name="Scale" />
       <member cname="CDN_MATH_FUNCTION_TYPE_NUM" name="Num" />
     </enum>
     <enum name="NetworkError" cname="CdnNetworkError" type="enum">
@@ -1515,6 +1510,12 @@
           <parameter type="CdnExpression*" name="expression" />
         </parameters>
       </method>
+      <method name="SetRandAsArgument" cname="cdn_function_set_rand_as_argument" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="rand_as_argument" />
+        </parameters>
+      </method>
     </object>
     <object name="FunctionArgument" cname="CdnFunctionArgument" parent="GInitiallyUnowned">
       <field name="Priv" cname="priv" type="CdnFunctionArgumentPrivate*" />
@@ -1977,6 +1978,9 @@
     </object>
     <object name="InstructionRand" cname="CdnInstructionRand" parent="CdnInstruction">
       <field name="Priv" cname="priv" type="CdnInstructionRandPrivate*" />
+      <method name="GetSeed" cname="cdn_instruction_rand_get_seed">
+        <return-type type="guint" />
+      </method>
       <method name="GetType" cname="cdn_instruction_rand_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -1987,6 +1991,18 @@
       </constructor>
       <method name="Next" cname="cdn_instruction_rand_next">
         <return-type type="void" />
+      </method>
+      <method name="SetSeed" cname="cdn_instruction_rand_set_seed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="seed" />
+        </parameters>
+      </method>
+      <method name="SetUseStreams" cname="cdn_instruction_rand_set_use_streams" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="use" />
+        </parameters>
       </method>
     </object>
     <object name="InstructionVariable" cname="CdnInstructionVariable" parent="CdnInstruction">
@@ -2305,14 +2321,6 @@
     <object name="Layout" cname="CdnLayout" parent="GObject">
       <field name="Priv" cname="priv" type="CdnLayoutPrivate*" />
       <property name="Network" cname="network" type="CdnNetwork" readable="true" writeable="true" construct-only="true" />
-      <method name="Add" cname="cdn_layout_add">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnLayoutable*" name="left" />
-          <parameter type="CdnLayoutable*" name="right" />
-          <parameter type="CdnLayoutRelation" name="relation" />
-        </parameters>
-      </method>
       <method name="GetType" cname="cdn_layout_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -3426,6 +3434,7 @@
           <parameter type="GPtrArray*" name="target" />
           <parameter type="GPtrArray*" name="expression" />
           <parameter type="CdnEmbeddedString*" name="phases" />
+          <parameter type="gboolean" name="integrated" />
         </parameters>
       </method>
       <method name="AddEventSetVariable" cname="cdn_parser_context_add_event_set_variable">
@@ -3451,20 +3460,12 @@
           <parameter type="gboolean" name="is_optional" />
         </parameters>
       </method>
-      <method name="AddLayout" cname="cdn_parser_context_add_layout">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnLayoutRelation" name="relation" />
-          <parameter type="CdnSelector*" name="left" />
-          <parameter type="CdnSelector*" name="right" />
-        </parameters>
-      </method>
       <method name="AddLayoutPosition" cname="cdn_parser_context_add_layout_position">
         <return-type type="void" />
         <parameters>
           <parameter type="CdnSelector*" name="selector" />
-          <parameter type="CdnEmbeddedString*" name="x" />
-          <parameter type="CdnEmbeddedString*" name="y" />
+          <parameter type="GPtrArray*" name="x" />
+          <parameter type="GPtrArray*" name="y" />
           <parameter type="CdnSelector*" name="of" />
           <parameter type="gboolean" name="cartesian" />
         </parameters>
@@ -4893,15 +4894,18 @@
         <return-type type="guint" />
       </method>
     </boxed>
-    <boxed name="StackArg" cname="CdnStackArg">
-      <field name="Dimension" cname="dimension" type="CdnDimension" />
-      <field name="Sparsity" cname="sparsity" type="guint*" />
-      <field name="NumSparse" cname="num_sparse" type="guint" />
+    <boxed name="StackArg" cname="CdnStackArg" opaque="true">
+      <field name="Dimension" cname="dimension" type="CdnDimension" access="public" writeable="true" />
+      <field name="Sparsity" cname="sparsity" type="guint*" access="public" writeable="true" />
+      <field name="NumSparse" cname="num_sparse" type="guint" access="public" writeable="true" />
       <method name="Copy" cname="cdn_stack_arg_copy">
         <return-type type="void" />
         <parameters>
           <parameter type="const-CdnStackArg*" name="src" />
         </parameters>
+      </method>
+      <method name="Destroy" cname="cdn_stack_arg_destroy">
+        <return-type type="void" />
       </method>
       <method name="GetSparsity" cname="cdn_stack_arg_get_sparsity">
         <return-type type="const-guint*" />

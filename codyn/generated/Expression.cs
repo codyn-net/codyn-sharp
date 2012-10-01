@@ -369,7 +369,7 @@ namespace Cdn {
 		public Cdn.StackArg StackArg { 
 			get {
 				IntPtr raw_ret = cdn_expression_get_stack_arg(Handle);
-				Cdn.StackArg ret = Cdn.StackArg.New (raw_ret);
+				Cdn.StackArg ret = raw_ret == IntPtr.Zero ? null : (Cdn.StackArg) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.StackArg), false);
 				return ret;
 			}
 		}

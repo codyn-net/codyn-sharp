@@ -26,6 +26,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_instruction_rand_set_use_streams(bool use);
+
+		public static bool UseStreams { 
+			set {
+				cdn_instruction_rand_set_use_streams(value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_instruction_rand_get_type();
 
 		public static new GLib.GType GType { 
@@ -33,6 +42,23 @@ namespace Cdn {
 				IntPtr raw_ret = cdn_instruction_rand_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern uint cdn_instruction_rand_get_seed(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_instruction_rand_set_seed(IntPtr raw, uint seed);
+
+		public uint Seed { 
+			get {
+				uint raw_ret = cdn_instruction_rand_get_seed(Handle);
+				uint ret = raw_ret;
+				return ret;
+			}
+			set {
+				cdn_instruction_rand_set_seed(Handle, value);
 			}
 		}
 

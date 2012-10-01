@@ -213,6 +213,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_function_set_rand_as_argument(bool rand_as_argument);
+
+		public static bool RandAsArgument { 
+			set {
+				cdn_function_set_rand_as_argument(value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_function_clear_arguments(IntPtr raw, out IntPtr error);
 
 		public unsafe bool ClearArguments() {

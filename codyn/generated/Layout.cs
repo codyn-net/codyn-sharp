@@ -60,13 +60,6 @@ namespace Cdn {
 			cdn_layout_set(Handle, layoutable == null ? IntPtr.Zero : layoutable.Handle, x, y);
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_layout_add(IntPtr raw, IntPtr left, IntPtr right, int relation);
-
-		public void Add(Cdn.Layoutable left, Cdn.Layoutable right, Cdn.LayoutRelation relation) {
-			cdn_layout_add(Handle, left == null ? IntPtr.Zero : left.Handle, right == null ? IntPtr.Zero : right.Handle, (int) relation);
-		}
-
 #endregion
 	}
 }

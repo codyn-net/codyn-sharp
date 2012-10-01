@@ -42,22 +42,16 @@ namespace Cdn {
 		static extern void cdn_math_compute_sparsity(int type, IntPtr inargs, IntPtr outarg);
 
 		public static void ComputeSparsity(Cdn.MathFunctionType type, Cdn.StackArgs inargs, Cdn.StackArg outarg) {
-			IntPtr native_outarg = GLib.Marshaller.StructureToPtrAlloc (outarg);
-			cdn_math_compute_sparsity((int) type, inargs == null ? IntPtr.Zero : inargs.Handle, native_outarg);
-			outarg = Cdn.StackArg.New (native_outarg);
-			Marshal.FreeHGlobal (native_outarg);
+			cdn_math_compute_sparsity((int) type, inargs == null ? IntPtr.Zero : inargs.Handle, outarg == null ? IntPtr.Zero : outarg.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_math_function_get_stack_manipulation(int type, IntPtr inargs, IntPtr outarg, out int extra_space, out IntPtr error);
 
 		public static unsafe bool FunctionGetStackManipulation(Cdn.MathFunctionType type, Cdn.StackArgs inargs, Cdn.StackArg outarg, out int extra_space) {
-			IntPtr native_outarg = GLib.Marshaller.StructureToPtrAlloc (outarg);
 			IntPtr error = IntPtr.Zero;
-			bool raw_ret = cdn_math_function_get_stack_manipulation((int) type, inargs == null ? IntPtr.Zero : inargs.Handle, native_outarg, out extra_space, out error);
+			bool raw_ret = cdn_math_function_get_stack_manipulation((int) type, inargs == null ? IntPtr.Zero : inargs.Handle, outarg == null ? IntPtr.Zero : outarg.Handle, out extra_space, out error);
 			bool ret = raw_ret;
-			outarg = Cdn.StackArg.New (native_outarg);
-			Marshal.FreeHGlobal (native_outarg);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}

@@ -229,10 +229,12 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_layout(IntPtr raw, int relation, IntPtr left, IntPtr right);
+		static extern IntPtr cdn_parser_context_push_string(IntPtr raw);
 
-		public void AddLayout(Cdn.LayoutRelation relation, Cdn.Selector left, Cdn.Selector right) {
-			cdn_parser_context_add_layout(Handle, (int) relation, left == null ? IntPtr.Zero : left.Handle, right == null ? IntPtr.Zero : right.Handle);
+		public Cdn.EmbeddedString PushString() {
+			IntPtr raw_ret = cdn_parser_context_push_string(Handle);
+			Cdn.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedString;
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -275,7 +277,7 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern void cdn_parser_context_add_layout_position(IntPtr raw, IntPtr selector, IntPtr x, IntPtr y, IntPtr of, bool cartesian);
 
-		public void AddLayoutPosition(Cdn.Selector selector, Cdn.EmbeddedString x, Cdn.EmbeddedString y, Cdn.Selector of, bool cartesian) {
+		public void AddLayoutPosition(Cdn.Selector selector, GLib.PtrArray x, GLib.PtrArray y, Cdn.Selector of, bool cartesian) {
 			cdn_parser_context_add_layout_position(Handle, selector == null ? IntPtr.Zero : selector.Handle, x == null ? IntPtr.Zero : x.Handle, y == null ? IntPtr.Zero : y.Handle, of == null ? IntPtr.Zero : of.Handle, cartesian);
 		}
 
@@ -358,10 +360,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_action(IntPtr raw, IntPtr target, IntPtr expression, IntPtr phases);
+		static extern void cdn_parser_context_add_action(IntPtr raw, IntPtr target, IntPtr expression, IntPtr phases, bool integrated);
 
-		public void AddAction(GLib.PtrArray target, GLib.PtrArray expression, Cdn.EmbeddedString phases) {
-			cdn_parser_context_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, expression == null ? IntPtr.Zero : expression.Handle, phases == null ? IntPtr.Zero : phases.Handle);
+		public void AddAction(GLib.PtrArray target, GLib.PtrArray expression, Cdn.EmbeddedString phases, bool integrated) {
+			cdn_parser_context_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, expression == null ? IntPtr.Zero : expression.Handle, phases == null ? IntPtr.Zero : phases.Handle, integrated);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -476,15 +478,6 @@ namespace Cdn {
 
 		public void SetColumn(int start, int end) {
 			cdn_parser_context_set_column(Handle, start, end);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_parser_context_push_string(IntPtr raw);
-
-		public Cdn.EmbeddedString PushString() {
-			IntPtr raw_ret = cdn_parser_context_push_string(Handle);
-			Cdn.EmbeddedString ret = GLib.Object.GetObject(raw_ret) as Cdn.EmbeddedString;
-			return ret;
 		}
 
 		[DllImport("codyn-3.0")]

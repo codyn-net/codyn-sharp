@@ -42,11 +42,8 @@ namespace CdnSharp {
 
 		bool InvokeNative (Cdn.StackArgs inargs, Cdn.StackArg outarg, out int extraspace)
 		{
-			IntPtr native_outarg = GLib.Marshaller.StructureToPtrAlloc (outarg);
 			IntPtr error = IntPtr.Zero;
-			bool result = native_cb (inargs == null ? IntPtr.Zero : inargs.Handle, native_outarg, out extraspace, out error);
-			outarg = Cdn.StackArg.New (native_outarg);
-			Marshal.FreeHGlobal (native_outarg);
+			bool result = native_cb (inargs == null ? IntPtr.Zero : inargs.Handle, outarg == null ? IntPtr.Zero : outarg.Handle, out extraspace, out error);
 			return result;
 		}
 	}
@@ -58,7 +55,7 @@ namespace CdnSharp {
 			error = IntPtr.Zero;
 
 			try {
-				bool __ret = managed (inargs == IntPtr.Zero ? null : (Cdn.StackArgs) GLib.Opaque.GetOpaque (inargs, typeof (Cdn.StackArgs), false), Cdn.StackArg.New (outarg), out extraspace);
+				bool __ret = managed (inargs == IntPtr.Zero ? null : (Cdn.StackArgs) GLib.Opaque.GetOpaque (inargs, typeof (Cdn.StackArgs), false), outarg == IntPtr.Zero ? null : (Cdn.StackArg) GLib.Opaque.GetOpaque (outarg, typeof (Cdn.StackArg), false), out extraspace);
 				if (release_on_call)
 					gch.Free ();
 				return __ret;

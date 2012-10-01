@@ -33,7 +33,7 @@ namespace Cdn {
 
 		public Cdn.StackArg GetPopn(int n) {
 			IntPtr raw_ret = cdn_stack_manipulation_get_popn(Handle, n);
-			Cdn.StackArg ret = Cdn.StackArg.New (raw_ret);
+			Cdn.StackArg ret = raw_ret == IntPtr.Zero ? null : (Cdn.StackArg) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.StackArg), false);
 			return ret;
 		}
 
