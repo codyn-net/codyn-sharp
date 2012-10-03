@@ -15,6 +15,7 @@ namespace Cdn {
 		In = 1 << 1,
 		Out = 1 << 2,
 		Once = 1 << 3,
+		FunctionArgument = 1 << 4,
 		InOut = In | Out,
 	}
 #endregion

@@ -22,6 +22,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_stack_args_append(IntPtr raw, IntPtr arg);
+
+		public void Append(Cdn.StackArg arg) {
+			cdn_stack_args_append(Handle, arg == null ? IntPtr.Zero : arg.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_stack_args_copy(IntPtr raw, IntPtr src);
 
 		public void Copy(Cdn.StackArgs src) {

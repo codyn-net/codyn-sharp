@@ -74,7 +74,6 @@ namespace Cdn {
 		Zeros,
 		Eye,
 		Block,
-		Scale,
 		Num,
 	}
 #endregion

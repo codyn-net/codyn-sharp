@@ -126,7 +126,6 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_ZEROS" name="Zeros" />
       <member cname="CDN_MATH_FUNCTION_TYPE_EYE" name="Eye" />
       <member cname="CDN_MATH_FUNCTION_TYPE_BLOCK" name="Block" />
-      <member cname="CDN_MATH_FUNCTION_TYPE_SCALE" name="Scale" />
       <member cname="CDN_MATH_FUNCTION_TYPE_NUM" name="Num" />
     </enum>
     <enum name="NetworkError" cname="CdnNetworkError" type="enum">
@@ -240,6 +239,7 @@
       <member cname="CDN_VARIABLE_FLAG_IN" name="In" value="1 &lt;&lt; 1" />
       <member cname="CDN_VARIABLE_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
       <member cname="CDN_VARIABLE_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
+      <member cname="CDN_VARIABLE_FLAG_FUNCTION_ARGUMENT" name="FunctionArgument" value="1 &lt;&lt; 4" />
       <member cname="CDN_VARIABLE_FLAG_INOUT" name="Inout" value="CDN_VARIABLE_FLAG_IN | CDN_VARIABLE_FLAG_OUT" />
     </enum>
     <enum name="VariableInterfaceError" cname="CdnVariableInterfaceError" type="enum">
@@ -4942,6 +4942,12 @@
     <boxed name="StackArgs" cname="CdnStackArgs" opaque="true">
       <field name="Num" cname="num" type="gint" access="public" writeable="true" />
       <field name="Args" cname="args" type="CdnStackArg*" access="public" writeable="true" />
+      <method name="Append" cname="cdn_stack_args_append">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-CdnStackArg*" name="arg" />
+        </parameters>
+      </method>
       <method name="Copy" cname="cdn_stack_args_copy">
         <return-type type="void" />
         <parameters>
