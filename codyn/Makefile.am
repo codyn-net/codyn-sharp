@@ -8,7 +8,7 @@ references = $(GLIB_SHARP_LIBS)
 TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 noinst_DATA = $(ASSEMBLY)
-CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
+CLEANFILES = $(ASSEMBLY) $(API)
 DISTCLEANFILES = AssemblyInfo.cs $(ASSEMBLY).mdb
 
 SYMBOLS = codyn.symbols
@@ -56,17 +56,13 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
 endif
 
 if HAS_GAPI_CODEGEN
-generated-stamp: $(API) $(build_customs) $(overrides_sources)
+generated/Node.cs: $(API) $(build_customs) $(overrides_sources)
 	rm -f generated/* &&	\
 	$(GAPI_CODEGEN) --generate $(API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
-	&& cp $(overrides_sources) generated/ \
-	&& touch generated-stamp
-else
-generated-stamp:
-	touch generated-stamp
+	&& cp $(overrides_sources) generated/
 endif
 
-$(ASSEMBLY): $(build_sources) generated-stamp
+$(ASSEMBLY): $(build_sources) generated/Node.cs
 	$(CSC) -debug -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) generated/*.cs
 
 all: $(ASSEMBLY)
