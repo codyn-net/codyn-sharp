@@ -2082,6 +2082,9 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
+      <method name="GetClassId" cname="cdn_integrator_get_class_id">
+        <return-type type="const-gchar*" />
+      </method>
       <method name="GetName" cname="cdn_integrator_get_name">
         <return-type type="const-gchar*" />
       </method>

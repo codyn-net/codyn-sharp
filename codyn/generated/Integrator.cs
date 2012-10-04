@@ -264,6 +264,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_integrator_get_class_id(IntPtr raw);
+
+		public string ClassId { 
+			get {
+				IntPtr raw_ret = cdn_integrator_get_class_id(Handle);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_get_name(IntPtr raw);
 
 		public string Name { 
