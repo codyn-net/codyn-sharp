@@ -92,12 +92,12 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_selector_get_type();
+		static extern IntPtr cdn_selector_get_parts(IntPtr raw);
 
-		public static new GLib.GType GType { 
+		public GLib.SList Parts { 
 			get {
-				IntPtr raw_ret = cdn_selector_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
+				IntPtr raw_ret = cdn_selector_get_parts(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
 				return ret;
 			}
 		}
@@ -109,6 +109,17 @@ namespace Cdn {
 			uint raw_ret = cdn_selector_append_regex_partial(Handle, regex == null ? IntPtr.Zero : regex.Handle);
 			uint ret = raw_ret;
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_selector_get_type();
+
+		public static new GLib.GType GType { 
+			get {
+				IntPtr raw_ret = cdn_selector_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
 		}
 
 		[DllImport("codyn-3.0")]

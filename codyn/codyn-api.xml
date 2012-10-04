@@ -178,6 +178,11 @@
       <member cname="CDN_PARSER_CONTEXT_SELECTOR_TYPE_ACTION" name="Action" />
       <member cname="CDN_PARSER_CONTEXT_SELECTOR_TYPE_FUNCTION" name="Function" />
     </enum>
+    <enum name="SelectorPartType" cname="CdnSelectorPartType" type="enum">
+      <member cname="CDN_SELECTOR_PART_TYPE_IDENTIFIER" name="Identifier" />
+      <member cname="CDN_SELECTOR_PART_TYPE_REGEX" name="Regex" />
+      <member cname="CDN_SELECTOR_PART_TYPE_PSEUDO" name="Pseudo" />
+    </enum>
     <enum name="SelectorPseudoType" cname="CdnSelectorPseudoType" type="enum">
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_ROOT" name="TypeRoot" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_TEMPLATES_ROOT" name="TypeTemplatesRoot" />
@@ -3787,6 +3792,9 @@
           <parameter type="guint" name="id" />
         </parameters>
       </method>
+      <method name="GetParts" cname="cdn_selector_get_parts">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="GetType" cname="cdn_selector_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -4608,6 +4616,20 @@
         <return-type type="void" />
       </method>
     </boxed>
+    <struct name="SelectorPart" cname="CdnSelectorPart" opaque="true">
+      <method name="Identifier" cname="cdn_selector_part_identifier">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="PseudoType" cname="cdn_selector_part_pseudo_type">
+        <return-type type="CdnSelectorPseudoType" />
+      </method>
+      <method name="Regex" cname="cdn_selector_part_regex">
+        <return-type type="GRegex*" />
+      </method>
+      <method name="Type" cname="cdn_selector_part_type">
+        <return-type type="CdnSelectorPartType" />
+      </method>
+    </struct>
     <boxed name="Stack" cname="CdnStack" opaque="true">
       <method name="At" cname="cdn_stack_at">
         <return-type type="gdouble" />
