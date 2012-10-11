@@ -39,14 +39,18 @@ customs = \
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 
+generated_sources = $(wildcard $(srcdir)/generated/*.cs)
+
 EXTRA_DIST =			\
 	AssemblyInfo.cs.in	\
+	$(API)			\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(customs)		\
 	$(sources)		\
 	$(SYMBOLS)		\
-	$(overrides)
+	$(overrides)		\
+	$(generated_sources)
 
 if HAS_GAPI_FIXUP
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
@@ -56,14 +60,14 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
 endif
 
 if HAS_GAPI_CODEGEN
-generated/Node.cs: $(API) $(build_customs) $(overrides_sources)
+generated/Node.cs: $(RAW_API) $(build_customs) $(overrides_sources)
 	rm -f generated/* &&	\
 	$(GAPI_CODEGEN) --generate $(API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
 	&& cp $(overrides_sources) generated/
 endif
 
 $(ASSEMBLY): $(build_sources) generated/Node.cs
-	$(CSC) -debug -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) generated/*.cs
+	$(CSC) -debug -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) $(generated_sources)
 
 all: $(ASSEMBLY)
 
