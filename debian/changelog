@@ -1,3 +1,11 @@
+codyn3-sharp (3.1-1) UNRELEASED; urgency=low
+
+  * New upstream release
+  * First release of the codyn 3 sharp bindings
+
+ -- Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>  Thu, 11 Oct 2012 16:39:05 +0200
+
+
 cpg-network2-sharp (2.1-1) UNRELEASED; urgency=low
 
   * New upstream release 
