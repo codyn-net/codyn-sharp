@@ -15,13 +15,6 @@ if test "x$PKG_CONFIG" = "xno"; then
 fi
 
 # If you change these, update the error text below.
-PKG_CHECK_MODULES(CODYN, \
-	codyn-3.0 >= 3.0
-)
-
-AC_SUBST(CODYN_LIBS)
-AC_SUBST(CODYN_CFLAGS)
-
 PKG_CHECK_MODULES(MONO, mono >= 1.0.0)
 
 AC_PATH_PROGS(CSC, dmcs gmcs, no)
@@ -53,9 +46,6 @@ AC_PATH_PROG(GAPI_FIXUP, gapi2-fixup, no)
 
 AM_CONDITIONAL(HAS_GAPI_CODEGEN, test "x$GAPI_CODEGEN" != "xno")
 AM_CONDITIONAL(HAS_GAPI_FIXUP, test "x$GAPI_FIXUP" != "xno")
-
-CODYN_INCLUDEDIR=$includedir/codyn-3.0
-AC_SUBST(CODYN_INCLUDEDIR)
 
 PKG_CHECK_MODULES(GLIB_SHARP, \
 	glib-sharp-2.0
