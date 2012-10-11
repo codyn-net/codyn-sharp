@@ -15,8 +15,6 @@ if test "x$PKG_CONFIG" = "xno"; then
 fi
 
 # If you change these, update the error text below.
-PKG_CHECK_MODULES(MONO, mono >= 1.0.0)
-
 AC_PATH_PROGS(CSC, dmcs gmcs, no)
 
 if test "x$CSC" = "xno"; then
