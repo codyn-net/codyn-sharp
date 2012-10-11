@@ -1,11 +1,12 @@
-cpg-network/cpg-network-sharp.dll
-cpg-network/cpg-network-sharp.dll.mdb
-cpg-network/generated-stamp
+codyn/Codyn.dll
+codyn/Codyn.dll.mdb
+codyn/generated-stamp
 autom4te.cache
 aclocal.m4
 config.*
 configure
-cpg-network-sharp.pc
+codyn-sharp.pc
+codyn-sharp-3.0.pc
 install-sh
 libtool
 ltmain.sh
@@ -14,3 +15,4 @@ Makefile
 Makefile.in
 missing
 stamp-h1
+INSTALL
