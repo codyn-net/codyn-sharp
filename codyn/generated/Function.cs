@@ -233,17 +233,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_function_get_argument(IntPtr raw, IntPtr name);
-
-		public Cdn.FunctionArgument GetArgument(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cdn_function_get_argument(Handle, native_name);
-			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionArgument;
-			GLib.Marshaller.Free (native_name);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_function_remove_argument(IntPtr raw, IntPtr argument, out IntPtr error);
 
 		public unsafe bool RemoveArgument(Cdn.FunctionArgument argument) {
@@ -301,6 +290,28 @@ namespace Cdn {
 				Cdn.StackManipulation ret = raw_ret == IntPtr.Zero ? null : (Cdn.StackManipulation) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.StackManipulation), false);
 				return ret;
 			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_get_dependencies(IntPtr raw);
+
+		public GLib.SList Dependencies { 
+			get {
+				IntPtr raw_ret = cdn_function_get_dependencies(Handle);
+				GLib.SList ret = new GLib.SList(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_function_get_argument(IntPtr raw, IntPtr name);
+
+		public Cdn.FunctionArgument GetArgument(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cdn_function_get_argument(Handle, native_name);
+			Cdn.FunctionArgument ret = GLib.Object.GetObject(raw_ret) as Cdn.FunctionArgument;
+			GLib.Marshaller.Free (native_name);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]

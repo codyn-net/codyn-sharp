@@ -1468,6 +1468,9 @@
       <method name="GetArguments" cname="cdn_function_get_arguments">
         <return-type type="const-GList*" element_type="CdnFunctionArgument*" />
       </method>
+      <method name="GetDependencies" cname="cdn_function_get_dependencies">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="GetDerivative" cname="cdn_function_get_derivative">
         <return-type type="CdnFunction*" />
         <parameters>
