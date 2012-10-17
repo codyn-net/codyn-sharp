@@ -3794,6 +3794,9 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
+      <method name="GetImplicitChildren" cname="cdn_selector_get_implicit_children">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetInContext" cname="cdn_selector_get_in_context">
         <return-type type="const-GSList*" />
         <parameters>
@@ -4662,7 +4665,7 @@
     </boxed>
     <struct name="SelectorPart" cname="CdnSelectorPart" opaque="true">
       <method name="Identifier" cname="cdn_selector_part_identifier">
-        <return-type type="const-gchar*" />
+        <return-type type="GSList*" />
       </method>
       <method name="PseudoType" cname="cdn_selector_part_pseudo_type">
         <return-type type="CdnSelectorPseudoType" />

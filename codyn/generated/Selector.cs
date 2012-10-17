@@ -150,13 +150,11 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_selector_is_pseudo_name(IntPtr name);
+		static extern IntPtr cdn_selector_get_in_context(IntPtr raw, uint id);
 
-		public static bool IsPseudoName(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cdn_selector_is_pseudo_name(native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
+		public GLib.SList GetInContext(uint id) {
+			IntPtr raw_ret = cdn_selector_get_in_context(Handle, id);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 
@@ -199,20 +197,28 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern bool cdn_selector_get_implicit_children(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_selector_set_implicit_children(IntPtr raw, bool isimplicit);
 
 		public bool ImplicitChildren { 
+			get {
+				bool raw_ret = cdn_selector_get_implicit_children(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
 			set {
 				cdn_selector_set_implicit_children(Handle, value);
 			}
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_selector_get_in_context(IntPtr raw, uint id);
+		static extern uint cdn_selector_append_regex(IntPtr raw, IntPtr regex);
 
-		public GLib.SList GetInContext(uint id) {
-			IntPtr raw_ret = cdn_selector_get_in_context(Handle, id);
-			GLib.SList ret = new GLib.SList(raw_ret);
+		public uint AppendRegex(Cdn.EmbeddedString regex) {
+			uint raw_ret = cdn_selector_append_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
+			uint ret = raw_ret;
 			return ret;
 		}
 
@@ -235,11 +241,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern uint cdn_selector_append_regex(IntPtr raw, IntPtr regex);
+		static extern bool cdn_selector_is_pseudo_name(IntPtr name);
 
-		public uint AppendRegex(Cdn.EmbeddedString regex) {
-			uint raw_ret = cdn_selector_append_regex(Handle, regex == null ? IntPtr.Zero : regex.Handle);
-			uint ret = raw_ret;
+		public static bool IsPseudoName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cdn_selector_is_pseudo_name(native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
 			return ret;
 		}
 

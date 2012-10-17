@@ -13,9 +13,9 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_selector_part_identifier(IntPtr raw);
 
-		public string Identifier() {
+		public GLib.SList Identifier() {
 			IntPtr raw_ret = cdn_selector_part_identifier(Handle);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 
