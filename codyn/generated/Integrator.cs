@@ -286,6 +286,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern bool cdn_integrator_get_terminate(IntPtr raw);
+
+		public bool Terminate { 
+			get {
+				bool raw_ret = cdn_integrator_get_terminate(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_integrator_simulation_step_integrate(IntPtr raw, IntPtr actions);
 
 		public void SimulationStepIntegrate(GLib.SList actions) {

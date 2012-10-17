@@ -2168,6 +2168,9 @@
       <method name="GetState" cname="cdn_integrator_get_state">
         <return-type type="CdnIntegratorState*" />
       </method>
+      <method name="GetTerminate" cname="cdn_integrator_get_terminate">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetTime" cname="cdn_integrator_get_time">
         <return-type type="gdouble" />
       </method>
