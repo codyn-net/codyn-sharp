@@ -167,6 +167,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_annotatable_parse_annotation(IntPtr raw);
+
+		public Cdn.AnnotationInfo ParseAnnotation() {
+			IntPtr raw_ret = cdn_annotatable_parse_annotation(Handle);
+			Cdn.AnnotationInfo ret = raw_ret == IntPtr.Zero ? null : (Cdn.AnnotationInfo) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.AnnotationInfo), false);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_annotatable_get_title(IntPtr raw);
 
 		public string Title { 

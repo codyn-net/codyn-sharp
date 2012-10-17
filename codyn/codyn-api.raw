@@ -7,6 +7,17 @@
 
 -->
   <namespace name="Cdn" library="codyn-3.0">
+    <enum name="AnnotationAnchor" cname="CdnAnnotationAnchor" type="enum">
+      <member cname="CDN_ANNOTATION_ANCHOR_NORTH" name="North" />
+      <member cname="CDN_ANNOTATION_ANCHOR_NORTH_EAST" name="NorthEast" />
+      <member cname="CDN_ANNOTATION_ANCHOR_EAST" name="East" />
+      <member cname="CDN_ANNOTATION_ANCHOR_SOUTH_EAST" name="SouthEast" />
+      <member cname="CDN_ANNOTATION_ANCHOR_SOUTH" name="South" />
+      <member cname="CDN_ANNOTATION_ANCHOR_SOUTH_WEST" name="SouthWest" />
+      <member cname="CDN_ANNOTATION_ANCHOR_WEST" name="West" />
+      <member cname="CDN_ANNOTATION_ANCHOR_NORTH_WEST" name="NorthWest" />
+      <member cname="CDN_ANNOTATION_ANCHOR_CENTER" name="Center" />
+    </enum>
     <enum name="CompileErrorCode" cname="CdnCompileErrorCode" type="enum">
       <member cname="CDN_COMPILE_ERROR_VARIABLE_NOT_FOUND" name="VariableNotFound" />
       <member cname="CDN_COMPILE_ERROR_FUNCTION_NOT_FOUND" name="FunctionNotFound" />
@@ -351,6 +362,9 @@
       </method>
       <method name="GetType" cname="cdn_annotatable_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="ParseAnnotation" cname="cdn_annotatable_parse_annotation">
+        <return-type type="CdnAnnotationInfo*" />
       </method>
       <method name="SetAnnotation" cname="cdn_annotatable_set_annotation">
         <return-type type="void" />
@@ -4365,6 +4379,33 @@
         </parameters>
       </method>
     </object>
+    <boxed name="AnnotationInfo" cname="CdnAnnotationInfo" opaque="true">
+      <method name="Free" cname="cdn_annotation_info_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetAnchor" cname="cdn_annotation_info_get_anchor">
+        <return-type type="CdnAnnotationAnchor" />
+      </method>
+      <method name="GetAnnotation" cname="cdn_annotation_info_get_annotation">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetLocation" cname="cdn_annotation_info_get_location">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gdouble*" name="x" />
+          <parameter type="gdouble*" name="y" />
+        </parameters>
+      </method>
+      <method name="GetRelativeTo" cname="cdn_annotation_info_get_relative_to">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetText" cname="cdn_annotation_info_get_text">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="cdn_annotation_info_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
     <boxed name="Dimension" cname="CdnDimension">
       <field name="Rows" cname="rows" type="gint32" />
       <field name="Columns" cname="columns" type="gint32" />
