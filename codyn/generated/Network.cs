@@ -291,6 +291,23 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern uint cdn_network_get_random_seed(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_network_set_random_seed(IntPtr raw, uint seed);
+
+		public uint RandomSeed { 
+			get {
+				uint raw_ret = cdn_network_get_random_seed(Handle);
+				uint ret = raw_ret;
+				return ret;
+			}
+			set {
+				cdn_network_set_random_seed(Handle, value);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_network_get_type();
 
 		public static new GLib.GType GType { 

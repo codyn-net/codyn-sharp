@@ -2490,6 +2490,9 @@
       <method name="GetPath" cname="cdn_network_get_path">
         <return-type type="gchar*" />
       </method>
+      <method name="GetRandomSeed" cname="cdn_network_get_random_seed">
+        <return-type type="guint" />
+      </method>
       <method name="GetTemplateNode" cname="cdn_network_get_template_node">
         <return-type type="CdnNode*" />
       </method>
@@ -2599,6 +2602,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CdnIntegrator*" name="integrator" />
+        </parameters>
+      </method>
+      <method name="SetRandomSeed" cname="cdn_network_set_random_seed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="seed" />
         </parameters>
       </method>
       <method name="Simplify" cname="cdn_network_simplify">
