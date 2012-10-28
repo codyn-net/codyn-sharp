@@ -2540,28 +2540,29 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
-      <method name="Merge" cname="cdn_network_merge">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnNetwork*" name="other" />
-        </parameters>
-      </method>
       <method name="MergeFromFile" cname="cdn_network_merge_from_file">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="GFile*" name="file" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="MergeFromPath" cname="cdn_network_merge_from_path">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="path" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
+      <method name="MergeFromStream" cname="cdn_network_merge_from_stream">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GInputStream*" name="stream" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="MergeFromString" cname="cdn_network_merge_from_string">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="s" />
           <parameter type="GError**" name="error" />
@@ -3556,8 +3557,8 @@
       <method name="Define" cname="cdn_parser_context_define">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnEmbeddedString*" name="name" />
-          <parameter type="GObject*" name="value" />
+          <parameter type="GPtrArray*" name="nameptr" />
+          <parameter type="GPtrArray*" name="valueptr" />
           <parameter type="gboolean" name="optional" />
           <parameter type="gboolean" name="fromenv" />
         </parameters>
@@ -3890,8 +3891,8 @@
       <method name="SetIoSetting" cname="cdn_parser_context_set_io_setting">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnEmbeddedString*" name="name" />
-          <parameter type="CdnEmbeddedString*" name="value" />
+          <parameter type="GPtrArray*" name="nameptr" />
+          <parameter type="GPtrArray*" name="valueptr" />
         </parameters>
       </method>
       <method name="SetLine" cname="cdn_parser_context_set_line">

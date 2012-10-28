@@ -143,6 +143,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern double cdn_network_step(IntPtr raw, double timestep);
+
+		public double Step(double timestep) {
+			double raw_ret = cdn_network_step(Handle, timestep);
+			double ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_network_load_from_string(IntPtr raw, IntPtr s, out IntPtr error);
 
 		public unsafe bool LoadFromString(string s) {
@@ -198,14 +207,16 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern unsafe void cdn_network_merge_from_path(IntPtr raw, IntPtr path, out IntPtr error);
+		static extern unsafe bool cdn_network_merge_from_path(IntPtr raw, IntPtr path, out IntPtr error);
 
-		public unsafe void MergeFromPath(string path) {
+		public unsafe bool MergeFromPath(string path) {
 			IntPtr native_path = GLib.Marshaller.StringToPtrGStrdup (path);
 			IntPtr error = IntPtr.Zero;
-			cdn_network_merge_from_path(Handle, native_path, out error);
+			bool raw_ret = cdn_network_merge_from_path(Handle, native_path, out error);
+			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_path);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -216,14 +227,16 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern unsafe void cdn_network_merge_from_string(IntPtr raw, IntPtr s, out IntPtr error);
+		static extern unsafe bool cdn_network_merge_from_string(IntPtr raw, IntPtr s, out IntPtr error);
 
-		public unsafe void MergeFromString(string s) {
+		public unsafe bool MergeFromString(string s) {
 			IntPtr native_s = GLib.Marshaller.StringToPtrGStrdup (s);
 			IntPtr error = IntPtr.Zero;
-			cdn_network_merge_from_string(Handle, native_s, out error);
+			bool raw_ret = cdn_network_merge_from_string(Handle, native_s, out error);
+			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_s);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -237,13 +250,6 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_path);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_network_merge(IntPtr raw, IntPtr other);
-
-		public void Merge(Cdn.Network other) {
-			cdn_network_merge(Handle, other == null ? IntPtr.Zero : other.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -316,15 +322,6 @@ namespace Cdn {
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern double cdn_network_step(IntPtr raw, double timestep);
-
-		public double Step(double timestep) {
-			double raw_ret = cdn_network_step(Handle, timestep);
-			double ret = raw_ret;
-			return ret;
 		}
 
 #endregion

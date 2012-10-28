@@ -65,6 +65,7 @@
 
   <!-- CdnVariable -->
   <attr path="/api/namespace/object[@cname='CdnVariable']/constructor" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_actions']/return-type" name="element_type">CdnEdgeAction*</attr>
 
   <!-- CdnNode -->
   <attr path="/api/namespace/object[@cname='CdnNode']/method[@cname='cdn_node_foreach']" name="hidden">true</attr>

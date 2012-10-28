@@ -238,10 +238,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_io_setting(IntPtr raw, IntPtr name, IntPtr value);
+		static extern void cdn_parser_context_set_io_setting(IntPtr raw, IntPtr nameptr, IntPtr valueptr);
 
-		public void SetIoSetting(Cdn.EmbeddedString name, Cdn.EmbeddedString value) {
-			cdn_parser_context_set_io_setting(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle);
+		public void SetIoSetting(GLib.PtrArray nameptr, GLib.PtrArray valueptr) {
+			cdn_parser_context_set_io_setting(Handle, nameptr == null ? IntPtr.Zero : nameptr.Handle, valueptr == null ? IntPtr.Zero : valueptr.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -300,10 +300,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_define(IntPtr raw, IntPtr name, IntPtr value, bool optional, bool fromenv);
+		static extern void cdn_parser_context_define(IntPtr raw, IntPtr nameptr, IntPtr valueptr, bool optional, bool fromenv);
 
-		public void Define(Cdn.EmbeddedString name, GLib.Object value, bool optional, bool fromenv) {
-			cdn_parser_context_define(Handle, name == null ? IntPtr.Zero : name.Handle, value == null ? IntPtr.Zero : value.Handle, optional, fromenv);
+		public void Define(GLib.PtrArray nameptr, GLib.PtrArray valueptr, bool optional, bool fromenv) {
+			cdn_parser_context_define(Handle, nameptr == null ? IntPtr.Zero : nameptr.Handle, valueptr == null ? IntPtr.Zero : valueptr.Handle, optional, fromenv);
 		}
 
 		[DllImport("codyn-3.0")]

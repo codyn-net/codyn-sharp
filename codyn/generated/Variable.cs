@@ -499,10 +499,10 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_variable_get_actions(IntPtr raw);
 
-		public GLib.SList Actions { 
+		public Cdn.EdgeAction[] Actions { 
 			get {
 				IntPtr raw_ret = cdn_variable_get_actions(Handle);
-				GLib.SList ret = new GLib.SList(raw_ret);
+				Cdn.EdgeAction[] ret = (Cdn.EdgeAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.EdgeAction));
 				return ret;
 			}
 		}
