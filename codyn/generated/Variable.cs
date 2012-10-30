@@ -384,15 +384,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_variable_copy(IntPtr raw);
-
-		public Cdn.Variable Copy() {
-			IntPtr raw_ret = cdn_variable_copy(Handle);
-			Cdn.Variable ret = GLib.Object.GetObject(raw_ret, true) as Cdn.Variable;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern bool cdn_variable_get_integrated(IntPtr raw);
 
 		[DllImport("codyn-3.0")]
@@ -633,6 +624,22 @@ namespace Cdn {
 				g_object_ref_sink (Raw);
 			}
 		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_variable_copy(IntPtr raw);
+
+		public Cdn.Variable Copy() {
+			IntPtr raw_ret = cdn_variable_copy(Handle);
+
+			if (raw_ret != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
+			}
+
+			Cdn.Variable ret = GLib.Object.GetObject(raw_ret, true) as Cdn.Variable;
+			return ret;
+		}
+
 
 		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_variable_get_values(IntPtr raw, out int numr, out int numc);

@@ -1205,9 +1205,6 @@
           <parameter type="CdnCompileError*" name="error" />
         </parameters>
       </method>
-      <method name="Copy" cname="cdn_expression_copy">
-        <return-type type="CdnExpression*" owned="true" />
-      </method>
       <method name="DependsOn" cname="cdn_expression_depends_on">
         <return-type type="gboolean" />
         <parameters>
@@ -3946,9 +3943,6 @@
         <parameters>
           <parameter type="CdnCompileError*" name="error" />
         </parameters>
-      </method>
-      <method name="Copy" cname="cdn_variable_copy">
-        <return-type type="CdnVariable*" owned="true" />
       </method>
       <method name="Equal" cname="cdn_variable_equal">
         <return-type type="gboolean" />

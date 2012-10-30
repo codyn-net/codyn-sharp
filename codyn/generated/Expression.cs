@@ -238,15 +238,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_expression_copy(IntPtr raw);
-
-		public Cdn.Expression Copy() {
-			IntPtr raw_ret = cdn_expression_copy(Handle);
-			Cdn.Expression ret = GLib.Object.GetObject(raw_ret, true) as Cdn.Expression;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern void cdn_expression_recalculate_sparsity(IntPtr raw);
 
 		public void RecalculateSparsity() {
@@ -451,6 +442,21 @@ namespace Cdn {
 			{
 				g_object_ref_sink (Raw);
 			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_copy(IntPtr raw);
+
+		public Cdn.Expression Copy() {
+			IntPtr raw_ret = cdn_expression_copy(Handle);
+
+			if (raw_ret != IntPtr.Zero)
+			{
+				g_object_ref_sink (Raw);
+			}
+
+			Cdn.Expression ret = GLib.Object.GetObject(raw_ret, true) as Cdn.Expression;
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]

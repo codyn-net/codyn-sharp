@@ -30,7 +30,6 @@ customs = \
 	Expression.custom \
 	ExpressionTreeIter.custom \
 	EdgeAction.custom \
-	Property.custom \
 	FunctionArgument.custom \
 	InstructionFunction.custom \
 	InputFile.custom \
