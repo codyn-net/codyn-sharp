@@ -38,8 +38,6 @@ customs = \
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 
-generated_sources = $(wildcard $(srcdir)/generated/*.cs)
-
 EXTRA_DIST =			\
 	AssemblyInfo.cs.in	\
 	$(API)			\
@@ -66,7 +64,7 @@ generated/Node.cs: $(RAW_API) $(build_customs) $(overrides_sources)
 endif
 
 $(ASSEMBLY): $(build_sources) generated/Node.cs
-	$(CSC) -debug -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) $(generated_sources)
+	$(CSC) -debug -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) $(wildcard $(srcdir)/generated/*.cs)
 
 all: $(ASSEMBLY)
 
