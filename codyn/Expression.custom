@@ -93,32 +93,3 @@
 
 			cdn_expression_set_instructions_take(Handle, ptr.Handle);
 		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_expression_evaluate_values(IntPtr raw, out int numr, out int numc);
-
-		public double[,] EvaluateValues()
-		{
-			int numr;
-			int numc;
-			double[] data;
-
-			IntPtr raw_ret = cdn_expression_evaluate_values(Handle, out numr, out numc);
-
-			data = new double[numr * numc];
-			Marshal.Copy(raw_ret, data, 0, numr * numc);
-
-			double[,] ret = new double[numr, numc];
-			int idx = 0;
-
-			for (int r = 0; r < numr; ++r)
-			{
-				for (int c = 0; c < numc; ++c)
-				{
-					ret[r, c] = data[idx++];
-				}
-			}
-
-			return ret;
-		}
-

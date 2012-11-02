@@ -19,18 +19,21 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[GLib.Property ("initial-phase")]
-		public string InitialPhase {
-			get {
-				GLib.Value val = GetProperty ("initial-phase");
-				string ret = (string) val;
-				val.Dispose ();
+		[DllImport("codyn-3.0")]
+		static extern double cdn_integrator_get_real_time(IntPtr raw);
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_integrator_set_real_time(IntPtr raw, double real_time);
+
+		[GLib.Property ("real-time")]
+		public double RealTime {
+			get  {
+				double raw_ret = cdn_integrator_get_real_time(Handle);
+				double ret = raw_ret;
 				return ret;
 			}
-			set {
-				GLib.Value val = new GLib.Value(value);
-				SetProperty("initial-phase", val);
-				val.Dispose ();
+			set  {
+				cdn_integrator_set_real_time(Handle, value);
 			}
 		}
 
@@ -49,24 +52,6 @@ namespace Cdn {
 			}
 			set  {
 				cdn_integrator_set_state(Handle, value == null ? IntPtr.Zero : value.Handle);
-			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern double cdn_integrator_get_real_time(IntPtr raw);
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_integrator_set_real_time(IntPtr raw, double real_time);
-
-		[GLib.Property ("real-time")]
-		public double RealTime {
-			get  {
-				double raw_ret = cdn_integrator_get_real_time(Handle);
-				double ret = raw_ret;
-				return ret;
-			}
-			set  {
-				cdn_integrator_set_real_time(Handle, value);
 			}
 		}
 

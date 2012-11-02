@@ -260,15 +260,20 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_variable_set_values(IntPtr raw, out double values, IntPtr dim);
+		static extern IntPtr cdn_variable_get_values(IntPtr raw);
 
-		public double SetValues(Cdn.Dimension dim) {
-			double values;
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			cdn_variable_set_values(Handle, out values, native_dim);
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return values;
+		[DllImport("codyn-3.0")]
+		static extern void cdn_variable_set_values(IntPtr raw, IntPtr values);
+
+		public Cdn.Matrix Values { 
+			get {
+				IntPtr raw_ret = cdn_variable_get_values(Handle);
+				Cdn.Matrix ret = raw_ret == IntPtr.Zero ? null : (Cdn.Matrix) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Matrix), false);
+				return ret;
+			}
+			set {
+				cdn_variable_set_values(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
 		}
 
 		[DllImport("codyn-3.0")]
@@ -300,15 +305,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_variable_get_values_flat(IntPtr raw, out int num);
-
-		public double GetValuesFlat(out int num) {
-			double raw_ret = cdn_variable_get_values_flat(Handle, out num);
-			double ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern void cdn_variable_flags_from_string(IntPtr flags, out int add_flags, out int remove_flags);
 
 		public static void FlagsFromString(string flags, out Cdn.VariableFlags add_flags, out Cdn.VariableFlags remove_flags) {
@@ -333,28 +329,6 @@ namespace Cdn {
 
 		public void AddFlags(Cdn.VariableFlags flags) {
 			cdn_variable_add_flags(Handle, (int) flags);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_variable_set_update_value(IntPtr raw, double value, IntPtr dim);
-
-		public void SetUpdateValue(double value, Cdn.Dimension dim) {
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			cdn_variable_set_update_value(Handle, value, native_dim);
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_variable_set_values_flat(IntPtr raw, out double values, int numvals, IntPtr dim);
-
-		public double SetValuesFlat(int numvals, Cdn.Dimension dim) {
-			double values;
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			cdn_variable_set_values_flat(Handle, out values, numvals, native_dim);
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return values;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -421,15 +395,14 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_variable_get_update(IntPtr raw, IntPtr dim);
+		static extern IntPtr cdn_variable_get_update(IntPtr raw);
 
-		public double GetUpdate(Cdn.Dimension dim) {
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			double raw_ret = cdn_variable_get_update(Handle, native_dim);
-			double ret = raw_ret;
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return ret;
+		public Cdn.Matrix Update { 
+			get {
+				IntPtr raw_ret = cdn_variable_get_update(Handle);
+				Cdn.Matrix ret = raw_ret == IntPtr.Zero ? null : (Cdn.Matrix) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Matrix), false);
+				return ret;
+			}
 		}
 
 		[DllImport("codyn-3.0")]
@@ -639,39 +612,6 @@ namespace Cdn {
 			Cdn.Variable ret = GLib.Object.GetObject(raw_ret, true) as Cdn.Variable;
 			return ret;
 		}
-
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_variable_get_values(IntPtr raw, out int numr, out int numc);
-
-		public double[,] Values
-		{
-			get
-			{
-				int numr;
-				int numc;
-				double[] data;
-
-				IntPtr raw_ret = cdn_variable_get_values(Handle, out numr, out numc);
-
-				data = new double[numr * numc];
-				Marshal.Copy(raw_ret, data, 0, numr * numc);
-
-				double[,] ret = new double[numr, numc];
-				int idx = 0;
-
-				for (int r = 0; r < numr; ++r)
-				{
-					for (int c = 0; c < numc; ++c)
-					{
-						ret[r, c] = data[idx++];
-					}
-				}
-
-				return ret;
-			}
-		}
-
 
 #endregion
 	}

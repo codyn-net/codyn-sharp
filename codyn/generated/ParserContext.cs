@@ -374,6 +374,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_unapply_template(IntPtr raw, IntPtr templates, IntPtr targets);
+
+		public void UnapplyTemplate(Cdn.Selector templates, Cdn.Selector targets) {
+			cdn_parser_context_unapply_template(Handle, templates == null ? IntPtr.Zero : templates.Handle, targets == null ? IntPtr.Zero : targets.Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_parser_context_add_interface(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr property_name, bool is_optional);
 
 		public void AddInterface(Cdn.EmbeddedString name, Cdn.EmbeddedString child_name, Cdn.EmbeddedString property_name, bool is_optional) {
@@ -663,6 +670,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_parser_context_set_node_state(IntPtr raw, IntPtr states);
+
+		public GLib.PtrArray NodeState { 
+			set {
+				cdn_parser_context_set_node_state(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_parser_context_get_last_selector_item_column(IntPtr raw, out int start, out int end);
 
 		public void GetLastSelectorItemColumn(out int start, out int end) {
@@ -693,17 +709,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_add_variable(IntPtr raw, IntPtr nameptr, IntPtr expressionptr, int add_flags, int remove_flags, bool assign_optional, IntPtr constraint);
+		static extern void cdn_parser_context_add_variable(IntPtr raw, IntPtr nameptr, IntPtr expressionptr, int add_flags, int remove_flags, bool assign_optional, IntPtr constraint, IntPtr state);
 
-		public void AddVariable(GLib.PtrArray nameptr, GLib.PtrArray expressionptr, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags, bool assign_optional, Cdn.EmbeddedString constraint) {
-			cdn_parser_context_add_variable(Handle, nameptr == null ? IntPtr.Zero : nameptr.Handle, expressionptr == null ? IntPtr.Zero : expressionptr.Handle, (int) add_flags, (int) remove_flags, assign_optional, constraint == null ? IntPtr.Zero : constraint.Handle);
+		public void AddVariable(GLib.PtrArray nameptr, GLib.PtrArray expressionptr, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags, bool assign_optional, Cdn.EmbeddedString constraint, Cdn.EmbeddedString state) {
+			cdn_parser_context_add_variable(Handle, nameptr == null ? IntPtr.Zero : nameptr.Handle, expressionptr == null ? IntPtr.Zero : expressionptr.Handle, (int) add_flags, (int) remove_flags, assign_optional, constraint == null ? IntPtr.Zero : constraint.Handle, state == null ? IntPtr.Zero : state.Handle);
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_unapply_template(IntPtr raw, IntPtr templates, IntPtr targets);
+		static extern void cdn_parser_context_set_variable(IntPtr raw, IntPtr selectorptr, IntPtr expressionptr, int add_flags, int remove_flags);
 
-		public void UnapplyTemplate(Cdn.Selector templates, Cdn.Selector targets) {
-			cdn_parser_context_unapply_template(Handle, templates == null ? IntPtr.Zero : templates.Handle, targets == null ? IntPtr.Zero : targets.Handle);
+		public void SetVariable(GLib.PtrArray selectorptr, GLib.PtrArray expressionptr, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags) {
+			cdn_parser_context_set_variable(Handle, selectorptr == null ? IntPtr.Zero : selectorptr.Handle, expressionptr == null ? IntPtr.Zero : expressionptr.Handle, (int) add_flags, (int) remove_flags);
 		}
 
 		[DllImport("codyn-3.0")]
@@ -803,13 +819,6 @@ namespace Cdn {
 			set {
 				cdn_parser_context_set_integrator(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_parser_context_set_variable(IntPtr raw, IntPtr selectorptr, IntPtr expressionptr, int add_flags, int remove_flags);
-
-		public void SetVariable(GLib.PtrArray selectorptr, GLib.PtrArray expressionptr, Cdn.VariableFlags add_flags, Cdn.VariableFlags remove_flags) {
-			cdn_parser_context_set_variable(Handle, selectorptr == null ? IntPtr.Zero : selectorptr.Handle, expressionptr == null ? IntPtr.Zero : expressionptr.Handle, (int) add_flags, (int) remove_flags);
 		}
 
 #endregion

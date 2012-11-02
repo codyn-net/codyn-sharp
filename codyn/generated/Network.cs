@@ -143,15 +143,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_network_step(IntPtr raw, double timestep);
-
-		public double Step(double timestep) {
-			double raw_ret = cdn_network_step(Handle, timestep);
-			double ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern unsafe bool cdn_network_load_from_string(IntPtr raw, IntPtr s, out IntPtr error);
 
 		public unsafe bool LoadFromString(string s) {
@@ -322,6 +313,15 @@ namespace Cdn {
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern double cdn_network_step(IntPtr raw, double timestep);
+
+		public double Step(double timestep) {
+			double raw_ret = cdn_network_step(Handle, timestep);
+			double ret = raw_ret;
+			return ret;
 		}
 
 #endregion

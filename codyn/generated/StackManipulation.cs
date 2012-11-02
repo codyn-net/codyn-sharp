@@ -38,6 +38,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_stack_manipulation_get_push(IntPtr raw);
+
+		public Cdn.StackArg Push { 
+			get {
+				IntPtr raw_ret = cdn_stack_manipulation_get_push(Handle);
+				Cdn.StackArg ret = raw_ret == IntPtr.Zero ? null : (Cdn.StackArg) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.StackArg), false);
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_stack_manipulation_get_type();
 
 		public static GLib.GType GType { 

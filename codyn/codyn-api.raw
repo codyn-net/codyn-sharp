@@ -591,6 +591,12 @@
           <parameter type="CdnPhaseable*" name="dest" />
         </parameters>
       </method>
+      <method name="Equal" cname="cdn_phaseable_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnPhaseable*" name="other" />
+        </parameters>
+      </method>
       <method name="Foreach" cname="cdn_phaseable_foreach">
         <return-type type="void" />
         <parameters>
@@ -1122,7 +1128,7 @@
       <field name="Priv" cname="priv" type="CdnEventPrivate*" />
       <property name="Condition" cname="condition" type="CdnExpression" readable="true" writeable="true" construct="true" />
       <property name="Approximation" cname="approximation" type="gdouble" readable="true" writeable="true" construct="true" />
-      <property name="GotoPhase" cname="goto-phase" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="GotoState" cname="goto-state" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Terminal" cname="terminal" type="gboolean" readable="true" writeable="true" construct="true" />
       <implements>
         <interface cname="CdnPhaseable" />
@@ -1143,7 +1149,7 @@
       <method name="GetCondition" cname="cdn_event_get_condition">
         <return-type type="CdnExpression*" />
       </method>
-      <method name="GetGotoPhase" cname="cdn_event_get_goto_phase">
+      <method name="GetGotoState" cname="cdn_event_get_goto_state">
         <return-type type="const-gchar*" />
       </method>
       <method name="GetTerminal" cname="cdn_event_get_terminal">
@@ -1177,10 +1183,10 @@
           <parameter type="CdnExpression*" name="condition" />
         </parameters>
       </method>
-      <method name="SetGotoPhase" cname="cdn_event_set_goto_phase">
+      <method name="SetGotoState" cname="cdn_event_set_goto_state">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="phase" />
+          <parameter type="const-gchar*" name="state" />
         </parameters>
       </method>
       <method name="SetTerminal" cname="cdn_event_set_terminal">
@@ -1228,28 +1234,13 @@
         <return-type type="gdouble" />
       </method>
       <method name="EvaluateValues" cname="cdn_expression_evaluate_values">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="CdnDimension*" name="dim" />
-        </parameters>
-      </method>
-      <method name="EvaluateValuesFlat" cname="cdn_expression_evaluate_values_flat">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="gint*" name="num" />
-        </parameters>
+        <return-type type="const-CdnMatrix*" />
       </method>
       <method name="ForceResetCache" cname="cdn_expression_force_reset_cache">
         <return-type type="void" />
       </method>
       <method name="GetAsString" cname="cdn_expression_get_as_string">
         <return-type type="const-gchar*" />
-      </method>
-      <method name="GetCache" cname="cdn_expression_get_cache">
-        <return-type type="gdouble*" />
-        <parameters>
-          <parameter type="CdnDimension*" name="dim" />
-        </parameters>
       </method>
       <method name="GetDependencies" cname="cdn_expression_get_dependencies">
         <return-type type="const-GSList*" />
@@ -1380,16 +1371,7 @@
       <method name="SetValues" cname="cdn_expression_set_values">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gdouble*" name="values" />
-          <parameter type="const-CdnDimension*" name="dim" />
-        </parameters>
-      </method>
-      <method name="SetValuesFlat" cname="cdn_expression_set_values_flat">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gdouble*" name="values" />
-          <parameter type="gint" name="numvals" />
-          <parameter type="const-CdnDimension*" name="dim" />
+          <parameter type="const-CdnMatrix*" name="values" />
         </parameters>
       </method>
     </object>
@@ -2111,7 +2093,6 @@
         </parameters>
       </signal>
       <property name="State" cname="state" type="CdnIntegratorState" readable="true" />
-      <property name="InitialPhase" cname="initial-phase" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="RealTime" cname="real-time" type="gdouble" readable="true" writeable="true" construct="true" />
       <virtual_method name="Run" cname="run">
         <return-type type="void" />
@@ -2254,7 +2235,6 @@
         </parameters>
       </signal>
       <property name="Object" cname="object" type="CdnObject" readable="true" writeable="true" construct-only="true" />
-      <property name="Phase" cname="phase" type="gchar*" readable="true" writeable="true" construct="true" />
       <method name="AllVariables" cname="cdn_integrator_state_all_variables">
         <return-type type="const-GSList*" />
       </method>
@@ -2275,9 +2255,6 @@
       </method>
       <method name="GetObject" cname="cdn_integrator_state_get_object">
         <return-type type="CdnObject*" />
-      </method>
-      <method name="GetPhase" cname="cdn_integrator_state_get_phase">
-        <return-type type="const-gchar*" />
       </method>
       <method name="GetType" cname="cdn_integrator_state_get_type" shared="true">
         <return-type type="GType" />
@@ -2314,10 +2291,11 @@
       <method name="RandInstructions" cname="cdn_integrator_state_rand_instructions">
         <return-type type="const-GSList*" />
       </method>
-      <method name="SetPhase" cname="cdn_integrator_state_set_phase">
+      <method name="SetState" cname="cdn_integrator_state_set_state">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="phase" />
+          <parameter type="CdnNode*" name="node" />
+          <parameter type="const-gchar*" name="st" />
         </parameters>
       </method>
       <method name="Update" cname="cdn_integrator_state_update">
@@ -2726,6 +2704,7 @@
           <parameter name="p1" type="gpointer" />
         </parameters>
       </signal>
+      <property name="State" cname="state" type="gchar*" readable="true" writeable="true" />
       <virtual_method name="Add" cname="add">
         <return-type type="gboolean" />
         <parameters>
@@ -2807,6 +2786,9 @@
       <method name="GetSelfEdge" cname="cdn_node_get_self_edge">
         <return-type type="CdnEdgeForward*" />
       </method>
+      <method name="GetState" cname="cdn_node_get_state">
+        <return-type type="const-gchar*" />
+      </method>
       <method name="GetType" cname="cdn_node_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -2826,6 +2808,12 @@
         <parameters>
           <parameter type="CdnObject*" name="object" />
           <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SetState" cname="cdn_node_set_state">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="state" />
         </parameters>
       </method>
       <method name="VerifyRemoveChild" cname="cdn_node_verify_remove_child">
@@ -3524,6 +3512,7 @@
           <parameter type="CdnVariableFlags" name="remove_flags" />
           <parameter type="gboolean" name="assign_optional" />
           <parameter type="CdnEmbeddedString*" name="constraint" />
+          <parameter type="CdnEmbeddedString*" name="state" />
         </parameters>
       </method>
       <method name="ApplyTemplate" cname="cdn_parser_context_apply_template">
@@ -3902,6 +3891,12 @@
           <parameter type="gint" name="lineno" />
         </parameters>
       </method>
+      <method name="SetNodeState" cname="cdn_parser_context_set_node_state">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GPtrArray*" name="states" />
+        </parameters>
+      </method>
       <method name="SetStartToken" cname="cdn_parser_context_set_start_token">
         <return-type type="void" />
         <parameters>
@@ -4192,25 +4187,13 @@
         <return-type type="GType" />
       </method>
       <method name="GetUpdate" cname="cdn_variable_get_update">
-        <return-type type="gdouble*" />
-        <parameters>
-          <parameter type="CdnDimension*" name="dim" />
-        </parameters>
+        <return-type type="CdnMatrix*" />
       </method>
       <method name="GetValue" cname="cdn_variable_get_value">
         <return-type type="gdouble" />
       </method>
       <method name="GetValues" cname="cdn_variable_get_values">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="CdnDimension*" name="dim" />
-        </parameters>
-      </method>
-      <method name="GetValuesFlat" cname="cdn_variable_get_values_flat">
-        <return-type type="const-gdouble*" />
-        <parameters>
-          <parameter type="gint*" name="num" />
-        </parameters>
+        <return-type type="const-CdnMatrix*" />
       </method>
       <constructor cname="cdn_variable_new">
         <parameters>
@@ -4264,19 +4247,6 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
-      <method name="SetUpdate" cname="cdn_variable_set_update">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gdouble*" name="values" />
-        </parameters>
-      </method>
-      <method name="SetUpdateValue" cname="cdn_variable_set_update_value">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gdouble" name="value" />
-          <parameter type="const-CdnDimension*" name="dim" />
-        </parameters>
-      </method>
       <method name="SetValue" cname="cdn_variable_set_value">
         <return-type type="void" />
         <parameters>
@@ -4286,16 +4256,7 @@
       <method name="SetValues" cname="cdn_variable_set_values">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gdouble*" name="values" />
-          <parameter type="const-CdnDimension*" name="dim" />
-        </parameters>
-      </method>
-      <method name="SetValuesFlat" cname="cdn_variable_set_values_flat">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gdouble*" name="values" />
-          <parameter type="gint" name="numvals" />
-          <parameter type="const-CdnDimension*" name="dim" />
+          <parameter type="const-CdnMatrix*" name="values" />
         </parameters>
       </method>
     </object>
@@ -4780,6 +4741,13 @@
           <parameter type="GHashTable*" name="table" />
         </parameters>
       </method>
+      <method name="SwapChildren" cname="cdn_expression_tree_iter_swap_children">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="first" />
+          <parameter type="gint" name="second" />
+        </parameters>
+      </method>
       <method name="TakeChild" cname="cdn_expression_tree_iter_take_child">
         <return-type type="void" />
         <parameters>
@@ -4824,6 +4792,91 @@
         </parameters>
       </constructor>
     </struct>
+    <boxed name="Matrix" cname="CdnMatrix" opaque="true">
+      <field name="Values" cname="values" type="gdouble*" access="public" writeable="true" />
+      <field name="Dimension" cname="dimension" type="CdnDimension" access="public" writeable="true" />
+      <method name="Clear" cname="cdn_matrix_clear">
+        <return-type type="void" />
+      </method>
+      <method name="Copy" cname="cdn_matrix_copy">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-CdnMatrix*" name="src" />
+        </parameters>
+      </method>
+      <method name="CopyTo" cname="cdn_matrix_copy_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble*" name="values" />
+        </parameters>
+      </method>
+      <method name="Destroy" cname="cdn_matrix_destroy">
+        <return-type type="void" />
+      </method>
+      <method name="Dimension" cname="cdn_matrix_dimension">
+        <return-type type="const-CdnDimension*" />
+      </method>
+      <method name="Free" cname="cdn_matrix_free">
+        <return-type type="void" />
+      </method>
+      <method name="Get" cname="cdn_matrix_get">
+        <return-type type="const-gdouble*" />
+      </method>
+      <method name="GetAt" cname="cdn_matrix_get_at">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="gint" name="r" />
+          <parameter type="gint" name="c" />
+        </parameters>
+      </method>
+      <method name="GetFlat" cname="cdn_matrix_get_flat">
+        <return-type type="const-gdouble*" />
+        <parameters>
+          <parameter type="gint*" name="length" />
+        </parameters>
+      </method>
+      <method name="GetMemory" cname="cdn_matrix_get_memory">
+        <return-type type="gdouble*" />
+      </method>
+      <method name="GetType" cname="cdn_matrix_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cdn_matrix_new">
+        <parameters>
+          <parameter type="const-gdouble*" name="values" />
+          <parameter type="const-CdnDimension*" name="dimension" />
+        </parameters>
+      </constructor>
+      <constructor cname="cdn_matrix_new_one">
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </constructor>
+      <method name="Set" cname="cdn_matrix_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gdouble*" name="values" />
+          <parameter type="const-CdnDimension*" name="dimension" />
+        </parameters>
+      </method>
+      <method name="SetAt" cname="cdn_matrix_set_at">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="r" />
+          <parameter type="gint" name="c" />
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="SetOne" cname="cdn_matrix_set_one">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="Size" cname="cdn_matrix_size">
+        <return-type type="gint" />
+      </method>
+    </boxed>
     <boxed name="Selection" cname="CdnSelection" opaque="true">
       <method name="Copy" cname="cdn_selection_copy">
         <return-type type="CdnSelection*" owned="true" />

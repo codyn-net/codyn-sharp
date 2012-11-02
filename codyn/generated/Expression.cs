@@ -88,15 +88,12 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_expression_set_values(IntPtr raw, out double values, IntPtr dim);
+		static extern void cdn_expression_set_values(IntPtr raw, IntPtr values);
 
-		public double SetValues(Cdn.Dimension dim) {
-			double values;
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			cdn_expression_set_values(Handle, out values, native_dim);
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return values;
+		public Cdn.Matrix Values { 
+			set {
+				cdn_expression_set_values(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
 		}
 
 		[DllImport("codyn-3.0")]
@@ -161,18 +158,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern double cdn_expression_get_cache(IntPtr raw, IntPtr dim);
-
-		public double GetCache(Cdn.Dimension dim) {
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			double raw_ret = cdn_expression_get_cache(Handle, native_dim);
-			double ret = raw_ret;
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern void cdn_expression_reset_cache(IntPtr raw);
 
 		public void ResetCache() {
@@ -206,18 +191,6 @@ namespace Cdn {
 
 		public void ForceResetCache() {
 			cdn_expression_force_reset_cache(Handle);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_expression_set_values_flat(IntPtr raw, out double values, int numvals, IntPtr dim);
-
-		public double SetValuesFlat(int numvals, Cdn.Dimension dim) {
-			double values;
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			cdn_expression_set_values_flat(Handle, out values, numvals, native_dim);
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return values;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -293,15 +266,6 @@ namespace Cdn {
 				bool ret = raw_ret;
 				return ret;
 			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern double cdn_expression_evaluate_values_flat(IntPtr raw, out int num);
-
-		public double EvaluateValuesFlat(out int num) {
-			double raw_ret = cdn_expression_evaluate_values_flat(Handle, out num);
-			double ret = raw_ret;
-			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -382,6 +346,15 @@ namespace Cdn {
 				}
 				cdn_expression_set_evaluate_notify(Handle, value_wrapper.NativeDelegate, userdata, destroy_notify);
 			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_evaluate_values(IntPtr raw);
+
+		public Cdn.Matrix EvaluateValues() {
+			IntPtr raw_ret = cdn_expression_evaluate_values(Handle);
+			Cdn.Matrix ret = raw_ret == IntPtr.Zero ? null : (Cdn.Matrix) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Matrix), false);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -508,35 +481,6 @@ namespace Cdn {
 
 			cdn_expression_set_instructions_take(Handle, ptr.Handle);
 		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_expression_evaluate_values(IntPtr raw, out int numr, out int numc);
-
-		public double[,] EvaluateValues()
-		{
-			int numr;
-			int numc;
-			double[] data;
-
-			IntPtr raw_ret = cdn_expression_evaluate_values(Handle, out numr, out numc);
-
-			data = new double[numr * numc];
-			Marshal.Copy(raw_ret, data, 0, numr * numc);
-
-			double[,] ret = new double[numr, numc];
-			int idx = 0;
-
-			for (int r = 0; r < numr; ++r)
-			{
-				for (int c = 0; c < numc; ++c)
-				{
-					ret[r, c] = data[idx++];
-				}
-			}
-
-			return ret;
-		}
-
 
 #endregion
 	}

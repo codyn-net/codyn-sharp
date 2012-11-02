@@ -33,26 +33,6 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_integrator_state_get_phase(IntPtr raw);
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_integrator_state_set_phase(IntPtr raw, IntPtr phase);
-
-		[GLib.Property ("phase")]
-		public string Phase {
-			get  {
-				IntPtr raw_ret = cdn_integrator_state_get_phase(Handle);
-				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
-				return ret;
-			}
-			set  {
-				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
-				cdn_integrator_state_set_phase(Handle, native_value);
-				GLib.Marshaller.Free (native_value);
-			}
-		}
-
-		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_get_object(IntPtr raw);
 
 		[GLib.Property ("object")]
@@ -166,6 +146,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_integrator_state_all_variables(IntPtr raw);
+
+		public Cdn.Variable[] AllVariables() {
+			IntPtr raw_ret = cdn_integrator_state_all_variables(Handle);
+			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_integrator_state_phase_events(IntPtr raw);
 
 		public GLib.SList PhaseEvents() {
@@ -180,15 +169,6 @@ namespace Cdn {
 		public Cdn.EdgeAction[] DirectEdgeActions() {
 			IntPtr raw_ret = cdn_integrator_state_direct_edge_actions(Handle);
 			Cdn.EdgeAction[] ret = (Cdn.EdgeAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.EdgeAction));
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_integrator_state_all_variables(IntPtr raw);
-
-		public Cdn.Variable[] AllVariables() {
-			IntPtr raw_ret = cdn_integrator_state_all_variables(Handle);
-			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
 			return ret;
 		}
 
@@ -208,6 +188,15 @@ namespace Cdn {
 			IntPtr raw_ret = cdn_integrator_state_direct_variables(Handle);
 			Cdn.Variable[] ret = (Cdn.Variable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.Variable));
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_integrator_state_set_state(IntPtr raw, IntPtr node, IntPtr st);
+
+		public void SetState(Cdn.Node node, string st) {
+			IntPtr native_st = GLib.Marshaller.StringToPtrGStrdup (st);
+			cdn_integrator_state_set_state(Handle, node == null ? IntPtr.Zero : node.Handle, native_st);
+			GLib.Marshaller.Free (native_st);
 		}
 
 		[DllImport("codyn-3.0")]

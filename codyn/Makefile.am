@@ -32,6 +32,7 @@ customs = \
 	EdgeAction.custom \
 	FunctionArgument.custom \
 	InstructionFunction.custom \
+	Matrix.custom \
 	InputFile.custom \
 	Variable.custom \
 	Operator.custom

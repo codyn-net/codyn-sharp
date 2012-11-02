@@ -16,6 +16,8 @@
         <file>../codyn/codyn/cdn-expression.h</file>
         <file>../codyn/codyn/cdn-monitor.c</file>
         <file>../codyn/codyn/cdn-monitor.h</file>
+        <file>../codyn/codyn/cdn-matrix.c</file>
+        <file>../codyn/codyn/cdn-matrix.h</file>
         <file>../codyn/codyn/cdn-network.c</file>
         <file>../codyn/codyn/cdn-network.h</file>
         <file>../codyn/codyn/cdn-import.c</file>

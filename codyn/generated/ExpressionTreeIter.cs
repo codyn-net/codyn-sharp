@@ -159,6 +159,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_expression_tree_iter_swap_children(IntPtr raw, int first, int second);
+
+		public void SwapChildren(int first, int second) {
+			cdn_expression_tree_iter_swap_children(Handle, first, second);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_expression_tree_iter_get_type();
 
 		public static GLib.GType GType { 
