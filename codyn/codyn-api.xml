@@ -1083,6 +1083,9 @@
           <parameter type="gdouble*" name="dist" />
         </parameters>
       </method>
+      <method name="LastDistance" cname="cdn_event_last_distance">
+        <return-type type="gdouble" />
+      </method>
       <constructor cname="cdn_event_new">
         <parameters>
           <parameter type="const-gchar*" name="id" />
@@ -1969,6 +1972,7 @@
       </signal>
       <property name="State" cname="state" type="CdnIntegratorState" readable="true" />
       <property name="RealTime" cname="real-time" type="gdouble" readable="true" writeable="true" construct="true" />
+      <property name="MinimumTimestep" cname="minimum-timestep" type="gdouble" readable="true" writeable="true" />
       <virtual_method name="Run" cname="run">
         <return-type type="void" />
         <parameters>

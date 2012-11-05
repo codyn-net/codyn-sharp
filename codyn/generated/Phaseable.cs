@@ -17,6 +17,11 @@ namespace Cdn {
 		void AddPhase(string phase);
 		void Foreach(Cdn.PhaseableForeachFunc func);
 		bool IsActive(string phase);
+#region Customized extensions
+#line 1 "Phaseable.custom"
+		string[] Phases { get; }
+
+#endregion
 	}
 
 	[GLib.GInterface (typeof (PhaseableAdapter))]

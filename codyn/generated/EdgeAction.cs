@@ -329,6 +329,18 @@ namespace Cdn {
 			}
 		}
 
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_phaseable_get_phases(IntPtr raw);
+
+		public string[] Phases
+		{
+			get
+			{
+				IntPtr ret = cdn_phaseable_get_phases(Handle);
+				return GLib.Marshaller.NullTermPtrToStringArray(ret, true);
+			}
+		}
+
 #endregion
 	}
 }

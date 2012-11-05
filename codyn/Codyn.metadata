@@ -270,6 +270,7 @@
 
   <!-- Phaseable -->
   <attr path="/api/namespace/interface[@cname='CdnPhaseable']/method[@cname='cdn_phaseable_foreach']/parameters/parameter[@name='func']" name="scope">call</attr>
+  <remove-node path="/api/namespace/interface[@cname='CdnPhaseable']/method[@cname='cdn_phaseable_get_phases']"/>
 
   <!-- CdnIo -->
   <remove-node path="/api/namespace/interface[@cname='CdnIo']/virtual_method[@cname='initialize']"/>

@@ -19,6 +19,21 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
+		[GLib.Property ("minimum-timestep")]
+		public double MinimumTimestep {
+			get {
+				GLib.Value val = GetProperty ("minimum-timestep");
+				double ret = (double) val;
+				val.Dispose ();
+				return ret;
+			}
+			set {
+				GLib.Value val = new GLib.Value(value);
+				SetProperty("minimum-timestep", val);
+				val.Dispose ();
+			}
+		}
+
 		[DllImport("codyn-3.0")]
 		static extern double cdn_integrator_get_real_time(IntPtr raw);
 

@@ -25,17 +25,7 @@ build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 overrides_sources = $(addprefix $(srcdir)/, $(overrides))
 
 customs = \
-	Monitor.custom \
-	FunctionPolynomialPiece.custom \
-	Expression.custom \
-	ExpressionTreeIter.custom \
-	EdgeAction.custom \
-	FunctionArgument.custom \
-	InstructionFunction.custom \
-	Matrix.custom \
-	InputFile.custom \
-	Variable.custom \
-	Operator.custom
+	$(wildcard *.custom)
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 

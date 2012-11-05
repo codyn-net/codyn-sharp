@@ -143,6 +143,15 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern double cdn_event_last_distance(IntPtr raw);
+
+		public double LastDistance() {
+			double raw_ret = cdn_event_last_distance(Handle);
+			double ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_event_get_type();
 
 		public static new GLib.GType GType { 
@@ -221,6 +230,21 @@ namespace Cdn {
 			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_phase);
 			return ret;
+		}
+
+#endregion
+#region Customized extensions
+#line 1 "Event.custom"
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_phaseable_get_phases(IntPtr raw);
+
+		public string[] Phases
+		{
+			get
+			{
+				IntPtr ret = cdn_phaseable_get_phases(Handle);
+				return GLib.Marshaller.NullTermPtrToStringArray(ret, true);
+			}
 		}
 
 #endregion
