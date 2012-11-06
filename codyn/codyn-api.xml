@@ -1071,6 +1071,12 @@
       <method name="GetGotoState" cname="cdn_event_get_goto_state">
         <return-type type="const-gchar*" />
       </method>
+      <method name="GetLogicalTree" cname="cdn_event_get_logical_tree">
+        <return-type type="const-CdnEventLogicalNode*" />
+      </method>
+      <method name="GetSetVariables" cname="cdn_event_get_set_variables">
+        <return-type type="const-GSList*" element_type="CdnEventSetVariable*" />
+      </method>
       <method name="GetTerminal" cname="cdn_event_get_terminal">
         <return-type type="gboolean" />
       </method>
@@ -4138,6 +4144,34 @@
       </method>
       <method name="Size" cname="cdn_dimension_size">
         <return-type type="gint" />
+      </method>
+    </boxed>
+    <boxed name="EventLogicalNode" cname="CdnEventLogicalNode" opaque="true">
+      <method name="GetCompareType" cname="cdn_event_logical_node_get_compare_type">
+        <return-type type="CdnMathFunctionType" />
+      </method>
+      <method name="GetExpression" cname="cdn_event_logical_node_get_expression">
+        <return-type type="const-CdnExpression*" />
+      </method>
+      <method name="GetLeft" cname="cdn_event_logical_node_get_left">
+        <return-type type="const-CdnEventLogicalNode*" />
+      </method>
+      <method name="GetRight" cname="cdn_event_logical_node_get_right">
+        <return-type type="const-CdnEventLogicalNode*" />
+      </method>
+      <method name="GetType" cname="cdn_event_logical_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="EventSetVariable" cname="CdnEventSetVariable" opaque="true">
+      <method name="GetType" cname="cdn_event_set_variable_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetValue" cname="cdn_event_set_variable_get_value">
+        <return-type type="CdnExpression*" />
+      </method>
+      <method name="GetVariable" cname="cdn_event_set_variable_get_variable">
+        <return-type type="CdnVariable*" />
       </method>
     </boxed>
     <boxed name="Expansion" cname="CdnExpansion" opaque="true">

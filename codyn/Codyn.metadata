@@ -287,6 +287,9 @@
   <remove-node path="/api/namespace/interface[@cname='CdnIo']/method[@cname='cdn_io_finalize_async']"/>
 
   <remove-node path="/api/namespace/interface[@cname='CdnIo']/method[@cname='cdn_io_finalize_finish']"/>
+
+  <!-- CdnEvent -->
+  <attr path="/api/namespace/object[@cname='CdnEvent']/method[@cname='cdn_event_get_set_variables']/return-type" name="element_type">CdnEventSetVariable*</attr>
 </metadata>
 
 <!-- vi:ts=2:et -->

@@ -113,6 +113,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_event_get_set_variables(IntPtr raw);
+
+		public Cdn.EventSetVariable[] SetVariables { 
+			get {
+				IntPtr raw_ret = cdn_event_get_set_variables(Handle);
+				Cdn.EventSetVariable[] ret = (Cdn.EventSetVariable[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.EventSetVariable));
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern void cdn_event_update(IntPtr raw);
 
 		public void Update() {
@@ -149,6 +160,17 @@ namespace Cdn {
 			double raw_ret = cdn_event_last_distance(Handle);
 			double ret = raw_ret;
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_event_get_logical_tree(IntPtr raw);
+
+		public Cdn.EventLogicalNode LogicalTree { 
+			get {
+				IntPtr raw_ret = cdn_event_get_logical_tree(Handle);
+				Cdn.EventLogicalNode ret = raw_ret == IntPtr.Zero ? null : (Cdn.EventLogicalNode) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.EventLogicalNode), false);
+				return ret;
+			}
 		}
 
 		[DllImport("codyn-3.0")]
