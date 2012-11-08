@@ -11,6 +11,15 @@ namespace Cdn {
 	public class Matrix : GLib.Opaque {
 
 		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_matrix_to_string(IntPtr raw);
+
+		public override string ToString() {
+			IntPtr raw_ret = cdn_matrix_to_string(Handle);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_matrix_get_type();
 
 		public static GLib.GType GType { 
@@ -26,6 +35,18 @@ namespace Cdn {
 
 		public void Clear() {
 			cdn_matrix_clear(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_matrix_init(out double values, IntPtr dimension);
+
+		public static Cdn.Matrix Init(out double values, Cdn.Dimension dimension) {
+			IntPtr native_dimension = GLib.Marshaller.StructureToPtrAlloc (dimension);
+			IntPtr raw_ret = cdn_matrix_init(out values, native_dimension);
+			Cdn.Matrix ret = raw_ret == IntPtr.Zero ? null : (Cdn.Matrix) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Matrix), false);
+			dimension = Cdn.Dimension.New (native_dimension);
+			Marshal.FreeHGlobal (native_dimension);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]

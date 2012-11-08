@@ -1978,7 +1978,7 @@
       </signal>
       <property name="State" cname="state" type="CdnIntegratorState" readable="true" />
       <property name="RealTime" cname="real-time" type="gdouble" readable="true" writeable="true" construct="true" />
-      <property name="MinimumTimestep" cname="minimum-timestep" type="gdouble" readable="true" writeable="true" />
+      <property name="MinimumTimestep" cname="minimum-timestep" type="gdouble" readable="true" writeable="true" construct="true" />
       <virtual_method name="Run" cname="run">
         <return-type type="void" />
         <parameters>
@@ -4546,6 +4546,13 @@
       <method name="GetType" cname="cdn_matrix_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="Init" cname="cdn_matrix_init" shared="true">
+        <return-type type="CdnMatrix" />
+        <parameters>
+          <parameter type="gdouble*" name="values" />
+          <parameter type="const-CdnDimension*" name="dimension" />
+        </parameters>
+      </method>
       <constructor cname="cdn_matrix_new">
         <parameters>
           <parameter type="const-gdouble*" name="values" />
@@ -4562,6 +4569,9 @@
         <parameters>
           <parameter type="gdouble" name="value" />
         </parameters>
+      </method>
+      <method name="ToString" cname="cdn_matrix_to_string">
+        <return-type type="gchar*" />
       </method>
     </boxed>
     <boxed name="Selection" cname="CdnSelection" opaque="true">
