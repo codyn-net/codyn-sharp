@@ -297,11 +297,15 @@ namespace Cdn {
 		[DllImport("codyn-3.0")]
 		static extern void cdn_variable_get_dimension(IntPtr raw, IntPtr dim);
 
-		public void GetDimension(Cdn.Dimension dim) {
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			cdn_variable_get_dimension(Handle, native_dim);
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
+		public Cdn.Dimension Dimension { 
+			get {
+				Cdn.Dimension dim;
+				IntPtr native_dim = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (Cdn.Dimension)));
+				cdn_variable_get_dimension(Handle, native_dim);
+				dim = Cdn.Dimension.New (native_dim);
+				Marshal.FreeHGlobal (native_dim);
+				return dim;
+			}
 		}
 
 		[DllImport("codyn-3.0")]

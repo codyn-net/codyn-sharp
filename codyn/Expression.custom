@@ -93,3 +93,14 @@
 
 			cdn_expression_set_instructions_take(Handle, ptr.Handle);
 		}
+
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_expression_sum(IntPtr expressions);
+
+		public static Cdn.Expression Sum(Cdn.Expression[] expressions) {
+			GLib.SList list = new GLib.SList(expressions, typeof(Cdn.Expression), true, false);
+
+			IntPtr raw_ret = cdn_expression_sum(list == null ? IntPtr.Zero : list.Handle);
+			Cdn.Expression ret = GLib.Object.GetObject(raw_ret) as Cdn.Expression;
+			return ret;
+		}

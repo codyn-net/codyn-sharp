@@ -1299,6 +1299,12 @@
           <parameter type="const-CdnMatrix*" name="values" />
         </parameters>
       </method>
+      <method name="Sum" cname="cdn_expression_sum" shared="true" hidden="true">
+        <return-type type="CdnExpression*" />
+        <parameters>
+          <parameter type="const-GSList*" name="expressions" />
+        </parameters>
+      </method>
     </object>
     <object name="Function" cname="CdnFunction" parent="CdnObject">
       <field name="Priv" cname="priv" type="CdnFunctionPrivate*" />
@@ -3897,7 +3903,7 @@
       <method name="GetDimension" cname="cdn_variable_get_dimension">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnDimension*" name="dim" />
+          <parameter type="CdnDimension*" name="dim" pass_as="out" />
         </parameters>
       </method>
       <method name="GetExpression" cname="cdn_variable_get_expression">
@@ -4726,6 +4732,12 @@
       </method>
       <method name="Destroy" cname="cdn_stack_arg_destroy">
         <return-type type="void" />
+      </method>
+      <method name="GetDimension" cname="cdn_stack_arg_get_dimension">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnDimension*" name="dim" pass_as="out" />
+        </parameters>
       </method>
       <method name="GetSparsity" cname="cdn_stack_arg_get_sparsity">
         <return-type type="const-guint*" />

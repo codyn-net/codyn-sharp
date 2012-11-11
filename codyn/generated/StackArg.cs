@@ -11,10 +11,44 @@ namespace Cdn {
 	public class StackArg : GLib.Opaque {
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_stack_arg_copy(IntPtr raw, IntPtr src);
+		static extern void cdn_stack_arg_get_dimension(IntPtr raw, IntPtr dim);
 
-		public void Copy(Cdn.StackArg src) {
-			cdn_stack_arg_copy(Handle, src == null ? IntPtr.Zero : src.Handle);
+		public Cdn.Dimension Dimension { 
+			get {
+				Cdn.Dimension dim;
+				IntPtr native_dim = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (Cdn.Dimension)));
+				cdn_stack_arg_get_dimension(Handle, native_dim);
+				dim = Cdn.Dimension.New (native_dim);
+				Marshal.FreeHGlobal (native_dim);
+				return dim;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_stack_arg_set_sparsity(IntPtr raw, out uint sparsity, uint num_sparse);
+
+		public uint SetSparsity(uint num_sparse) {
+			uint sparsity;
+			cdn_stack_arg_set_sparsity(Handle, out sparsity, num_sparse);
+			return sparsity;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_stack_arg_is_sparse(IntPtr raw, uint idx);
+
+		public bool IsSparse(uint idx) {
+			bool raw_ret = cdn_stack_arg_is_sparse(Handle, idx);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern uint cdn_stack_arg_size(IntPtr raw);
+
+		public uint Size() {
+			uint raw_ret = cdn_stack_arg_size(Handle);
+			uint ret = raw_ret;
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -24,6 +58,15 @@ namespace Cdn {
 			uint raw_ret = cdn_stack_arg_get_sparsity(Handle, out num_sparse);
 			uint ret = raw_ret;
 			return ret;
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern void cdn_stack_arg_set_sparsity_one(IntPtr raw, uint sparsity);
+
+		public uint SparsityOne { 
+			set {
+				cdn_stack_arg_set_sparsity_one(Handle, value);
+			}
 		}
 
 		[DllImport("codyn-3.0")]
@@ -38,39 +81,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern bool cdn_stack_arg_is_sparse(IntPtr raw, uint idx);
+		static extern void cdn_stack_arg_copy(IntPtr raw, IntPtr src);
 
-		public bool IsSparse(uint idx) {
-			bool raw_ret = cdn_stack_arg_is_sparse(Handle, idx);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_stack_arg_set_sparsity(IntPtr raw, out uint sparsity, uint num_sparse);
-
-		public uint SetSparsity(uint num_sparse) {
-			uint sparsity;
-			cdn_stack_arg_set_sparsity(Handle, out sparsity, num_sparse);
-			return sparsity;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern uint cdn_stack_arg_size(IntPtr raw);
-
-		public uint Size() {
-			uint raw_ret = cdn_stack_arg_size(Handle);
-			uint ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_stack_arg_set_sparsity_one(IntPtr raw, uint sparsity);
-
-		public uint SparsityOne { 
-			set {
-				cdn_stack_arg_set_sparsity_one(Handle, value);
-			}
+		public void Copy(Cdn.StackArg src) {
+			cdn_stack_arg_copy(Handle, src == null ? IntPtr.Zero : src.Handle);
 		}
 
 		public StackArg(IntPtr raw) : base(raw) {}

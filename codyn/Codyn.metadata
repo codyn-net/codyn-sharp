@@ -71,6 +71,7 @@
   <!-- CdnVariable -->
   <attr path="/api/namespace/object[@cname='CdnVariable']/constructor" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_actions']/return-type" name="element_type">CdnEdgeAction*</attr>
+  <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_dimension']/parameters/parameter[@name='dim']" name="pass_as">out</attr>
 
   <!-- CdnNode -->
   <attr path="/api/namespace/object[@cname='CdnNode']/method[@cname='cdn_node_foreach']" name="hidden">true</attr>
@@ -102,6 +103,8 @@
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
 
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_rand_instructions']/return-type" name="element_type">CdnInstructionRand*</attr>
+
+  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_sum']" name="hidden">true</attr>
 
   <!-- CdnMatrix -->
   <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_set']"/>
@@ -255,15 +258,21 @@
   <!-- CdnStack -->
   <remove-node path="/api/namespace/boxed[@cname='CdnStack']/method[@cname='cdn_stack_output_ptr']"/>
   <remove-node path="/api/namespace/boxed[@cname='CdnStack']/method[@cname='cdn_stack_set_output_ptr']"/>
-  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@cname='pop']"/>
-  <remove-node path="/api/namespace/boxed[@cname='CdnStackArgs']/field[@cname='num']"/>
 
+  <!-- CdnStackArg -->
   <remove-node path="/api/namespace/boxed[@cname='CdnStackArg']/field[@name='Sparsity']"/>
   <remove-node path="/api/namespace/boxed[@cname='CdnStackArg']/field[@name='Dimension']"/>
   <remove-node path="/api/namespace/boxed[@cname='CdnStackArg']/field[@name='NumSparse']"/>
+  <attr path="/api/namespace/boxed[@cname='CdnStackArg']/method[@cname='cdn_stack_arg_get_dimension']/parameters/parameter[@name='dim']" name="pass_as">out</attr>
+
+  <!-- CdnStackArgs -->
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackArgs']/field[@cname='num']"/>
   <remove-node path="/api/namespace/boxed[@cname='CdnStackArgs']/field[@name='Args']"/>
+
+  <!-- CdnStackManipulation -->
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@cname='pop']"/>
   <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@name='ExtraSpace']"/>
-  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@name='Push']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@cname='push']"/>
 
   <!-- CdnInstructionFunction -->
   <attr path="/api/namespace/object[@cname='CdnInstructionFunction']/constructor[@cname='cdn_instruction_function_new']" name="hidden">true</attr>
