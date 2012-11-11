@@ -1964,6 +1964,18 @@
         </parameters>
       </method>
     </object>
+    <object name="InstructionMatrix" cname="CdnInstructionMatrix" parent="CdnInstruction">
+      <field name="Priv" cname="priv" type="CdnInstructionMatrixPrivate*" />
+      <method name="GetType" cname="cdn_instruction_matrix_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cdn_instruction_matrix_new">
+        <parameters>
+          <parameter type="const-CdnStackArgs*" name="args" />
+          <parameter type="const-CdnDimension*" name="dim" />
+        </parameters>
+      </constructor>
+    </object>
     <object name="InstructionNumber" cname="CdnInstructionNumber" parent="CdnInstruction">
       <field name="Priv" cname="priv" type="CdnInstructionNumberPrivate*" />
       <method name="GetRepresentation" cname="cdn_instruction_number_get_representation">
