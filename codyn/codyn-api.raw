@@ -750,6 +750,9 @@
           <parameter type="CdnObjectForward*" name="object" />
         </parameters>
       </method>
+      <method name="ClearObjects" cname="cdn_compile_context_clear_objects">
+        <return-type type="void" />
+      </method>
       <method name="GetFunctionArgPriority" cname="cdn_compile_context_get_function_arg_priority">
         <return-type type="gboolean" />
       </method>
@@ -1964,6 +1967,26 @@
         </parameters>
       </method>
     </object>
+    <object name="InstructionIndex" cname="CdnInstructionIndex" parent="CdnInstruction">
+      <field name="Priv" cname="priv" type="CdnInstructionIndexPrivate*" />
+      <method name="GetType" cname="cdn_instruction_index_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="cdn_instruction_index_new">
+        <parameters>
+          <parameter type="gint*" name="indices" />
+          <parameter type="const-CdnDimension*" name="retdim" />
+          <parameter type="const-CdnStackArg*" name="arg" />
+        </parameters>
+      </constructor>
+      <constructor cname="cdn_instruction_index_new_offset">
+        <parameters>
+          <parameter type="gint" name="start" />
+          <parameter type="const-CdnDimension*" name="retdim" />
+          <parameter type="const-CdnStackArg*" name="arg" />
+        </parameters>
+      </constructor>
+    </object>
     <object name="InstructionMatrix" cname="CdnInstructionMatrix" parent="CdnInstruction">
       <field name="Priv" cname="priv" type="CdnInstructionMatrixPrivate*" />
       <method name="GetType" cname="cdn_instruction_matrix_get_type" shared="true">
@@ -2024,6 +2047,9 @@
         </parameters>
       </constructor>
       <method name="Next" cname="cdn_instruction_rand_next">
+        <return-type type="void" />
+      </method>
+      <method name="Reset" cname="cdn_instruction_rand_reset">
         <return-type type="void" />
       </method>
       <method name="SetSeed" cname="cdn_instruction_rand_set_seed">

@@ -126,6 +126,8 @@
         <file>../codyn/codyn/instructions/cdn-instruction-rand.h</file>
         <file>../codyn/codyn/instructions/cdn-instruction-matrix.c</file>
         <file>../codyn/codyn/instructions/cdn-instruction-matrix.h</file>
+        <file>../codyn/codyn/instructions/cdn-instruction-index.c</file>
+        <file>../codyn/codyn/instructions/cdn-instruction-index.h</file>
       </namespace>
     </library>
   </api>

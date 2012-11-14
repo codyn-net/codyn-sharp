@@ -138,10 +138,14 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern void cdn_compile_context_restore(IntPtr raw);
+		static extern IntPtr cdn_compile_context_lookup_function(IntPtr raw, IntPtr name);
 
-		public void Restore() {
-			cdn_compile_context_restore(Handle);
+		public Cdn.Function LookupFunction(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cdn_compile_context_lookup_function(Handle, native_name);
+			Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
+			GLib.Marshaller.Free (native_name);
+			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -156,6 +160,13 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern void cdn_compile_context_restore(IntPtr raw);
+
+		public void Restore() {
+			cdn_compile_context_restore(Handle);
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_compile_context_get_type();
 
 		public static new GLib.GType GType { 
@@ -167,14 +178,10 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_compile_context_lookup_function(IntPtr raw, IntPtr name);
+		static extern void cdn_compile_context_clear_objects(IntPtr raw);
 
-		public Cdn.Function LookupFunction(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cdn_compile_context_lookup_function(Handle, native_name);
-			Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
-			GLib.Marshaller.Free (native_name);
-			return ret;
+		public void ClearObjects() {
+			cdn_compile_context_clear_objects(Handle);
 		}
 
 #endregion

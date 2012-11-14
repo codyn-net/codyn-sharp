@@ -69,6 +69,13 @@ namespace Cdn {
 			cdn_instruction_rand_next(Handle);
 		}
 
+		[DllImport("codyn-3.0")]
+		static extern void cdn_instruction_rand_reset(IntPtr raw);
+
+		public void Reset() {
+			cdn_instruction_rand_reset(Handle);
+		}
+
 #endregion
 	}
 }
