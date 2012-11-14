@@ -1,0 +1,18 @@
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_instruction_variable_get_slice(IntPtr raw, out int length, IntPtr dimension);
+
+		public int[] GetSlice(out Cdn.Dimension dim)
+		{
+			int length;
+
+			IntPtr native_dim = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Cdn.Dimension)));
+			IntPtr raw_ret = cdn_instruction_variable_get_slice(Handle, out length, native_dim);
+
+			dim = Cdn.Dimension.New(native_dim);
+			Marshal.FreeHGlobal(native_dim);
+
+			int[] ret = new int[length];
+
+			Marshal.Copy(raw_ret, ret, 0, length);
+			return ret;
+		}

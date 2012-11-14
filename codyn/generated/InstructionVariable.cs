@@ -37,6 +37,17 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern bool cdn_instruction_variable_has_slice(IntPtr raw);
+
+		public bool HasSlice { 
+			get {
+				bool raw_ret = cdn_instruction_variable_has_slice(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern int cdn_instruction_variable_get_binding(IntPtr raw);
 
 		[DllImport("codyn-3.0")]
@@ -62,18 +73,6 @@ namespace Cdn {
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern uint cdn_instruction_variable_get_slice(IntPtr raw, out uint length, IntPtr dim);
-
-		public uint GetSlice(out uint length, Cdn.Dimension dim) {
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			uint raw_ret = cdn_instruction_variable_get_slice(Handle, out length, native_dim);
-			uint ret = raw_ret;
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return ret;
 		}
 
 		[DllImport("codyn-3.0")]
@@ -115,6 +114,28 @@ namespace Cdn {
 			dim = Cdn.Dimension.New (native_dim);
 			Marshal.FreeHGlobal (native_dim);
 			return slice;
+		}
+
+#endregion
+#region Customized extensions
+#line 1 "InstructionVariable.custom"
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_instruction_variable_get_slice(IntPtr raw, out int length, IntPtr dimension);
+
+		public int[] GetSlice(out Cdn.Dimension dim)
+		{
+			int length;
+
+			IntPtr native_dim = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Cdn.Dimension)));
+			IntPtr raw_ret = cdn_instruction_variable_get_slice(Handle, out length, native_dim);
+
+			dim = Cdn.Dimension.New(native_dim);
+			Marshal.FreeHGlobal(native_dim);
+
+			int[] ret = new int[length];
+
+			Marshal.Copy(raw_ret, ret, 0, length);
+			return ret;
 		}
 
 #endregion

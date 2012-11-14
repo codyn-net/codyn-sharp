@@ -1,0 +1,16 @@
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_instruction_index_get_indices(IntPtr raw, out int length);
+
+		public int[] Indices
+		{
+			get
+			{
+				int length;
+
+				IntPtr raw_ret = cdn_instruction_index_get_indices(Handle, out length);
+				int[] ret = new int[length];
+
+				Marshal.Copy(raw_ret, ret, 0, length);
+				return ret;
+			}
+		}

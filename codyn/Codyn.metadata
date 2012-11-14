@@ -277,6 +277,12 @@
   <!-- CdnInstructionFunction -->
   <attr path="/api/namespace/object[@cname='CdnInstructionFunction']/constructor[@cname='cdn_instruction_function_new']" name="hidden">true</attr>
 
+  <!-- CdnInstructionIndex -->
+  <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_get_indices']" name="hidden">true</attr>
+
+  <!-- CdnInstructionVariable -->
+  <attr path="/api/namespace/object[@cname='CdnInstructionVariable']/method[@cname='cdn_instruction_variable_get_slice']" name="hidden">true</attr>
+
   <!-- Phaseable -->
   <attr path="/api/namespace/interface[@cname='CdnPhaseable']/method[@cname='cdn_phaseable_foreach']/parameters/parameter[@name='func']" name="scope">call</attr>
   <remove-node path="/api/namespace/interface[@cname='CdnPhaseable']/method[@cname='cdn_phaseable_get_phases']"/>
@@ -299,6 +305,8 @@
 
   <!-- CdnEvent -->
   <attr path="/api/namespace/object[@cname='CdnEvent']/method[@cname='cdn_event_get_set_variables']/return-type" name="element_type">CdnEventSetVariable*</attr>
+
+  
 </metadata>
 
 <!-- vi:ts=2:et -->

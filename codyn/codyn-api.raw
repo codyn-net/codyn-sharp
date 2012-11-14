@@ -1969,8 +1969,20 @@
     </object>
     <object name="InstructionIndex" cname="CdnInstructionIndex" parent="CdnInstruction">
       <field name="Priv" cname="priv" type="CdnInstructionIndexPrivate*" />
+      <method name="GetIndices" cname="cdn_instruction_index_get_indices">
+        <return-type type="const-gint*" />
+        <parameters>
+          <parameter type="gint*" name="length" />
+        </parameters>
+      </method>
+      <method name="GetOffset" cname="cdn_instruction_index_get_offset">
+        <return-type type="gint" />
+      </method>
       <method name="GetType" cname="cdn_instruction_index_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="IsOffset" cname="cdn_instruction_index_is_offset">
+        <return-type type="gboolean" />
       </method>
       <constructor cname="cdn_instruction_index_new">
         <parameters>
@@ -2090,6 +2102,9 @@
       </method>
       <method name="GetVariable" cname="cdn_instruction_variable_get_variable">
         <return-type type="CdnVariable*" />
+      </method>
+      <method name="HasSlice" cname="cdn_instruction_variable_has_slice">
+        <return-type type="gboolean" />
       </method>
       <constructor cname="cdn_instruction_variable_new">
         <parameters>

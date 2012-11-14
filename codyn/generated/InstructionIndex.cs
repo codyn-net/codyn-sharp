@@ -41,12 +41,54 @@ namespace Cdn {
 		}
 
 		[DllImport("codyn-3.0")]
+		static extern int cdn_instruction_index_get_offset(IntPtr raw);
+
+		public int Offset { 
+			get {
+				int raw_ret = cdn_instruction_index_get_offset(Handle);
+				int ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_instruction_index_get_type();
 
 		public static new GLib.GType GType { 
 			get {
 				IntPtr raw_ret = cdn_instruction_index_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("codyn-3.0")]
+		static extern bool cdn_instruction_index_is_offset(IntPtr raw);
+
+		public bool IsOffset { 
+			get {
+				bool raw_ret = cdn_instruction_index_is_offset(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+		}
+
+#endregion
+#region Customized extensions
+#line 1 "InstructionIndex.custom"
+		[DllImport("codyn-3.0")]
+		static extern IntPtr cdn_instruction_index_get_indices(IntPtr raw, out int length);
+
+		public int[] Indices
+		{
+			get
+			{
+				int length;
+
+				IntPtr raw_ret = cdn_instruction_index_get_indices(Handle, out length);
+				int[] ret = new int[length];
+
+				Marshal.Copy(raw_ret, ret, 0, length);
 				return ret;
 			}
 		}
