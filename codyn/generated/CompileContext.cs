@@ -14,7 +14,7 @@ namespace Cdn {
 		protected CompileContext(GLib.GType gtype) : base(gtype) {}
 		public CompileContext(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_new();
 
 		public CompileContext () : base (IntPtr.Zero)
@@ -26,31 +26,31 @@ namespace Cdn {
 			Raw = cdn_compile_context_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_context_append_object(IntPtr raw, IntPtr objekt);
 
 		public void AppendObject(Cdn.Object objekt) {
 			cdn_compile_context_append_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_context_save(IntPtr raw);
 
 		public void Save() {
 			cdn_compile_context_save(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_context_prepend_object(IntPtr raw, IntPtr objekt);
 
 		public void PrependObject(Cdn.Object objekt) {
 			cdn_compile_context_prepend_object(Handle, objekt == null ? IntPtr.Zero : objekt.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_compile_context_get_function_arg_priority(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_context_set_function_arg_priority(IntPtr raw, bool prio);
 
 		public bool FunctionArgPriority { 
@@ -64,7 +64,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_get_objects(IntPtr raw);
 
 		public Cdn.Object[] Objects { 
@@ -75,7 +75,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_lookup_variable_last(IntPtr raw, IntPtr name);
 
 		public Cdn.Variable LookupVariableLast(string name) {
@@ -86,10 +86,10 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_compile_context_get_function_ref_priority(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_context_set_function_ref_priority(IntPtr raw, bool prio);
 
 		public bool FunctionRefPriority { 
@@ -103,21 +103,21 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_context_append_function(IntPtr raw, IntPtr function);
 
 		public void AppendFunction(Cdn.Function function) {
 			cdn_compile_context_append_function(Handle, function == null ? IntPtr.Zero : function.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_context_prepend_function(IntPtr raw, IntPtr function);
 
 		public void PrependFunction(Cdn.Function function) {
 			cdn_compile_context_prepend_function(Handle, function == null ? IntPtr.Zero : function.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_lookup_variable(IntPtr raw, IntPtr name);
 
 		public Cdn.Variable LookupVariable(string name) {
@@ -128,7 +128,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_lookup_function(IntPtr raw);
 
 		public Cdn.Function LookupFunction() {
@@ -137,14 +137,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_context_restore(IntPtr raw);
 
 		public void Restore() {
 			cdn_compile_context_restore(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_get_functions(IntPtr raw);
 
 		public Cdn.Function[] Functions { 
@@ -155,7 +155,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_get_type();
 
 		public static new GLib.GType GType { 
@@ -166,7 +166,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_lookup_function(IntPtr raw, IntPtr name);
 
 		public Cdn.Function LookupFunction(string name) {

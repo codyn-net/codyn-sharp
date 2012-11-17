@@ -2,7 +2,7 @@
 
 <gapi-parser-input>
   <api filename="codyn/codyn-api.raw">
-    <library name="codyn-3.0">
+    <library name="libcodyn-3.0.dll">
       <namespace name="Cdn">
         <file>../codyn/codyn/cdn-annotatable.c</file>
         <file>../codyn/codyn/cdn-annotatable.h</file>

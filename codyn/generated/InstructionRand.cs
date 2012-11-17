@@ -14,7 +14,7 @@ namespace Cdn {
 		protected InstructionRand(GLib.GType gtype) : base(gtype) {}
 		public InstructionRand(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_rand_new(IntPtr argdim);
 
 		public InstructionRand (Cdn.StackArgs argdim) : base (IntPtr.Zero)
@@ -25,7 +25,7 @@ namespace Cdn {
 			Raw = cdn_instruction_rand_new(argdim == null ? IntPtr.Zero : argdim.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_rand_set_use_streams(bool use);
 
 		public static bool UseStreams { 
@@ -34,7 +34,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_rand_get_type();
 
 		public static new GLib.GType GType { 
@@ -45,10 +45,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_instruction_rand_get_seed(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_rand_set_seed(IntPtr raw, uint seed);
 
 		public uint Seed { 
@@ -62,7 +62,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_rand_next(IntPtr raw);
 
 		public void Next() {

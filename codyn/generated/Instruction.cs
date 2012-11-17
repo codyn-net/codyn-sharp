@@ -19,7 +19,7 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_instruction_get_stack_manipulation(IntPtr raw, out IntPtr error);
 
 		public unsafe Cdn.StackManipulation GetStackManipulation() {
@@ -30,7 +30,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_to_string(IntPtr raw);
 
 		public override string ToString() {
@@ -39,7 +39,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_instruction_get_is_commutative(IntPtr raw);
 
 		public bool IsCommutative { 
@@ -50,28 +50,28 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_execute(IntPtr raw, IntPtr stack);
 
 		public void Execute(Cdn.Stack stack) {
 			cdn_instruction_execute(Handle, stack == null ? IntPtr.Zero : stack.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_set_location(IntPtr raw, int start, int end);
 
 		public void SetLocation(int start, int end) {
 			cdn_instruction_set_location(Handle, start, end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_recalculate_sparsity(IntPtr raw);
 
 		public void RecalculateSparsity() {
 			cdn_instruction_recalculate_sparsity(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_instruction_equal(IntPtr raw, IntPtr i2, bool asstring);
 
 		public bool Equal(Cdn.Instruction i2, bool asstring) {
@@ -80,7 +80,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_get_dependencies(IntPtr raw);
 
 		public Cdn.Variable[] Dependencies { 
@@ -91,14 +91,14 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_get_location(IntPtr raw, out int start, out int end);
 
 		public void GetLocation(out int start, out int end) {
 			cdn_instruction_get_location(Handle, out start, out end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_get_type();
 
 		public static new GLib.GType GType { 

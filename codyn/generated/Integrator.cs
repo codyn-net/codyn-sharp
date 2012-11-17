@@ -34,10 +34,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_integrator_get_real_time(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_integrator_set_real_time(IntPtr raw, double real_time);
 
 		[GLib.Property ("real-time")]
@@ -52,10 +52,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_get_state(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_integrator_set_state(IntPtr raw, IntPtr state);
 
 		[GLib.Property ("state")]
@@ -70,10 +70,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_integrator_get_time(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_integrator_set_time(IntPtr raw, double t);
 
 		[GLib.Property ("time")]
@@ -88,7 +88,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_get_object(IntPtr raw);
 
 		[GLib.Property ("object")]
@@ -252,7 +252,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_integrator_end(IntPtr raw, out IntPtr error);
 
 		public unsafe bool End() {
@@ -263,7 +263,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_get_class_id(IntPtr raw);
 
 		public string ClassId { 
@@ -274,7 +274,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_get_name(IntPtr raw);
 
 		public string Name { 
@@ -285,7 +285,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_integrator_get_terminate(IntPtr raw);
 
 		public bool Terminate { 
@@ -296,14 +296,14 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_integrator_simulation_step_integrate(IntPtr raw, IntPtr actions);
 
 		public void SimulationStepIntegrate(GLib.SList actions) {
 			cdn_integrator_simulation_step_integrate(Handle, actions == null ? IntPtr.Zero : actions.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_integrator_begin(IntPtr raw, double start, out IntPtr error);
 
 		public unsafe bool Begin(double start) {
@@ -314,7 +314,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_integrator_step_prepare(IntPtr raw, double t, double timestep);
 
 		public bool StepPrepare(double t, double timestep) {
@@ -323,14 +323,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_integrator_reset(IntPtr raw);
 
 		public new void Reset() {
 			cdn_integrator_reset(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_get_type();
 
 		public static new GLib.GType GType { 

@@ -14,7 +14,7 @@ namespace Cdn {
 		protected InstructionCustomFunction(GLib.GType gtype) : base(gtype) {}
 		public InstructionCustomFunction(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_custom_function_new(IntPtr function, IntPtr argdim);
 
 		public InstructionCustomFunction (Cdn.Function function, Cdn.StackArgs argdim) : base (IntPtr.Zero)
@@ -25,10 +25,10 @@ namespace Cdn {
 			Raw = cdn_instruction_custom_function_new(function == null ? IntPtr.Zero : function.Handle, argdim == null ? IntPtr.Zero : argdim.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_custom_function_get_function(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_custom_function_set_function(IntPtr raw, IntPtr f);
 
 		public Cdn.Function Function { 
@@ -42,7 +42,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_custom_function_get_type();
 
 		public static new GLib.GType GType { 

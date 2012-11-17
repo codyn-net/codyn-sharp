@@ -14,7 +14,7 @@ namespace Cdn {
 		protected OperatorLinsolve(GLib.GType gtype) : base(gtype) {}
 		public OperatorLinsolve(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_linsolve_new();
 
 		public OperatorLinsolve () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_operator_linsolve_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_linsolve_get_type();
 
 		public static new GLib.GType GType { 

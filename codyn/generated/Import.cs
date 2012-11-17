@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Import(GLib.GType gtype) : base(gtype) {}
 		public Import(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_import_new_from_path(IntPtr network, IntPtr parent, IntPtr id, IntPtr path, out IntPtr error);
 
 		public unsafe Import (Cdn.Network network, Cdn.Node parent, string id, string path) : base (IntPtr.Zero)
@@ -31,7 +31,7 @@ namespace Cdn {
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_import_get_path(IntPtr raw);
 
 		[GLib.Property ("path")]
@@ -43,7 +43,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_import_imports_object(IntPtr raw, IntPtr objekt);
 
 		public bool ImportsObject(Cdn.Object objekt) {
@@ -52,7 +52,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_import_load(IntPtr raw, IntPtr network, IntPtr parent, out IntPtr error);
 
 		public unsafe bool Load(Cdn.Network network, Cdn.Node parent) {
@@ -63,10 +63,10 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_import_get_search_path();
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_import_set_search_path(IntPtr[] path);
 
 		public static string[] SearchPath { 
@@ -85,7 +85,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_import_append_search_path(IntPtr path);
 
 		public static void AppendSearchPath(string path) {
@@ -94,7 +94,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_path);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_import_error_quark();
 
 		public static new int ErrorQuark() {
@@ -103,7 +103,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_import_prepend_search_path(IntPtr path);
 
 		public static void PrependSearchPath(string path) {
@@ -112,7 +112,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_path);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_import_get_type();
 
 		public static new GLib.GType GType { 
@@ -123,10 +123,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_modifiable_get_modified(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_modifiable_set_modified(IntPtr raw, bool modified);
 
 		public bool Modified { 

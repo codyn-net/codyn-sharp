@@ -19,7 +19,7 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_function_argument_get_optional(IntPtr raw);
 
 		[GLib.Property ("optional")]
@@ -31,10 +31,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_function_argument_get_explicit(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_argument_set_explicit(IntPtr raw, bool isexplicit);
 
 		[GLib.Property ("explicit")]
@@ -49,10 +49,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_argument_get_default_value(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_argument_set_default_value(IntPtr raw, IntPtr value);
 
 		[GLib.Property ("default-value")]
@@ -67,7 +67,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_argument_get_name(IntPtr raw);
 
 		[GLib.Property ("name")]
@@ -138,7 +138,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_argument_get_dimension(IntPtr raw, IntPtr dimension);
 
 		public void GetDimension(Cdn.Dimension dimension) {
@@ -148,7 +148,7 @@ namespace Cdn {
 			Marshal.FreeHGlobal (native_dimension);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_argument_set_dimension(IntPtr raw, IntPtr dimension);
 
 		public void SetDimension(Cdn.Dimension dimension) {
@@ -158,10 +158,10 @@ namespace Cdn {
 			Marshal.FreeHGlobal (native_dimension);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_function_argument_get_unused(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_argument_set_unused(IntPtr raw, bool unused);
 
 		public bool Unused { 
@@ -175,7 +175,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_function_argument_set_name(IntPtr raw, IntPtr name);
 
 		public bool SetName(string name) {
@@ -186,7 +186,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_argument_get_type();
 
 		public static new GLib.GType GType { 
@@ -197,7 +197,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_argument_copy(IntPtr raw);
 
 		public Cdn.FunctionArgument Copy() {
@@ -209,7 +209,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "FunctionArgument.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_argument_new(IntPtr name, IntPtr expression, bool isexplicit);
 
 		[DllImport ("libgobject-2.0")]

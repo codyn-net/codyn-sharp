@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Event(GLib.GType gtype) : base(gtype) {}
 		public Event(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_event_new(IntPtr id, IntPtr condition, double approximation);
 
 		public Event (string id, Cdn.Expression condition, double approximation) : base (IntPtr.Zero)
@@ -38,10 +38,10 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_id);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_event_get_condition(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_event_set_condition(IntPtr raw, IntPtr condition);
 
 		[GLib.Property ("condition")]
@@ -56,10 +56,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_event_get_goto_state(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_event_set_goto_state(IntPtr raw, IntPtr state);
 
 		[GLib.Property ("goto-state")]
@@ -76,10 +76,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_event_get_approximation(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_event_set_approximation(IntPtr raw, double approximation);
 
 		[GLib.Property ("approximation")]
@@ -94,10 +94,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_event_get_terminal(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_event_set_terminal(IntPtr raw, bool terminal);
 
 		[GLib.Property ("terminal")]
@@ -112,7 +112,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_event_get_set_variables(IntPtr raw);
 
 		public Cdn.EventSetVariable[] SetVariables { 
@@ -123,28 +123,28 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_event_update(IntPtr raw);
 
 		public void Update() {
 			cdn_event_update(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_event_add_set_variable(IntPtr raw, IntPtr property, IntPtr value);
 
 		public void AddSetVariable(Cdn.Variable property, Cdn.Expression value) {
 			cdn_event_add_set_variable(Handle, property == null ? IntPtr.Zero : property.Handle, value == null ? IntPtr.Zero : value.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_event_execute(IntPtr raw);
 
 		public void Execute() {
 			cdn_event_execute(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_event_happened(IntPtr raw, out double dist);
 
 		public bool Happened(out double dist) {
@@ -153,7 +153,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_event_last_distance(IntPtr raw);
 
 		public double LastDistance() {
@@ -162,7 +162,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_event_get_logical_tree(IntPtr raw);
 
 		public Cdn.EventLogicalNode LogicalTree { 
@@ -173,7 +173,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_event_get_type();
 
 		public static new GLib.GType GType { 
@@ -184,7 +184,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr tag);
 
 		public void RemovePhase(string tag) {
@@ -193,7 +193,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_tag);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_phaseable_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cdn.Phaseable other) {
@@ -202,17 +202,17 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_copy_to(IntPtr raw, IntPtr dest);
 
 		public void CopyTo(Cdn.Phaseable dest) {
 			cdn_phaseable_copy_to(Handle, dest == null ? IntPtr.Zero : dest.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern System.IntPtr cdn_phaseable_get_phase_table(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_set_phase_table(IntPtr raw, System.IntPtr table);
 
 		public System.IntPtr PhaseTable { 
@@ -226,7 +226,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_add_phase(IntPtr raw, IntPtr phase);
 
 		public void AddPhase(string phase) {
@@ -235,7 +235,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_phase);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_foreach(IntPtr raw, CdnSharp.PhaseableForeachFuncNative func, IntPtr userdata);
 
 		public void Foreach(Cdn.PhaseableForeachFunc func) {
@@ -243,7 +243,7 @@ namespace Cdn {
 			cdn_phaseable_foreach(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_phaseable_is_active(IntPtr raw, IntPtr phase);
 
 		public bool IsActive(string phase) {
@@ -257,7 +257,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "Event.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_phaseable_get_phases(IntPtr raw);
 
 		public string[] Phases

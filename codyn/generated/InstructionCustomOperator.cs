@@ -14,7 +14,7 @@ namespace Cdn {
 		protected InstructionCustomOperator(GLib.GType gtype) : base(gtype) {}
 		public InstructionCustomOperator(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_custom_operator_new(IntPtr op);
 
 		public InstructionCustomOperator (Cdn.Operator op) : base (IntPtr.Zero)
@@ -25,7 +25,7 @@ namespace Cdn {
 			Raw = cdn_instruction_custom_operator_new(op == null ? IntPtr.Zero : op.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_custom_operator_get_type();
 
 		public static new GLib.GType GType { 
@@ -36,7 +36,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_custom_operator_get_operator(IntPtr raw);
 
 		public Cdn.Operator Operator { 

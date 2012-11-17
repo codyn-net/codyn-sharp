@@ -103,7 +103,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_annotatable_get_type ());
@@ -147,10 +147,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_get_annotation(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_annotatable_set_annotation(IntPtr raw, IntPtr annotation);
 
 		public string Annotation { 
@@ -166,7 +166,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_parse_annotation(IntPtr raw);
 
 		public Cdn.AnnotationInfo ParseAnnotation() {
@@ -175,7 +175,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_get_title(IntPtr raw);
 
 		public string Title { 

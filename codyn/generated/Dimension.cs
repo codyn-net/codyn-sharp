@@ -22,7 +22,7 @@ namespace Cdn {
 			return (Cdn.Dimension) Marshal.PtrToStructure (raw, typeof (Cdn.Dimension));
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_dimension_get_type();
 
 		public static GLib.GType GType { 
@@ -33,7 +33,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_dimension_is_one(IntPtr raw);
 
 		public bool IsOne { 
@@ -48,7 +48,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_dimension_size(IntPtr raw);
 
 		public int Size() {
@@ -61,7 +61,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_dimension_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cdn.Dimension other) {

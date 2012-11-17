@@ -137,7 +137,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_layoutable_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_layoutable_get_type ());
@@ -181,17 +181,17 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_layoutable_set_location(IntPtr raw, int x, int y);
 
 		public void SetLocation(int x, int y) {
 			cdn_layoutable_set_location(Handle, x, y);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_layoutable_get_has_location(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_layoutable_set_has_location(IntPtr raw, bool has_location);
 
 		public bool HasLocation { 
@@ -205,7 +205,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_layoutable_supports_location(IntPtr raw);
 
 		public bool SupportsLocation() {
@@ -214,7 +214,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_layoutable_get_location(IntPtr raw, out int x, out int y);
 
 		public void GetLocation(out int x, out int y) {

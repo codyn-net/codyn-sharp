@@ -14,7 +14,7 @@ namespace Cdn {
 		protected IntegratorRungeKutta(GLib.GType gtype) : base(gtype) {}
 		public IntegratorRungeKutta(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_runge_kutta_new();
 
 		public IntegratorRungeKutta () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_integrator_runge_kutta_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_runge_kutta_get_type();
 
 		public static new GLib.GType GType { 

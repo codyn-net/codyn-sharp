@@ -14,7 +14,7 @@ namespace Cdn {
 		protected EmbeddedString(GLib.GType gtype) : base(gtype) {}
 		public EmbeddedString(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_new();
 
 		public EmbeddedString () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_embedded_string_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_new_from_double(double s);
 
 		public EmbeddedString (double s) : base (IntPtr.Zero)
@@ -37,7 +37,7 @@ namespace Cdn {
 			Raw = cdn_embedded_string_new_from_double(s);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_new_from_integer(int s);
 
 		public EmbeddedString (int s) : base (IntPtr.Zero)
@@ -48,7 +48,7 @@ namespace Cdn {
 			Raw = cdn_embedded_string_new_from_integer(s);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_new_from_string(IntPtr s);
 
 		public EmbeddedString (string s) : base (IntPtr.Zero)
@@ -61,7 +61,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_s);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_prepend_text(IntPtr raw, IntPtr text);
 
 		public Cdn.EmbeddedString PrependText(string text) {
@@ -72,7 +72,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_push_brace(IntPtr raw);
 
 		public Cdn.EmbeddedString PushBrace() {
@@ -81,7 +81,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_add_string(IntPtr raw, IntPtr other);
 
 		public Cdn.EmbeddedString AddString(Cdn.EmbeddedString other) {
@@ -90,14 +90,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_embedded_string_clear_cache(IntPtr raw);
 
 		public void ClearCache() {
 			cdn_embedded_string_clear_cache(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_embedded_string_expand(IntPtr raw, IntPtr ctx, out IntPtr error);
 
 		public unsafe string Expand(Cdn.ExpansionContext ctx) {
@@ -108,7 +108,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_push(IntPtr raw, int type, int depth);
 
 		public Cdn.EmbeddedString Push(Cdn.EmbeddedStringNodeType type, int depth) {
@@ -117,7 +117,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_add_text(IntPtr raw, IntPtr text);
 
 		public Cdn.EmbeddedString AddText(string text) {
@@ -128,7 +128,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_embedded_string_brace_level(IntPtr raw);
 
 		public int BraceLevel() {
@@ -137,7 +137,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_embedded_string_error_quark();
 
 		public static int ErrorQuark() {
@@ -146,7 +146,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_embedded_string_expand_escape(IntPtr raw, IntPtr ctx, out IntPtr error);
 
 		public unsafe string ExpandEscape(Cdn.ExpansionContext ctx) {
@@ -157,7 +157,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_embedded_string_expand_multiple(IntPtr raw, IntPtr ctx, out IntPtr error);
 
 		public unsafe GLib.SList ExpandMultiple(Cdn.ExpansionContext ctx) {
@@ -168,7 +168,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_pop(IntPtr raw);
 
 		public Cdn.EmbeddedString Pop() {
@@ -177,7 +177,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_pop_brace(IntPtr raw);
 
 		public Cdn.EmbeddedString PopBrace() {
@@ -186,7 +186,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_escape(IntPtr item);
 
 		public static string Escape(string item) {
@@ -197,7 +197,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_collapse(IntPtr s);
 
 		public static string Collapse(string s) {
@@ -206,7 +206,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_get_type();
 
 		public static new GLib.GType GType { 
@@ -217,28 +217,28 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_set_column(IntPtr raw, int start, int end);
 
 		public void SetColumn(int start, int end) {
 			cdn_statement_set_column(Handle, start, end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_get_column(IntPtr raw, out int start, out int end);
 
 		public void GetColumn(out int start, out int end) {
 			cdn_statement_get_column(Handle, out start, out end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_set_line(IntPtr raw, int start, int end);
 
 		public void SetLine(int start, int end) {
 			cdn_statement_set_line(Handle, start, end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_get_line(IntPtr raw, out int start, out int end);
 
 		public void GetLine(out int start, out int end) {

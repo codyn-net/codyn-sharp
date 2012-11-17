@@ -19,7 +19,7 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_function_get_type();
 
 		public static new GLib.GType GType { 
@@ -30,10 +30,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_function_get_name(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_function_set_name(IntPtr raw, IntPtr name);
 
 		public string Name { 
@@ -49,7 +49,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_instruction_function_get_id(IntPtr raw);
 
 		public uint Id { 
@@ -63,7 +63,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "InstructionFunction.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_function_new(uint id, IntPtr name, IntPtr argdim);
 
 		public InstructionFunction (uint id, string name, int numargs) : base (IntPtr.Zero)

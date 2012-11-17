@@ -14,7 +14,7 @@ namespace Cdn {
 		protected InstructionVariable(GLib.GType gtype) : base(gtype) {}
 		public InstructionVariable(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_variable_new(IntPtr property);
 
 		public InstructionVariable (Cdn.Variable property) : base (IntPtr.Zero)
@@ -25,7 +25,7 @@ namespace Cdn {
 			Raw = cdn_instruction_variable_new(property == null ? IntPtr.Zero : property.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_variable_new_with_binding(IntPtr property, int binding);
 
 		public InstructionVariable (Cdn.Variable property, Cdn.InstructionVariableBinding binding) : base (IntPtr.Zero)
@@ -36,10 +36,10 @@ namespace Cdn {
 			Raw = cdn_instruction_variable_new_with_binding(property == null ? IntPtr.Zero : property.Handle, (int) binding);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_instruction_variable_get_binding(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_variable_set_binding(IntPtr raw, int binding);
 
 		public Cdn.InstructionVariableBinding Binding { 
@@ -53,7 +53,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_variable_get_type();
 
 		public static new GLib.GType GType { 
@@ -64,7 +64,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_instruction_variable_get_slice(IntPtr raw, out uint length, IntPtr dim);
 
 		public uint GetSlice(out uint length, Cdn.Dimension dim) {
@@ -76,7 +76,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_variable_apply_slice(IntPtr raw, out uint slice, uint length, IntPtr dim);
 
 		public uint ApplySlice(uint length, Cdn.Dimension dim) {
@@ -88,10 +88,10 @@ namespace Cdn {
 			return slice;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_variable_get_variable(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_variable_set_variable(IntPtr raw, IntPtr property);
 
 		public Cdn.Variable Variable { 
@@ -105,7 +105,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_variable_set_slice(IntPtr raw, out uint slice, uint length, IntPtr dim);
 
 		public uint SetSlice(uint length, Cdn.Dimension dim) {
