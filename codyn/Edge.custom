@@ -1,4 +1,4 @@
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_phaseable_get_phases(IntPtr raw);
 
 		public string[] Phases

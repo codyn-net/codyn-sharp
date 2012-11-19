@@ -6,7 +6,7 @@
         Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
 
 -->
-  <namespace name="Cdn" library="codyn-3.0">
+  <namespace name="Cdn" library="libcodyn-3.0.dll">
     <enum name="AnnotationAnchor" cname="CdnAnnotationAnchor" type="enum">
       <member cname="CDN_ANNOTATION_ANCHOR_NORTH" name="North" />
       <member cname="CDN_ANNOTATION_ANCHOR_NORTH_EAST" name="NorthEast" />
@@ -905,7 +905,7 @@
       <method name="GetIndex" cname="cdn_edge_action_get_index">
         <return-type type="CdnExpression*" />
       </method>
-      <method name="GetIndices" cname="cdn_edge_action_get_indices">
+      <method name="GetIndices" cname="cdn_edge_action_get_indices" hidden="true">
         <return-type type="const-gint*" />
         <parameters>
           <parameter type="gint*" name="num_indices" />
@@ -1995,7 +1995,7 @@
           <parameter type="CdnInstructionVariableBinding" name="binding" />
         </parameters>
       </method>
-      <method name="SetSlice" cname="cdn_instruction_variable_set_slice">
+      <method name="SetSlice" cname="cdn_instruction_variable_set_slice" hidden="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-guint*" name="slice" />

@@ -14,7 +14,7 @@ namespace Cdn {
 		protected InstructionIndex(GLib.GType gtype) : base(gtype) {}
 		public InstructionIndex(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_index_new(out int indices, IntPtr retdim, IntPtr arg);
 
 		public InstructionIndex (out int indices, Cdn.Dimension retdim, Cdn.StackArg arg) : base (IntPtr.Zero)
@@ -28,7 +28,7 @@ namespace Cdn {
 			Marshal.FreeHGlobal (native_retdim);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_index_new_offset(int start, IntPtr retdim, IntPtr arg);
 
 		public static InstructionIndex NewOffset(int start, Cdn.Dimension retdim, Cdn.StackArg arg)
@@ -40,7 +40,7 @@ namespace Cdn {
 			return result;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_instruction_index_get_offset(IntPtr raw);
 
 		public int Offset { 
@@ -51,7 +51,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_index_get_type();
 
 		public static new GLib.GType GType { 
@@ -62,7 +62,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_instruction_index_is_offset(IntPtr raw);
 
 		public bool IsOffset { 
@@ -76,7 +76,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "InstructionIndex.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_index_get_indices(IntPtr raw, out int length);
 
 		public int[] Indices

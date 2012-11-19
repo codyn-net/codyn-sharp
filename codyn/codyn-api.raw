@@ -6,7 +6,7 @@
         Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
 
 -->
-  <namespace name="Cdn" library="codyn-3.0">
+  <namespace name="Cdn" library="libcodyn-3.0.dll">
     <enum name="AnnotationAnchor" cname="CdnAnnotationAnchor" type="enum">
       <member cname="CDN_ANNOTATION_ANCHOR_NORTH" name="North" />
       <member cname="CDN_ANNOTATION_ANCHOR_NORTH_EAST" name="NorthEast" />

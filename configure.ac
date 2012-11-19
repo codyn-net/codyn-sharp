@@ -34,6 +34,11 @@ else
 	LIB_SUFFIX=
 fi
 
+AC_ARG_ENABLE([release], [Build release (default no)], [enable_release=$enableval], [enable_release=no])
+
+AM_CONDITIONAL([ENABLE_RELEASE], [test x$enable_release != xno])
+AM_CONDITIONAL([ENABLE_DEBUG], [test x$enable_release = xno])
+
 AC_SUBST(CSC)
 AC_SUBST(GACUTIL)
 AC_SUBST(LIB_PREFIX)

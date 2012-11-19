@@ -1,4 +1,4 @@
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_index_get_indices(IntPtr raw, out int length);
 
 		public int[] Indices

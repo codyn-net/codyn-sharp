@@ -1,4 +1,4 @@
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_function_new(uint id, IntPtr name, IntPtr argdim);
 
 		public InstructionFunction (uint id, string name, int numargs) : base (IntPtr.Zero)

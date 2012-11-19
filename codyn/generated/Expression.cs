@@ -389,7 +389,7 @@ namespace Cdn {
 		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_new(IntPtr expression);
 
-		[DllImport ("libgobject-2.0")]
+		[DllImport ("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
 		public Expression (string expression) : base (IntPtr.Zero)

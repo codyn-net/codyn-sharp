@@ -1,7 +1,7 @@
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_new(IntPtr expression);
 
-		[DllImport ("libgobject-2.0")]
+		[DllImport ("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
 		public Expression (string expression) : base (IntPtr.Zero)
@@ -29,7 +29,7 @@
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_copy(IntPtr raw);
 
 		public Cdn.Expression Copy() {
@@ -44,10 +44,10 @@
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_instructions(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_instructions(IntPtr raw, IntPtr instructions);
 
 		public Cdn.Instruction[] Instructions
@@ -79,7 +79,7 @@
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_instructions_take(IntPtr raw, IntPtr instructions);
 
 		public void SetInstructionsTake(Cdn.Instruction[] instructions)
@@ -94,7 +94,7 @@
 			cdn_expression_set_instructions_take(Handle, ptr.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_sum(IntPtr expressions);
 
 		public static Cdn.Expression Sum(Cdn.Expression[] expressions) {

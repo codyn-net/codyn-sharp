@@ -125,15 +125,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern int cdn_edge_action_get_indices(IntPtr raw, out int num_indices);
-
-		public int GetIndices(out int num_indices) {
-			int raw_ret = cdn_edge_action_get_indices(Handle, out num_indices);
-			int ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_get_target_variable(IntPtr raw);
 
 		public Cdn.Variable TargetVariable { 
@@ -293,7 +284,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "EdgeAction.custom"
-		[DllImport ("libgobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
 		[DllImport("libcodyn-3.0.dll")]
@@ -338,6 +329,28 @@ namespace Cdn {
 			{
 				IntPtr ret = cdn_phaseable_get_phases(Handle);
 				return GLib.Marshaller.NullTermPtrToStringArray(ret, true);
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_edge_action_get_indices(IntPtr raw, out int length);
+
+		public int[] Indices
+		{
+			get
+			{
+				int length;
+
+				IntPtr raw_ret = cdn_edge_action_get_indices(Handle, out length);
+
+				int[] ret = new int[length];
+
+				if (length > 0)
+				{
+					Marshal.Copy(raw_ret, ret, 0, length);
+				}
+
+				return ret;
 			}
 		}
 

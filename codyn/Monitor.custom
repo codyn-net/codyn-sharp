@@ -1,4 +1,4 @@
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_monitor_get_data_resampled(IntPtr raw, double[] sites, uint n_size, double[] data);
 
 		public double[] GetDataResampled(double[] sites) {
@@ -11,7 +11,7 @@
 			return data;
 		}
 		
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_monitor_get_data(IntPtr raw, out uint n_size);
 
 		public double[] GetData() {
@@ -24,7 +24,7 @@
 			return data;
 		}
 		
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_monitor_get_sites(IntPtr raw, out uint n_size);
 
 		public double[] GetSites() {

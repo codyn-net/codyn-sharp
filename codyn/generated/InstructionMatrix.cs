@@ -14,7 +14,7 @@ namespace Cdn {
 		protected InstructionMatrix(GLib.GType gtype) : base(gtype) {}
 		public InstructionMatrix(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_matrix_new(IntPtr args, IntPtr dim);
 
 		public InstructionMatrix (Cdn.StackArgs args, Cdn.Dimension dim) : base (IntPtr.Zero)
@@ -28,7 +28,7 @@ namespace Cdn {
 			Marshal.FreeHGlobal (native_dim);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_matrix_get_type();
 
 		public static new GLib.GType GType { 

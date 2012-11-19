@@ -148,7 +148,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport ("libgobject-2.0")]
+		[DllImport ("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
 		[DllImport("libcodyn-3.0.dll")]

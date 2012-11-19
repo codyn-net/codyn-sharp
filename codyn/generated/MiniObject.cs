@@ -9,7 +9,7 @@ namespace Cdn
 	{
 		private IntPtr d_raw;
 
-		[DllImport("libcodyn-3.0.dll")]
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_mini_object_ref(IntPtr raw);
 
 		public MiniObject(IntPtr raw)
@@ -24,7 +24,7 @@ namespace Cdn
 			}
 		}
 
-		[DllImport("libcodyn-3.0.dll")]
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_mini_object_new(IntPtr raw_gtype);
 
 		protected MiniObject(GLib.GType gtype)
@@ -56,7 +56,7 @@ namespace Cdn
 			Dispose(false);
 		}
 
-		[DllImport("libcodyn-3.0.dll")]
+		[DllImport("codyn-3.0")]
 		static extern void cdn_mini_object_unref(IntPtr raw);
 
 		public void Dispose()
@@ -79,7 +79,7 @@ namespace Cdn
 			}
 		}
 
-		[DllImport("libcodyn-3.0.dll")]
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_mini_object_copy(IntPtr raw);
 
 		public Cdn.MiniObject Copy()
@@ -89,7 +89,7 @@ namespace Cdn
 			return GetObject(GetType(), cpraw);
 		}
 
-		[DllImport("libcodyn-3.0.dll")]
+		[DllImport("codyn-3.0")]
 		static extern IntPtr cdn_mini_object_get_type();
 
 		public static GLib.GType GType

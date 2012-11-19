@@ -11,6 +11,16 @@ noinst_DATA = $(ASSEMBLY)
 CLEANFILES = $(ASSEMBLY) $(API)
 DISTCLEANFILES = AssemblyInfo.cs $(ASSEMBLY).mdb
 
+codynsharpdir=$(libdir)/codyn-sharp-@CODYN_SHARP_API_VERSION@
+codynsharp_SCRIPTS = $(ASSEMBLY_NAME).dll
+
+if ENABLE_DEBUG
+DEBUG_FLAGS=-debug
+codynsharp_DATA = $(ASSEMBLY_NAME).dll.mdb
+else
+DEBUG_FLAGS=
+endif
+
 SYMBOLS = codyn.symbols
 build_symbols = $(addprefix --symbols=$(srcdir)/, $(SYMBOLS))
 
@@ -55,7 +65,7 @@ generated/Node.cs: $(RAW_API) $(build_customs) $(overrides_sources)
 endif
 
 $(ASSEMBLY): $(build_sources) generated/Node.cs
-	$(CSC) -debug -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) $(wildcard $(srcdir)/generated/*.cs)
+	$(CSC) $(DEBUG_FLAGS) -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) $(wildcard $(srcdir)/generated/*.cs)
 
 all: $(ASSEMBLY)
 

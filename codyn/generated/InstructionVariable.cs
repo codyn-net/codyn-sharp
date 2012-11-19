@@ -76,18 +76,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern uint cdn_instruction_variable_get_slice(IntPtr raw, out uint length, IntPtr dim);
-
-		public uint GetSlice(out uint length, Cdn.Dimension dim) {
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			uint raw_ret = cdn_instruction_variable_get_slice(Handle, out length, native_dim);
-			uint ret = raw_ret;
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return ret;
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_variable_apply_slice(IntPtr raw, out uint slice, uint length, IntPtr dim);
 
 		public uint ApplySlice(uint length, Cdn.Dimension dim) {
@@ -116,18 +104,6 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_instruction_variable_set_slice(IntPtr raw, out uint slice, uint length, IntPtr dim);
-
-		public uint SetSlice(uint length, Cdn.Dimension dim) {
-			uint slice;
-			IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc (dim);
-			cdn_instruction_variable_set_slice(Handle, out slice, length, native_dim);
-			dim = Cdn.Dimension.New (native_dim);
-			Marshal.FreeHGlobal (native_dim);
-			return slice;
-		}
-
 #endregion
 #region Customized extensions
 #line 1 "InstructionVariable.custom"
@@ -141,6 +117,13 @@ namespace Cdn {
 			IntPtr native_dim = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Cdn.Dimension)));
 			IntPtr raw_ret = cdn_instruction_variable_get_slice(Handle, out length, native_dim);
 
+			if (raw_ret == IntPtr.Zero)
+			{
+				Marshal.FreeHGlobal(native_dim);
+				dim = new Cdn.Dimension { Rows = 1, Columns = 1 };
+				return null;
+			}
+
 			dim = Cdn.Dimension.New(native_dim);
 			Marshal.FreeHGlobal(native_dim);
 
@@ -148,6 +131,29 @@ namespace Cdn {
 
 			Marshal.Copy(raw_ret, ret, 0, length);
 			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_instruction_variable_set_slice(IntPtr raw, IntPtr slice, int length, IntPtr dimension);
+
+		public void SetSlice(int[] slice, Cdn.Dimension dim)
+		{
+			if (slice == null)
+			{
+				cdn_instruction_variable_set_slice(Handle, IntPtr.Zero, 0, IntPtr.Zero);
+			}
+			else
+			{
+				IntPtr pnt = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * slice.Length);
+				Marshal.Copy(slice, 0, pnt, slice.Length);
+
+				IntPtr native_dim = GLib.Marshaller.StructureToPtrAlloc(dim);
+
+				cdn_instruction_variable_set_slice(Handle, pnt, slice.Length, native_dim);
+
+				Marshal.FreeHGlobal(native_dim);
+				Marshal.FreeHGlobal(pnt);
+			}
 		}
 
 #endregion

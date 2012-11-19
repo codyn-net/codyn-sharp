@@ -212,7 +212,7 @@ namespace Cdn {
 		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_argument_new(IntPtr name, IntPtr expression, bool isexplicit);
 
-		[DllImport ("libgobject-2.0")]
+		[DllImport ("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
 		public FunctionArgument (string name, Cdn.Expression defaultValue, bool isexplicit) : base (IntPtr.Zero)
