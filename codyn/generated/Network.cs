@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Network(GLib.GType gtype) : base(gtype) {}
 		public Network(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_new();
 
 		public Network () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_network_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_network_new_from_path(IntPtr path, out IntPtr error);
 
 		public unsafe Network (string path) : base (IntPtr.Zero)
@@ -41,7 +41,7 @@ namespace Cdn {
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_network_new_from_string(IntPtr s, out IntPtr error);
 
 		public static unsafe Network NewFromString(string s)
@@ -54,10 +54,10 @@ namespace Cdn {
 			return result;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_get_integrator(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_network_set_integrator(IntPtr raw, IntPtr integrator);
 
 		[GLib.Property ("integrator")]
@@ -131,7 +131,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_end(IntPtr raw, out IntPtr error);
 
 		public unsafe bool End() {
@@ -142,7 +142,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_load_from_string(IntPtr raw, IntPtr s, out IntPtr error);
 
 		public unsafe bool LoadFromString(string s) {
@@ -155,7 +155,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_begin(IntPtr raw, double start, out IntPtr error);
 
 		public unsafe bool Begin(double start) {
@@ -166,7 +166,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_get_path(IntPtr raw);
 
 		public string Path { 
@@ -177,7 +177,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_network_load_error_quark();
 
 		public static int LoadErrorQuark() {
@@ -186,7 +186,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_run(IntPtr raw, double from, double timestep, double to, out IntPtr error);
 
 		public unsafe bool Run(double from, double timestep, double to) {
@@ -197,7 +197,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_merge_from_path(IntPtr raw, IntPtr path, out IntPtr error);
 
 		public unsafe bool MergeFromPath(string path) {
@@ -210,14 +210,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_network_simplify(IntPtr raw);
 
 		public void Simplify() {
 			cdn_network_simplify(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_merge_from_string(IntPtr raw, IntPtr s, out IntPtr error);
 
 		public unsafe bool MergeFromString(string s) {
@@ -230,7 +230,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_link_library(IntPtr raw, IntPtr path, out IntPtr error);
 
 		public unsafe bool LinkLibrary(string path) {
@@ -243,7 +243,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_get_template_node(IntPtr raw);
 
 		public Cdn.Node TemplateNode { 
@@ -254,7 +254,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_network_error_quark();
 
 		public static new int ErrorQuark() {
@@ -263,7 +263,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_load_from_path(IntPtr raw, IntPtr path, out IntPtr error);
 
 		public unsafe bool LoadFromPath(string path) {
@@ -276,7 +276,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_get_import_from_path(IntPtr raw, IntPtr path);
 
 		public Cdn.Import GetImportFromPath(string path) {
@@ -287,10 +287,10 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_network_get_random_seed(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_network_set_random_seed(IntPtr raw, uint seed);
 
 		public uint RandomSeed { 
@@ -304,7 +304,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_get_type();
 
 		public static new GLib.GType GType { 
@@ -315,7 +315,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_network_step(IntPtr raw, double timestep);
 
 		public double Step(double timestep) {

@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Object(GLib.GType gtype) : base(gtype) {}
 		public Object(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_new(IntPtr id);
 
 		public Object (string id) : base (IntPtr.Zero)
@@ -32,10 +32,10 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_id);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_object_get_auto_imported(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_object_set_auto_imported(IntPtr raw, bool auto_imported);
 
 		[GLib.Property ("auto-imported")]
@@ -50,7 +50,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_parent(IntPtr raw);
 
 		[GLib.Property ("parent")]
@@ -62,10 +62,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_id(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_object_set_id(IntPtr raw, IntPtr id);
 
 		[GLib.Property ("id")]
@@ -468,7 +468,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_template_applies_to(IntPtr raw);
 
 		public Cdn.Object[] TemplateAppliesTo { 
@@ -479,7 +479,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_relative_id(IntPtr raw, IntPtr parent);
 
 		public string GetRelativeId(Cdn.Node parent) {
@@ -488,7 +488,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_variables(IntPtr raw);
 
 		public Cdn.Variable[] Variables { 
@@ -499,14 +499,14 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_object_reset(IntPtr raw);
 
 		public void Reset() {
 			cdn_object_reset(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_object_apply_template(IntPtr raw, IntPtr templ, out IntPtr error);
 
 		public unsafe bool ApplyTemplate(Cdn.Object templ) {
@@ -517,7 +517,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_variable_template(IntPtr raw, IntPtr variable, bool match_full);
 
 		public Cdn.Object GetVariableTemplate(Cdn.Variable variable, bool match_full) {
@@ -526,7 +526,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_object_is_compiled(IntPtr raw);
 
 		public bool IsCompiled { 
@@ -537,7 +537,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_variable(IntPtr raw, IntPtr name);
 
 		public Cdn.Variable Variable(string name) {
@@ -548,7 +548,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_type();
 
 		public static new GLib.GType GType { 
@@ -559,7 +559,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_full_id_for_display(IntPtr raw);
 
 		public string FullIdForDisplay { 
@@ -570,7 +570,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_copy(IntPtr raw);
 
 		public Cdn.Object Copy() {
@@ -579,7 +579,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_new_from_template(IntPtr raw);
 
 		public Cdn.Object CopyAsTemplate() {
@@ -588,7 +588,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_object_remove_variable(IntPtr raw, IntPtr name, out IntPtr error);
 
 		public unsafe bool RemoveVariable(string name) {
@@ -601,7 +601,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_object_foreach_expression(IntPtr raw, CdnSharp.ForeachExpressionFuncNative func, IntPtr userdata);
 
 		public void ForeachExpression(Cdn.ForeachExpressionFunc func) {
@@ -609,7 +609,7 @@ namespace Cdn {
 			cdn_object_foreach_expression(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_object_equal(IntPtr raw, IntPtr second);
 
 		public bool Equal(Cdn.Object second) {
@@ -618,14 +618,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_object_taint(IntPtr raw);
 
 		public void Taint() {
 			cdn_object_taint(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_relative_id_for_display(IntPtr raw, IntPtr parent);
 
 		public string GetRelativeIdForDisplay(Cdn.Node parent) {
@@ -634,14 +634,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_object_clear(IntPtr raw);
 
 		public void Clear() {
 			cdn_object_clear(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_object_unapply_template(IntPtr raw, IntPtr templ, out IntPtr error);
 
 		public unsafe bool UnapplyTemplate(Cdn.Object templ) {
@@ -652,7 +652,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_object_verify_remove_variable(IntPtr raw, IntPtr name, out IntPtr error);
 
 		public unsafe bool VerifyRemoveVariable(string name) {
@@ -665,7 +665,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_full_id(IntPtr raw);
 
 		public string FullId { 
@@ -676,7 +676,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_applied_templates(IntPtr raw);
 
 		public Cdn.Object[] AppliedTemplates { 
@@ -687,7 +687,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_object_add_variable(IntPtr raw, IntPtr variable, out IntPtr error);
 
 		public unsafe bool AddVariable(Cdn.Variable variable) {
@@ -698,7 +698,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_object_error_quark();
 
 		public static int ErrorQuark() {
@@ -707,7 +707,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_object_has_variable(IntPtr raw, IntPtr name);
 
 		public bool HasVariable(string name) {
@@ -718,7 +718,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_object_compile(IntPtr raw, IntPtr context, IntPtr error);
 
 		public bool Compile(Cdn.CompileContext context, Cdn.CompileError error) {
@@ -727,7 +727,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_object_get_compile_context(IntPtr raw, IntPtr context);
 
 		public Cdn.CompileContext GetCompileContext(Cdn.CompileContext context) {
@@ -736,14 +736,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_usable_use(IntPtr raw);
 
 		public void Use() {
 			cdn_usable_use(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_usable_use_count(IntPtr raw);
 
 		public uint UseCount() {
@@ -752,7 +752,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_usable_unuse(IntPtr raw);
 
 		public bool Unuse() {
@@ -761,10 +761,10 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_get_annotation(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_annotatable_set_annotation(IntPtr raw, IntPtr annotation);
 
 		public string Annotation { 
@@ -780,7 +780,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_parse_annotation(IntPtr raw);
 
 		public Cdn.AnnotationInfo ParseAnnotation() {
@@ -789,7 +789,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_get_title(IntPtr raw);
 
 		public string Title { 
@@ -800,17 +800,17 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_layoutable_set_location(IntPtr raw, int x, int y);
 
 		public void SetLocation(int x, int y) {
 			cdn_layoutable_set_location(Handle, x, y);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_layoutable_get_has_location(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_layoutable_set_has_location(IntPtr raw, bool has_location);
 
 		public bool HasLocation { 
@@ -824,7 +824,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_layoutable_supports_location(IntPtr raw);
 
 		public bool SupportsLocation() {
@@ -833,7 +833,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_layoutable_get_location(IntPtr raw, out int x, out int y);
 
 		public void GetLocation(out int x, out int y) {

@@ -14,7 +14,7 @@ namespace Cdn {
 		protected InstructionNumber(GLib.GType gtype) : base(gtype) {}
 		public InstructionNumber(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_number_new(double value);
 
 		public InstructionNumber (double value) : base (IntPtr.Zero)
@@ -25,7 +25,7 @@ namespace Cdn {
 			Raw = cdn_instruction_number_new(value);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_number_new_from_string(IntPtr repr);
 
 		public InstructionNumber (string repr) : base (IntPtr.Zero)
@@ -38,7 +38,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_repr);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_number_get_type();
 
 		public static new GLib.GType GType { 
@@ -49,10 +49,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_instruction_number_get_value(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_number_set_value(IntPtr raw, double value);
 
 		public double Value { 
@@ -66,10 +66,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_number_get_representation(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_number_set_representation(IntPtr raw, IntPtr repr);
 
 		public string Representation { 

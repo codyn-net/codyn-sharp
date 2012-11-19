@@ -34,7 +34,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_value(IntPtr raw, double value);
 
 		[GLib.Property ("value")]
@@ -50,10 +50,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_get_has_cache(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_has_cache(IntPtr raw, bool cache);
 
 		[GLib.Property ("has-cache")]
@@ -68,7 +68,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_cache_notify(IntPtr raw, CdnSharp.ExpressionCacheNotifyNative notify, IntPtr userdata, GLib.DestroyNotify destroy_notify);
 
 		public Cdn.ExpressionCacheNotify CacheNotify { 
@@ -87,7 +87,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_values(IntPtr raw, IntPtr values);
 
 		public Cdn.Matrix Values { 
@@ -96,7 +96,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_type();
 
 		public static new GLib.GType GType { 
@@ -107,7 +107,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_expression_get_error_start(IntPtr raw);
 
 		public int ErrorStart { 
@@ -118,7 +118,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_expression_get_stack_size(IntPtr raw);
 
 		public uint StackSize { 
@@ -129,7 +129,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_get_dimension(IntPtr raw, IntPtr dimension);
 
 		public bool GetDimension(Cdn.Dimension dimension) {
@@ -141,7 +141,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_expression_evaluate(IntPtr raw);
 
 		public double Evaluate() {
@@ -150,21 +150,21 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_reset(IntPtr raw);
 
 		public void Reset() {
 			cdn_expression_reset(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_reset_cache(IntPtr raw);
 
 		public void ResetCache() {
 			cdn_expression_reset_cache(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_dependencies(IntPtr raw);
 
 		public Cdn.Expression[] Dependencies { 
@@ -175,7 +175,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_expression_get_error_at(IntPtr raw);
 
 		public int ErrorAt { 
@@ -186,17 +186,17 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_force_reset_cache(IntPtr raw);
 
 		public void ForceResetCache() {
 			cdn_expression_force_reset_cache(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_get_pinned_sparsity(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_pinned_sparsity(IntPtr raw, bool pinned);
 
 		public bool PinnedSparsity { 
@@ -210,14 +210,14 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_recalculate_sparsity(IntPtr raw);
 
 		public void RecalculateSparsity() {
 			cdn_expression_recalculate_sparsity(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_depends_on(IntPtr raw, IntPtr depends_on);
 
 		public bool DependsOn(Cdn.Expression depends_on) {
@@ -226,7 +226,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_equal(IntPtr raw, IntPtr other, bool asstring);
 
 		public bool Equal(Cdn.Expression other, bool asstring) {
@@ -235,7 +235,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_variable_dependencies(IntPtr raw);
 
 		public Cdn.Variable[] VariableDependencies { 
@@ -246,7 +246,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_from_string(IntPtr raw, IntPtr value);
 
 		public string FromString { 
@@ -257,7 +257,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_is_cached(IntPtr raw);
 
 		public bool IsCached { 
@@ -268,7 +268,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_depends_on_me(IntPtr raw);
 
 		public GLib.SList DependsOnMe { 
@@ -279,7 +279,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_rand_instructions(IntPtr raw);
 
 		public Cdn.InstructionRand[] RandInstructions { 
@@ -290,7 +290,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_as_string(IntPtr raw);
 
 		public string AsString { 
@@ -301,10 +301,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_get_once(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_once(IntPtr raw, bool instant);
 
 		public bool Once { 
@@ -318,7 +318,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_stack_arg(IntPtr raw);
 
 		public Cdn.StackArg StackArg { 
@@ -329,7 +329,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_evaluate_notify(IntPtr raw, CdnSharp.ExpressionEvaluateNotifyNative notify, IntPtr userdata, GLib.DestroyNotify destroy_notify);
 
 		public Cdn.ExpressionEvaluateNotify EvaluateNotify { 
@@ -348,7 +348,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_evaluate_values(IntPtr raw);
 
 		public Cdn.Matrix EvaluateValues() {
@@ -357,7 +357,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_compile(IntPtr raw, IntPtr context, IntPtr error);
 
 		public bool Compile(Cdn.CompileContext context, Cdn.CompileError error) {
@@ -366,10 +366,10 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_modifiable_get_modified(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_modifiable_set_modified(IntPtr raw, bool modified);
 
 		public bool Modified { 
@@ -386,7 +386,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "Expression.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_new(IntPtr expression);
 
 		[DllImport ("libgobject-2.0")]
@@ -417,7 +417,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_copy(IntPtr raw);
 
 		public Cdn.Expression Copy() {
@@ -432,10 +432,10 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_get_instructions(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_instructions(IntPtr raw, IntPtr instructions);
 
 		public Cdn.Instruction[] Instructions
@@ -467,7 +467,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_expression_set_instructions_take(IntPtr raw, IntPtr instructions);
 
 		public void SetInstructionsTake(Cdn.Instruction[] instructions)
@@ -482,7 +482,7 @@ namespace Cdn {
 			cdn_expression_set_instructions_take(Handle, ptr.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_expression_sum(IntPtr expressions);
 
 		public static Cdn.Expression Sum(Cdn.Expression[] expressions) {

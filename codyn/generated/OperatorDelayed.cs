@@ -14,7 +14,7 @@ namespace Cdn {
 		protected OperatorDelayed(GLib.GType gtype) : base(gtype) {}
 		public OperatorDelayed(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_delayed_new();
 
 		public OperatorDelayed () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_operator_delayed_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_delayed_get_expression(IntPtr raw);
 
 		[GLib.Property ("expression")]
@@ -38,7 +38,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_delayed_get_initial_value(IntPtr raw);
 
 		[GLib.Property ("initial-value")]
@@ -50,7 +50,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_delayed_get_type();
 
 		public static new GLib.GType GType { 

@@ -14,7 +14,7 @@ namespace Cdn {
 		protected VariableInterface(GLib.GType gtype) : base(gtype) {}
 		public VariableInterface(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_interface_new(IntPtr node);
 
 		public VariableInterface (Cdn.Node node) : base (IntPtr.Zero)
@@ -32,7 +32,7 @@ namespace Cdn {
 			Raw = cdn_variable_interface_new(node == null ? IntPtr.Zero : node.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_interface_get_node(IntPtr raw);
 
 		[GLib.Property ("node")]
@@ -150,7 +150,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_variable_interface_remove(IntPtr raw, IntPtr name, out IntPtr error);
 
 		public unsafe bool Remove(string name) {
@@ -163,7 +163,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_interface_lookup_variable_name(IntPtr raw, IntPtr name);
 
 		public string LookupVariableName(string name) {
@@ -174,7 +174,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_interface_lookup(IntPtr raw, IntPtr name);
 
 		public Cdn.Variable Lookup(string name) {
@@ -185,7 +185,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_interface_get_names(IntPtr raw);
 
 		public string[] Names { 
@@ -196,7 +196,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_interface_lookup_child_name(IntPtr raw, IntPtr name);
 
 		public string LookupChildName(string name) {
@@ -207,7 +207,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_variable_interface_error_quark();
 
 		public static int ErrorQuark() {
@@ -216,7 +216,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_variable_interface_add(IntPtr raw, IntPtr name, IntPtr child_name, IntPtr variable_name, out IntPtr error);
 
 		public unsafe bool Add(string name, string child_name, string variable_name) {
@@ -233,7 +233,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_variable_interface_implements(IntPtr raw, IntPtr name);
 
 		public bool Implements(string name) {
@@ -244,7 +244,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_interface_get_type();
 
 		public static new GLib.GType GType { 

@@ -84,7 +84,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_phaseable_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_phaseable_get_type ());
@@ -128,7 +128,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr tag);
 
 		public void RemovePhase(string tag) {
@@ -137,7 +137,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_tag);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_phaseable_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cdn.Phaseable other) {
@@ -146,17 +146,17 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_copy_to(IntPtr raw, IntPtr dest);
 
 		public void CopyTo(Cdn.Phaseable dest) {
 			cdn_phaseable_copy_to(Handle, dest == null ? IntPtr.Zero : dest.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern System.IntPtr cdn_phaseable_get_phase_table(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_set_phase_table(IntPtr raw, System.IntPtr table);
 
 		public System.IntPtr PhaseTable { 
@@ -170,7 +170,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_add_phase(IntPtr raw, IntPtr phase);
 
 		public void AddPhase(string phase) {
@@ -179,7 +179,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_phase);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_foreach(IntPtr raw, CdnSharp.PhaseableForeachFuncNative func, IntPtr userdata);
 
 		public void Foreach(Cdn.PhaseableForeachFunc func) {
@@ -187,7 +187,7 @@ namespace Cdn {
 			cdn_phaseable_foreach(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_phaseable_is_active(IntPtr raw, IntPtr phase);
 
 		public bool IsActive(string phase) {
@@ -201,7 +201,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "PhaseableAdapter.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_phaseable_get_phases(IntPtr raw);
 
 		public string[] Phases

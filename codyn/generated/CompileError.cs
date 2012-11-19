@@ -14,7 +14,7 @@ namespace Cdn {
 		protected CompileError(GLib.GType gtype) : base(gtype) {}
 		public CompileError(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_new();
 
 		public CompileError () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_compile_error_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_compile_error_type_quark();
 
 		public static int TypeQuark() {
@@ -35,7 +35,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_get_error(IntPtr raw);
 
 		public IntPtr Error { 
@@ -46,7 +46,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_string(IntPtr raw);
 
 		public string String() {
@@ -55,7 +55,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_compile_error_get_code(IntPtr raw);
 
 		public int Code { 
@@ -66,7 +66,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_get_formatted_string(IntPtr raw);
 
 		public string FormattedString { 
@@ -77,14 +77,14 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_compile_error_set(IntPtr raw, IntPtr gerror, IntPtr objekt, IntPtr property, IntPtr action, IntPtr expression);
 
 		public void Set(IntPtr gerror, Cdn.Object objekt, Cdn.Variable property, Cdn.EdgeAction action, Cdn.Expression expression) {
 			cdn_compile_error_set(Handle, gerror, objekt == null ? IntPtr.Zero : objekt.Handle, property == null ? IntPtr.Zero : property.Handle, action == null ? IntPtr.Zero : action.Handle, expression == null ? IntPtr.Zero : expression.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_get_edge_action(IntPtr raw);
 
 		public Cdn.EdgeAction EdgeAction { 
@@ -95,7 +95,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_get_object(IntPtr raw);
 
 		public Cdn.Object Object { 
@@ -106,7 +106,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_code_string(int code);
 
 		public static string CodeString(int code) {
@@ -115,7 +115,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_get_message(IntPtr raw);
 
 		public string Message { 
@@ -126,7 +126,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_get_expression(IntPtr raw);
 
 		public Cdn.Expression Expression { 
@@ -137,7 +137,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_get_variable(IntPtr raw);
 
 		public Cdn.Variable Variable { 
@@ -148,7 +148,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_error_get_type();
 
 		public static new GLib.GType GType { 

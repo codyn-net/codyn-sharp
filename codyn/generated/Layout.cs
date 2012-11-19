@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Layout(GLib.GType gtype) : base(gtype) {}
 		public Layout(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_layout_new(IntPtr network);
 
 		public Layout (Cdn.Network network) : base (IntPtr.Zero)
@@ -42,7 +42,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_layout_get_type();
 
 		public static new GLib.GType GType { 
@@ -53,7 +53,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_layout_set(IntPtr raw, IntPtr layoutable, int x, int y);
 
 		public void Set(Cdn.Layoutable layoutable, int x, int y) {

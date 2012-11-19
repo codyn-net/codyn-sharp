@@ -14,7 +14,7 @@ namespace Cdn {
 		protected IoMethod(GLib.GType gtype) : base(gtype) {}
 		public IoMethod(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_io_method_new(IntPtr path);
 
 		public IoMethod (string path) : base (IntPtr.Zero)
@@ -42,7 +42,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_io_method_get_type();
 
 		public static new GLib.GType GType { 
@@ -53,7 +53,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_io_method_find(IntPtr name, int mode);
 
 		public static GLib.GType Find(string name, Cdn.IoMode mode) {
@@ -64,7 +64,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_io_method_initialize();
 
 		public static void Initialize() {

@@ -61,3 +61,5 @@ all: $(ASSEMBLY)
 
 codynsharpdir=$(libdir)/codyn-sharp-@CODYN_SHARP_API_VERSION@
 codynsharp_SCRIPTS = $(ASSEMBLY_NAME).dll
+
+.NOTPARALLEL:

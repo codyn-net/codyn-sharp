@@ -14,7 +14,7 @@ namespace Cdn {
 		protected OperatorSimplify(GLib.GType gtype) : base(gtype) {}
 		public OperatorSimplify(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_simplify_new();
 
 		public OperatorSimplify () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_operator_simplify_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_simplify_get_type();
 
 		public static new GLib.GType GType { 

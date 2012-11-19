@@ -84,7 +84,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_modifiable_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_modifiable_get_type ());
@@ -128,10 +128,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_modifiable_get_modified(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_modifiable_set_modified(IntPtr raw, bool modified);
 
 		public bool Modified { 

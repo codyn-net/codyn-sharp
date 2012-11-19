@@ -14,7 +14,7 @@ namespace Cdn {
 		protected IntegratorEuler(GLib.GType gtype) : base(gtype) {}
 		public IntegratorEuler(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_euler_new();
 
 		public IntegratorEuler () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_integrator_euler_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_euler_get_type();
 
 		public static new GLib.GType GType { 

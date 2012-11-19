@@ -65,7 +65,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_io_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_io_get_type ());
@@ -109,14 +109,14 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_io_update(IntPtr raw, IntPtr integrator);
 
 		public void Update(Cdn.Integrator integrator) {
 			cdn_io_update(Handle, integrator == null ? IntPtr.Zero : integrator.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_io_get_mode(IntPtr raw);
 
 		public Cdn.IoMode Mode { 

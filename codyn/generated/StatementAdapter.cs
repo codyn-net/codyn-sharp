@@ -49,7 +49,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_statement_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_statement_get_type ());
@@ -93,28 +93,28 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_set_column(IntPtr raw, int start, int end);
 
 		public void SetColumn(int start, int end) {
 			cdn_statement_set_column(Handle, start, end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_get_column(IntPtr raw, out int start, out int end);
 
 		public void GetColumn(out int start, out int end) {
 			cdn_statement_get_column(Handle, out start, out end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_set_line(IntPtr raw, int start, int end);
 
 		public void SetLine(int start, int end) {
 			cdn_statement_set_line(Handle, start, end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_get_line(IntPtr raw, out int start, out int end);
 
 		public void GetLine(out int start, out int end) {

@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Attribute(GLib.GType gtype) : base(gtype) {}
 		public Attribute(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_attribute_new(IntPtr id);
 
 		public Attribute (string id) : base (IntPtr.Zero)
@@ -32,7 +32,7 @@ namespace Cdn {
 			GLib.Marshaller.Free (native_id);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_attribute_get_id(IntPtr raw);
 
 		[GLib.Property ("id")]
@@ -44,7 +44,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_attribute_get_type();
 
 		public static new GLib.GType GType { 
@@ -55,7 +55,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_attribute_get_argument(IntPtr raw, int i);
 
 		public GLib.Object GetArgument(int i) {
@@ -64,10 +64,10 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_attribute_get_arguments(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_attribute_set_arguments(IntPtr raw, IntPtr arguments);
 
 		public GLib.SList Arguments { 
@@ -81,7 +81,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_attribute_num_arguments(IntPtr raw);
 
 		public int NumArguments() {
