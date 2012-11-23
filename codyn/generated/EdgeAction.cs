@@ -343,6 +343,11 @@ namespace Cdn {
 
 				IntPtr raw_ret = cdn_edge_action_get_indices(Handle, out length);
 
+				if (raw_ret == IntPtr.Zero)
+				{
+					return null;
+				}
+
 				int[] ret = new int[length];
 
 				if (length > 0)
