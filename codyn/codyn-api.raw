@@ -61,6 +61,12 @@
     <enum name="ImportError" cname="CdnImportError" type="enum">
       <member cname="CDN_IMPORT_ERROR_REMOVE" name="Remove" />
     </enum>
+    <enum name="InstructionIndexType" cname="CdnInstructionIndexType" type="enum">
+      <member cname="CDN_INSTRUCTION_INDEX_TYPE_INDEX" name="Index" />
+      <member cname="CDN_INSTRUCTION_INDEX_TYPE_OFFSET" name="Offset" />
+      <member cname="CDN_INSTRUCTION_INDEX_TYPE_RANGE" name="Range" />
+      <member cname="CDN_INSTRUCTION_INDEX_TYPE_RANGE_BLOCK" name="RangeBlock" />
+    </enum>
     <enum name="InstructionVariableBinding" cname="CdnInstructionVariableBinding" type="flags">
       <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_NONE" name="None" />
       <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_INPUT" name="Input" value="1 &lt;&lt; 0" />
@@ -750,9 +756,6 @@
           <parameter type="CdnObjectForward*" name="object" />
         </parameters>
       </method>
-      <method name="ClearObjects" cname="cdn_compile_context_clear_objects">
-        <return-type type="void" />
-      </method>
       <method name="GetFunctionArgPriority" cname="cdn_compile_context_get_function_arg_priority">
         <return-type type="gboolean" />
       </method>
@@ -764,6 +767,9 @@
       </method>
       <method name="GetObjects" cname="cdn_compile_context_get_objects">
         <return-type type="const-GSList*" />
+      </method>
+      <method name="GetOnlyLocalVariables" cname="cdn_compile_context_get_only_local_variables">
+        <return-type type="gboolean" />
       </method>
       <method name="GetType" cname="cdn_compile_context_get_type" shared="true">
         <return-type type="GType" />
@@ -815,6 +821,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="prio" />
+        </parameters>
+      </method>
+      <method name="SetOnlyLocalVariables" cname="cdn_compile_context_set_only_local_variables">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="only_local" />
         </parameters>
       </method>
     </object>
@@ -1044,6 +1056,13 @@
         <return-type type="CdnEmbeddedString*" />
         <parameters>
           <parameter type="const-gchar*" name="text" />
+        </parameters>
+      </method>
+      <method name="AsExpansion" cname="cdn_embedded_string_as_expansion">
+        <return-type type="CdnExpansion*" />
+        <parameters>
+          <parameter type="CdnExpansionContext*" name="context" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="BraceLevel" cname="cdn_embedded_string_brace_level">
@@ -1667,7 +1686,6 @@
       <field name="Priv" cname="priv" type="CdnFunctionPolynomialPiecePrivate*" />
       <property name="Begin" cname="begin" type="gdouble" readable="true" writeable="true" construct="true" />
       <property name="End" cname="end" type="gdouble" readable="true" writeable="true" construct="true" />
-      <property name="Coefficients" cname="coefficients" type="value_array" readable="true" writeable="true" construct="true" />
       <method name="Copy" cname="cdn_function_polynomial_piece_copy">
         <return-type type="CdnFunctionPolynomialPiece*" owned="true" />
       </method>
@@ -1969,6 +1987,9 @@
     </object>
     <object name="InstructionIndex" cname="CdnInstructionIndex" parent="CdnInstruction">
       <field name="Priv" cname="priv" type="CdnInstructionIndexPrivate*" />
+      <method name="GetIndexType" cname="cdn_instruction_index_get_index_type">
+        <return-type type="CdnInstructionIndexType" />
+      </method>
       <method name="GetIndices" cname="cdn_instruction_index_get_indices">
         <return-type type="const-gint*" />
         <parameters>
@@ -1978,11 +1999,18 @@
       <method name="GetOffset" cname="cdn_instruction_index_get_offset">
         <return-type type="gint" />
       </method>
+      <method name="GetRange" cname="cdn_instruction_index_get_range">
+        <return-type type="const-CdnIndexRange*" />
+      </method>
+      <method name="GetRangeBlock" cname="cdn_instruction_index_get_range_block">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="CdnIndexRange*" name="rows" />
+          <parameter type="CdnIndexRange*" name="columns" />
+        </parameters>
+      </method>
       <method name="GetType" cname="cdn_instruction_index_get_type" shared="true">
         <return-type type="GType" />
-      </method>
-      <method name="IsOffset" cname="cdn_instruction_index_is_offset">
-        <return-type type="gboolean" />
       </method>
       <constructor cname="cdn_instruction_index_new">
         <parameters>
@@ -1998,6 +2026,26 @@
           <parameter type="const-CdnStackArg*" name="arg" />
         </parameters>
       </constructor>
+      <constructor cname="cdn_instruction_index_new_range">
+        <parameters>
+          <parameter type="const-CdnIndexRange*" name="range" />
+          <parameter type="const-CdnStackArg*" name="arg" />
+        </parameters>
+      </constructor>
+      <constructor cname="cdn_instruction_index_new_range_block">
+        <parameters>
+          <parameter type="const-CdnIndexRange*" name="rows" />
+          <parameter type="const-CdnIndexRange*" name="columns" />
+          <parameter type="const-CdnStackArg*" name="arg" />
+        </parameters>
+      </constructor>
+      <method name="WriteIndices" cname="cdn_instruction_index_write_indices">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint*" name="indices" />
+          <parameter type="gint" name="l" />
+        </parameters>
+      </method>
     </object>
     <object name="InstructionMatrix" cname="CdnInstructionMatrix" parent="CdnInstruction">
       <field name="Priv" cname="priv" type="CdnInstructionMatrixPrivate*" />
@@ -4891,6 +4939,20 @@
           <parameter type="GSList*" name="coefficients" />
         </parameters>
       </constructor>
+    </struct>
+    <struct name="IndexRange" cname="CdnIndexRange">
+      <field name="Start" cname="start" type="gint" />
+      <field name="Step" cname="step" type="gint" />
+      <field name="End" cname="end" type="gint" />
+      <method name="Equal" cname="cdn_index_range_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-CdnIndexRange*" name="b" />
+        </parameters>
+      </method>
+      <method name="N" cname="cdn_index_range_n">
+        <return-type type="gint" />
+      </method>
     </struct>
     <boxed name="Matrix" cname="CdnMatrix" opaque="true">
       <field name="Values" cname="values" type="gdouble*" access="public" writeable="true" />

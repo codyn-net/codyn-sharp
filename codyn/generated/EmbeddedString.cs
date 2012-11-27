@@ -109,6 +109,17 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern unsafe IntPtr cdn_embedded_string_as_expansion(IntPtr raw, IntPtr context, out IntPtr error);
+
+		public unsafe Cdn.Expansion AsExpansion(Cdn.ExpansionContext context) {
+			IntPtr error = IntPtr.Zero;
+			IntPtr raw_ret = cdn_embedded_string_as_expansion(Handle, context == null ? IntPtr.Zero : context.Handle, out error);
+			Cdn.Expansion ret = raw_ret == IntPtr.Zero ? null : (Cdn.Expansion) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.Expansion), false);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_embedded_string_push(IntPtr raw, int type, int depth);
 
 		public Cdn.EmbeddedString Push(Cdn.EmbeddedStringNodeType type, int depth) {

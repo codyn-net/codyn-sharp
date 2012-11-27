@@ -138,14 +138,10 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern IntPtr cdn_compile_context_lookup_function(IntPtr raw, IntPtr name);
+		static extern void cdn_compile_context_restore(IntPtr raw);
 
-		public Cdn.Function LookupFunction(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			IntPtr raw_ret = cdn_compile_context_lookup_function(Handle, native_name);
-			Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
-			GLib.Marshaller.Free (native_name);
-			return ret;
+		public void Restore() {
+			cdn_compile_context_restore(Handle);
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
@@ -160,10 +156,20 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_compile_context_restore(IntPtr raw);
+		static extern bool cdn_compile_context_get_only_local_variables(IntPtr raw);
 
-		public void Restore() {
-			cdn_compile_context_restore(Handle);
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_compile_context_set_only_local_variables(IntPtr raw, bool only_local);
+
+		public bool OnlyLocalVariables { 
+			get {
+				bool raw_ret = cdn_compile_context_get_only_local_variables(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set {
+				cdn_compile_context_set_only_local_variables(Handle, value);
+			}
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
@@ -178,10 +184,14 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_compile_context_clear_objects(IntPtr raw);
+		static extern IntPtr cdn_compile_context_lookup_function(IntPtr raw, IntPtr name);
 
-		public void ClearObjects() {
-			cdn_compile_context_clear_objects(Handle);
+		public Cdn.Function LookupFunction(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = cdn_compile_context_lookup_function(Handle, native_name);
+			Cdn.Function ret = GLib.Object.GetObject(raw_ret) as Cdn.Function;
+			GLib.Marshaller.Free (native_name);
+			return ret;
 		}
 
 #endregion

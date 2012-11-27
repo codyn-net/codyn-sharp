@@ -41,6 +41,68 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_instruction_index_new_range(IntPtr range, IntPtr arg);
+
+		public InstructionIndex (Cdn.IndexRange range, Cdn.StackArg arg) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (InstructionIndex)) {
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+			IntPtr native_range = GLib.Marshaller.StructureToPtrAlloc (range);
+			Raw = cdn_instruction_index_new_range(native_range, arg == null ? IntPtr.Zero : arg.Handle);
+			range = Cdn.IndexRange.New (native_range);
+			Marshal.FreeHGlobal (native_range);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_instruction_index_new_range_block(IntPtr rows, IntPtr columns, IntPtr arg);
+
+		public InstructionIndex (Cdn.IndexRange rows, Cdn.IndexRange columns, Cdn.StackArg arg) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (InstructionIndex)) {
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+			IntPtr native_rows = GLib.Marshaller.StructureToPtrAlloc (rows);
+			IntPtr native_columns = GLib.Marshaller.StructureToPtrAlloc (columns);
+			Raw = cdn_instruction_index_new_range_block(native_rows, native_columns, arg == null ? IntPtr.Zero : arg.Handle);
+			rows = Cdn.IndexRange.New (native_rows);
+			Marshal.FreeHGlobal (native_rows);
+			columns = Cdn.IndexRange.New (native_columns);
+			Marshal.FreeHGlobal (native_columns);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_instruction_index_write_indices(IntPtr raw, out int indices, int l);
+
+		public bool WriteIndices(out int indices, int l) {
+			bool raw_ret = cdn_instruction_index_write_indices(Handle, out indices, l);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_instruction_index_get_range(IntPtr raw);
+
+		public Cdn.IndexRange Range { 
+			get {
+				IntPtr raw_ret = cdn_instruction_index_get_range(Handle);
+				Cdn.IndexRange ret = Cdn.IndexRange.New (raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern int cdn_instruction_index_get_index_type(IntPtr raw);
+
+		public Cdn.InstructionIndexType IndexType { 
+			get {
+				int raw_ret = cdn_instruction_index_get_index_type(Handle);
+				Cdn.InstructionIndexType ret = (Cdn.InstructionIndexType) raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_instruction_index_get_offset(IntPtr raw);
 
 		public int Offset { 
@@ -52,23 +114,25 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_instruction_index_get_range_block(IntPtr raw, IntPtr rows, IntPtr columns);
+
+		public void GetRangeBlock(Cdn.IndexRange rows, Cdn.IndexRange columns) {
+			IntPtr native_rows = GLib.Marshaller.StructureToPtrAlloc (rows);
+			IntPtr native_columns = GLib.Marshaller.StructureToPtrAlloc (columns);
+			cdn_instruction_index_get_range_block(Handle, native_rows, native_columns);
+			rows = Cdn.IndexRange.New (native_rows);
+			Marshal.FreeHGlobal (native_rows);
+			columns = Cdn.IndexRange.New (native_columns);
+			Marshal.FreeHGlobal (native_columns);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_index_get_type();
 
 		public static new GLib.GType GType { 
 			get {
 				IntPtr raw_ret = cdn_instruction_index_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern bool cdn_instruction_index_is_offset(IntPtr raw);
-
-		public bool IsOffset { 
-			get {
-				bool raw_ret = cdn_instruction_index_is_offset(Handle);
-				bool ret = raw_ret;
 				return ret;
 			}
 		}

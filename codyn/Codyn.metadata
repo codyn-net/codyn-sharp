@@ -150,6 +150,9 @@
   <!-- CdnFunctionArgument -->
   <attr path="/api/namespace/object[@cname='CdnFunctionArgument']/constructor" name="hidden">true</attr>
 
+  <attr path="/api/namespace/object[@cname='CdnFunctionArgument']/method[@cname='cdn_function_argument_get_dimension']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnFunctionArgument']/method[@cname='cdn_function_argument_set_dimension']" name="hidden">true</attr>
+
   <!-- CdnFunctionPolynomial -->
   <attr path="/api/namespace/object[@cname='CdnFunctionPolynomial']/method[@cname='cdn_function_polynomial_get_pieces']/return-type" name="element_type">CdnFunctionPolynomialPiece*</attr>
 
