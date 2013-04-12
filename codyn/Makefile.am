@@ -58,7 +58,7 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
 endif
 
 if HAS_GAPI_CODEGEN
-generated/Node.cs: $(RAW_API) $(build_customs) $(overrides_sources)
+generated/Node.cs: $(API) $(build_customs) $(overrides_sources)
 	rm -f generated/* &&	\
 	$(GAPI_CODEGEN) --generate $(API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
 	&& cp $(overrides_sources) generated/
