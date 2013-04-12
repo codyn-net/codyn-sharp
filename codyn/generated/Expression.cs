@@ -132,8 +132,8 @@ namespace Cdn {
 		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_get_dimension(IntPtr raw, IntPtr dimension);
 
-		public bool GetDimension(Cdn.Dimension dimension) {
-			IntPtr native_dimension = GLib.Marshaller.StructureToPtrAlloc (dimension);
+		public bool GetDimension(out Cdn.Dimension dimension) {
+			IntPtr native_dimension = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (Cdn.Dimension)));
 			bool raw_ret = cdn_expression_get_dimension(Handle, native_dimension);
 			bool ret = raw_ret;
 			dimension = Cdn.Dimension.New (native_dimension);

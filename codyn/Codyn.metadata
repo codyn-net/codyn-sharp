@@ -107,7 +107,7 @@
 
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_sum']" name="hidden">true</attr>
 
-  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_dimension']/parameters/parameter[@name='dim']" name="pass_as">out</attr>
+  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_dimension']/parameters/parameter[@name='dimension']" name="pass_as">out</attr>
 
   <!-- CdnMatrix -->
   <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_set']"/>

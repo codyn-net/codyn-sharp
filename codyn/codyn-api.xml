@@ -1198,7 +1198,7 @@
       <method name="GetDimension" cname="cdn_expression_get_dimension">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="CdnDimension*" name="dimension" />
+          <parameter type="CdnDimension*" name="dimension" pass_as="out" />
         </parameters>
       </method>
       <method name="GetErrorAt" cname="cdn_expression_get_error_at">
