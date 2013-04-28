@@ -133,16 +133,19 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_LINDEX" name="Lindex" />
       <member cname="CDN_MATH_FUNCTION_TYPE_TRANSPOSE" name="Transpose" />
       <member cname="CDN_MATH_FUNCTION_TYPE_INVERSE" name="Inverse" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_PSEUDO_INVERSE" name="PseudoInverse" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LINSOLVE" name="Linsolve" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SLINSOLVE" name="Slinsolve" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SUM" name="Sum" />
       <member cname="CDN_MATH_FUNCTION_TYPE_PRODUCT" name="Product" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LENGTH" name="Length" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SIZE" name="Size" />
-      <member cname="CDN_MATH_FUNCTION_TYPE_HCAT" name="Hcat" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_VCAT" name="Vcat" />
       <member cname="CDN_MATH_FUNCTION_TYPE_ZEROS" name="Zeros" />
       <member cname="CDN_MATH_FUNCTION_TYPE_EYE" name="Eye" />
-      <member cname="CDN_MATH_FUNCTION_TYPE_BLOCK" name="Block" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_DIAG" name="Diag" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_TRIL" name="Tril" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_TRIU" name="Triu" />
       <member cname="CDN_MATH_FUNCTION_TYPE_NUM" name="Num" />
     </enum>
     <enum name="NetworkError" cname="CdnNetworkError" type="enum">
@@ -992,6 +995,9 @@
           <parameter type="CdnEdgeAction*" name="other" />
         </parameters>
       </method>
+      <method name="GetAdds" cname="cdn_edge_action_get_adds">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetEdge" cname="cdn_edge_action_get_edge">
         <return-type type="CdnEdgeForward*" />
       </method>
@@ -1022,6 +1028,12 @@
           <parameter type="CdnExpression*" name="equation" />
         </parameters>
       </constructor>
+      <method name="SetAdds" cname="cdn_edge_action_set_adds">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="adds" />
+        </parameters>
+      </method>
       <method name="SetEquation" cname="cdn_edge_action_set_equation">
         <return-type type="void" />
         <parameters>
@@ -2332,6 +2344,35 @@
         </parameters>
       </method>
     </object>
+    <object name="Integrators" cname="CdnIntegrators" parent="GObject">
+      <method name="Create" cname="cdn_integrators_create" shared="true">
+        <return-type type="GSList*" />
+      </method>
+      <method name="Find" cname="cdn_integrators_find" shared="true">
+        <return-type type="GType" />
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="cdn_integrators_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="List" cname="cdn_integrators_list" shared="true">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="Register" cname="cdn_integrators_register" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GType" name="gtype" />
+        </parameters>
+      </method>
+      <method name="Unregister" cname="cdn_integrators_unregister" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GType" name="gtype" />
+        </parameters>
+      </method>
+    </object>
     <object name="IntegratorEuler" cname="CdnIntegratorEuler" parent="CdnIntegrator">
       <field name="Priv" cname="priv" type="CdnIntegratorEulerPrivate*" />
       <method name="GetType" cname="cdn_integrator_euler_get_type" shared="true">
@@ -3580,7 +3621,7 @@
           <parameter type="GPtrArray*" name="target" />
           <parameter type="GPtrArray*" name="expression" />
           <parameter type="CdnEmbeddedString*" name="phases" />
-          <parameter type="gboolean" name="integrated" />
+          <parameter type="gboolean" name="added" />
         </parameters>
       </method>
       <method name="AddEventSetVariable" cname="cdn_parser_context_add_event_set_variable">
@@ -5336,32 +5377,6 @@
           <parameter type="const-char*" name="blurb" />
           <parameter type="GType" name="object_type" />
           <parameter type="GParamFlags" name="flags" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Integrators" cname="CdnIntegrators_">
-      <method name="Create" cname="cdn_integrators_create" shared="true">
-        <return-type type="GSList*" />
-      </method>
-      <method name="Find" cname="cdn_integrators_find" shared="true">
-        <return-type type="GType" />
-        <parameters>
-          <parameter type="const-gchar*" name="id" />
-        </parameters>
-      </method>
-      <method name="List" cname="cdn_integrators_list" shared="true">
-        <return-type type="const-GSList*" />
-      </method>
-      <method name="Register" cname="cdn_integrators_register" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GType" name="gtype" />
-        </parameters>
-      </method>
-      <method name="Unregister" cname="cdn_integrators_unregister" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GType" name="gtype" />
         </parameters>
       </method>
     </class>

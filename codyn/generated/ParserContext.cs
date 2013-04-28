@@ -360,10 +360,10 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_parser_context_add_action(IntPtr raw, IntPtr target, IntPtr expression, IntPtr phases, bool integrated);
+		static extern void cdn_parser_context_add_action(IntPtr raw, IntPtr target, IntPtr expression, IntPtr phases, bool added);
 
-		public void AddAction(GLib.PtrArray target, GLib.PtrArray expression, Cdn.EmbeddedString phases, bool integrated) {
-			cdn_parser_context_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, expression == null ? IntPtr.Zero : expression.Handle, phases == null ? IntPtr.Zero : phases.Handle, integrated);
+		public void AddAction(GLib.PtrArray target, GLib.PtrArray expression, Cdn.EmbeddedString phases, bool added) {
+			cdn_parser_context_add_action(Handle, target == null ? IntPtr.Zero : target.Handle, expression == null ? IntPtr.Zero : expression.Handle, phases == null ? IntPtr.Zero : phases.Handle, added);
 		}
 
 		[DllImport("libcodyn-3.0.dll")]

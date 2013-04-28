@@ -125,6 +125,23 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_edge_action_get_adds(IntPtr raw);
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_edge_action_set_adds(IntPtr raw, bool adds);
+
+		public bool Adds { 
+			get {
+				bool raw_ret = cdn_edge_action_get_adds(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set {
+				cdn_edge_action_set_adds(Handle, value);
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_get_target_variable(IntPtr raw);
 
 		public Cdn.Variable TargetVariable { 

@@ -198,8 +198,8 @@
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='End']" name="name">Ended</attr>
 
   <!-- CdnIntegrators -->
-  <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cdn_integrators_list']/return-type" name="element_type">GType</attr>
-  <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cdn_integrators_create']/return-type" name="element_type">CdnIntegrator*</attr>
+  <attr path="/api/namespace/object[@name='Integrators']/method[@cname='cdn_integrators_list']/return-type" name="element_type">GType</attr>
+  <attr path="/api/namespace/object[@name='Integrators']/method[@cname='cdn_integrators_create']/return-type" name="element_type">CdnIntegrator*</attr>
 
   <!-- CdnIntegratorState -->
   <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_direct_edge_actions']/return-type" name="element_type">CdnEdgeAction*</attr>
