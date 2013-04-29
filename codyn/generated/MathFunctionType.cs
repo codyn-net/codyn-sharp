@@ -66,6 +66,7 @@ namespace Cdn {
 		Inverse,
 		PseudoInverse,
 		Linsolve,
+		Qr,
 		Slinsolve,
 		Sum,
 		Product,

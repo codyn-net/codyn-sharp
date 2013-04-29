@@ -135,6 +135,7 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_INVERSE" name="Inverse" />
       <member cname="CDN_MATH_FUNCTION_TYPE_PSEUDO_INVERSE" name="PseudoInverse" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LINSOLVE" name="Linsolve" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_QR" name="Qr" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SLINSOLVE" name="Slinsolve" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SUM" name="Sum" />
       <member cname="CDN_MATH_FUNCTION_TYPE_PRODUCT" name="Product" />
