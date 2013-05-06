@@ -116,9 +116,9 @@ namespace Cdn {
 		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_instruction_index_get_range_block(IntPtr raw, IntPtr rows, IntPtr columns);
 
-		public void GetRangeBlock(Cdn.IndexRange rows, Cdn.IndexRange columns) {
-			IntPtr native_rows = GLib.Marshaller.StructureToPtrAlloc (rows);
-			IntPtr native_columns = GLib.Marshaller.StructureToPtrAlloc (columns);
+		public void GetRangeBlock(out Cdn.IndexRange rows, out Cdn.IndexRange columns) {
+			IntPtr native_rows = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (Cdn.IndexRange)));
+			IntPtr native_columns = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (Cdn.IndexRange)));
 			cdn_instruction_index_get_range_block(Handle, native_rows, native_columns);
 			rows = Cdn.IndexRange.New (native_rows);
 			Marshal.FreeHGlobal (native_rows);

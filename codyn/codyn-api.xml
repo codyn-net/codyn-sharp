@@ -1891,8 +1891,8 @@
       <method name="GetRangeBlock" cname="cdn_instruction_index_get_range_block">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnIndexRange*" name="rows" />
-          <parameter type="CdnIndexRange*" name="columns" />
+          <parameter type="CdnIndexRange*" name="rows" pass_as="out" />
+          <parameter type="CdnIndexRange*" name="columns" pass_as="out" />
         </parameters>
       </method>
       <method name="GetType" cname="cdn_instruction_index_get_type" shared="true">
