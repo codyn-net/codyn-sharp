@@ -1926,7 +1926,10 @@
           <parameter type="const-CdnStackArg*" name="arg" />
         </parameters>
       </constructor>
-      <method name="WriteIndices" cname="cdn_instruction_index_write_indices">
+      <method name="NumIndices" cname="cdn_instruction_index_num_indices" hidden="true">
+        <return-type type="gint" />
+      </method>
+      <method name="WriteIndices" cname="cdn_instruction_index_write_indices" hidden="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="gint*" name="indices" />

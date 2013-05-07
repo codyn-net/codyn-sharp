@@ -288,6 +288,8 @@
 
   <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_get_range_block']/parameters/parameter[@name='rows']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_get_range_block']/parameters/parameter[@name='columns']" name="pass_as">out</attr>
+  <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_write_indices']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_num_indices']" name="hidden">true</attr>
 
   <!-- CdnInstructionVariable -->
   <attr path="/api/namespace/object[@cname='CdnInstructionVariable']/method[@cname='cdn_instruction_variable_get_slice']" name="hidden">true</attr>

@@ -72,15 +72,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern bool cdn_instruction_index_write_indices(IntPtr raw, out int indices, int l);
-
-		public bool WriteIndices(out int indices, int l) {
-			bool raw_ret = cdn_instruction_index_write_indices(Handle, out indices, l);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_index_get_range(IntPtr raw);
 
 		public Cdn.IndexRange Range { 
@@ -141,19 +132,26 @@ namespace Cdn {
 #region Customized extensions
 #line 1 "InstructionIndex.custom"
 		[DllImport("libcodyn-3.0.dll")]
-		static extern IntPtr cdn_instruction_index_get_indices(IntPtr raw, out int length);
+		static extern bool cdn_instruction_index_write_indices(IntPtr raw, int[] ret, int length);
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern int cdn_instruction_index_num_indices(IntPtr raw);
 
 		public int[] Indices
 		{
 			get
 			{
-				int length;
-
-				IntPtr raw_ret = cdn_instruction_index_get_indices(Handle, out length);
+				int length = cdn_instruction_index_num_indices(Handle);
 				int[] ret = new int[length];
 
-				Marshal.Copy(raw_ret, ret, 0, length);
-				return ret;
+				if (cdn_instruction_index_write_indices(Handle, ret, length))
+				{
+					return ret;
+				}
+				else
+				{
+					return null;
+				}
 			}
 		}
 
