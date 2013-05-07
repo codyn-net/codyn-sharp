@@ -186,13 +186,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_parser_context_get_error_location(IntPtr raw, out int lstart, out int lend, out int cstart, out int cend);
-
-		public void GetErrorLocation(out int lstart, out int lend, out int cstart, out int cend) {
-			cdn_parser_context_get_error_location(Handle, out lstart, out lend, out cstart, out cend);
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_parser_context_current_selections(IntPtr raw);
 
 		public GLib.SList CurrentSelections() {

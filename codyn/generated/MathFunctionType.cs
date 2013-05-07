@@ -78,6 +78,8 @@ namespace Cdn {
 		Diag,
 		Tril,
 		Triu,
+		Csum,
+		Rsum,
 		Num,
 	}
 #endregion

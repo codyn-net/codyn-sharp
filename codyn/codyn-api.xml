@@ -147,6 +147,8 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_DIAG" name="Diag" />
       <member cname="CDN_MATH_FUNCTION_TYPE_TRIL" name="Tril" />
       <member cname="CDN_MATH_FUNCTION_TYPE_TRIU" name="Triu" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_CSUM" name="Csum" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_RSUM" name="Rsum" />
       <member cname="CDN_MATH_FUNCTION_TYPE_NUM" name="Num" />
     </enum>
     <enum name="NetworkError" cname="CdnNetworkError" type="enum">
@@ -685,9 +687,6 @@
       <method name="GetObjects" cname="cdn_compile_context_get_objects">
         <return-type type="const-GSList*" element_type="CdnObject*" />
       </method>
-      <method name="GetOnlyLocalVariables" cname="cdn_compile_context_get_only_local_variables">
-        <return-type type="gboolean" />
-      </method>
       <method name="GetType" cname="cdn_compile_context_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -738,12 +737,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="prio" />
-        </parameters>
-      </method>
-      <method name="SetOnlyLocalVariables" cname="cdn_compile_context_set_only_local_variables">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="only_local" />
         </parameters>
       </method>
       <method name="LookupFunction" cname="cdn_compile_context_lookup_function">
@@ -856,6 +849,14 @@
         <parameters>
           <parameter type="const-gchar*" name="target" />
           <parameter type="CdnExpression*" name="index" />
+        </parameters>
+      </method>
+      <method name="GetActionWithIndexAndPhases" cname="cdn_edge_get_action_with_index_and_phases">
+        <return-type type="CdnEdgeAction*" />
+        <parameters>
+          <parameter type="const-gchar*" name="target" />
+          <parameter type="CdnExpression*" name="index" />
+          <parameter type="const-GSList*" name="phases" />
         </parameters>
       </method>
       <method name="GetActions" cname="cdn_edge_get_actions">
@@ -2100,6 +2101,7 @@
       <property name="State" cname="state" type="CdnIntegratorState" readable="true" />
       <property name="RealTime" cname="real-time" type="gdouble" readable="true" writeable="true" construct="true" />
       <property name="MinimumTimestep" cname="minimum-timestep" type="gdouble" readable="true" writeable="true" construct="true" />
+      <property name="DefaultTimestep" cname="default-timestep" type="gdouble" readable="true" writeable="true" construct="true" />
       <virtual_method name="Run" cname="run">
         <return-type type="void" />
         <parameters>
@@ -2139,6 +2141,9 @@
       <method name="GetClassId" cname="cdn_integrator_get_class_id">
         <return-type type="const-gchar*" />
       </method>
+      <method name="GetDefaultTimestep" cname="cdn_integrator_get_default_timestep">
+        <return-type type="gdouble" />
+      </method>
       <method name="GetName" cname="cdn_integrator_get_name">
         <return-type type="const-gchar*" />
       </method>
@@ -2162,6 +2167,12 @@
       </method>
       <method name="Reset" cname="cdn_integrator_reset">
         <return-type type="void" />
+      </method>
+      <method name="SetDefaultTimestep" cname="cdn_integrator_set_default_timestep">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="timestep" />
+        </parameters>
       </method>
       <method name="SetRealTime" cname="cdn_integrator_set_real_time">
         <return-type type="void" />
@@ -2443,6 +2454,9 @@
       </method>
       <method name="GetIntegrator" cname="cdn_network_get_integrator">
         <return-type type="CdnIntegrator*" />
+      </method>
+      <method name="GetParserContext" cname="cdn_network_get_parser_context">
+        <return-type type="CdnParserContextForward*" />
       </method>
       <method name="GetPath" cname="cdn_network_get_path">
         <return-type type="gchar*" />
@@ -3483,6 +3497,7 @@
           <parameter type="gint*" name="lend" />
           <parameter type="gint*" name="cstart" />
           <parameter type="gint*" name="cend" />
+          <parameter type="GFile**" name="file" />
         </parameters>
       </method>
       <method name="GetFirstEof" cname="cdn_parser_context_get_first_eof">
@@ -4575,7 +4590,7 @@
       </method>
       <constructor cname="cdn_expression_tree_iter_new">
         <parameters>
-          <parameter type="CdnExpression*" name="expression" />
+          <parameter type="const-CdnExpression*" name="expression" />
         </parameters>
       </constructor>
       <constructor cname="cdn_expression_tree_iter_new_from_instruction">
@@ -4720,6 +4735,13 @@
       <constructor cname="cdn_matrix_new">
         <parameters>
           <parameter type="const-gdouble*" name="values" />
+          <parameter type="const-CdnDimension*" name="dimension" />
+        </parameters>
+      </constructor>
+      <constructor cname="cdn_matrix_new_flat">
+        <parameters>
+          <parameter type="const-gdouble*" name="values" />
+          <parameter type="gint" name="length" />
           <parameter type="const-CdnDimension*" name="dimension" />
         </parameters>
       </constructor>

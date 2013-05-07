@@ -72,6 +72,17 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_matrix_new_flat(out double values, int length, IntPtr dimension);
+
+		public Matrix (out double values, int length, Cdn.Dimension dimension) 
+		{
+			IntPtr native_dimension = GLib.Marshaller.StructureToPtrAlloc (dimension);
+			Raw = cdn_matrix_new_flat(out values, length, native_dimension);
+			dimension = Cdn.Dimension.New (native_dimension);
+			Marshal.FreeHGlobal (native_dimension);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_matrix_new_one(double value);
 
 		public Matrix (double value) 

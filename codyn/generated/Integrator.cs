@@ -89,6 +89,24 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern double cdn_integrator_get_default_timestep(IntPtr raw);
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_integrator_set_default_timestep(IntPtr raw, double timestep);
+
+		[GLib.Property ("default-timestep")]
+		public double DefaultTimestep {
+			get  {
+				double raw_ret = cdn_integrator_get_default_timestep(Handle);
+				double ret = raw_ret;
+				return ret;
+			}
+			set  {
+				cdn_integrator_set_default_timestep(Handle, value);
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_get_object(IntPtr raw);
 
 		[GLib.Property ("object")]

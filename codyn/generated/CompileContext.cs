@@ -156,23 +156,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern bool cdn_compile_context_get_only_local_variables(IntPtr raw);
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_compile_context_set_only_local_variables(IntPtr raw, bool only_local);
-
-		public bool OnlyLocalVariables { 
-			get {
-				bool raw_ret = cdn_compile_context_get_only_local_variables(Handle);
-				bool ret = raw_ret;
-				return ret;
-			}
-			set {
-				cdn_compile_context_set_only_local_variables(Handle, value);
-			}
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_compile_context_get_type();
 
 		public static new GLib.GType GType { 
