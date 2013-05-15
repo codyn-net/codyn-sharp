@@ -2636,6 +2636,7 @@
         </parameters>
       </signal>
       <property name="State" cname="state" type="gchar*" readable="true" writeable="true" />
+      <property name="InitialState" cname="initial-state" type="gchar*" readable="true" writeable="true" />
       <virtual_method name="Add" cname="add">
         <return-type type="gboolean" />
         <parameters>
@@ -2714,6 +2715,9 @@
       <method name="GetEdges" cname="cdn_node_get_edges">
         <return-type type="const-GSList*" element_type="CdnEdge*" />
       </method>
+      <method name="GetInitialState" cname="cdn_node_get_initial_state">
+        <return-type type="const-gchar*" />
+      </method>
       <method name="GetSelfEdge" cname="cdn_node_get_self_edge">
         <return-type type="CdnEdge*" />
       </method>
@@ -2739,6 +2743,12 @@
         <parameters>
           <parameter type="CdnObject*" name="object" />
           <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SetInitialState" cname="cdn_node_set_initial_state">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="state" />
         </parameters>
       </method>
       <method name="SetState" cname="cdn_node_set_state">
@@ -4103,6 +4113,9 @@
       </method>
       <method name="GetValues" cname="cdn_variable_get_values">
         <return-type type="const-CdnMatrix*" />
+      </method>
+      <method name="HasActions" cname="cdn_variable_has_actions">
+        <return-type type="gboolean" />
       </method>
       <constructor cname="cdn_variable_new" hidden="true">
         <parameters>

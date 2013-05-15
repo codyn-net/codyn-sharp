@@ -295,6 +295,17 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_variable_has_actions(IntPtr raw);
+
+		public bool HasActions { 
+			get {
+				bool raw_ret = cdn_variable_has_actions(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_variable_get_dimension(IntPtr raw, IntPtr dim);
 
 		public Cdn.Dimension Dimension { 

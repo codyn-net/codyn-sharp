@@ -52,6 +52,26 @@ namespace Cdn {
 			}
 		}
 
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_node_get_initial_state(IntPtr raw);
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_node_set_initial_state(IntPtr raw, IntPtr state);
+
+		[GLib.Property ("initial-state")]
+		public string InitialState {
+			get  {
+				IntPtr raw_ret = cdn_node_get_initial_state(Handle);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+				return ret;
+			}
+			set  {
+				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+				cdn_node_set_initial_state(Handle, native_value);
+				GLib.Marshaller.Free (native_value);
+			}
+		}
+
 		[GLib.CDeclCallback]
 		delegate void ChildAddedVMDelegate (IntPtr node, IntPtr objekt);
 
