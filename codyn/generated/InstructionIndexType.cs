@@ -13,6 +13,7 @@ namespace Cdn {
 		Offset,
 		Range,
 		RangeBlock,
+		RowsXColumns,
 	}
 #endregion
 }

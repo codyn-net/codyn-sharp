@@ -72,6 +72,17 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_instruction_index_new_rows_x_columns(out int rows, int n_rows, out int columns, int n_columns, IntPtr arg);
+
+		public InstructionIndex (out int rows, int n_rows, out int columns, int n_columns, Cdn.StackArg arg) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (InstructionIndex)) {
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+			Raw = cdn_instruction_index_new_rows_x_columns(out rows, n_rows, out columns, n_columns, arg == null ? IntPtr.Zero : arg.Handle);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_instruction_index_get_range(IntPtr raw);
 
 		public Cdn.IndexRange Range { 
@@ -125,6 +136,15 @@ namespace Cdn {
 				IntPtr raw_ret = cdn_instruction_index_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_instruction_index_set_range_end(IntPtr raw, int end);
+
+		public int RangeEnd { 
+			set {
+				cdn_instruction_index_set_range_end(Handle, value);
 			}
 		}
 

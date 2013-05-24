@@ -191,11 +191,11 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_integrator_state_set_state(IntPtr raw, IntPtr node, IntPtr st);
+		static extern void cdn_integrator_state_set_state(IntPtr raw, IntPtr node, IntPtr st, IntPtr events_added, IntPtr events_removed);
 
-		public void SetState(Cdn.Node node, string st) {
+		public void SetState(Cdn.Node node, string st, GLib.SList events_added, GLib.SList events_removed) {
 			IntPtr native_st = GLib.Marshaller.StringToPtrGStrdup (st);
-			cdn_integrator_state_set_state(Handle, node == null ? IntPtr.Zero : node.Handle, native_st);
+			cdn_integrator_state_set_state(Handle, node == null ? IntPtr.Zero : node.Handle, native_st, events_added == null ? IntPtr.Zero : events_added.Handle, events_removed == null ? IntPtr.Zero : events_removed.Handle);
 			GLib.Marshaller.Free (native_st);
 		}
 

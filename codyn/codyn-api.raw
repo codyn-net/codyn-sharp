@@ -66,6 +66,7 @@
       <member cname="CDN_INSTRUCTION_INDEX_TYPE_OFFSET" name="Offset" />
       <member cname="CDN_INSTRUCTION_INDEX_TYPE_RANGE" name="Range" />
       <member cname="CDN_INSTRUCTION_INDEX_TYPE_RANGE_BLOCK" name="RangeBlock" />
+      <member cname="CDN_INSTRUCTION_INDEX_TYPE_ROWS_X_COLUMNS" name="RowsXColumns" />
     </enum>
     <enum name="InstructionVariableBinding" cname="CdnInstructionVariableBinding" type="flags">
       <member cname="CDN_INSTRUCTION_VARIABLE_BINDING_NONE" name="None" />
@@ -2053,8 +2054,23 @@
           <parameter type="const-CdnStackArg*" name="arg" />
         </parameters>
       </constructor>
+      <constructor cname="cdn_instruction_index_new_rows_x_columns">
+        <parameters>
+          <parameter type="gint*" name="rows" />
+          <parameter type="gint" name="n_rows" />
+          <parameter type="gint*" name="columns" />
+          <parameter type="gint" name="n_columns" />
+          <parameter type="const-CdnStackArg*" name="arg" />
+        </parameters>
+      </constructor>
       <method name="NumIndices" cname="cdn_instruction_index_num_indices">
         <return-type type="gint" />
+      </method>
+      <method name="SetRangeEnd" cname="cdn_instruction_index_set_range_end">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="end" />
+        </parameters>
       </method>
       <method name="WriteIndices" cname="cdn_instruction_index_write_indices">
         <return-type type="gboolean" />
@@ -2472,6 +2488,8 @@
         <parameters>
           <parameter type="CdnNode*" name="node" />
           <parameter type="const-gchar*" name="st" />
+          <parameter type="GSList**" name="events_added" />
+          <parameter type="GSList**" name="events_removed" />
         </parameters>
       </method>
       <method name="Update" cname="cdn_integrator_state_update">
