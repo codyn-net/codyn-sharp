@@ -1,4 +1,4 @@
-AC_INIT([codyn3-sharp], [3.1])
+AC_INIT([codyn3-sharp], [3.2])
 AC_CANONICAL_SYSTEM
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 tar-ustar dist-xz no-dist-gzip -Wno-portability])
