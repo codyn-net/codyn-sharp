@@ -1550,6 +1550,9 @@
       <method name="GetType" cname="cdn_function_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="IsPure" cname="cdn_function_is_pure">
+        <return-type type="gboolean" />
+      </method>
       <constructor cname="cdn_function_new">
         <parameters>
           <parameter type="const-gchar*" name="name" />

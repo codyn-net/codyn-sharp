@@ -244,6 +244,17 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_function_is_pure(IntPtr raw);
+
+		public bool IsPure { 
+			get {
+				bool raw_ret = cdn_function_is_pure(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_add_argument(IntPtr raw, IntPtr argument);
 
 		public void AddArgument(Cdn.FunctionArgument argument) {
