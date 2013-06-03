@@ -373,23 +373,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern bool cdn_variable_get_integrated(IntPtr raw);
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_variable_set_integrated(IntPtr raw, bool integrated);
-
-		public bool Integrated { 
-			get {
-				bool raw_ret = cdn_variable_get_integrated(Handle);
-				bool ret = raw_ret;
-				return ret;
-			}
-			set {
-				cdn_variable_set_integrated(Handle, value);
-			}
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_get_full_name(IntPtr raw);
 
 		public string FullName { 
@@ -439,6 +422,15 @@ namespace Cdn {
 			bool raw_ret = cdn_variable_set_name(Handle, native_name);
 			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_variable_has_flag(IntPtr raw, int flags);
+
+		public bool HasFlag(Cdn.VariableFlags flags) {
+			bool raw_ret = cdn_variable_has_flag(Handle, (int) flags);
+			bool ret = raw_ret;
 			return ret;
 		}
 

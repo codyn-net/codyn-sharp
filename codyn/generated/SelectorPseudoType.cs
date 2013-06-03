@@ -49,6 +49,7 @@ namespace Cdn {
 		TypeAppendContext,
 		TypeAppliedTemplates,
 		TypeReduce,
+		TypeSort,
 		Num,
 	}
 #endregion

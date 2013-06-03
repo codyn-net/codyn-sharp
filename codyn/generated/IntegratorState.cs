@@ -110,6 +110,15 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_integrator_state_phase_discrete_edge_actions(IntPtr raw);
+
+		public GLib.SList PhaseDiscreteEdgeActions() {
+			IntPtr raw_ret = cdn_integrator_state_phase_discrete_edge_actions(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_state_rand_expressions(IntPtr raw);
 
 		public GLib.SList RandExpressions() {
@@ -200,6 +209,15 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_integrator_state_discrete_edge_actions(IntPtr raw);
+
+		public GLib.SList DiscreteEdgeActions() {
+			IntPtr raw_ret = cdn_integrator_state_discrete_edge_actions(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_state_events(IntPtr raw);
 
 		public GLib.SList Events() {
@@ -234,6 +252,15 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_integrator_state_integrated_edge_actions(IntPtr raw);
+
+		public Cdn.EdgeAction[] IntegratedEdgeActions() {
+			IntPtr raw_ret = cdn_integrator_state_integrated_edge_actions(Handle);
+			Cdn.EdgeAction[] ret = (Cdn.EdgeAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.EdgeAction));
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_integrator_state_get_type();
 
 		public static new GLib.GType GType { 
@@ -245,11 +272,11 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern IntPtr cdn_integrator_state_integrated_edge_actions(IntPtr raw);
+		static extern IntPtr cdn_integrator_state_discrete_variables(IntPtr raw);
 
-		public Cdn.EdgeAction[] IntegratedEdgeActions() {
-			IntPtr raw_ret = cdn_integrator_state_integrated_edge_actions(Handle);
-			Cdn.EdgeAction[] ret = (Cdn.EdgeAction[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(Cdn.EdgeAction));
+		public GLib.SList DiscreteVariables() {
+			IntPtr raw_ret = cdn_integrator_state_discrete_variables(Handle);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 

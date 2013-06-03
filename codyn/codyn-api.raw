@@ -248,6 +248,7 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_APPEND_CONTEXT" name="TypeAppendContext" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_APPLIED_TEMPLATES" name="TypeAppliedTemplates" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_REDUCE" name="TypeReduce" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_SORT" name="TypeSort" />
       <member cname="CDN_SELECTOR_PSEUDO_NUM" name="Num" />
     </enum>
     <enum name="SelectorType" cname="CdnSelectorType" type="flags">
@@ -268,7 +269,8 @@
       <member cname="CDN_VARIABLE_FLAG_IN" name="In" value="1 &lt;&lt; 1" />
       <member cname="CDN_VARIABLE_FLAG_OUT" name="Out" value="1 &lt;&lt; 2" />
       <member cname="CDN_VARIABLE_FLAG_ONCE" name="Once" value="1 &lt;&lt; 3" />
-      <member cname="CDN_VARIABLE_FLAG_FUNCTION_ARGUMENT" name="FunctionArgument" value="1 &lt;&lt; 4" />
+      <member cname="CDN_VARIABLE_FLAG_DISCRETE" name="Discrete" value="1 &lt;&lt; 4" />
+      <member cname="CDN_VARIABLE_FLAG_FUNCTION_ARGUMENT" name="FunctionArgument" value="1 &lt;&lt; 5" />
       <member cname="CDN_VARIABLE_FLAG_INOUT" name="Inout" value="CDN_VARIABLE_FLAG_IN | CDN_VARIABLE_FLAG_OUT" />
     </enum>
     <enum name="VariableInterfaceError" cname="CdnVariableInterfaceError" type="enum">
@@ -2439,6 +2441,12 @@
       <method name="DirectVariables" cname="cdn_integrator_state_direct_variables">
         <return-type type="const-GSList*" />
       </method>
+      <method name="DiscreteEdgeActions" cname="cdn_integrator_state_discrete_edge_actions">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="DiscreteVariables" cname="cdn_integrator_state_discrete_variables">
+        <return-type type="const-GSList*" />
+      </method>
       <method name="Events" cname="cdn_integrator_state_events">
         <return-type type="const-GSList*" />
       </method>
@@ -2472,6 +2480,9 @@
         <return-type type="const-GSList*" />
       </method>
       <method name="PhaseDirectEdgeActions" cname="cdn_integrator_state_phase_direct_edge_actions">
+        <return-type type="const-GSList*" />
+      </method>
+      <method name="PhaseDiscreteEdgeActions" cname="cdn_integrator_state_phase_discrete_edge_actions">
         <return-type type="const-GSList*" />
       </method>
       <method name="PhaseEvents" cname="cdn_integrator_state_phase_events">
@@ -4385,9 +4396,6 @@
       <method name="GetIntegral" cname="cdn_variable_get_integral">
         <return-type type="CdnVariable*" />
       </method>
-      <method name="GetIntegrated" cname="cdn_variable_get_integrated">
-        <return-type type="gboolean" />
-      </method>
       <method name="GetName" cname="cdn_variable_get_name">
         <return-type type="const-gchar*" />
       </method>
@@ -4408,6 +4416,12 @@
       </method>
       <method name="HasActions" cname="cdn_variable_has_actions">
         <return-type type="gboolean" />
+      </method>
+      <method name="HasFlag" cname="cdn_variable_has_flag">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="CdnVariableFlags" name="flags" />
+        </parameters>
       </method>
       <constructor cname="cdn_variable_new">
         <parameters>
@@ -4447,12 +4461,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="CdnVariableFlags" name="flags" />
-        </parameters>
-      </method>
-      <method name="SetIntegrated" cname="cdn_variable_set_integrated">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="integrated" />
         </parameters>
       </method>
       <method name="SetName" cname="cdn_variable_set_name">
