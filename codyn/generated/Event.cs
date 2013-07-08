@@ -131,10 +131,10 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_event_add_set_variable(IntPtr raw, IntPtr property, IntPtr value);
+		static extern void cdn_event_add_set_variable(IntPtr raw, IntPtr variable, IntPtr value);
 
-		public void AddSetVariable(Cdn.Variable property, Cdn.Expression value) {
-			cdn_event_add_set_variable(Handle, property == null ? IntPtr.Zero : property.Handle, value == null ? IntPtr.Zero : value.Handle);
+		public void AddSetVariable(Cdn.Variable variable, Cdn.Expression value) {
+			cdn_event_add_set_variable(Handle, variable == null ? IntPtr.Zero : variable.Handle, value == null ? IntPtr.Zero : value.Handle);
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
@@ -185,12 +185,12 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr tag);
+		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr phase);
 
-		public void RemovePhase(string tag) {
-			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
-			cdn_phaseable_remove_phase(Handle, native_tag);
-			GLib.Marshaller.Free (native_tag);
+		public void RemovePhase(string phase) {
+			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
+			cdn_phaseable_remove_phase(Handle, native_phase);
+			GLib.Marshaller.Free (native_phase);
 		}
 
 		[DllImport("libcodyn-3.0.dll")]

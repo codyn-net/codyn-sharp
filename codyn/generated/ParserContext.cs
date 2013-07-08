@@ -40,6 +40,11 @@ namespace Cdn {
 				val.Dispose ();
 				return ret;
 			}
+			set {
+				GLib.Value val = new GLib.Value(value);
+				SetProperty("network", val);
+				val.Dispose ();
+			}
 		}
 
 		[GLib.CDeclCallback]
@@ -548,13 +553,6 @@ namespace Cdn {
 
 		public void PushSelection(Cdn.Selector selector, Cdn.SelectorType type, GLib.SList templates) {
 			cdn_parser_context_push_selection(Handle, selector == null ? IntPtr.Zero : selector.Handle, (int) type, templates == null ? IntPtr.Zero : templates.Handle);
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_parser_context_remove_record(IntPtr raw, int len, int offset);
-
-		public void RemoveRecord(int len, int offset) {
-			cdn_parser_context_remove_record(Handle, len, offset);
 		}
 
 		[DllImport("libcodyn-3.0.dll")]

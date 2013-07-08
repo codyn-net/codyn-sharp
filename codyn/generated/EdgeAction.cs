@@ -229,12 +229,12 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr tag);
+		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr phase);
 
-		public void RemovePhase(string tag) {
-			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
-			cdn_phaseable_remove_phase(Handle, native_tag);
-			GLib.Marshaller.Free (native_tag);
+		public void RemovePhase(string phase) {
+			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
+			cdn_phaseable_remove_phase(Handle, native_phase);
+			GLib.Marshaller.Free (native_phase);
 		}
 
 		[DllImport("libcodyn-3.0.dll")]

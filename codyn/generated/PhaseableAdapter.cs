@@ -44,12 +44,12 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void SetPhaseTableDelegate (IntPtr taggable, System.IntPtr table);
+		delegate void SetPhaseTableDelegate (IntPtr phaseable, System.IntPtr table);
 
-		static void SetPhaseTableCallback (IntPtr taggable, System.IntPtr table)
+		static void SetPhaseTableCallback (IntPtr phaseable, System.IntPtr table)
 		{
 			try {
-				Cdn.PhaseableImplementor __obj = GLib.Object.GetObject (taggable, false) as Cdn.PhaseableImplementor;
+				Cdn.PhaseableImplementor __obj = GLib.Object.GetObject (phaseable, false) as Cdn.PhaseableImplementor;
 				__obj.PhaseTable = table;
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
@@ -129,12 +129,12 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr tag);
+		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr phase);
 
-		public void RemovePhase(string tag) {
-			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
-			cdn_phaseable_remove_phase(Handle, native_tag);
-			GLib.Marshaller.Free (native_tag);
+		public void RemovePhase(string phase) {
+			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
+			cdn_phaseable_remove_phase(Handle, native_phase);
+			GLib.Marshaller.Free (native_phase);
 		}
 
 		[DllImport("libcodyn-3.0.dll")]

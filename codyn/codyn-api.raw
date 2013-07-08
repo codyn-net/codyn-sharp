@@ -590,7 +590,7 @@
       <virtual_method name="SetPhaseTable" cname="set_phase_table">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnPhaseable*" name="taggable" />
+          <parameter type="CdnPhaseable*" name="phaseable" />
           <parameter type="GHashTable*" name="table" />
         </parameters>
       </virtual_method>
@@ -637,7 +637,7 @@
       <method name="RemovePhase" cname="cdn_phaseable_remove_phase">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="tag" />
+          <parameter type="const-gchar*" name="phase" />
         </parameters>
       </method>
       <method name="SetPhaseTable" cname="cdn_phaseable_set_phase_table">
@@ -1178,7 +1178,7 @@
       <method name="AddSetVariable" cname="cdn_event_add_set_variable">
         <return-type type="void" />
         <parameters>
-          <parameter type="CdnVariable*" name="property" />
+          <parameter type="CdnVariable*" name="variable" />
           <parameter type="CdnExpression*" name="value" />
         </parameters>
       </method>
@@ -3647,7 +3647,7 @@
     </object>
     <object name="ParserContext" cname="CdnParserContext" parent="GObject">
       <field name="Priv" cname="priv" type="CdnParserContextPrivate*" />
-      <property name="Network" cname="network" type="CdnNetwork" readable="true" writeable="true" construct-only="true" />
+      <property name="Network" cname="network" type="CdnNetwork" readable="true" writeable="true" construct="true" />
       <signal name="ContextPushed" cname="context-pushed" when="LAST">
         <return-type type="void" />
         <parameters>
@@ -4059,13 +4059,6 @@
         <parameters>
           <parameter type="gchar*" name="buffer" />
           <parameter type="gsize" name="max_size" />
-        </parameters>
-      </method>
-      <method name="RemoveRecord" cname="cdn_parser_context_remove_record">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="len" />
-          <parameter type="gint" name="offset" />
         </parameters>
       </method>
       <method name="SetColumn" cname="cdn_parser_context_set_column">
