@@ -39,6 +39,8 @@ customs = \
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 
+generated_sources = $(wildcard generated/*.cs)
+
 EXTRA_DIST =			\
 	AssemblyInfo.cs.in	\
 	$(API)			\
@@ -57,16 +59,16 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA) $(SYMBOLS)
 	$(GAPI_FIXUP) --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols)
 endif
 
-if HAS_GAPI_CODEGEN
-generated/Node.cs: $(API) $(build_customs) $(overrides_sources)
+generate-code: $(API) $(build_customs) $(overrides_sources)
 	rm -f generated/* &&	\
 	$(GAPI_CODEGEN) --generate $(API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
 	&& cp $(overrides_sources) generated/
-endif
 
 $(ASSEMBLY): $(build_sources) generated/Node.cs
 	$(CSC) $(DEBUG_FLAGS) -unsafe /out:$(ASSEMBLY) $(CSFLAGS) /target:library $(references) $(build_sources) $(wildcard $(srcdir)/generated/*.cs)
 
 all: $(ASSEMBLY)
+
+.PHONY: generate-code
 
 .NOTPARALLEL:
