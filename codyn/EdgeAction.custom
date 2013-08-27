@@ -1,7 +1,7 @@
-		[DllImport ("libgobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_new(IntPtr target, IntPtr equation);
 
 		public EdgeAction (string target, Cdn.Expression equation) : base (IntPtr.Zero)
@@ -31,5 +31,44 @@
 			if (Raw != IntPtr.Zero)
 			{
 				g_object_ref_sink (Raw);
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_phaseable_get_phases(IntPtr raw);
+
+		public string[] Phases
+		{
+			get
+			{
+				IntPtr ret = cdn_phaseable_get_phases(Handle);
+				return GLib.Marshaller.NullTermPtrToStringArray(ret, true);
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_edge_action_get_indices(IntPtr raw, out int length);
+
+		public int[] Indices
+		{
+			get
+			{
+				int length;
+
+				IntPtr raw_ret = cdn_edge_action_get_indices(Handle, out length);
+
+				if (raw_ret == IntPtr.Zero)
+				{
+					return null;
+				}
+
+				int[] ret = new int[length];
+
+				if (length > 0)
+				{
+					Marshal.Copy(raw_ret, ret, 0, length);
+				}
+
+				return ret;
 			}
 		}

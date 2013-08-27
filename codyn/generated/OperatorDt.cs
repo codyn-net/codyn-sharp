@@ -14,7 +14,7 @@ namespace Cdn {
 		protected OperatorDt(GLib.GType gtype) : base(gtype) {}
 		public OperatorDt(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_dt_new();
 
 		public OperatorDt () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_operator_dt_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_operator_dt_get_order(IntPtr raw);
 
 		[GLib.Property ("order")]
@@ -38,7 +38,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_dt_get_type();
 
 		public static new GLib.GType GType { 

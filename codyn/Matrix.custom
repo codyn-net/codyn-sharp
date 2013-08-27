@@ -1,0 +1,33 @@
+		[DllImport("libcodyn-3.0.dll")]
+		static extern double cdn_matrix_get_at(IntPtr raw, int r, int c);
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_matrix_set_at(IntPtr raw, int r, int c, double value);
+
+		public double this[int r, int c]
+		{
+			get { return cdn_matrix_get_at(Handle, r, c); }
+			set { cdn_matrix_set_at(Handle, r, c, value); }
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_matrix_dimension(IntPtr raw);
+
+		public Cdn.Dimension Dimension
+		{
+			get
+			{
+				IntPtr raw_ret = cdn_matrix_dimension(Handle);
+				Cdn.Dimension ret = Cdn.Dimension.New (raw_ret);
+				return ret;
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern int cdn_matrix_size(IntPtr raw);
+
+		public int Length
+		{
+			get { return cdn_matrix_size(Handle); }
+		}
+

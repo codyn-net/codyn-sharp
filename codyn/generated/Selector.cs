@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Selector(GLib.GType gtype) : base(gtype) {}
 		public Selector(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_selector_new(IntPtr root);
 
 		public Selector (Cdn.Object root) : base (IntPtr.Zero)
@@ -91,7 +91,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_selector_get_parts(IntPtr raw);
 
 		public GLib.SList Parts { 
@@ -102,7 +102,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_selector_append_regex_partial(IntPtr raw, IntPtr regex);
 
 		public uint AppendRegexPartial(Cdn.EmbeddedString regex) {
@@ -111,7 +111,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_selector_get_type();
 
 		public static new GLib.GType GType { 
@@ -122,7 +122,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_selector_get_out_context(IntPtr raw, uint id);
 
 		public GLib.SList GetOutContext(uint id) {
@@ -131,7 +131,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_selector_append_partial(IntPtr raw, IntPtr identifier);
 
 		public uint AppendPartial(Cdn.EmbeddedString identifier) {
@@ -140,7 +140,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_selector_select_set(IntPtr raw, IntPtr parents, int type);
 
 		public GLib.SList SelectSet(GLib.SList parents, Cdn.SelectorType type) {
@@ -149,18 +149,16 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern bool cdn_selector_is_pseudo_name(IntPtr name);
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_selector_get_in_context(IntPtr raw, uint id);
 
-		public static bool IsPseudoName(string name) {
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			bool raw_ret = cdn_selector_is_pseudo_name(native_name);
-			bool ret = raw_ret;
-			GLib.Marshaller.Free (native_name);
+		public GLib.SList GetInContext(uint id) {
+			IntPtr raw_ret = cdn_selector_get_in_context(Handle, id);
+			GLib.SList ret = new GLib.SList(raw_ret);
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_selector_select(IntPtr raw, IntPtr parent, int type, IntPtr context);
 
 		public Cdn.Selection[] Select(GLib.Object parent, Cdn.SelectorType type, Cdn.ExpansionContext context) {
@@ -169,7 +167,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_selector_set_partial(IntPtr raw, bool partial);
 
 		public bool Partial { 
@@ -178,7 +176,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_selector_set_define_context(IntPtr raw, IntPtr id);
 
 		public string DefineContext { 
@@ -189,7 +187,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_selector_set_self(IntPtr raw, IntPtr selection);
 
 		public Cdn.Selection Self { 
@@ -198,43 +196,24 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_selector_get_implicit_children(IntPtr raw);
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_selector_set_implicit_children(IntPtr raw, bool isimplicit);
 
 		public bool ImplicitChildren { 
+			get {
+				bool raw_ret = cdn_selector_get_implicit_children(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
 			set {
 				cdn_selector_set_implicit_children(Handle, value);
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_selector_get_in_context(IntPtr raw, uint id);
-
-		public GLib.SList GetInContext(uint id) {
-			IntPtr raw_ret = cdn_selector_get_in_context(Handle, id);
-			GLib.SList ret = new GLib.SList(raw_ret);
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern uint cdn_selector_append_pseudo(IntPtr raw, int type, IntPtr arguments);
-
-		public uint AppendPseudo(Cdn.SelectorPseudoType type, GLib.SList arguments) {
-			uint raw_ret = cdn_selector_append_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
-			uint ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern uint cdn_selector_append(IntPtr raw, IntPtr identifier);
-
-		public uint Append(Cdn.EmbeddedString identifier) {
-			uint raw_ret = cdn_selector_append(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
-			uint ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_selector_append_regex(IntPtr raw, IntPtr regex);
 
 		public uint AppendRegex(Cdn.EmbeddedString regex) {
@@ -243,7 +222,36 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
+		static extern uint cdn_selector_append_pseudo(IntPtr raw, int type, IntPtr arguments);
+
+		public uint AppendPseudo(Cdn.SelectorPseudoType type, GLib.SList arguments) {
+			uint raw_ret = cdn_selector_append_pseudo(Handle, (int) type, arguments == null ? IntPtr.Zero : arguments.Handle);
+			uint ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern uint cdn_selector_append(IntPtr raw, IntPtr identifier);
+
+		public uint Append(Cdn.EmbeddedString identifier) {
+			uint raw_ret = cdn_selector_append(Handle, identifier == null ? IntPtr.Zero : identifier.Handle);
+			uint ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_selector_is_pseudo_name(IntPtr name);
+
+		public static bool IsPseudoName(string name) {
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			bool raw_ret = cdn_selector_is_pseudo_name(native_name);
+			bool ret = raw_ret;
+			GLib.Marshaller.Free (native_name);
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_selector_set_from_set(IntPtr raw, IntPtr selections);
 
 		public GLib.SList FromSet { 
@@ -252,7 +260,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_selector_as_string(IntPtr raw);
 
 		public string AsString() {
@@ -261,7 +269,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_selector_parse(IntPtr root, IntPtr s, out IntPtr error);
 
 		public static unsafe Cdn.Selector Parse(Cdn.Object root, string s) {
@@ -274,7 +282,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_selector_get_last_id(IntPtr raw);
 
 		public uint LastId { 
@@ -285,7 +293,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_selector_escape_identifier(IntPtr name);
 
 		public static string EscapeIdentifier(string name) {
@@ -296,28 +304,28 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_set_column(IntPtr raw, int start, int end);
 
 		public void SetColumn(int start, int end) {
 			cdn_statement_set_column(Handle, start, end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_get_column(IntPtr raw, out int start, out int end);
 
 		public void GetColumn(out int start, out int end) {
 			cdn_statement_get_column(Handle, out start, out end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_set_line(IntPtr raw, int start, int end);
 
 		public void SetLine(int start, int end) {
 			cdn_statement_set_line(Handle, start, end);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_statement_get_line(IntPtr raw, out int start, out int end);
 
 		public void GetLine(out int start, out int end) {

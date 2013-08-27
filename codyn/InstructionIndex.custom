@@ -1,0 +1,23 @@
+		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_instruction_index_write_indices(IntPtr raw, int[] ret, int length);
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern int cdn_instruction_index_num_indices(IntPtr raw);
+
+		public int[] Indices
+		{
+			get
+			{
+				int length = cdn_instruction_index_num_indices(Handle);
+				int[] ret = new int[length];
+
+				if (cdn_instruction_index_write_indices(Handle, ret, length))
+				{
+					return ret;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}

@@ -1,7 +1,7 @@
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_variable_new(IntPtr name, IntPtr expression, int flags);
 
-		[DllImport ("libgobject-2.0")]
+		[DllImport ("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
 		public Variable (string name, Cdn.Expression expression, Cdn.VariableFlags flags) : base (IntPtr.Zero)
@@ -30,34 +30,17 @@
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern IntPtr cdn_variable_get_values(IntPtr raw, out int numr, out int numc);
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_variable_copy(IntPtr raw);
 
-		public double[,] Values
-		{
-			get
+		public Cdn.Variable Copy() {
+			IntPtr raw_ret = cdn_variable_copy(Handle);
+
+			if (raw_ret != IntPtr.Zero)
 			{
-				int numr;
-				int numc;
-				double[] data;
-
-				IntPtr raw_ret = cdn_variable_get_values(Handle, out numr, out numc);
-
-				data = new double[numr * numc];
-				Marshal.Copy(raw_ret, data, 0, numr * numc);
-
-				double[,] ret = new double[numr, numc];
-				int idx = 0;
-
-				for (int r = 0; r < numr; ++r)
-				{
-					for (int c = 0; c < numc; ++c)
-					{
-						ret[r, c] = data[idx++];
-					}
-				}
-
-				return ret;
+				g_object_ref_sink (Raw);
 			}
-		}
 
+			Cdn.Variable ret = GLib.Object.GetObject(raw_ret, true) as Cdn.Variable;
+			return ret;
+		}

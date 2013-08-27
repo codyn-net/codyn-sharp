@@ -14,7 +14,7 @@ namespace Cdn {
 		protected FunctionPolynomial(GLib.GType gtype) : base(gtype) {}
 		public FunctionPolynomial(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_new(IntPtr name);
 
 		public FunctionPolynomial (string name) : base (IntPtr.Zero)
@@ -125,7 +125,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_function_polynomial_remove(IntPtr raw, IntPtr piece);
 
 		public bool Remove(Cdn.FunctionPolynomialPiece piece) {
@@ -134,7 +134,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_get_type();
 
 		public static new GLib.GType GType { 
@@ -145,7 +145,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_function_polynomial_add(IntPtr raw, IntPtr piece);
 
 		public bool Add(Cdn.FunctionPolynomialPiece piece) {
@@ -154,14 +154,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_polynomial_clear_pieces(IntPtr raw);
 
 		public void ClearPieces() {
 			cdn_function_polynomial_clear_pieces(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_get_pieces(IntPtr raw);
 
 		public Cdn.FunctionPolynomialPiece[] Pieces { 

@@ -1,7 +1,7 @@
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_get_coefficients(IntPtr raw, out uint num_coefficients);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_polynomial_piece_set_coefficients(IntPtr raw, double[] coefficients, uint num_coefficients);
 
 		public double[] Coefficients
@@ -24,7 +24,7 @@
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_get_normalization(IntPtr raw, out uint num_coefficients);
 
 		public double[] Normalization
@@ -41,10 +41,10 @@
 			}
 		}
 
-		[DllImport ("libgobject-2.0")]
+		[DllImport ("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_new(double begin, double end, double[] coefficients, uint num_coefficients);
 
 		public FunctionPolynomialPiece (double begin, double end, params double[] coefficients) : base (IntPtr.Zero)

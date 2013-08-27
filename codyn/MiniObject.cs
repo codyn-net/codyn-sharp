@@ -9,7 +9,7 @@ namespace Cdn
 	{
 		private IntPtr d_raw;
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_mini_object_ref(IntPtr raw);
 
 		public MiniObject(IntPtr raw)
@@ -24,7 +24,7 @@ namespace Cdn
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_mini_object_new(IntPtr raw_gtype);
 
 		protected MiniObject(GLib.GType gtype)
@@ -56,7 +56,7 @@ namespace Cdn
 			Dispose(false);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_mini_object_unref(IntPtr raw);
 
 		public void Dispose()
@@ -79,7 +79,7 @@ namespace Cdn
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_mini_object_copy(IntPtr raw);
 
 		public Cdn.MiniObject Copy()
@@ -89,7 +89,7 @@ namespace Cdn
 			return GetObject(GetType(), cpraw);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_mini_object_get_type();
 
 		public static GLib.GType GType
@@ -128,7 +128,7 @@ namespace Cdn
 			return info.Invoke(null, new object[] {raw}) as Cdn.MiniObject;
 		}
 
-		[DllImport ("libgobject-2.0", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_type_parent (IntPtr type);
 
 		static Type GetTypeOrParent(IntPtr obj)

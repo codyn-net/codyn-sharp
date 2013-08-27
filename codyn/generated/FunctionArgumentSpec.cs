@@ -12,7 +12,7 @@ namespace Cdn {
 
 		public FunctionArgumentSpec(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_argument_spec_new(IntPtr name, bool isexplicit, IntPtr default_value);
 
 		public FunctionArgumentSpec (Cdn.EmbeddedString name, bool isexplicit, Cdn.EmbeddedString default_value) 
@@ -20,7 +20,7 @@ namespace Cdn {
 			Raw = cdn_function_argument_spec_new(name == null ? IntPtr.Zero : name.Handle, isexplicit, default_value == null ? IntPtr.Zero : default_value.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_argument_spec_free(IntPtr raw);
 
 		protected override void Free (IntPtr raw)

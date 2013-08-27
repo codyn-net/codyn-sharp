@@ -1,6 +1,6 @@
-AC_INIT([codyn3-sharp], [3.1])
+AC_INIT([codyn3-sharp], [3.4])
 AC_CANONICAL_SYSTEM
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 tar-ustar dist-xz no-dist-gzip -Wno-portability])
 AM_MAINTAINER_MODE
 
@@ -33,6 +33,11 @@ else
 	LIB_PREFIX=.so
 	LIB_SUFFIX=
 fi
+
+AC_ARG_ENABLE([release], [Build release (default no)], [enable_release=$enableval], [enable_release=no])
+
+AM_CONDITIONAL([ENABLE_RELEASE], [test x$enable_release != xno])
+AM_CONDITIONAL([ENABLE_DEBUG], [test x$enable_release = xno])
 
 AC_SUBST(CSC)
 AC_SUBST(GACUTIL)

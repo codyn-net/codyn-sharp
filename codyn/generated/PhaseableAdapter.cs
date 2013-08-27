@@ -44,12 +44,12 @@ namespace Cdn {
 		}
 
 		[GLib.CDeclCallback]
-		delegate void SetPhaseTableDelegate (IntPtr taggable, System.IntPtr table);
+		delegate void SetPhaseTableDelegate (IntPtr phaseable, System.IntPtr table);
 
-		static void SetPhaseTableCallback (IntPtr taggable, System.IntPtr table)
+		static void SetPhaseTableCallback (IntPtr phaseable, System.IntPtr table)
 		{
 			try {
-				Cdn.PhaseableImplementor __obj = GLib.Object.GetObject (taggable, false) as Cdn.PhaseableImplementor;
+				Cdn.PhaseableImplementor __obj = GLib.Object.GetObject (phaseable, false) as Cdn.PhaseableImplementor;
 				__obj.PhaseTable = table;
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
@@ -84,7 +84,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_phaseable_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_phaseable_get_type ());
@@ -128,18 +128,35 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_phaseable_foreach(IntPtr raw, CdnSharp.PhaseableForeachFuncNative func, IntPtr userdata);
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr phase);
 
-		public void Foreach(Cdn.PhaseableForeachFunc func) {
-			CdnSharp.PhaseableForeachFuncWrapper func_wrapper = new CdnSharp.PhaseableForeachFuncWrapper (func);
-			cdn_phaseable_foreach(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
+		public void RemovePhase(string phase) {
+			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
+			cdn_phaseable_remove_phase(Handle, native_phase);
+			GLib.Marshaller.Free (native_phase);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_phaseable_equal(IntPtr raw, IntPtr other);
+
+		public bool Equal(Cdn.Phaseable other) {
+			bool raw_ret = cdn_phaseable_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_phaseable_copy_to(IntPtr raw, IntPtr dest);
+
+		public void CopyTo(Cdn.Phaseable dest) {
+			cdn_phaseable_copy_to(Handle, dest == null ? IntPtr.Zero : dest.Handle);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern System.IntPtr cdn_phaseable_get_phase_table(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_set_phase_table(IntPtr raw, System.IntPtr table);
 
 		public System.IntPtr PhaseTable { 
@@ -153,16 +170,24 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr tag);
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_phaseable_add_phase(IntPtr raw, IntPtr phase);
 
-		public void RemovePhase(string tag) {
-			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
-			cdn_phaseable_remove_phase(Handle, native_tag);
-			GLib.Marshaller.Free (native_tag);
+		public void AddPhase(string phase) {
+			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
+			cdn_phaseable_add_phase(Handle, native_phase);
+			GLib.Marshaller.Free (native_phase);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_phaseable_foreach(IntPtr raw, CdnSharp.PhaseableForeachFuncNative func, IntPtr userdata);
+
+		public void Foreach(Cdn.PhaseableForeachFunc func) {
+			CdnSharp.PhaseableForeachFuncWrapper func_wrapper = new CdnSharp.PhaseableForeachFuncWrapper (func);
+			cdn_phaseable_foreach(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_phaseable_is_active(IntPtr raw, IntPtr phase);
 
 		public bool IsActive(string phase) {
@@ -173,20 +198,19 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_phaseable_add_phase(IntPtr raw, IntPtr phase);
+#endregion
+#region Customized extensions
+#line 1 "PhaseableAdapter.custom"
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_phaseable_get_phases(IntPtr raw);
 
-		public void AddPhase(string phase) {
-			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
-			cdn_phaseable_add_phase(Handle, native_phase);
-			GLib.Marshaller.Free (native_phase);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_phaseable_copy_to(IntPtr raw, IntPtr dest);
-
-		public void CopyTo(Cdn.Phaseable dest) {
-			cdn_phaseable_copy_to(Handle, dest == null ? IntPtr.Zero : dest.Handle);
+		public string[] Phases
+		{
+			get
+			{
+				IntPtr ret = cdn_phaseable_get_phases(Handle);
+				return GLib.Marshaller.NullTermPtrToStringArray(ret, true);
+			}
 		}
 
 #endregion

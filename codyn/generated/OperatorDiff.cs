@@ -14,7 +14,7 @@ namespace Cdn {
 		protected OperatorDiff(GLib.GType gtype) : base(gtype) {}
 		public OperatorDiff(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_diff_new();
 
 		public OperatorDiff () : base (IntPtr.Zero)
@@ -26,7 +26,7 @@ namespace Cdn {
 			Raw = cdn_operator_diff_new();
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_diff_get_type();
 
 		public static new GLib.GType GType { 

@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Node(GLib.GType gtype) : base(gtype) {}
 		public Node(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_new(IntPtr id);
 
 		public Node (string id) : base (IntPtr.Zero)
@@ -30,6 +30,46 @@ namespace Cdn {
 			IntPtr native_id = GLib.Marshaller.StringToPtrGStrdup (id);
 			Raw = cdn_node_new(native_id);
 			GLib.Marshaller.Free (native_id);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_node_get_state(IntPtr raw);
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_node_set_state(IntPtr raw, IntPtr state);
+
+		[GLib.Property ("state")]
+		public string State {
+			get  {
+				IntPtr raw_ret = cdn_node_get_state(Handle);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+				return ret;
+			}
+			set  {
+				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+				cdn_node_set_state(Handle, native_value);
+				GLib.Marshaller.Free (native_value);
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_node_get_initial_state(IntPtr raw);
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_node_set_initial_state(IntPtr raw, IntPtr state);
+
+		[GLib.Property ("initial-state")]
+		public string InitialState {
+			get  {
+				IntPtr raw_ret = cdn_node_get_initial_state(Handle);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
+				return ret;
+			}
+			set  {
+				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+				cdn_node_set_initial_state(Handle, native_value);
+				GLib.Marshaller.Free (native_value);
+			}
 		}
 
 		[GLib.CDeclCallback]
@@ -218,7 +258,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_node_verify_remove_child(IntPtr raw, IntPtr child, out IntPtr error);
 
 		public unsafe bool VerifyRemoveChild(Cdn.Object child) {
@@ -229,7 +269,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_find_objects(IntPtr raw, IntPtr selector);
 
 		public Cdn.Object[] FindObjects(string selector) {
@@ -240,7 +280,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_node_remove(IntPtr raw, IntPtr objekt, out IntPtr error);
 
 		public unsafe bool Remove(Cdn.Object objekt) {
@@ -251,7 +291,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_find_variables(IntPtr raw, IntPtr selector);
 
 		public Cdn.Variable[] FindVariables(string selector) {
@@ -262,7 +302,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_find_object(IntPtr raw, IntPtr selector);
 
 		public Cdn.Object FindObject(string selector) {
@@ -273,7 +313,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_get_variable_interface(IntPtr raw);
 
 		public Cdn.VariableInterface VariableInterface { 
@@ -284,7 +324,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_get_auto_templates_for_child(IntPtr raw, IntPtr child);
 
 		public GLib.SList GetAutoTemplatesForChild(Cdn.Object child) {
@@ -293,7 +333,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_get_self_edge(IntPtr raw);
 
 		public Cdn.Edge SelfEdge { 
@@ -304,7 +344,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_get_edges(IntPtr raw);
 
 		public Cdn.Edge[] Edges { 
@@ -315,7 +355,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_node_error_quark();
 
 		public static new int ErrorQuark() {
@@ -324,7 +364,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_node_has_self_edge(IntPtr raw);
 
 		public bool HasSelfEdge { 
@@ -335,7 +375,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_node_add(IntPtr raw, IntPtr objekt, out IntPtr error);
 
 		public unsafe bool Add(Cdn.Object objekt) {
@@ -346,7 +386,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_get_actors(IntPtr raw);
 
 		public Cdn.Variable[] Actors { 
@@ -357,7 +397,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_get_children(IntPtr raw);
 
 		public Cdn.Object[] Children { 
@@ -368,7 +408,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_get_type();
 
 		public static new GLib.GType GType { 
@@ -379,7 +419,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_get_child(IntPtr raw, IntPtr name);
 
 		public Cdn.Object GetChild(string name) {
@@ -390,7 +430,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_node_find_variable(IntPtr raw, IntPtr selector);
 
 		public Cdn.Variable FindVariable(string selector) {

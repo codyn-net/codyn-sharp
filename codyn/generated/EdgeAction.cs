@@ -19,10 +19,10 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_get_index(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_edge_action_set_index(IntPtr raw, IntPtr expression);
 
 		[GLib.Property ("index")]
@@ -37,10 +37,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_get_target(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_edge_action_set_target(IntPtr raw, IntPtr target);
 
 		[GLib.Property ("target")]
@@ -67,10 +67,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_get_equation(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_edge_action_set_equation(IntPtr raw, IntPtr equation);
 
 		[GLib.Property ("equation")]
@@ -95,7 +95,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_edge_action_equal(IntPtr raw, IntPtr other);
 
 		public bool Equal(Cdn.EdgeAction other) {
@@ -104,7 +104,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_edge_action_compile(IntPtr raw, IntPtr context, IntPtr error);
 
 		public bool Compile(Cdn.CompileContext context, Cdn.CompileError error) {
@@ -113,7 +113,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_get_edge(IntPtr raw);
 
 		public Cdn.Edge Edge { 
@@ -124,16 +124,24 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern int cdn_edge_action_get_indices(IntPtr raw, out int num_indices);
+		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_edge_action_get_adds(IntPtr raw);
 
-		public int GetIndices(out int num_indices) {
-			int raw_ret = cdn_edge_action_get_indices(Handle, out num_indices);
-			int ret = raw_ret;
-			return ret;
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_edge_action_set_adds(IntPtr raw, bool adds);
+
+		public bool Adds { 
+			get {
+				bool raw_ret = cdn_edge_action_get_adds(Handle);
+				bool ret = raw_ret;
+				return ret;
+			}
+			set {
+				cdn_edge_action_set_adds(Handle, value);
+			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_get_target_variable(IntPtr raw);
 
 		public Cdn.Variable TargetVariable { 
@@ -144,7 +152,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_get_type();
 
 		public static new GLib.GType GType { 
@@ -155,7 +163,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_copy(IntPtr raw);
 
 		public Cdn.EdgeAction Copy() {
@@ -164,10 +172,10 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_modifiable_get_modified(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_modifiable_set_modified(IntPtr raw, bool modified);
 
 		public bool Modified { 
@@ -181,10 +189,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_get_annotation(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_annotatable_set_annotation(IntPtr raw, IntPtr annotation);
 
 		public string Annotation { 
@@ -200,7 +208,16 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_annotatable_parse_annotation(IntPtr raw);
+
+		public Cdn.AnnotationInfo ParseAnnotation() {
+			IntPtr raw_ret = cdn_annotatable_parse_annotation(Handle);
+			Cdn.AnnotationInfo ret = raw_ret == IntPtr.Zero ? null : (Cdn.AnnotationInfo) GLib.Opaque.GetOpaque (raw_ret, typeof (Cdn.AnnotationInfo), false);
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_annotatable_get_title(IntPtr raw);
 
 		public string Title { 
@@ -211,18 +228,35 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_phaseable_foreach(IntPtr raw, CdnSharp.PhaseableForeachFuncNative func, IntPtr userdata);
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr phase);
 
-		public void Foreach(Cdn.PhaseableForeachFunc func) {
-			CdnSharp.PhaseableForeachFuncWrapper func_wrapper = new CdnSharp.PhaseableForeachFuncWrapper (func);
-			cdn_phaseable_foreach(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
+		public void RemovePhase(string phase) {
+			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
+			cdn_phaseable_remove_phase(Handle, native_phase);
+			GLib.Marshaller.Free (native_phase);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
+		static extern bool cdn_phaseable_equal(IntPtr raw, IntPtr other);
+
+		public bool Equal(Cdn.Phaseable other) {
+			bool raw_ret = cdn_phaseable_equal(Handle, other == null ? IntPtr.Zero : other.Handle);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_phaseable_copy_to(IntPtr raw, IntPtr dest);
+
+		public void CopyTo(Cdn.Phaseable dest) {
+			cdn_phaseable_copy_to(Handle, dest == null ? IntPtr.Zero : dest.Handle);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern System.IntPtr cdn_phaseable_get_phase_table(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_phaseable_set_phase_table(IntPtr raw, System.IntPtr table);
 
 		public System.IntPtr PhaseTable { 
@@ -236,16 +270,24 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_phaseable_remove_phase(IntPtr raw, IntPtr tag);
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_phaseable_add_phase(IntPtr raw, IntPtr phase);
 
-		public void RemovePhase(string tag) {
-			IntPtr native_tag = GLib.Marshaller.StringToPtrGStrdup (tag);
-			cdn_phaseable_remove_phase(Handle, native_tag);
-			GLib.Marshaller.Free (native_tag);
+		public void AddPhase(string phase) {
+			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
+			cdn_phaseable_add_phase(Handle, native_phase);
+			GLib.Marshaller.Free (native_phase);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_phaseable_foreach(IntPtr raw, CdnSharp.PhaseableForeachFuncNative func, IntPtr userdata);
+
+		public void Foreach(Cdn.PhaseableForeachFunc func) {
+			CdnSharp.PhaseableForeachFuncWrapper func_wrapper = new CdnSharp.PhaseableForeachFuncWrapper (func);
+			cdn_phaseable_foreach(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_phaseable_is_active(IntPtr raw, IntPtr phase);
 
 		public bool IsActive(string phase) {
@@ -256,29 +298,13 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
-		static extern void cdn_phaseable_add_phase(IntPtr raw, IntPtr phase);
-
-		public void AddPhase(string phase) {
-			IntPtr native_phase = GLib.Marshaller.StringToPtrGStrdup (phase);
-			cdn_phaseable_add_phase(Handle, native_phase);
-			GLib.Marshaller.Free (native_phase);
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_phaseable_copy_to(IntPtr raw, IntPtr dest);
-
-		public void CopyTo(Cdn.Phaseable dest) {
-			cdn_phaseable_copy_to(Handle, dest == null ? IntPtr.Zero : dest.Handle);
-		}
-
 #endregion
 #region Customized extensions
 #line 1 "EdgeAction.custom"
-		[DllImport ("libgobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_edge_action_new(IntPtr target, IntPtr equation);
 
 		public EdgeAction (string target, Cdn.Expression equation) : base (IntPtr.Zero)
@@ -308,6 +334,45 @@ namespace Cdn {
 			if (Raw != IntPtr.Zero)
 			{
 				g_object_ref_sink (Raw);
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_phaseable_get_phases(IntPtr raw);
+
+		public string[] Phases
+		{
+			get
+			{
+				IntPtr ret = cdn_phaseable_get_phases(Handle);
+				return GLib.Marshaller.NullTermPtrToStringArray(ret, true);
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_edge_action_get_indices(IntPtr raw, out int length);
+
+		public int[] Indices
+		{
+			get
+			{
+				int length;
+
+				IntPtr raw_ret = cdn_edge_action_get_indices(Handle, out length);
+
+				if (raw_ret == IntPtr.Zero)
+				{
+					return null;
+				}
+
+				int[] ret = new int[length];
+
+				if (length > 0)
+				{
+					Marshal.Copy(raw_ret, ret, 0, length);
+				}
+
+				return ret;
 			}
 		}
 

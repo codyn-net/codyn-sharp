@@ -2,7 +2,7 @@
 
 <gapi-parser-input>
   <api filename="codyn/codyn-api.raw">
-    <library name="codyn-3.0">
+    <library name="libcodyn-3.0.dll">
       <namespace name="Cdn">
         <file>../codyn/codyn/cdn-annotatable.c</file>
         <file>../codyn/codyn/cdn-annotatable.h</file>
@@ -16,6 +16,8 @@
         <file>../codyn/codyn/cdn-expression.h</file>
         <file>../codyn/codyn/cdn-monitor.c</file>
         <file>../codyn/codyn/cdn-monitor.h</file>
+        <file>../codyn/codyn/cdn-matrix.c</file>
+        <file>../codyn/codyn/cdn-matrix.h</file>
         <file>../codyn/codyn/cdn-network.c</file>
         <file>../codyn/codyn/cdn-network.h</file>
         <file>../codyn/codyn/cdn-import.c</file>
@@ -122,6 +124,10 @@
         <file>../codyn/codyn/instructions/cdn-instruction-variable.h</file>
         <file>../codyn/codyn/instructions/cdn-instruction-rand.c</file>
         <file>../codyn/codyn/instructions/cdn-instruction-rand.h</file>
+        <file>../codyn/codyn/instructions/cdn-instruction-matrix.c</file>
+        <file>../codyn/codyn/instructions/cdn-instruction-matrix.h</file>
+        <file>../codyn/codyn/instructions/cdn-instruction-index.c</file>
+        <file>../codyn/codyn/instructions/cdn-instruction-index.h</file>
       </namespace>
     </library>
   </api>

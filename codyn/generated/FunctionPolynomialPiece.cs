@@ -19,10 +19,10 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_function_polynomial_piece_get_end(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_polynomial_piece_set_end(IntPtr raw, double end);
 
 		[GLib.Property ("end")]
@@ -37,10 +37,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_function_polynomial_piece_get_begin(IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_polynomial_piece_set_begin(IntPtr raw, double begin);
 
 		[GLib.Property ("begin")]
@@ -55,7 +55,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_get_derivative(IntPtr raw, int order);
 
 		public Cdn.FunctionPolynomialPiece GetDerivative(int order) {
@@ -64,7 +64,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern double cdn_function_polynomial_piece_evaluate(IntPtr raw, double t);
 
 		public double Evaluate(double t) {
@@ -73,7 +73,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_function_polynomial_piece_equal(IntPtr raw, IntPtr b);
 
 		public bool Equal(Cdn.FunctionPolynomialPiece b) {
@@ -82,7 +82,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_get_type();
 
 		public static new GLib.GType GType { 
@@ -93,7 +93,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_copy(IntPtr raw);
 
 		public Cdn.FunctionPolynomialPiece Copy() {
@@ -105,10 +105,10 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "FunctionPolynomialPiece.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_get_coefficients(IntPtr raw, out uint num_coefficients);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_polynomial_piece_set_coefficients(IntPtr raw, double[] coefficients, uint num_coefficients);
 
 		public double[] Coefficients
@@ -131,7 +131,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_get_normalization(IntPtr raw, out uint num_coefficients);
 
 		public double[] Normalization
@@ -148,10 +148,10 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport ("libgobject-2.0")]
+		[DllImport ("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref_sink (IntPtr raw);
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_new(double begin, double end, double[] coefficients, uint num_coefficients);
 
 		public FunctionPolynomialPiece (double begin, double end, params double[] coefficients) : base (IntPtr.Zero)

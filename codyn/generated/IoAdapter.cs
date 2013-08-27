@@ -15,10 +15,6 @@ namespace Cdn {
 			public IntPtr gtype;
 			public IntPtr itype;
 
-			public IntPtr initialize;
-			public IntPtr initialize_async;
-			public IntPtr finalize;
-			public IntPtr finalize_async;
 			public UpdateDelegate update;
 		}
 
@@ -44,10 +40,6 @@ namespace Cdn {
 		static void Initialize (IntPtr ifaceptr, IntPtr data)
 		{
 			IoIface native_iface = (IoIface) Marshal.PtrToStructure (ifaceptr, typeof (IoIface));
-			native_iface.initialize = iface.initialize;
-			native_iface.initialize_async = iface.initialize_async;
-			native_iface.finalize = iface.finalize;
-			native_iface.finalize_async = iface.finalize_async;
 			native_iface.update = iface.update;
 			Marshal.StructureToPtr (native_iface, ifaceptr, false);
 			GCHandle gch = (GCHandle) data;
@@ -73,7 +65,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_io_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_io_get_type ());
@@ -117,7 +109,14 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_io_update(IntPtr raw, IntPtr integrator);
+
+		public void Update(Cdn.Integrator integrator) {
+			cdn_io_update(Handle, integrator == null ? IntPtr.Zero : integrator.Handle);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_io_get_mode(IntPtr raw);
 
 		public Cdn.IoMode Mode { 
@@ -126,13 +125,6 @@ namespace Cdn {
 				Cdn.IoMode ret = (Cdn.IoMode) raw_ret;
 				return ret;
 			}
-		}
-
-		[DllImport("codyn-3.0")]
-		static extern void cdn_io_update(IntPtr raw, IntPtr integrator);
-
-		public void Update(Cdn.Integrator integrator) {
-			cdn_io_update(Handle, integrator == null ? IntPtr.Zero : integrator.Handle);
 		}
 
 #endregion

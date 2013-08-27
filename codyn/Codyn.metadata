@@ -9,6 +9,7 @@
   <attr path="/api/namespace/object[@cname='CdnEdgeAction']/constructor" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CdnEdgeAction']/method[@cname='cdn_edge_action_get_edge']/return-type" name="type">CdnEdge*</attr>
   <attr path="/api/namespace/object[@cname='CdnEdgeAction']/method[@cname='cdn_edge_action_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
+  <attr path="/api/namespace/object[@cname='CdnEdgeAction']/method[@cname='cdn_edge_action_get_indices']" name="hidden">true</attr>
 
   <!-- CdnNetwork -->
   <remove-node path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_merge_from_file']"/>
@@ -22,6 +23,7 @@
   <remove-node path="/api/namespace/object[@cname='CdnNetwork']/constructor[@cname='cdn_network_new_from_stream']"/>
   <attr path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_get_import']" name="hidden">true</attr>
   <attr path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_get_import_from_path']/return-type" name="type">CdnImport*</attr>
+  <remove-node path="/api/namespace/object[@cname='CdnNetwork']/method[@cname='cdn_network_merge_from_stream']"/>
 
   <!-- CdnExpansion -->
   <attr path="/api/namespace/boxed[@cname='CdnExpansion']/constructor[@cname='cdn_expansion_new']/parameters/parameter" name="name">items</attr>
@@ -29,11 +31,15 @@
 
   <attr path="/api/namespace/boxed[@cname='CdnExpansion']/constructor[@cname='cdn_expansion_new_sized']/parameters/parameter[@type='gchar']" name="name">items</attr>
   <attr path="/api/namespace/boxed[@cname='CdnExpansion']/constructor[@cname='cdn_expansion_new_sized']/parameters/parameter[@type='gchar']" name="type">const-gchar**</attr>
+  <remove-node path="/api/namespace/boxed[@cname='CdnExpansion']/method[@cname='cdn_expansion_debug_print']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnExpansion']/constructor[@cname='cdn_expansion_newv']"/>
 
   <!-- CdnExpansionContext -->
   <attr path="/api/namespace/boxed[@cname='CdnExpansionContext']/method[@cname='cdn_expansion_context_add_expansions']/parameters/parameter[@name='expansions']" name="element_type">CdnExpansion*</attr>
   <attr path="/api/namespace/boxed[@cname='CdnExpansionContext']/method[@cname='cdn_expansion_context_get_expansions']/return-type" name="element_type">CdnExpansion*</attr>
   <attr path="/api/namespace/boxed[@cname='CdnExpansionContext']/method[@cname='cdn_expansion_context_get_local_expansions']/return-type" name="element_type">CdnExpansion*</attr>
+  <remove-node path="/api/namespace/boxed[@cname='CdnExpansionContext']/method[@cname='cdn_expansion_context_debug_print']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnExpansionContext']/method[@cname='cdn_expansion_context_foreach_define']"/>
 
   <!-- CdnImport -->
   <remove-node path="/api/namespace/object[@cname='CdnImport']/constructor[@cname='cdn_import_new']"/>
@@ -65,6 +71,8 @@
 
   <!-- CdnVariable -->
   <attr path="/api/namespace/object[@cname='CdnVariable']/constructor" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_actions']/return-type" name="element_type">CdnEdgeAction*</attr>
+  <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_dimension']/parameters/parameter[@name='dim']" name="pass_as">out</attr>
 
   <!-- CdnNode -->
   <attr path="/api/namespace/object[@cname='CdnNode']/method[@cname='cdn_node_foreach']" name="hidden">true</attr>
@@ -88,7 +96,7 @@
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_set_instructions']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_set_instructions_take']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnExpression']/constructor" name="hidden">true</attr>
-  <remove-node path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_evaluate_values']"/>
+  <remove-node path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_copy']"/>
 
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_dependencies']/return-type" name="element_type">CdnExpression*</attr>
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_variable_dependencies']/return-type" name="element_type">CdnVariable*</attr>
@@ -96,6 +104,25 @@
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
 
   <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_rand_instructions']/return-type" name="element_type">CdnInstructionRand*</attr>
+
+  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_sum']" name="hidden">true</attr>
+
+  <attr path="/api/namespace/object[@cname='CdnExpression']/method[@cname='cdn_expression_get_dimension']/parameters/parameter[@name='dimension']" name="pass_as">out</attr>
+
+  <!-- CdnMatrix -->
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_set']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_set_at']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_get']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_get_memory']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_get_flat']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_copy_to']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_copy']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_destroy']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_get_at']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_dimension']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/method[@cname='cdn_matrix_size']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/field[@name='Values']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnMatrix']/field[@name='Dimension']"/>
 
   <!-- CdnExpressionTreeIter -->
   <attr path="/api/namespace/boxed[@cname='CdnExpressionTreeIter']/method[@cname='cdn_expression_tree_iter_get_instruction']" name="hidden"/>
@@ -111,6 +138,9 @@
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_all_expressions']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_all_indices']" name="hidden"/>
   <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_get_indices']/return-type" name="element_type">CdnExpression*</attr>
+  <attr path="/api/namespace/object[@cname='CdnOperator']/virtual_method[@cname='foreach_function']/parameters/parameter[@name='func']" name="scope">call</attr>
+  <attr path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_foreach_function']/parameters/parameter[@name='func']" name="scope">call</attr>
+  <remove-node path="/api/namespace/object[@cname='CdnOperator']/method[@cname='cdn_operator_responds_to']"/>
 
   <!-- CdnFunction -->
   <remove-node path="/api/namespace/object[@cname='CdnFunction']/method[@cname='cdn_function_execute']"/>
@@ -119,6 +149,9 @@
 
   <!-- CdnFunctionArgument -->
   <attr path="/api/namespace/object[@cname='CdnFunctionArgument']/constructor" name="hidden">true</attr>
+
+  <attr path="/api/namespace/object[@cname='CdnFunctionArgument']/method[@cname='cdn_function_argument_get_dimension']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnFunctionArgument']/method[@cname='cdn_function_argument_set_dimension']" name="hidden">true</attr>
 
   <!-- CdnFunctionPolynomial -->
   <attr path="/api/namespace/object[@cname='CdnFunctionPolynomial']/method[@cname='cdn_function_polynomial_get_pieces']/return-type" name="element_type">CdnFunctionPolynomialPiece*</attr>
@@ -143,12 +176,14 @@
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_lookup_variable_last']/return-type" name="type">CdnVariable*</attr>
   <attr path="/api/namespace/object[@cname='CdnCompileContext']/method[@cname='cdn_compile_context_lookup_function']/return-type" name="type">CdnFunction*</attr>
 
-
   <add-node path="/api/namespace/object[@cname='CdnCompileContext']">
     <method name="LookupFunction" cname="cdn_compile_context_lookup_function">
       <return-type type="CdnFunction*" />
     </method>
   </add-node>
+
+  <!-- CdnMath -->
+  <remove-node path="/api/namespace/class[@name='Math']/method[@name='RegisterBuiltinFunction']"/>
 
   <!-- CdnIntegrator -->
   <remove-node path="/api/namespace/object[@cname='CdnIntegrator']/method[@cname='cdn_integrator_evaluate']"/>
@@ -163,8 +198,8 @@
   <attr path="/api/namespace/object[@cname='CdnIntegrator']/signal[@name='End']" name="name">Ended</attr>
 
   <!-- CdnIntegrators -->
-  <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cdn_integrators_list']/return-type" name="element_type">GType</attr>
-  <attr path="/api/namespace/class[@name='Integrators']/method[@cname='cdn_integrators_create']/return-type" name="element_type">CdnIntegrator*</attr>
+  <attr path="/api/namespace/object[@name='Integrators']/method[@cname='cdn_integrators_list']/return-type" name="element_type">GType</attr>
+  <attr path="/api/namespace/object[@name='Integrators']/method[@cname='cdn_integrators_create']/return-type" name="element_type">CdnIntegrator*</attr>
 
   <!-- CdnIntegratorState -->
   <attr path="/api/namespace/object[@cname='CdnIntegratorState']/method[@cname='cdn_integrator_state_direct_edge_actions']/return-type" name="element_type">CdnEdgeAction*</attr>
@@ -196,7 +231,7 @@
   <!-- CdnVariable -->
   <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_object']/return-type" name="type">CdnObject*</attr>
   <attr path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_compile']/parameters/parameter[@name='error']" name="type">CdnCompileError*</attr>
-  <remove-node path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_get_values']"/>
+  <remove-node path="/api/namespace/object[@cname='CdnVariable']/method[@cname='cdn_variable_copy']"/>
 
   <!-- CdnVariableFlags -->
   <attr path="/api/namespace/enum[@cname='CdnVariableFlags']/member[@cname='CDN_VARIABLE_FLAG_INOUT']" name="value">In | Out</attr>
@@ -207,8 +242,8 @@
 
   <!-- CdnSelector -->
   <attr path="/api/namespace/object[@cname='CdnSelector']/method[@cname='cdn_selector_select']/return-type" name="element_type">CdnSelection*</attr>
-
   <attr path="/api/namespace/object[@cname='CdnSelector']/signal[@cname='select']" name="name">Selected</attr>
+  <remove-node path="/api/namespace/struct[@cname='CdnSelectorPart']/method[@cname='cdn_selector_part_regex']"/>
 
   <!-- CdnEmbeddedString -->
   <attr path="/api/namespace/object[@cname='CdnEmbeddedString']/method[@cname='cdn_embedded_string_collapse']/parameters/parameter[@name='const-const*']" name="type">gchar**</attr>
@@ -229,11 +264,62 @@
   <!-- CdnStack -->
   <remove-node path="/api/namespace/boxed[@cname='CdnStack']/method[@cname='cdn_stack_output_ptr']"/>
   <remove-node path="/api/namespace/boxed[@cname='CdnStack']/method[@cname='cdn_stack_set_output_ptr']"/>
-  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@cname='pop']"/>
+
+  <!-- CdnStackArg -->
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackArg']/field[@name='Sparsity']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackArg']/field[@name='Dimension']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackArg']/field[@name='NumSparse']"/>
+  <attr path="/api/namespace/boxed[@cname='CdnStackArg']/method[@cname='cdn_stack_arg_get_dimension']/parameters/parameter[@name='dim']" name="pass_as">out</attr>
+
+  <!-- CdnStackArgs -->
   <remove-node path="/api/namespace/boxed[@cname='CdnStackArgs']/field[@cname='num']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackArgs']/field[@name='Args']"/>
+
+  <!-- CdnStackManipulation -->
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@cname='pop']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@name='ExtraSpace']"/>
+  <remove-node path="/api/namespace/boxed[@cname='CdnStackManipulation']/field[@cname='push']"/>
 
   <!-- CdnInstructionFunction -->
   <attr path="/api/namespace/object[@cname='CdnInstructionFunction']/constructor[@cname='cdn_instruction_function_new']" name="hidden">true</attr>
+
+  <!-- CdnInstructionIndex -->
+  <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_get_indices']" name="hidden">true</attr>
+
+  <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_get_range_block']/parameters/parameter[@name='rows']" name="pass_as">out</attr>
+  <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_get_range_block']/parameters/parameter[@name='columns']" name="pass_as">out</attr>
+  <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_write_indices']" name="hidden">true</attr>
+  <attr path="/api/namespace/object[@cname='CdnInstructionIndex']/method[@cname='cdn_instruction_index_num_indices']" name="hidden">true</attr>
+
+  <!-- CdnInstructionVariable -->
+  <attr path="/api/namespace/object[@cname='CdnInstructionVariable']/method[@cname='cdn_instruction_variable_get_slice']" name="hidden">true</attr>
+
+  <attr path="/api/namespace/object[@cname='CdnInstructionVariable']/method[@cname='cdn_instruction_variable_set_slice']" name="hidden">true</attr>
+
+  <!-- Phaseable -->
+  <attr path="/api/namespace/interface[@cname='CdnPhaseable']/method[@cname='cdn_phaseable_foreach']/parameters/parameter[@name='func']" name="scope">call</attr>
+  <remove-node path="/api/namespace/interface[@cname='CdnPhaseable']/method[@cname='cdn_phaseable_get_phases']"/>
+
+  <!-- CdnIo -->
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/virtual_method[@cname='initialize']"/>
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/method[@cname='cdn_io_initialize']"/>
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/method[@cname='cdn_io_initialize_finish']"/>
+
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/virtual_method[@cname='initialize_async']"/>
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/method[@cname='cdn_io_initialize_async']"/>
+
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/virtual_method[@cname='finalize']"/>
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/method[@cname='cdn_io_finalize']"/>
+
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/virtual_method[@cname='finalize_async']"/>
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/method[@cname='cdn_io_finalize_async']"/>
+
+  <remove-node path="/api/namespace/interface[@cname='CdnIo']/method[@cname='cdn_io_finalize_finish']"/>
+
+  <!-- CdnEvent -->
+  <attr path="/api/namespace/object[@cname='CdnEvent']/method[@cname='cdn_event_get_set_variables']/return-type" name="element_type">CdnEventSetVariable*</attr>
+
+  
 </metadata>
 
 <!-- vi:ts=2:et -->

@@ -1,4 +1,4 @@
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_all_expressions(IntPtr raw);
 
 		public Cdn.Expression[][] AllExpressions() {
@@ -29,7 +29,7 @@
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_all_indices(IntPtr raw);
 
 		public Cdn.Expression[][] AllIndices() {

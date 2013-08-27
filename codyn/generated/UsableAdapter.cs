@@ -103,7 +103,7 @@ namespace Cdn {
 			this.handle = handle;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_usable_get_type();
 
 		private static GLib.GType _gtype = new GLib.GType (cdn_usable_get_type ());
@@ -147,14 +147,14 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_usable_use(IntPtr raw);
 
 		public void Use() {
 			cdn_usable_use(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern uint cdn_usable_use_count(IntPtr raw);
 
 		public uint UseCount() {
@@ -163,7 +163,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_usable_unuse(IntPtr raw);
 
 		public bool Unuse() {

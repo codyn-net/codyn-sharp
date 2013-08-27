@@ -14,7 +14,7 @@ namespace Cdn {
 		protected Monitor(GLib.GType gtype) : base(gtype) {}
 		public Monitor(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_monitor_new(IntPtr network, IntPtr property);
 
 		public Monitor (Cdn.Network network, Cdn.Variable property) : base (IntPtr.Zero)
@@ -56,7 +56,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_monitor_get_type();
 
 		public static new GLib.GType GType { 
@@ -67,7 +67,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_monitor_get_variable(IntPtr raw);
 
 		public Cdn.Variable Variable { 
@@ -81,7 +81,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "Monitor.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_monitor_get_data_resampled(IntPtr raw, double[] sites, uint n_size, double[] data);
 
 		public double[] GetDataResampled(double[] sites) {
@@ -94,7 +94,7 @@ namespace Cdn {
 			return data;
 		}
 		
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_monitor_get_data(IntPtr raw, out uint n_size);
 
 		public double[] GetData() {
@@ -107,7 +107,7 @@ namespace Cdn {
 			return data;
 		}
 		
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_monitor_get_sites(IntPtr raw, out uint n_size);
 
 		public double[] GetSites() {

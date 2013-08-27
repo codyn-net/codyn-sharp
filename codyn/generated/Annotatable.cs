@@ -11,6 +11,7 @@ namespace Cdn {
 		string Annotation { 
 			get; set;
 		}
+		Cdn.AnnotationInfo ParseAnnotation();
 		string Title { 
 			get;
 		}

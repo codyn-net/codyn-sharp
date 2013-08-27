@@ -14,7 +14,7 @@ namespace Cdn {
 		protected NetworkSerializer(GLib.GType gtype) : base(gtype) {}
 		public NetworkSerializer(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_serializer_new(IntPtr network, IntPtr root);
 
 		public NetworkSerializer (Cdn.Network network, Cdn.Node root) : base (IntPtr.Zero)
@@ -56,7 +56,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe IntPtr cdn_network_serializer_serialize_memory(IntPtr raw, out IntPtr error);
 
 		public unsafe string SerializeMemory() {
@@ -67,7 +67,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_serializer_serialize_path(IntPtr raw, IntPtr path, out IntPtr error);
 
 		public unsafe bool SerializePath(string path) {
@@ -80,7 +80,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_serializer_get_type();
 
 		public static new GLib.GType GType { 

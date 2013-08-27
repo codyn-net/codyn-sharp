@@ -14,7 +14,7 @@ namespace Cdn {
 		protected ImportAlias(GLib.GType gtype) : base(gtype) {}
 		public ImportAlias(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_import_alias_new(IntPtr source);
 
 		public ImportAlias (Cdn.Import source) : base (IntPtr.Zero)
@@ -42,7 +42,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_import_alias_get_type();
 
 		public static new GLib.GType GType { 

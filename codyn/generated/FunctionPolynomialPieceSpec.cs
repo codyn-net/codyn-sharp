@@ -12,7 +12,7 @@ namespace Cdn {
 
 		public FunctionPolynomialPieceSpec(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_function_polynomial_piece_spec_new(IntPtr from, IntPtr to, IntPtr coefficients);
 
 		public FunctionPolynomialPieceSpec (Cdn.EmbeddedString from, Cdn.EmbeddedString to, GLib.SList coefficients) 
@@ -20,7 +20,7 @@ namespace Cdn {
 			Raw = cdn_function_polynomial_piece_spec_new(from == null ? IntPtr.Zero : from.Handle, to == null ? IntPtr.Zero : to.Handle, coefficients == null ? IntPtr.Zero : coefficients.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_function_polynomial_piece_spec_free(IntPtr raw);
 
 		protected override void Free (IntPtr raw)

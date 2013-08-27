@@ -14,7 +14,7 @@ namespace Cdn {
 		protected NetworkDeserializer(GLib.GType gtype) : base(gtype) {}
 		public NetworkDeserializer(IntPtr raw) : base(raw) {}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_deserializer_new(IntPtr network, IntPtr root);
 
 		public NetworkDeserializer (Cdn.Network network, Cdn.Node root) : base (IntPtr.Zero)
@@ -56,7 +56,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_network_deserializer_deserialize_path(IntPtr raw, IntPtr path, out IntPtr error);
 
 		public unsafe bool DeserializePath(string path) {
@@ -69,7 +69,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_network_deserializer_get_type();
 
 		public static new GLib.GType GType { 

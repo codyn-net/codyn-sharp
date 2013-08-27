@@ -19,14 +19,14 @@ namespace Cdn {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_operator_step(IntPtr raw, double t, double timestep);
 
 		public void Step(double t, double timestep) {
 			cdn_operator_step(Handle, t, timestep);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_operator_foreach_function(IntPtr raw, CdnSharp.ForeachFunctionFuncNative func, IntPtr userdata);
 
 		public void ForeachFunction(Cdn.ForeachFunctionFunc func) {
@@ -34,7 +34,7 @@ namespace Cdn {
 			cdn_operator_foreach_function(Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_get_name(IntPtr raw);
 
 		public string Name { 
@@ -45,7 +45,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_get_type();
 
 		public static new GLib.GType GType { 
@@ -56,7 +56,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern unsafe bool cdn_operator_initialize(IntPtr raw, IntPtr expressions, int num_expressions, IntPtr indices, int num_indices, IntPtr argdim, IntPtr context, out IntPtr error);
 
 		public unsafe bool Initialize(GLib.SList expressions, int num_expressions, GLib.SList indices, int num_indices, Cdn.StackArgs argdim, Cdn.CompileContext context) {
@@ -67,7 +67,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_operator_equal(IntPtr raw, IntPtr other, bool asstring);
 
 		public bool Equal(Cdn.Operator other, bool asstring) {
@@ -76,21 +76,21 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_operator_reset(IntPtr raw);
 
 		public void Reset() {
 			cdn_operator_reset(Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_operator_execute(IntPtr raw, IntPtr stack);
 
 		public void Execute(Cdn.Stack stack) {
 			cdn_operator_execute(Handle, stack == null ? IntPtr.Zero : stack.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_get_indices(IntPtr raw, int idx);
 
 		public Cdn.Expression[] GetIndices(int idx) {
@@ -99,14 +99,14 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_operator_initialize_integrate(IntPtr raw, IntPtr integrator);
 
 		public void InitializeIntegrate(Cdn.Integrator integrator) {
 			cdn_operator_initialize_integrate(Handle, integrator == null ? IntPtr.Zero : integrator.Handle);
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_operator_num_indices(IntPtr raw);
 
 		public int NumIndices() {
@@ -115,7 +115,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_get_primary_function(IntPtr raw);
 
 		public Cdn.Function PrimaryFunction { 
@@ -126,7 +126,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_operator_error_quark();
 
 		public static int ErrorQuark() {
@@ -135,7 +135,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_get_function(IntPtr raw, out int idx, int numidx);
 
 		public Cdn.Function GetFunction(out int idx, int numidx) {
@@ -144,7 +144,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_get_expressions(IntPtr raw, int idx);
 
 		public Cdn.Expression[] GetExpressions(int idx) {
@@ -153,7 +153,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_operator_num_expressions(IntPtr raw);
 
 		public int NumExpressions() {
@@ -162,7 +162,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_get_stack_manipulation(IntPtr raw);
 
 		public Cdn.StackManipulation StackManipulation { 
@@ -173,7 +173,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_get_arguments_dimension(IntPtr raw);
 
 		public Cdn.StackArgs ArgumentsDimension { 
@@ -184,7 +184,7 @@ namespace Cdn {
 			}
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_copy(IntPtr raw);
 
 		public Cdn.Operator Copy() {
@@ -196,7 +196,7 @@ namespace Cdn {
 #endregion
 #region Customized extensions
 #line 1 "Operator.custom"
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_all_expressions(IntPtr raw);
 
 		public Cdn.Expression[][] AllExpressions() {
@@ -227,7 +227,7 @@ namespace Cdn {
 			return ret;
 		}
 
-		[DllImport("codyn-3.0")]
+		[DllImport("libcodyn-3.0.dll")]
 		static extern IntPtr cdn_operator_all_indices(IntPtr raw);
 
 		public Cdn.Expression[][] AllIndices() {
