@@ -50,6 +50,7 @@ namespace Cdn {
 		TypeAppliedTemplates,
 		TypeReduce,
 		TypeSort,
+		TypeXor,
 		Num,
 	}
 #endregion

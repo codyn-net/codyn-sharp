@@ -138,6 +138,11 @@
       <member cname="CDN_MATH_FUNCTION_TYPE_LINSOLVE" name="Linsolve" />
       <member cname="CDN_MATH_FUNCTION_TYPE_QR" name="Qr" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SLINSOLVE" name="Slinsolve" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_SLTDL" name="Sltdl" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_SLTDL_DINV" name="SltdlDinv" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_SLTDL_DINV_LINVT" name="SltdlDinvLinvt" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_SLTDL_LINVT" name="SltdlLinvt" />
+      <member cname="CDN_MATH_FUNCTION_TYPE_SLTDL_LINV" name="SltdlLinv" />
       <member cname="CDN_MATH_FUNCTION_TYPE_SUM" name="Sum" />
       <member cname="CDN_MATH_FUNCTION_TYPE_PRODUCT" name="Product" />
       <member cname="CDN_MATH_FUNCTION_TYPE_LENGTH" name="Length" />
@@ -249,6 +254,7 @@
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_APPLIED_TEMPLATES" name="TypeAppliedTemplates" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_REDUCE" name="TypeReduce" />
       <member cname="CDN_SELECTOR_PSEUDO_TYPE_SORT" name="TypeSort" />
+      <member cname="CDN_SELECTOR_PSEUDO_TYPE_XOR" name="TypeXor" />
       <member cname="CDN_SELECTOR_PSEUDO_NUM" name="Num" />
     </enum>
     <enum name="SelectorType" cname="CdnSelectorType" type="flags">
