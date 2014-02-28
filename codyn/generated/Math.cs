@@ -19,15 +19,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern IntPtr cdn_math_function_lookup_by_id(int type, out int arguments);
-
-		public static string FunctionLookupById(Cdn.MathFunctionType type, out int arguments) {
-			IntPtr raw_ret = cdn_math_function_lookup_by_id((int) type, out arguments);
-			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
-			return ret;
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern int cdn_math_function_lookup(IntPtr name, out int arguments);
 
 		public static Cdn.MathFunctionType FunctionLookup(string name, out int arguments) {
@@ -39,18 +30,20 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_math_compute_sparsity(int type, IntPtr inargs, IntPtr outarg);
-
-		public static void ComputeSparsity(Cdn.MathFunctionType type, Cdn.StackArgs inargs, Cdn.StackArg outarg) {
-			cdn_math_compute_sparsity((int) type, inargs == null ? IntPtr.Zero : inargs.Handle, outarg == null ? IntPtr.Zero : outarg.Handle);
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_math_function_is_commutative(int type, IntPtr argdim);
 
 		public static bool FunctionIsCommutative(Cdn.MathFunctionType type, Cdn.StackArgs argdim) {
 			bool raw_ret = cdn_math_function_is_commutative((int) type, argdim == null ? IntPtr.Zero : argdim.Handle);
 			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_math_function_lookup_by_id(int type, out int arguments);
+
+		public static string FunctionLookupById(Cdn.MathFunctionType type, out int arguments) {
+			IntPtr raw_ret = cdn_math_function_lookup_by_id((int) type, out arguments);
+			string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 			return ret;
 		}
 

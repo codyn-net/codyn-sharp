@@ -1326,9 +1326,6 @@
       <method name="GetOnce" cname="cdn_expression_get_once">
         <return-type type="gboolean" />
       </method>
-      <method name="GetPinnedSparsity" cname="cdn_expression_get_pinned_sparsity">
-        <return-type type="gboolean" />
-      </method>
       <method name="GetRandInstructions" cname="cdn_expression_get_rand_instructions">
         <return-type type="const-GSList*" />
       </method>
@@ -1358,9 +1355,6 @@
           <parameter type="gdouble" name="number" />
         </parameters>
       </constructor>
-      <method name="RecalculateSparsity" cname="cdn_expression_recalculate_sparsity">
-        <return-type type="void" />
-      </method>
       <method name="Reset" cname="cdn_expression_reset">
         <return-type type="void" />
       </method>
@@ -1411,12 +1405,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="instant" />
-        </parameters>
-      </method>
-      <method name="SetPinnedSparsity" cname="cdn_expression_set_pinned_sparsity">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="pinned" />
         </parameters>
       </method>
       <method name="SetValue" cname="cdn_expression_set_value">
@@ -1896,12 +1884,6 @@
           <parameter type="gboolean" name="asstring" />
         </parameters>
       </virtual_method>
-      <virtual_method name="RecalculateSparsity" cname="recalculate_sparsity">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnInstruction*" name="instruction" />
-        </parameters>
-      </virtual_method>
       <method name="Equal" cname="cdn_instruction_equal">
         <return-type type="gboolean" />
         <parameters>
@@ -1936,9 +1918,6 @@
       </method>
       <method name="GetType" cname="cdn_instruction_get_type" shared="true">
         <return-type type="GType" />
-      </method>
-      <method name="RecalculateSparsity" cname="cdn_instruction_recalculate_sparsity">
-        <return-type type="void" />
       </method>
       <method name="SetLocation" cname="cdn_instruction_set_location">
         <return-type type="void" />
@@ -5314,8 +5293,6 @@
     </boxed>
     <boxed name="StackArg" cname="CdnStackArg" opaque="true">
       <field name="Dimension" cname="dimension" type="CdnDimension" access="public" writeable="true" />
-      <field name="Sparsity" cname="sparsity" type="guint*" access="public" writeable="true" />
-      <field name="NumSparse" cname="num_sparse" type="guint" access="public" writeable="true" />
       <method name="Copy" cname="cdn_stack_arg_copy">
         <return-type type="void" />
         <parameters>
@@ -5331,33 +5308,8 @@
           <parameter type="CdnDimension*" name="dim" />
         </parameters>
       </method>
-      <method name="GetSparsity" cname="cdn_stack_arg_get_sparsity">
-        <return-type type="const-guint*" />
-        <parameters>
-          <parameter type="guint*" name="num_sparse" />
-        </parameters>
-      </method>
       <method name="GetType" cname="cdn_stack_arg_get_type" shared="true">
         <return-type type="GType" />
-      </method>
-      <method name="IsSparse" cname="cdn_stack_arg_is_sparse">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="guint" name="idx" />
-        </parameters>
-      </method>
-      <method name="SetSparsity" cname="cdn_stack_arg_set_sparsity">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="guint*" name="sparsity" />
-          <parameter type="guint" name="num_sparse" />
-        </parameters>
-      </method>
-      <method name="SetSparsityOne" cname="cdn_stack_arg_set_sparsity_one">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="guint" name="sparsity" />
-        </parameters>
       </method>
       <method name="Size" cname="cdn_stack_arg_size">
         <return-type type="guint" />
@@ -5448,14 +5400,6 @@
       </method>
     </class>
     <class name="Math" cname="CdnMath_">
-      <method name="ComputeSparsity" cname="cdn_math_compute_sparsity" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="CdnMathFunctionType" name="type" />
-          <parameter type="const-CdnStackArgs*" name="inargs" />
-          <parameter type="CdnStackArg*" name="outarg" />
-        </parameters>
-      </method>
       <method name="ConstantLookup" cname="cdn_math_constant_lookup" shared="true">
         <return-type type="gdouble" />
         <parameters>

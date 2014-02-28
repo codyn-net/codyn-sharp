@@ -11,6 +11,13 @@ namespace Cdn {
 	public class StackArg : GLib.Opaque {
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern void cdn_stack_arg_copy(IntPtr raw, IntPtr src);
+
+		public void Copy(Cdn.StackArg src) {
+			cdn_stack_arg_copy(Handle, src == null ? IntPtr.Zero : src.Handle);
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern void cdn_stack_arg_get_dimension(IntPtr raw, IntPtr dim);
 
 		public Cdn.Dimension Dimension { 
@@ -21,51 +28,6 @@ namespace Cdn {
 				dim = Cdn.Dimension.New (native_dim);
 				Marshal.FreeHGlobal (native_dim);
 				return dim;
-			}
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_stack_arg_set_sparsity(IntPtr raw, out uint sparsity, uint num_sparse);
-
-		public uint SetSparsity(uint num_sparse) {
-			uint sparsity;
-			cdn_stack_arg_set_sparsity(Handle, out sparsity, num_sparse);
-			return sparsity;
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern bool cdn_stack_arg_is_sparse(IntPtr raw, uint idx);
-
-		public bool IsSparse(uint idx) {
-			bool raw_ret = cdn_stack_arg_is_sparse(Handle, idx);
-			bool ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern uint cdn_stack_arg_size(IntPtr raw);
-
-		public uint Size() {
-			uint raw_ret = cdn_stack_arg_size(Handle);
-			uint ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern uint cdn_stack_arg_get_sparsity(IntPtr raw, out uint num_sparse);
-
-		public uint GetSparsity(out uint num_sparse) {
-			uint raw_ret = cdn_stack_arg_get_sparsity(Handle, out num_sparse);
-			uint ret = raw_ret;
-			return ret;
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_stack_arg_set_sparsity_one(IntPtr raw, uint sparsity);
-
-		public uint SparsityOne { 
-			set {
-				cdn_stack_arg_set_sparsity_one(Handle, value);
 			}
 		}
 
@@ -81,10 +43,12 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_stack_arg_copy(IntPtr raw, IntPtr src);
+		static extern uint cdn_stack_arg_size(IntPtr raw);
 
-		public void Copy(Cdn.StackArg src) {
-			cdn_stack_arg_copy(Handle, src == null ? IntPtr.Zero : src.Handle);
+		public uint Size() {
+			uint raw_ret = cdn_stack_arg_size(Handle);
+			uint ret = raw_ret;
+			return ret;
 		}
 
 		public StackArg(IntPtr raw) : base(raw) {}
