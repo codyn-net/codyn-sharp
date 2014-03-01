@@ -1522,6 +1522,9 @@
       <method name="GetUnused" cname="cdn_function_argument_get_unused">
         <return-type type="gboolean" />
       </method>
+      <method name="GetVariable" cname="cdn_function_argument_get_variable">
+        <return-type type="CdnVariable*" />
+      </method>
       <constructor cname="cdn_function_argument_new" hidden="true">
         <parameters>
           <parameter type="const-gchar*" name="name" />
