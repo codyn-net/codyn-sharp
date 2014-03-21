@@ -10,7 +10,7 @@ updateapi:
 	gapi2-parser sources.xml && \
 	rm -rf codyn/generated codyn/codyn-api.xml && \
 	make -C codyn codyn-api.xml && \
-	make -C codyn generated/Node.cs
+	make -C codyn generate-code
 codynsharpdir=$(libdir)/codyn-sharp-@CODYN_SHARP_API_VERSION@
 codynsharp_DATA = Codyn.dll.config
 

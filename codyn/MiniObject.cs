@@ -125,7 +125,7 @@ namespace Cdn
 			}
 
 			ConstructorInfo info = type.GetConstructor(new Type[] {typeof(IntPtr)});
-			return info.Invoke(null, new object[] {raw}) as Cdn.MiniObject;
+			return info.Invoke(new object[] {raw}) as Cdn.MiniObject;
 		}
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]

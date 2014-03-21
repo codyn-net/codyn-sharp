@@ -156,6 +156,17 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
+		static extern IntPtr cdn_function_argument_get_variable(IntPtr raw);
+
+		public Cdn.Variable Variable { 
+			get {
+				IntPtr raw_ret = cdn_function_argument_get_variable(Handle);
+				Cdn.Variable ret = GLib.Object.GetObject(raw_ret) as Cdn.Variable;
+				return ret;
+			}
+		}
+
+		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_function_argument_set_name(IntPtr raw, IntPtr name);
 
 		public bool SetName(string name) {

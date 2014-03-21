@@ -119,17 +119,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern uint cdn_expression_get_stack_size(IntPtr raw);
-
-		public uint StackSize { 
-			get {
-				uint raw_ret = cdn_expression_get_stack_size(Handle);
-				uint ret = raw_ret;
-				return ret;
-			}
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_expression_get_dimension(IntPtr raw, IntPtr dimension);
 
 		public bool GetDimension(out Cdn.Dimension dimension) {
@@ -194,27 +183,14 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern bool cdn_expression_get_pinned_sparsity(IntPtr raw);
+		static extern uint cdn_expression_get_stack_size(IntPtr raw);
 
-		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_expression_set_pinned_sparsity(IntPtr raw, bool pinned);
-
-		public bool PinnedSparsity { 
+		public uint StackSize { 
 			get {
-				bool raw_ret = cdn_expression_get_pinned_sparsity(Handle);
-				bool ret = raw_ret;
+				uint raw_ret = cdn_expression_get_stack_size(Handle);
+				uint ret = raw_ret;
 				return ret;
 			}
-			set {
-				cdn_expression_set_pinned_sparsity(Handle, value);
-			}
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_expression_recalculate_sparsity(IntPtr raw);
-
-		public void RecalculateSparsity() {
-			cdn_expression_recalculate_sparsity(Handle);
 		}
 
 		[DllImport("libcodyn-3.0.dll")]

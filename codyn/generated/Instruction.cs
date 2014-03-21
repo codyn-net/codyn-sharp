@@ -65,13 +65,6 @@ namespace Cdn {
 		}
 
 		[DllImport("libcodyn-3.0.dll")]
-		static extern void cdn_instruction_recalculate_sparsity(IntPtr raw);
-
-		public void RecalculateSparsity() {
-			cdn_instruction_recalculate_sparsity(Handle);
-		}
-
-		[DllImport("libcodyn-3.0.dll")]
 		static extern bool cdn_instruction_equal(IntPtr raw, IntPtr i2, bool asstring);
 
 		public bool Equal(Cdn.Instruction i2, bool asstring) {
